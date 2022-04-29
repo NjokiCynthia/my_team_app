@@ -355,6 +355,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         }
         await Provider.of<BalancesDashboardSummary>(context, listen: false)
             .getAccountBalancesSummary(_currentGroup.groupId);
+        await Provider.of<NewExpensesSummaries>(context, listen: false)
+            .fetchExpenses(_currentGroup.groupId);
       }
 
       if (!Provider.of<GroupNotifications>(context, listen: false)
@@ -1867,7 +1869,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                         textAlign: TextAlign.center,
                         color: Colors.blueGrey[400]),
                     customTitleWithWrap(
-                        text: "Sorry, There are no contibutions available",
+                        text: "Fetching Contribution Summary, Please wait...",
                         //fontWeight: FontWeight.w500,
                         fontSize: 12.0,
                         textAlign: TextAlign.center,
@@ -1970,72 +1972,10 @@ class _FinesState extends State<Fines> {
       }
     }
 
-    if (!Provider.of<DashboardContributionSummary>(context, listen: false)
-        .groupContributionSummaryExists(_currentGroup.groupId)) {
+    if (!Provider.of<DashboardFineSummary>(context, listen: false)
+        .groupFineSummaryExists(_currentGroup.groupId)) {
       _getFinesSummary(context);
     }
-
-    // LoanDashboardSummary _loanDashboardSummary =
-    //     Provider.of<LoanDashboardSummary>(context);
-
-    // Future<void> _getFineSummary(BuildContext context) async {
-    //   try {
-    //     await Provider.of<DashboardFineSummary>(context, listen: false)
-    //         .getFinesSummary(_currentGroup.groupId);
-    //
-    //    /* if(_loanDashboardSummary.grouploanExists(_currentGroup.groupId) == null){
-    //       await Provider.of<LoanDashboardSummary>(context, listen: false)
-    //           .getDashboardLoanSummary(_currentGroup.groupId);
-    //     }*/
-    //
-    //
-    //     // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
-    //   } on CustomException catch (error) {
-    //     StatusHandler().handleStatus(
-    //       context: context,
-    //       error: error,
-    //       /* callback: () {
-    //          _getFineSummary(context);
-    //         }*/);
-    //   }
-    // }
-
-    // Future<void> _getFineSummary(BuildContext context) async {
-    //   try {
-    //     // await Provider.of<DashboardFineSummary>(context, listen: false)
-    //     //     .getFinesSummary(_currentGroup.groupId);
-    //
-    //     await Provider.of<LoanDashboardSummary>(context, listen: false)
-    //         .getDashboardLoanSummary(_currentGroup.groupId);
-    //     await Provider.of<NewExpensesSummaries>(context, listen: false)
-    //         .fetchExpenses(_currentGroup.groupId);
-    //     // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
-    //   } on CustomException catch (error) {
-    //     StatusHandler().handleStatus(
-    //       context: context,
-    //       error: error,
-    //       /* callback: () {
-    //           _getExpenseSummary(context);
-    //         }*/
-    //     );
-    //   }
-    // }
-
-    /*if (loanDashboardSummary.grouploanExists(_currentGroup.groupId) == null) {
-      _getFineSummary(context);
-    } else {
-      if (!Provider.of<LoanDashboardSummary>(context, listen: false)
-          .grouploanExists(_currentGroup.groupId)) {
-        if (this.mounted) {
-          if (_isInit == false) {
-            setState(() {
-              _isInit = true;
-            });
-          }
-        }
-        _getFineSummary(context);
-      }
-    }*/
 
     final groupTotalFine = dashboardFineSummary.totalGroupFinePaid -
         dashboardFineSummary.memberFinePaid;
@@ -2055,287 +1995,291 @@ class _FinesState extends State<Fines> {
 
       [Color(0xFF00ABF2), Color(0xFF00ABF2)],
     ];
-    return dashboardFineSummary.totalGroupFinePaid >
-            0 /* ||
-            dashboardFineSummary.memberFinePaid > 0 ||
-            dashboardFineSummary.memberFineArrears > 0 */
+    return !_isLoading
         ? Container(
-            color: Theme.of(context).backgroundColor,
-            child: Column(children: [
-              Row(
-                children: [
-                  chart.PieChart(
-                    dataMap: dataMap,
-                    animationDuration: Duration(milliseconds: 800),
-                    chartLegendSpacing: 32,
-                    chartRadius: MediaQuery.of(context).size.width / 3.2,
-                    initialAngleInDegree: 0,
-                    ringStrokeWidth: 32,
-                    // colorList: [Colors.red[300], primaryColor],
-                    gradientList: gradientList,
-                    legendOptions: chart.LegendOptions(
-                      showLegendsInRow: false,
-                      legendPosition: chart.LegendPosition.right,
-                      showLegends: false,
-                      legendTextStyle: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
-                    ),
-                    chartValuesOptions: chart.ChartValuesOptions(
-                        showChartValueBackground: false,
-                        showChartValues: true,
-                        showChartValuesInPercentage: true,
-                        showChartValuesOutside: false,
-                        decimalPlaces: 0,
-                        chartValueStyle: TextStyle(
-                            fontFamily: 'SegoeUI',
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w500,
-                            // ignore: deprecated_member_use
-                            color: Theme.of(context)
-                                // ignore: deprecated_member_use
-                                .textSelectionColor)),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      customTitle(
-                        text: "Your Total Fines Paid",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Theme.of(context)
-                            // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
-                      ),
-                      /* dashboardData.memberFineAmount */ dashboardFineSummary
-                                  .memberFinePaid
-                                  .abs() >
-                              0
-                          ? Row(
-                              children: [
-                                circleButton(
-                                  backgroundColor: /*  dashboardData.memberFineArrears
+            child: dashboardFineSummary.totalGroupFinePaid > 0
+                ? Container(
+                    color: Theme.of(context).backgroundColor,
+                    child: Column(children: [
+                      Row(
+                        children: [
+                          chart.PieChart(
+                            dataMap: dataMap,
+                            animationDuration: Duration(milliseconds: 800),
+                            chartLegendSpacing: 32,
+                            chartRadius:
+                                MediaQuery.of(context).size.width / 3.2,
+                            initialAngleInDegree: 0,
+                            ringStrokeWidth: 32,
+                            // colorList: [Colors.red[300], primaryColor],
+                            gradientList: gradientList,
+                            legendOptions: chart.LegendOptions(
+                              showLegendsInRow: false,
+                              legendPosition: chart.LegendPosition.right,
+                              showLegends: false,
+                              legendTextStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  // ignore: deprecated_member_use
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor),
+                            ),
+                            chartValuesOptions: chart.ChartValuesOptions(
+                                showChartValueBackground: false,
+                                showChartValues: true,
+                                showChartValuesInPercentage: true,
+                                showChartValuesOutside: false,
+                                decimalPlaces: 0,
+                                chartValueStyle: TextStyle(
+                                    fontFamily: 'SegoeUI',
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w500,
+                                    // ignore: deprecated_member_use
+                                    color: Theme.of(context)
+                                        // ignore: deprecated_member_use
+                                        .textSelectionColor)),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              customTitle(
+                                text: "Your Total Fines Paid",
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Theme.of(context)
+                                    // ignore: deprecated_member_use
+                                    .textSelectionHandleColor,
+                              ),
+                              /* dashboardData.memberFineAmount */ dashboardFineSummary
+                                          .memberFinePaid
+                                          .abs() >
+                                      0
+                                  ? Row(
+                                      children: [
+                                        circleButton(
+                                          backgroundColor: /*  dashboardData.memberFineArrears
                                         .abs() >
                                     0
                                 ? */
-                                      // Colors.red[300]
+                                              // Colors.red[300]
 
-                                      primaryColor.withOpacity(
-                                          .3) /* : Colors
+                                              primaryColor.withOpacity(
+                                                  .3) /* : Colors
                                     .white */ /* rimaryColor.withOpacity(.3) */,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                customTitle1(
-                                  text: /* _currentGroup.disableArrears
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        customTitle1(
+                                          text: /* _currentGroup.disableArrears
                                       ?  */
-                                      _currentGroup.groupCurrency +
-                                          " " +
-                                          currencyFormat.format(
-                                              /* dashboardData.memberFineAmount */
-                                              dashboardFineSummary
-                                                  .memberFinePaid)
-                                  /* : _currentGroup.groupCurrency +
+                                              _currentGroup.groupCurrency +
+                                                  " " +
+                                                  currencyFormat.format(
+                                                      /* dashboardData.memberFineAmount */
+                                                      dashboardFineSummary
+                                                          .memberFinePaid)
+                                          /* : _currentGroup.groupCurrency +
                                           " " +
                                           currencyFormat.format(
                                               dashboardData.memberFineArrears) */
-                                  ,
-                                  color: /*  (dashboardData.memberFineArrears) > 0
+                                          ,
+                                          color: /*  (dashboardData.memberFineArrears) > 0
                                       ? Colors.red[400]
                                       : */
-                                      Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
-                                  textAlign: TextAlign.start,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
-                            )
-                          : customTitle1(
-                              text: /* _currentGroup.disableArrears
+                                              Theme.of(context)
+                                                  // ignore: deprecated_member_use
+                                                  .textSelectionHandleColor,
+                                          textAlign: TextAlign.start,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ],
+                                    )
+                                  : customTitle1(
+                                      text: /* _currentGroup.disableArrears
                                   ?  */
-                                  _currentGroup.groupCurrency +
-                                      " " +
-                                      currencyFormat.format(
-                                          /* dashboardData.memberFineAmount */
-                                          dashboardFineSummary.memberFinePaid)
-                              /* : _currentGroup.groupCurrency +
+                                          _currentGroup.groupCurrency +
+                                              " " +
+                                              currencyFormat.format(
+                                                  /* dashboardData.memberFineAmount */
+                                                  dashboardFineSummary
+                                                      .memberFinePaid)
+                                      /* : _currentGroup.groupCurrency +
                                       " " +
                                       currencyFormat.format(
                                           dashboardData.memberFineArrears) */
-                              ,
-                              color: /* (dashboardData.memberFineArrears) > 0
+                                      ,
+                                      color: /* (dashboardData.memberFineArrears) > 0
                                   ? Colors.red[400]
                                   :  */
-                                  Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
-                              textAlign: TextAlign.start,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
+                                          Theme.of(context)
+                                              // ignore: deprecated_member_use
+                                              .textSelectionHandleColor,
+                                      textAlign: TextAlign.start,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              customTitle(
+                                text: "Group Total Fines Paid",
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Theme.of(context)
+                                    // ignore: deprecated_member_use
+                                    .textSelectionHandleColor,
+                              ),
+                              dashboardFineSummary.totalGroupFinePaid > 0
+                                  ? Row(
+                                      children: [
+                                        circleButton(
+                                          backgroundColor: primaryColor,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        customTitle1(
+                                          color: Theme.of(context)
+                                              // ignore: deprecated_member_use
+                                              .textSelectionHandleColor,
+                                          text: _currentGroup.groupCurrency +
+                                              " " +
+                                              currencyFormat.format(
+                                                  /* dashboardData.groupFinePaymentAmount */
+                                                  dashboardFineSummary
+                                                      .totalGroupFinePaid),
+                                          textAlign: TextAlign.start,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ],
+                                    )
+                                  : customTitle1(
+                                      color: Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionHandleColor,
+                                      text: _currentGroup.groupCurrency +
+                                          " " +
+                                          currencyFormat.format(
+                                              /* dashboardData.groupFinePaymentAmount */
+                                              dashboardFineSummary
+                                                  .totalGroupFinePaid),
+                                      textAlign: TextAlign.start,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      DottedLine(
+                        direction: Axis.horizontal,
+                        lineLength: double.infinity,
+                        lineThickness: 0.5,
+                        dashLength: 2.0,
+                        dashColor: Colors.black45,
+                        dashRadius: 0.0,
+                        dashGapLength: 2.0,
+                        dashGapColor: Colors.transparent,
+                        dashGapRadius: 0.0,
+                      ),
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
-                      customTitle(
-                        text: "Group Total Fines Paid",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Theme.of(context)
-                            // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
-                      ),
-                      dashboardFineSummary.totalGroupFinePaid > 0
-                          ? Row(
-                              children: [
-                                circleButton(
-                                  backgroundColor: primaryColor,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                customTitle1(
-                                  color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
-                                  text: _currentGroup.groupCurrency +
-                                      " " +
-                                      currencyFormat.format(
-                                          /* dashboardData.groupFinePaymentAmount */
-                                          dashboardFineSummary
-                                              .totalGroupFinePaid),
-                                  textAlign: TextAlign.start,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
-                            )
-                          : customTitle1(
-                              color: Theme.of(context)
-                                  // ignore: deprecated_member_use
-                                  .textSelectionHandleColor,
-                              text: _currentGroup.groupCurrency +
-                                  " " +
-                                  currencyFormat.format(
-                                      /* dashboardData.groupFinePaymentAmount */
-                                      dashboardFineSummary.totalGroupFinePaid),
-                              textAlign: TextAlign.start,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                    ],
-                  ),
-                ],
-              ),
-              DottedLine(
-                direction: Axis.horizontal,
-                lineLength: double.infinity,
-                lineThickness: 0.5,
-                dashLength: 2.0,
-                dashColor: Colors.black45,
-                dashRadius: 0.0,
-                dashGapLength: 2.0,
-                dashGapColor: Colors.transparent,
-                dashGapRadius: 0.0,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      InkWell(
-                        onTap: () {},
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            customTitle(
-                              text:
-                                  (/* dashboardData.memberFineArrears */ dashboardFineSummary
-                                              .memberFineArrears) <
-                                          0
-                                      ? "Your Fine overpayment"
-                                      : "Your Fine Arrears",
-                              fontSize: 15,
-                              textAlign: TextAlign.start,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context)
-                                  // ignore: deprecated_member_use
-                                  .textSelectionHandleColor,
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            customTitle1(
-                              text: /*  _currentGroup.disableArrears
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              InkWell(
+                                onTap: () {},
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    customTitle(
+                                      text:
+                                          (/* dashboardData.memberFineArrears */ dashboardFineSummary
+                                                      .memberFineArrears) <
+                                                  0
+                                              ? "Your Fine overpayment"
+                                              : "Your Fine Arrears",
+                                      fontSize: 15,
+                                      textAlign: TextAlign.start,
+                                      fontWeight: FontWeight.w400,
+                                      color: Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionHandleColor,
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    customTitle1(
+                                      text: /*  _currentGroup.disableArrears
                                         ?
                                         _currentGroup.groupCurrency +
                                             " " +
                                             currencyFormat.format(dashboardData
                                                 .memberContributionAmount)
                                      : */
-                                  _currentGroup.groupCurrency +
-                                      " " +
-                                      currencyFormat.format(
-                                          /* dashboardData
+                                          _currentGroup.groupCurrency +
+                                              " " +
+                                              currencyFormat.format(
+                                                  /* dashboardData
                                           .memberFineArrears */
-                                          dashboardFineSummary.memberFineArrears
-                                              .abs()),
-                              color: (/* dashboardData.memberFineArrears */ dashboardFineSummary
-                                          .memberFineArrears) >
-                                      0
-                                  ? Colors.red[400]
-                                  : (/* dashboardData.memberFineArrears */ dashboardFineSummary
-                                              .memberFineArrears) <
-                                          0
-                                      ? Colors.green
-                                      : Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
-                              textAlign: TextAlign.start,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
+                                                  dashboardFineSummary
+                                                      .memberFineArrears
+                                                      .abs()),
+                                      color: (/* dashboardData.memberFineArrears */ dashboardFineSummary
+                                                  .memberFineArrears) >
+                                              0
+                                          ? Colors.red[400]
+                                          : (/* dashboardData.memberFineArrears */ dashboardFineSummary
+                                                      .memberFineArrears) <
+                                                  0
+                                              ? Colors.green
+                                              : Theme.of(context)
+                                                  // ignore: deprecated_member_use
+                                                  .textSelectionHandleColor,
+                                      textAlign: TextAlign.start,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ]),
+                      )
+                    ]))
+                : Container(
+                    child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.all(16.0),
+                        decoration: flatGradient(context),
+                        child: Column(
+                          children: [
+                            SvgPicture.asset(
+                              customIcons['no-data'],
+                              semanticsLabel: 'icon',
+                              height: 120.0,
                             ),
+                            customTitleWithWrap(
+                                text: "Nothing to display!",
+                                fontWeight: FontWeight.w700,
+                                fontSize: 14.0,
+                                textAlign: TextAlign.center,
+                                color: Colors.blueGrey[400]),
+                            customTitleWithWrap(
+                                text: "Sorry, There are no Fines available",
+                                //fontWeight: FontWeight.w500,
+                                fontSize: 12.0,
+                                textAlign: TextAlign.center,
+                                color: Colors.blueGrey[400])
                           ],
-                        ),
-                      ),
-                    ]),
-              )
-            ]))
-        /* : dashboardFineSummary.groupFineSummaryExists == null
-            ? Container(
-                child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(16.0),
-                    decoration: flatGradient(context),
-                    child: Column(
-                      children: [
-                        SvgPicture.asset(
-                          customIcons['no-data'],
-                          semanticsLabel: 'icon',
-                          height: 120.0,
-                        ),
-                        customTitleWithWrap(
-                            text: "Fetching Data!",
-                            fontWeight: FontWeight.w700,
-                            fontSize: 14.0,
-                            textAlign: TextAlign.center,
-                            color: Colors.blueGrey[400]),
-                        customTitleWithWrap(
-                            text: "Kindly Wait, Fetching your fines ...",
-                            //fontWeight: FontWeight.w500,
-                            fontSize: 12.0,
-                            textAlign: TextAlign.center,
-                            color: Colors.blueGrey[400])
-                      ],
-                    )),
-              )*/
+                        )),
+                  ),
+          )
         : Container(
             child: Container(
                 width: double.infinity,
@@ -2349,13 +2293,13 @@ class _FinesState extends State<Fines> {
                       height: 120.0,
                     ),
                     customTitleWithWrap(
-                        text: "Nothing to display!",
+                        text: "Fetching Data!",
                         fontWeight: FontWeight.w700,
                         fontSize: 14.0,
                         textAlign: TextAlign.center,
                         color: Colors.blueGrey[400]),
                     customTitleWithWrap(
-                        text: "Sorry, There are no Fines available",
+                        text: "Fetching Fine Summary, Please wait...",
                         //fontWeight: FontWeight.w500,
                         fontSize: 12.0,
                         textAlign: TextAlign.center,
@@ -2386,57 +2330,43 @@ class _BalancesState extends State<Balances> {
 
     Group _currentGroup =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
-/* 
-    bool _isInit = true;
-    ExpenseSummaryList _expenseSummaryList;
-    double _totalExpenses = 0;
-    List<SummaryRow> _expenseRows = []; */
 
-    /*Future<void> _getLoanSummary(BuildContext context) async {
+    bool _isLoading = false;
+
+    Future<void> _getLoanBalancesSummary(BuildContext context) async {
       try {
-        // await Provider.of<LoanDashboardSummary>(context, listen: false)
-        //     .getDashboardLoanSummary(_currentGroup.groupId);
-        await Provider.of<NewExpensesSummaries>(context, listen: false)
-            .fetchExpenses(_currentGroup.groupId);
+        // await Provider.of<DashboardFineSummary>(context, listen: false)
+        //     .getFinesSummary(_currentGroup.groupId);
+        setState(() {
+          _isLoading = true;
+        });
+
+        await Provider.of<LoanDashboardSummary>(context, listen: false)
+            .getDashboardLoanSummary(_currentGroup.groupId);
+
+        setState(() {
+          _isLoading = false;
+        });
       } on CustomException catch (error) {
         StatusHandler().handleStatus(
-          context: context,
-          error: error,
-           callback: () {
-             _getLoanSummary(context);
-            }
-        );
-      }
-    }*/
-
-    /* if (loanDashboardSummary.grouploanExists(_currentGroup.groupId) == null) {
-      _getLoanSummary(context);
-    } else {
-      if (!Provider.of<DashboardFineSummary>(context, listen: false)
-          .groupFineSummaryExists(_currentGroup.groupId)) {
-        if (this.mounted) {
-          if (_isInit == false) {
-            setState(() {
-              _isInit = true;
+            context: context,
+            error: error,
+            callback: () {
+              _getLoanBalancesSummary(context);
             });
-          }
-        }
-        _getLoanSummary(context);
-      }*/
-    // }
-
-    /*if (!Provider.of<NewExpensesSummaries>(context, listen: false)
-        .expensesSummariesTotalExists(_currentGroup.groupId)) {
-      if (this.mounted) {
-        if (_isInit == false) {
+      } finally {
+        if (this.mounted) {
           setState(() {
-            _isInit = true;
-            // _getLoanSummary(context);
+            _isLoading = false;
           });
         }
       }
-      _getLoanSummary(context);
-    }*/
+    }
+
+    if (!Provider.of<LoanDashboardSummary>(context, listen: false)
+        .grouploanExists(_currentGroup.groupId)) {
+      _getLoanBalancesSummary(context);
+    }
 
     print(
         "Total Loan Balance ${loanDashboardSummary.totalGroupLoanBalanceDouble.abs()}");
@@ -2465,86 +2395,90 @@ class _BalancesState extends State<Balances> {
       [Color(0xFF00ABF2), Color(0xFF00ABF2)],
     ];
 
-    return /* loanDashboardSummary.totalGroupLoanBalance?? */ loanDashboardSummary
-                .totalGroupLoanBalanceDouble >
-            0
+    return !_isLoading
         ? Container(
-            color: Theme.of(context).backgroundColor,
-            child: Column(children: [
-              Row(
-                children: [
-                  chart.PieChart(
-                    dataMap: dataMap,
-                    animationDuration: Duration(milliseconds: 800),
-                    chartLegendSpacing: 32,
-                    chartRadius: MediaQuery.of(context).size.width / 3.2,
-                    initialAngleInDegree: 0,
-                    ringStrokeWidth: 32,
-                    // colorList: [Colors.red[300], primaryColor],
-                    gradientList: gradientList,
-                    legendOptions: chart.LegendOptions(
-                      showLegendsInRow: false,
-                      legendPosition: chart.LegendPosition.right,
-                      showLegends: false,
-                      legendTextStyle: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
-                    ),
-                    chartValuesOptions: chart.ChartValuesOptions(
-                        showChartValueBackground: false,
-                        showChartValues: true,
-                        showChartValuesInPercentage: true,
-                        showChartValuesOutside: false,
-                        decimalPlaces: 0,
-                        chartValueStyle: TextStyle(
-                            fontFamily: 'SegoeUI',
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w500,
-                            // ignore: deprecated_member_use
-                            color: Theme.of(context)
-                                // ignore: deprecated_member_use
-                                .textSelectionColor)),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      customTitle(
-                        text: "Your Total Loan",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Theme.of(context)
-                            // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
-                      ),
-                      // Text(
-                      //   "My Loan Balances",
-                      //   style: TextStyle(
-                      //     color: Colors.blueGrey[400],
-                      //     fontFamily: 'SegoeUI',
-                      //     fontSize: 14.0,
-                      //     fontWeight: FontWeight.w800,
-                      //   ),
-                      // ),
-                      /* dashboardData.memberTotalLoanBalance */
-                      loanDashboardSummary.totalLoanAmount > 0
-                          ? Row(
-                              children: [
-                                circleButton(
-                                  backgroundColor: /* : dashboardData
+            child: /* loanDashboardSummary.totalGroupLoanBalance?? */ loanDashboardSummary
+                        .totalGroupLoanBalanceDouble >
+                    0
+                ? Container(
+                    color: Theme.of(context).backgroundColor,
+                    child: Column(children: [
+                      Row(
+                        children: [
+                          chart.PieChart(
+                            dataMap: dataMap,
+                            animationDuration: Duration(milliseconds: 800),
+                            chartLegendSpacing: 32,
+                            chartRadius:
+                                MediaQuery.of(context).size.width / 3.2,
+                            initialAngleInDegree: 0,
+                            ringStrokeWidth: 32,
+                            // colorList: [Colors.red[300], primaryColor],
+                            gradientList: gradientList,
+                            legendOptions: chart.LegendOptions(
+                              showLegendsInRow: false,
+                              legendPosition: chart.LegendPosition.right,
+                              showLegends: false,
+                              legendTextStyle: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  // ignore: deprecated_member_use
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor),
+                            ),
+                            chartValuesOptions: chart.ChartValuesOptions(
+                                showChartValueBackground: false,
+                                showChartValues: true,
+                                showChartValuesInPercentage: true,
+                                showChartValuesOutside: false,
+                                decimalPlaces: 0,
+                                chartValueStyle: TextStyle(
+                                    fontFamily: 'SegoeUI',
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w500,
+                                    // ignore: deprecated_member_use
+                                    color: Theme.of(context)
+                                        // ignore: deprecated_member_use
+                                        .textSelectionColor)),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              customTitle(
+                                text: "Your Total Loan",
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Theme.of(context)
+                                    // ignore: deprecated_member_use
+                                    .textSelectionHandleColor,
+                              ),
+                              // Text(
+                              //   "My Loan Balances",
+                              //   style: TextStyle(
+                              //     color: Colors.blueGrey[400],
+                              //     fontFamily: 'SegoeUI',
+                              //     fontSize: 14.0,
+                              //     fontWeight: FontWeight.w800,
+                              //   ),
+                              // ),
+                              /* dashboardData.memberTotalLoanBalance */
+                              loanDashboardSummary.totalLoanAmount > 0
+                                  ? Row(
+                                      children: [
+                                        circleButton(
+                                          backgroundColor: /* : dashboardData
                                         .memberTotalLoanBalance >
                                     0
                                 ? */
-                                      primaryColor.withOpacity(.3)
-                                  /*  : Colors
+                                              primaryColor.withOpacity(.3)
+                                          /*  : Colors
                                     .white */ /* rimaryColor.withOpacity(.3) */,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                customTitle1(
-                                  text: /* _currentGroup.disableArrears
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        customTitle1(
+                                          text: /* _currentGroup.disableArrears
                                       ? _currentGroup.groupCurrency +
                                           " " +
                                           currencyFormat.format(dashboardData
@@ -2553,279 +2487,285 @@ class _BalancesState extends State<Balances> {
                                           " " +
                                           currencyFormat.format(dashboardData
                                               .memberTotalLoanBalance) */
-                                      _currentGroup.groupCurrency +
-                                          " " +
-                                          currencyFormat.format(
-                                              loanDashboardSummary
-                                                  .totalLoanAmount),
-                                  color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
-                                  textAlign: TextAlign.start,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
-                            )
-                          : customTitle1(
-                              text: _currentGroup.disableArrears
-                                  ? _currentGroup.groupCurrency +
-                                      " " +
-                                      currencyFormat.format(
-                                          /* dashboardData.memberTotalLoanBalance */
-                                          loanDashboardSummary.totalLoanAmount)
-                                  : _currentGroup.groupCurrency +
-                                      " " +
-                                      currencyFormat.format(
-                                          /* dashboardData.memberTotalLoanBalance */
-                                          loanDashboardSummary.totalLoanAmount),
-                              color: Theme.of(context)
-                                  // ignore: deprecated_member_use
-                                  .textSelectionHandleColor,
-                              textAlign: TextAlign.start,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      customTitle(
-                        text: "Group Loan Balances",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Theme.of(context)
-                            // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
-                      ),
+                                              _currentGroup.groupCurrency +
+                                                  " " +
+                                                  currencyFormat.format(
+                                                      loanDashboardSummary
+                                                          .totalLoanAmount),
+                                          color: Theme.of(context)
+                                              // ignore: deprecated_member_use
+                                              .textSelectionHandleColor,
+                                          textAlign: TextAlign.start,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ],
+                                    )
+                                  : customTitle1(
+                                      text: _currentGroup.disableArrears
+                                          ? _currentGroup.groupCurrency +
+                                              " " +
+                                              currencyFormat.format(
+                                                  /* dashboardData.memberTotalLoanBalance */
+                                                  loanDashboardSummary
+                                                      .totalLoanAmount)
+                                          : _currentGroup.groupCurrency +
+                                              " " +
+                                              currencyFormat.format(
+                                                  /* dashboardData.memberTotalLoanBalance */
+                                                  loanDashboardSummary
+                                                      .totalLoanAmount),
+                                      color: Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionHandleColor,
+                                      textAlign: TextAlign.start,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              customTitle(
+                                text: "Group Loan Balances",
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Theme.of(context)
+                                    // ignore: deprecated_member_use
+                                    .textSelectionHandleColor,
+                              ),
 
-                      /* dashboardData.groupLoanedAmount */
-                      loanDashboardSummary.totalGroupLoanBalanceDouble > 0
-                          ? Row(
-                              children: [
-                                circleButton(
-                                  backgroundColor: /*  dashboardData
+                              /* dashboardData.groupLoanedAmount */
+                              loanDashboardSummary.totalGroupLoanBalanceDouble >
+                                      0
+                                  ? Row(
+                                      children: [
+                                        circleButton(
+                                          backgroundColor: /*  dashboardData
                                         .groupPendingLoanBalance >
                                     0
                                 ?  */
-                                      primaryColor
-                                  /*  : Colors
+                                              primaryColor
+                                          /*  : Colors
                                     .white  */ /* rimaryColor.withOpacity(.3) */,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                customTitle1(
-                                  color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
-                                  text: _currentGroup.groupCurrency +
-                                      " " +
-                                      currencyFormat.format(
-                                          /* dashboardData.groupLoanedAmount */
-                                          loanDashboardSummary
-                                              .totalGroupLoanBalanceDouble),
-                                  textAlign: TextAlign.start,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
-                            )
-                          : customTitle1(
-                              color: Theme.of(context)
-                                  // ignore: deprecated_member_use
-                                  .textSelectionHandleColor,
-                              text: _currentGroup.groupCurrency +
-                                  " " +
-                                  currencyFormat.format(
-                                      /* dashboardData.groupLoanedAmount */
-                                      loanDashboardSummary
-                                          .totalGroupLoanBalance),
-                              textAlign: TextAlign.start,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                    ],
-                  ),
-                ],
-              ),
-              DottedLine(
-                direction: Axis.horizontal,
-                lineLength: double.infinity,
-                lineThickness: 0.5,
-                dashLength: 2.0,
-                dashColor: Colors.black45,
-                dashRadius: 0.0,
-                dashGapLength: 2.0,
-                dashGapColor: Colors.transparent,
-                dashGapRadius: 0.0,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      InkWell(
-                        onTap: () {},
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            customTitle(
-                              text:
-                                  /*(*/ /* dashboardData.memberLoanArrears */ /* loanDashboardSummary
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        customTitle1(
+                                          color: Theme.of(context)
+                                              // ignore: deprecated_member_use
+                                              .textSelectionHandleColor,
+                                          text: _currentGroup.groupCurrency +
+                                              " " +
+                                              currencyFormat.format(
+                                                  /* dashboardData.groupLoanedAmount */
+                                                  loanDashboardSummary
+                                                      .totalGroupLoanBalanceDouble),
+                                          textAlign: TextAlign.start,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ],
+                                    )
+                                  : customTitle1(
+                                      color: Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionHandleColor,
+                                      text: _currentGroup.groupCurrency +
+                                          " " +
+                                          currencyFormat.format(
+                                              /* dashboardData.groupLoanedAmount */
+                                              loanDashboardSummary
+                                                  .totalGroupLoanBalance),
+                                      textAlign: TextAlign.start,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      DottedLine(
+                        direction: Axis.horizontal,
+                        lineLength: double.infinity,
+                        lineThickness: 0.5,
+                        dashLength: 2.0,
+                        dashColor: Colors.black45,
+                        dashRadius: 0.0,
+                        dashGapLength: 2.0,
+                        dashGapColor: Colors.transparent,
+                        dashGapRadius: 0.0,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              InkWell(
+                                onTap: () {},
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    customTitle(
+                                      text:
+                                          /*(*/ /* dashboardData.memberLoanArrears */ /* loanDashboardSummary
                                               .loanBalance) <
                                           0
                                       ?*/
-                                  "Your Loan Balance",
-                              /*: "Your Loan Overpayment",*/
-                              fontSize: 12,
-                              textAlign: TextAlign.start,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context)
-                                  // ignore: deprecated_member_use
-                                  .textSelectionHandleColor,
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            customTitle1(
-                              text: /*  _currentGroup.disableArrears
+                                          "Your Loan Balance",
+                                      /*: "Your Loan Overpayment",*/
+                                      fontSize: 12,
+                                      textAlign: TextAlign.start,
+                                      fontWeight: FontWeight.w400,
+                                      color: Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionHandleColor,
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    customTitle1(
+                                      text: /*  _currentGroup.disableArrears
                                         ?
                                         _currentGroup.groupCurrency +
                                             " " +
                                             currencyFormat.format(dashboardData
                                                 .memberContributionAmount)
                                      : */
-                                  // _currentGroup.groupCurrency +
-                                  //     " " +
-                                  //     currencyFormat.format(dashboardData
-                                  //         .memberContributionArrears
-                                  //         .abs()),
-                                  _currentGroup.groupCurrency +
-                                      " " +
-                                      currencyFormat.format(
-                                          loanDashboardSummary.loanBalance),
-                              color: (loanDashboardSummary.loanBalance) > 0
-                                  ? Colors.red[400]
-                                  : (/* dashboardData.memberContributionArrears */ loanDashboardSummary
-                                              .loanBalance) <
-                                          0
-                                      ? Colors.green
-                                      : Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
-                              textAlign: TextAlign.start,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          customTitle(
-                            text: "Next instalment",
-                            fontSize: 12,
-                            textAlign: TextAlign.start,
-                            fontWeight: FontWeight.w400,
-                            color: Theme.of(context)
-                                // ignore: deprecated_member_use
-                                .textSelectionHandleColor,
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            children: [
-                              customTitle1(
-                                text: _currentGroup.groupCurrency +
-                                    " " +
-                                    currencyFormat.format(loanDashboardSummary
-                                            .nextInstalmentAmount
-                                            .abs() ??
-                                        loanDashboardSummary
-                                            .nextInstalmentAmount
-                                            .abs()),
-                                // "${dashboardData.nextcontributionDate} (${(dashboardData.contributionDateDaysleft == "0 days" ? "today" : dashboardData.contributionDateDaysleft != null ? '${dashboardData.contributionDateDaysleft} left' : "--")})",
-                                color: Theme.of(context)
-                                    // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
-                                textAlign: TextAlign.start,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
+                                          // _currentGroup.groupCurrency +
+                                          //     " " +
+                                          //     currencyFormat.format(dashboardData
+                                          //         .memberContributionArrears
+                                          //         .abs()),
+                                          _currentGroup.groupCurrency +
+                                              " " +
+                                              currencyFormat.format(
+                                                  loanDashboardSummary
+                                                      .loanBalance),
+                                      color: (loanDashboardSummary
+                                                  .loanBalance) >
+                                              0
+                                          ? Colors.red[400]
+                                          : (/* dashboardData.memberContributionArrears */ loanDashboardSummary
+                                                      .loanBalance) <
+                                                  0
+                                              ? Colors.green
+                                              : Theme.of(context)
+                                                  // ignore: deprecated_member_use
+                                                  .textSelectionHandleColor,
+                                      textAlign: TextAlign.start,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ],
-                          )
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          customTitle(
-                            text: "Next Repayment Date",
-                            fontSize: 12,
-                            textAlign: TextAlign.start,
-                            fontWeight: FontWeight.w400,
-                            color: Theme.of(context)
-                                // ignore: deprecated_member_use
-                                .textSelectionHandleColor,
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            children: [
-                              customTitle1(
-                                text:
-                                    "${/*defaultDateFormat.format*/ (nextInstallmentRepaymentDateFormatted)} (${loanDashboardSummary.nexttoNextInstalmentDay == "0 days" ? "today" : loanDashboardSummary.nexttoNextInstalmentDay != null ? "${loanDashboardSummary.nexttoNextInstalmentDay} left" : "--"})",
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  customTitle(
+                                    text: "Next instalment",
+                                    fontSize: 12,
+                                    textAlign: TextAlign.start,
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context)
+                                        // ignore: deprecated_member_use
+                                        .textSelectionHandleColor,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      customTitle1(
+                                        text: _currentGroup.groupCurrency +
+                                            " " +
+                                            currencyFormat.format(
+                                                loanDashboardSummary
+                                                        .nextInstalmentAmount
+                                                        .abs() ??
+                                                    loanDashboardSummary
+                                                        .nextInstalmentAmount
+                                                        .abs()),
+                                        // "${dashboardData.nextcontributionDate} (${(dashboardData.contributionDateDaysleft == "0 days" ? "today" : dashboardData.contributionDateDaysleft != null ? '${dashboardData.contributionDateDaysleft} left' : "--")})",
+                                        color: Theme.of(context)
+                                            // ignore: deprecated_member_use
+                                            .textSelectionHandleColor,
+                                        textAlign: TextAlign.start,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  customTitle(
+                                    text: "Next Repayment Date",
+                                    fontSize: 12,
+                                    textAlign: TextAlign.start,
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context)
+                                        // ignore: deprecated_member_use
+                                        .textSelectionHandleColor,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      customTitle1(
+                                        text:
+                                            "${/*defaultDateFormat.format*/ (nextInstallmentRepaymentDateFormatted)} (${loanDashboardSummary.nexttoNextInstalmentDay == "0 days" ? "today" : loanDashboardSummary.nexttoNextInstalmentDay != null ? "${loanDashboardSummary.nexttoNextInstalmentDay} left" : "--"})",
 
-                                // "${dashboardData.nextcontributionDate} (${(dashboardData.contributionDateDaysleft == "0 days" ? "today" : dashboardData.contributionDateDaysleft != null ? '${dashboardData.contributionDateDaysleft} left' : "--")})",
-                                color: Theme.of(context)
-                                    // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
-                                textAlign: TextAlign.start,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ],
-                          )
-                        ],
+                                        // "${dashboardData.nextcontributionDate} (${(dashboardData.contributionDateDaysleft == "0 days" ? "today" : dashboardData.contributionDateDaysleft != null ? '${dashboardData.contributionDateDaysleft} left' : "--")})",
+                                        color: Theme.of(context)
+                                            // ignore: deprecated_member_use
+                                            .textSelectionHandleColor,
+                                        textAlign: TextAlign.start,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              )
+                            ]),
                       )
-                    ]),
-              )
-            ]))
-        /* : loanDashboardSummary.grouploanExists != null
-        ? Container(
-      child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(16.0),
-          decoration: flatGradient(context),
-          child: Column(
-            children: [
-              SvgPicture.asset(
-                customIcons['no-data'],
-                semanticsLabel: 'icon',
-                height: 120.0,
-              ),
-              customTitleWithWrap(
-                  text: "Fetching Data!",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 14.0,
-                  textAlign: TextAlign.center,
-                  color: Colors.blueGrey[400]),
-              customTitleWithWrap(
-                  text: "Kindly Wait, Fetching your Loans ...",
-                  //fontWeight: FontWeight.w500,
-                  fontSize: 12.0,
-                  textAlign: TextAlign.center,
-                  color: Colors.blueGrey[400])
-            ],
-          )),
-    )*/
-
+                    ]))
+                : Container(
+                    child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.all(16.0),
+                        decoration: flatGradient(context),
+                        child: Column(
+                          children: [
+                            SvgPicture.asset(
+                              customIcons['no-data'],
+                              semanticsLabel: 'icon',
+                              height: 120.0,
+                            ),
+                            customTitleWithWrap(
+                                text: "Nothing to display!",
+                                fontWeight: FontWeight.w700,
+                                fontSize: 14.0,
+                                textAlign: TextAlign.center,
+                                color: Colors.blueGrey[400]),
+                            customTitleWithWrap(
+                                text: "Sorry, There are no Loans available",
+                                //fontWeight: FontWeight.w500,
+                                fontSize: 12.0,
+                                textAlign: TextAlign.center,
+                                color: Colors.blueGrey[400])
+                          ],
+                        )),
+                  ),
+          )
         : Container(
             child: Container(
                 width: double.infinity,
@@ -2839,13 +2779,13 @@ class _BalancesState extends State<Balances> {
                       height: 120.0,
                     ),
                     customTitleWithWrap(
-                        text: "Nothing to display!",
+                        text: "Fetching Data!",
                         fontWeight: FontWeight.w700,
                         fontSize: 14.0,
                         textAlign: TextAlign.center,
                         color: Colors.blueGrey[400]),
                     customTitleWithWrap(
-                        text: "Sorry, There are no Loans available",
+                        text: "Fetching Loan Summary, Please wait...",
                         //fontWeight: FontWeight.w500,
                         fontSize: 12.0,
                         textAlign: TextAlign.center,
@@ -2883,108 +2823,42 @@ class _ExpensesState extends State<Expenses> {
     //     Provider.of<NewExpensesSummariesList>(context, listen: false);
     NewExpensesSummaries _expenseSummary =
         Provider.of<NewExpensesSummaries>(context);
-
-    /*Future<void> _getLoanSummary(BuildContext context) async {
+    bool _isLoading = true;
+    /* Future<void> _getExpensesSummaries(BuildContext context) async {
       try {
-        // await Provider.of<LoanDashboardSummary>(context, listen: false)
-        //     .getDashboardLoanSummary(_currentGroup.groupId);
+        // await Provider.of<DashboardFineSummary>(context, listen: false)
+        //     .getFinesSummary(_currentGroup.groupId);
+        setState(() {
+          _isLoading = true;
+        });
+
         await Provider.of<NewExpensesSummaries>(context, listen: false)
             .fetchExpenses(_currentGroup.groupId);
+
+        setState(() {
+          _isLoading = false;
+        });
       } on CustomException catch (error) {
         StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          */ /* callback: () {
-              _getExpenseSummary(context);
-            }*/ /*
-        );
+            context: context,
+            error: error,
+            callback: () {
+              _getExpensesSummaries(context);
+            });
+      } finally {
+        if (this.mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
       }
     }
 
-    if (!Provider.of<NewExpensesSummaries>(context, listen: false)
+    if (!Provider.of<NewExpensesSummaries>(context)
         .expensesSummariesTotalExists(_currentGroup.groupId)) {
-      if (this.mounted) {
-        if (_isInit == false) {
-          setState(() {
-            _isInit = true;
-            // _getExpensesSummary(context);
-          });
-        }
-      }
-      _getLoanSummary(context);
-    }*/
-
-    // Future<void> _getExpensesSummary(BuildContext context) async {
-    //   try {
-    //     await Provider.of<NewExpensesSummaries>(context, listen: false)
-    //         .fetchExpenses(_currentGroup.groupId);
-    //   } on CustomException catch (error) {
-    //     StatusHandler().handleStatus(
-    //         context: context,
-    //         error: error,
-    //         callback: () {
-    //           _getExpensesSummary(context);
-    //         });
-    //   }
-    // }
-    //
-    /* if (!Provider.of<NewExpensesSummaries>(context, listen: false)
-        .expensesSummariesTotalExists(_currentGroup.groupId)) {
-      if (this.mounted) {
-        if (_isInit == false) {
-          setState(() {
-            _isInit = true;
-            // _getExpensesSummary(context);
-          });
-        }
-      }
-      _getExpensesSummary(context);
-    }*/
-
-    // setState(() {
-    //
-    // });
-
-    // _expenseSummaryList =
-    //     Provider.of<Groups>(context, listen: false).expenseSummaryList;
-
-    // Future<void> _getExpenseSummary(BuildContext context) async {
-    //   try {
-    //     await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
-    //   } on CustomException catch (error) {
-    //     StatusHandler().handleStatus(
-    //       context: context,
-    //       error: error,
-    //       /*callback: () {
-    //           _getExpenseSummary(context);
-    //         }*/
-    //     );
-    //   }
-    // }
-
-    // if (_currentGroup.groupId == null) {
-    //   _getExpenseSummary(context);
-    // }
-    // if (_expenseSummaryList != null) {
-    //   // _getExpenseSummary(context);/*
-    //   _expenseRows = _expenseSummaryList.expenseSummary;
-    //   _totalExpenses = _expenseSummaryList.totalExpenses;
-    // } else {
-    //   _expenseRows = [];
-    //   _totalExpenses = 0;
-    //   _getExpenseSummary(context);
-    // }
-
-    /*else{
-     */ /* _expenseRows = [];
-      _totalExpenses = 0;*/ /*
-      _expenseRows = _expenseSummaryList.expenseSummary;
-      _totalExpenses = _expenseSummaryList.totalExpenses;
-      _getExpenseSummary(context).then((_){
-        Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
-      });
-    }*/
-
+      _getExpensesSummaries(context);
+    }
+ */
     final sumOfThreeItems = (_expenseSummary.newExpensesSummariesList.length > 2
             ? _expenseSummary.newExpensesSummariesList[2].expenseAmount
             : 0) +
@@ -3067,247 +2941,257 @@ class _ExpensesState extends State<Expenses> {
 
     /* return _expenseRows != null && _expenseRows.length > 0*/
 
-    return _expenseSummary.newExpensesSummariesList != null &&
-            _expenseSummary.newExpensesSummariesList.length > 0
+    return /* !_isLoading
         ? Container(
-            color: Theme.of(context).backgroundColor,
-            child: Column(children: [
-              Row(
-                children: [
-                  chart.PieChart(
-                    dataMap: dataMaptest,
-                    animationDuration: Duration(milliseconds: 800),
-                    chartLegendSpacing: 32,
-                    chartRadius: MediaQuery.of(context).size.width / 3.2,
-                    initialAngleInDegree: 0,
-                    ringStrokeWidth: 32,
-                    colorList: [Colors.red[300], primaryColor],
-                    gradientList: gradientList,
-                    legendOptions: chart.LegendOptions(
-                      showLegendsInRow: false,
-                      legendPosition: chart.LegendPosition.right,
-                      showLegends: false,
-                      legendTextStyle: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
-                    ),
-                    chartValuesOptions: chart.ChartValuesOptions(
-                        showChartValueBackground: false,
-                        showChartValues: true,
-                        showChartValuesInPercentage: true,
-                        showChartValuesOutside: false,
-                        decimalPlaces: 1,
-                        chartValueStyle: TextStyle(
-                            fontFamily: 'SegoeUI',
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w500,
-                            // ignore: deprecated_member_use
-                            color: Theme.of(context)
+            child: */
+        _expenseSummary.newExpensesSummariesList != null &&
+                _expenseSummary.newExpensesSummariesList.length > 0
+            ? Container(
+                color: Theme.of(context).backgroundColor,
+                child: Column(children: [
+                  Row(
+                    children: [
+                      chart.PieChart(
+                        dataMap: dataMaptest,
+                        animationDuration: Duration(milliseconds: 800),
+                        chartLegendSpacing: 32,
+                        chartRadius: MediaQuery.of(context).size.width / 3.2,
+                        initialAngleInDegree: 0,
+                        ringStrokeWidth: 32,
+                        colorList: [Colors.red[300], primaryColor],
+                        gradientList: gradientList,
+                        legendOptions: chart.LegendOptions(
+                          showLegendsInRow: false,
+                          legendPosition: chart.LegendPosition.right,
+                          showLegends: false,
+                          legendTextStyle: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              // ignore: deprecated_member_use
+                              color:
+                                  Theme.of(context).textSelectionHandleColor),
+                        ),
+                        chartValuesOptions: chart.ChartValuesOptions(
+                            showChartValueBackground: false,
+                            showChartValues: true,
+                            showChartValuesInPercentage: true,
+                            showChartValuesOutside: false,
+                            decimalPlaces: 1,
+                            chartValueStyle: TextStyle(
+                                fontFamily: 'SegoeUI',
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w500,
                                 // ignore: deprecated_member_use
-                                .textSelectionColor)),
-                  ),
-                  SizedBox(
-                    width: 30.0,
-                  ),
-                  Column(
-                    // mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      customTitle(
-                        text: /* (_expenseRows?.length > 0
+                                color: Theme.of(context)
+                                    // ignore: deprecated_member_use
+                                    .textSelectionColor)),
+                      ),
+                      SizedBox(
+                        width: 30.0,
+                      ),
+                      Column(
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          customTitle(
+                            text: /* (_expenseRows?.length > 0
                             ? _expenseRows[0].name
                             : ' ')*/
-                            (_expenseSummary.newExpensesSummariesList.length > 0
-                                ? _expenseSummary
-                                    .newExpensesSummariesList[0].expenseName
-                                : " "),
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                        color: Theme.of(context)
-                            // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
-                      ),
-                      SizedBox(height: 5),
-                      Row(
-                        children: [
-                          circleButton(
-                            backgroundColor: /* : dashboardData
+                                (_expenseSummary
+                                            .newExpensesSummariesList.length >
+                                        0
+                                    ? _expenseSummary
+                                        .newExpensesSummariesList[0].expenseName
+                                    : " "),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                            color: Theme.of(context)
+                                // ignore: deprecated_member_use
+                                .textSelectionHandleColor,
+                          ),
+                          SizedBox(height: 5),
+                          Row(
+                            children: [
+                              circleButton(
+                                backgroundColor: /* : dashboardData
                                         .memberTotalLoanBalance >
                                     0
                                 ? */
-                                primaryColor.withOpacity(.3)
-                            /*  : Colors
+                                    primaryColor.withOpacity(.3)
+                                /*  : Colors
                                     .white */ /* rimaryColor.withOpacity(.3) */,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          customTitle1(
-                            text: /*_currentGroup.groupCurrency +
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              customTitle1(
+                                text: /*_currentGroup.groupCurrency +
                                 " " +
                                 currencyFormat.format((_expenseRows?.length > 0
                                     ? _expenseRows[0].paid
                                     : 0)) +
                                 " " +
                                 ("(${(((_expenseRows?.length > 0 ? _expenseRows[0].paid : 0) / _totalExpenses) * 100).toStringAsFixed(1) + "%"}) "),*/
-                                _currentGroup.groupCurrency +
-                                    " " +
-                                    currencyFormat.format(_expenseSummary
-                                                .newExpensesSummariesList
-                                                .length >
-                                            0
-                                        ? _expenseSummary
-                                            .newExpensesSummariesList[0]
-                                            .expenseAmount
-                                        : 0) +
-                                    " " +
-                                    ("(${(((_expenseSummary.newExpensesSummariesList.length > 0 ? _expenseSummary.newExpensesSummariesList[0].expenseAmount : 0) / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
-                            color: Theme.of(context)
-                                // ignore: deprecated_member_use
-                                .textSelectionHandleColor,
-                            textAlign: TextAlign.start,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
+                                    _currentGroup.groupCurrency +
+                                        " " +
+                                        currencyFormat.format(_expenseSummary
+                                                    .newExpensesSummariesList
+                                                    .length >
+                                                0
+                                            ? _expenseSummary
+                                                .newExpensesSummariesList[0]
+                                                .expenseAmount
+                                            : 0) +
+                                        " " +
+                                        ("(${(((_expenseSummary.newExpensesSummariesList.length > 0 ? _expenseSummary.newExpensesSummariesList[0].expenseAmount : 0) / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
+                                color: Theme.of(context)
+                                    // ignore: deprecated_member_use
+                                    .textSelectionHandleColor,
+                                textAlign: TextAlign.start,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      // SizedBox(
-                      //   height: 20,
-                      // ),
-                      /*(_expenseRows?.length > 1 ? _expenseRows[1].paid : 0) > 0*/
-                      ((_expenseSummary.newExpensesSummariesList.length > 1
-                                  ? _expenseSummary
-                                      .newExpensesSummariesList[1].expenseAmount
-                                  : 0) >
-                              0)
-                          ? customTitle(
-                              text: /*(_expenseRows?.length > 1
-                                  ? _expenseRows[1].name
-                                  : 0)*/
-                                  (_expenseSummary
-                                              .newExpensesSummariesList.length >
-                                          1
+                          SizedBox(height: 5),
+                          // SizedBox(
+                          //   height: 20,
+                          // ),
+                          /*(_expenseRows?.length > 1 ? _expenseRows[1].paid : 0) > 0*/
+                          ((_expenseSummary.newExpensesSummariesList.length > 1
                                       ? _expenseSummary
                                           .newExpensesSummariesList[1]
-                                          .expenseName
-                                      : " "),
-                              fontSize: 13,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context)
-                                  // ignore: deprecated_member_use
-                                  .textSelectionHandleColor,
-                            )
-                          : SizedBox(height: 0),
-                      SizedBox(height: 5),
-                      /*(_expenseRows?.length > 1 ? _expenseRows[1].paid : 0) > 0*/
-                      ((_expenseSummary.newExpensesSummariesList.length > 1
-                                  ? _expenseSummary
-                                      .newExpensesSummariesList[1].expenseAmount
-                                  : 0) >
-                              0)
-                          ? Row(
-                              children: [
-                                circleButton(
-                                  backgroundColor: /*  dashboardData
-                                        .groupPendingLoanBalance >
-                                    0
-                                ?  */
-                                      // primaryColor
-                                      /* Colors.blue[100] */ primaryColor
-                                          .withOpacity(.5)
-                                  /*  : Colors
-                                    .white  */ /* rimaryColor.withOpacity(.3) */,
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                customTitle1(
+                                          .expenseAmount
+                                      : 0) >
+                                  0)
+                              ? customTitle(
+                                  text: /*(_expenseRows?.length > 1
+                                  ? _expenseRows[1].name
+                                  : 0)*/
+                                      (_expenseSummary.newExpensesSummariesList
+                                                  .length >
+                                              1
+                                          ? _expenseSummary
+                                              .newExpensesSummariesList[1]
+                                              .expenseName
+                                          : " "),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w400,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
-                                  text: _currentGroup.groupCurrency +
-                                      " " +
-                                      /* currencyFormat.format(
+                                )
+                              : SizedBox(height: 0),
+                          SizedBox(height: 5),
+                          /*(_expenseRows?.length > 1 ? _expenseRows[1].paid : 0) > 0*/
+                          ((_expenseSummary.newExpensesSummariesList.length > 1
+                                      ? _expenseSummary
+                                          .newExpensesSummariesList[1]
+                                          .expenseAmount
+                                      : 0) >
+                                  0)
+                              ? Row(
+                                  children: [
+                                    circleButton(
+                                      backgroundColor: /*  dashboardData
+                                        .groupPendingLoanBalance >
+                                    0
+                                ?  */
+                                          // primaryColor
+                                          /* Colors.blue[100] */ primaryColor
+                                              .withOpacity(.5)
+                                      /*  : Colors
+                                    .white  */ /* rimaryColor.withOpacity(.3) */,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    customTitle1(
+                                      color: Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionHandleColor,
+                                      text: _currentGroup.groupCurrency +
+                                          " " +
+                                          /* currencyFormat.format(
                                           (_expenseRows?.length > 1
                                               ? _expenseRows[1].paid
                                               : 0)) +
                                       " " +
                                       ("(${(((_expenseRows?.length > 1 ? _expenseRows[1].paid : 0) / _totalExpenses) * 100).toStringAsFixed(1) + "%"}) ")*/
-                                      currencyFormat.format((_expenseSummary
-                                                  .newExpensesSummariesList
-                                                  .length >
-                                              1
-                                          ? _expenseSummary
-                                              .newExpensesSummariesList[1]
-                                              .expenseAmount
-                                          : 0)) +
-                                      " " +
-                                      ("(${(((_expenseSummary.newExpensesSummariesList.length > 1 ? _expenseSummary.newExpensesSummariesList[1].expenseAmount : 0) / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
-                                  textAlign: TextAlign.start,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
-                            )
-                          : SizedBox(height: 0),
-                      SizedBox(height: 5),
-                      /*(_expenseRows?.length > 2 ? _expenseRows[2].paid : 0) > 0*/
-                      ((_expenseSummary.newExpensesSummariesList.length > 2
-                                  ? _expenseSummary
-                                      .newExpensesSummariesList[2].expenseAmount
-                                  : 0) >
-                              0)
-                          ? customTitle(
-                              text: /*_expenseRows[2].name*/ /*(_expenseRows
+                                          currencyFormat.format((_expenseSummary
+                                                      .newExpensesSummariesList
+                                                      .length >
+                                                  1
+                                              ? _expenseSummary
+                                                  .newExpensesSummariesList[1]
+                                                  .expenseAmount
+                                              : 0)) +
+                                          " " +
+                                          ("(${(((_expenseSummary.newExpensesSummariesList.length > 1 ? _expenseSummary.newExpensesSummariesList[1].expenseAmount : 0) / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
+                                      textAlign: TextAlign.start,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ],
+                                )
+                              : SizedBox(height: 0),
+                          SizedBox(height: 5),
+                          /*(_expenseRows?.length > 2 ? _expenseRows[2].paid : 0) > 0*/
+                          ((_expenseSummary.newExpensesSummariesList.length > 2
+                                      ? _expenseSummary
+                                          .newExpensesSummariesList[2]
+                                          .expenseAmount
+                                      : 0) >
+                                  0)
+                              ? customTitle(
+                                  text: /*_expenseRows[2].name*/ /*(_expenseRows
                                           ?.length >
                                       2
                                   ? _expenseRows[2].name
                                   : "")*/
-                                  _expenseSummary
-                                              .newExpensesSummariesList.length >
-                                          2
-                                      ? _expenseSummary
-                                          .newExpensesSummariesList[2]
-                                          .expenseName
-                                      : " ",
-                              fontSize: 13,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context)
-                                  // ignore: deprecated_member_use
-                                  .textSelectionHandleColor,
-                            )
-                          : SizedBox(height: 0),
-                      SizedBox(height: 5),
-                      /*(_expenseRows?.length > 2 ? _expenseRows[2].paid : 0) > 0*/
-                      ((_expenseSummary.newExpensesSummariesList.length > 2
-                                  ? _expenseSummary
-                                      .newExpensesSummariesList[2].expenseAmount
-                                  : 0) >
-                              0)
-                          ? Row(
-                              children: [
-                                circleButton(
-                                    backgroundColor: primaryColor.withOpacity(
-                                        .7) /*  dashboardData
-                                        .groupPendingLoanBalance >
-                                    0
-                                ?  */
-                                    // primaryColor
-                                    /*  : Colors
-                                    .white  */ /* rimaryColor.withOpacity(.3) */
-                                    ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                customTitle1(
+                                      _expenseSummary.newExpensesSummariesList
+                                                  .length >
+                                              2
+                                          ? _expenseSummary
+                                              .newExpensesSummariesList[2]
+                                              .expenseName
+                                          : " ",
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w400,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
-                                  text: _currentGroup.groupCurrency +
-                                      " " +
-                                      /*currencyFormat.format(
+                                )
+                              : SizedBox(height: 0),
+                          SizedBox(height: 5),
+                          /*(_expenseRows?.length > 2 ? _expenseRows[2].paid : 0) > 0*/
+                          ((_expenseSummary.newExpensesSummariesList.length > 2
+                                      ? _expenseSummary
+                                          .newExpensesSummariesList[2]
+                                          .expenseAmount
+                                      : 0) >
+                                  0)
+                              ? Row(
+                                  children: [
+                                    circleButton(
+                                        backgroundColor: primaryColor.withOpacity(
+                                            .7) /*  dashboardData
+                                        .groupPendingLoanBalance >
+                                    0
+                                ?  */
+                                        // primaryColor
+                                        /*  : Colors
+                                    .white  */ /* rimaryColor.withOpacity(.3) */
+                                        ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    customTitle1(
+                                      color: Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionHandleColor,
+                                      text: _currentGroup.groupCurrency +
+                                          " " +
+                                          /*currencyFormat.format(
                                           */ /*_expenseRows[2].paid*/ /* (_expenseRows
                                                       ?.length >
                                                   2
@@ -3315,144 +3199,144 @@ class _ExpensesState extends State<Expenses> {
                                               : 0)) +
                                       " " +
                                       ("(${((*/ /*_expenseRows[2].paid*/ /* (_expenseRows?.length > 2 ? _expenseRows[2].paid : 0) / _totalExpenses) * 100).toStringAsFixed(1) + "%"}) "),*/
-                                      currencyFormat.format(_expenseSummary
-                                                  .newExpensesSummariesList
-                                                  .length >
-                                              2
-                                          ? _expenseSummary
-                                              .newExpensesSummariesList[2]
-                                              .expenseAmount
-                                          : 0) +
-                                      " " +
-                                      ("(${(((_expenseSummary.newExpensesSummariesList.length > 2 ? _expenseSummary.newExpensesSummariesList[2].expenseAmount : 0) / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
-                                  textAlign: TextAlign.start,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
-                            )
-                          : SizedBox(height: 0),
-                      // customTitle(
-                      //   text: _expenseRows[3].name,
-                      //   fontSize: 13,
-                      //   fontWeight: FontWeight.w400,
-                      //   color: Theme.of(context)
-                      //       // ignore: deprecated_member_use
-                      //       .textSelectionHandleColor,
-                      // ),
-                      // SizedBox(height: 5),
-                      // Row(
-                      //   children: [
-                      //     circleButton(
-                      //         backgroundColor: primaryColor.withOpacity(
-                      //             .8) /*  dashboardData
-                      //                   .groupPendingLoanBalance >
-                      //               0
-                      //           ?  */
-                      //         // primaryColor
-                      //         /*  : Colors
-                      //               .white  */ /* rimaryColor.withOpacity(.3) */
-                      //         ),
-                      //     SizedBox(
-                      //       width: 5,
-                      //     ),
-                      //     customTitle1(
-                      //       color: Theme.of(context)
-                      //           // ignore: deprecated_member_use
-                      //           .textSelectionHandleColor,
-                      //       text: _currentGroup.groupCurrency +
-                      //           " " +
-                      //           currencyFormat.format(
-                      //               _expenseRows[3].paid),
-                      //       textAlign: TextAlign.start,
-                      //       fontSize: 12,
-                      //       fontWeight: FontWeight.w600,
-                      //     ),
-                      //   ],
-                      // ),
-                      SizedBox(height: 5),
-                      /*otherExpenses < 0
+                                          currencyFormat.format(_expenseSummary
+                                                      .newExpensesSummariesList
+                                                      .length >
+                                                  2
+                                              ? _expenseSummary
+                                                  .newExpensesSummariesList[2]
+                                                  .expenseAmount
+                                              : 0) +
+                                          " " +
+                                          ("(${(((_expenseSummary.newExpensesSummariesList.length > 2 ? _expenseSummary.newExpensesSummariesList[2].expenseAmount : 0) / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
+                                      textAlign: TextAlign.start,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ],
+                                )
+                              : SizedBox(height: 0),
+                          // customTitle(
+                          //   text: _expenseRows[3].name,
+                          //   fontSize: 13,
+                          //   fontWeight: FontWeight.w400,
+                          //   color: Theme.of(context)
+                          //       // ignore: deprecated_member_use
+                          //       .textSelectionHandleColor,
+                          // ),
+                          // SizedBox(height: 5),
+                          // Row(
+                          //   children: [
+                          //     circleButton(
+                          //         backgroundColor: primaryColor.withOpacity(
+                          //             .8) /*  dashboardData
+                          //                   .groupPendingLoanBalance >
+                          //               0
+                          //           ?  */
+                          //         // primaryColor
+                          //         /*  : Colors
+                          //               .white  */ /* rimaryColor.withOpacity(.3) */
+                          //         ),
+                          //     SizedBox(
+                          //       width: 5,
+                          //     ),
+                          //     customTitle1(
+                          //       color: Theme.of(context)
+                          //           // ignore: deprecated_member_use
+                          //           .textSelectionHandleColor,
+                          //       text: _currentGroup.groupCurrency +
+                          //           " " +
+                          //           currencyFormat.format(
+                          //               _expenseRows[3].paid),
+                          //       textAlign: TextAlign.start,
+                          //       fontSize: 12,
+                          //       fontWeight: FontWeight.w600,
+                          //     ),
+                          //   ],
+                          // ),
+                          SizedBox(height: 5),
+                          /*otherExpenses < 0
                           ?*/
 
-                      newOtherExpenses > 0
-                          ? customTitle(
-                              text: "Others",
-                              fontSize: 13,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context)
-                                  // ignore: deprecated_member_use
-                                  .textSelectionHandleColor,
-                            )
-                          : SizedBox(height: 0),
-                      /* : Container(),*/
-                      SizedBox(height: 5),
-                      /*otherExpenses < 0
-                          ?*/
-                      newOtherExpenses > 0
-                          ? Row(
-                              children: [
-                                circleButton(
-                                  backgroundColor: /*  dashboardData
-                                        .groupPendingLoanBalance >
-                                    0
-                                ?  */
-                                      primaryColor
-                                  /*  : Colors
-                                    .white  */ /* rimaryColor.withOpacity(.3) */,
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                customTitle1(
+                          newOtherExpenses > 0
+                              ? customTitle(
+                                  text: "Others",
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w400,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
-                                  text: _currentGroup.groupCurrency +
-                                      " " +
-                                      currencyFormat.format(newOtherExpenses) +
-                                      " " +
-                                      ("(${((newOtherExpenses / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
-                                  textAlign: TextAlign.start,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
-                            )
-                          : SizedBox(height: 0),
+                                )
+                              : SizedBox(height: 0),
+                          /* : Container(),*/
+                          SizedBox(height: 5),
+                          /*otherExpenses < 0
+                          ?*/
+                          newOtherExpenses > 0
+                              ? Row(
+                                  children: [
+                                    circleButton(
+                                      backgroundColor: /*  dashboardData
+                                        .groupPendingLoanBalance >
+                                    0
+                                ?  */
+                                          primaryColor
+                                      /*  : Colors
+                                    .white  */ /* rimaryColor.withOpacity(.3) */,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    customTitle1(
+                                      color: Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionHandleColor,
+                                      text: _currentGroup.groupCurrency +
+                                          " " +
+                                          currencyFormat
+                                              .format(newOtherExpenses) +
+                                          " " +
+                                          ("(${((newOtherExpenses / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
+                                      textAlign: TextAlign.start,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ],
+                                )
+                              : SizedBox(height: 0),
+                        ],
+                      ),
                     ],
                   ),
-                ],
-              ),
-            ]))
-        /* : _expenseSummary.expensesSummariesTotalExists == null
-        ? Container(
-      child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(16.0),
-          decoration: flatGradient(context),
-          child: Column(
-            children: [
-              SvgPicture.asset(
-                customIcons['no-data'],
-                semanticsLabel: 'icon',
-                height: 120.0,
-              ),
-              customTitleWithWrap(
-                  text: "Fetching Data!",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 14.0,
-                  textAlign: TextAlign.center,
-                  color: Colors.blueGrey[400]),
-              customTitleWithWrap(
-                  text: "Kindly Wait, Fetching your expenses ...",
-                  //fontWeight: FontWeight.w500,
-                  fontSize: 12.0,
-                  textAlign: TextAlign.center,
-                  color: Colors.blueGrey[400])
-            ],
-          )),
-    )*/
-
+                ]))
+            : Container(
+                child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(16.0),
+                    decoration: flatGradient(context),
+                    child: Column(
+                      children: [
+                        SvgPicture.asset(
+                          customIcons['no-data'],
+                          semanticsLabel: 'icon',
+                          height: 120.0,
+                        ),
+                        customTitleWithWrap(
+                            text: "Nothing to display!",
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14.0,
+                            textAlign: TextAlign.center,
+                            color: Colors.blueGrey[400]),
+                        customTitleWithWrap(
+                            text: "Sorry, there are no expenses to display",
+                            //fontWeight: FontWeight.w500,
+                            fontSize: 12.0,
+                            textAlign: TextAlign.center,
+                            color: Colors.blueGrey[400])
+                      ],
+                    )),
+              );
+    /*   );
         : Container(
             child: Container(
                 width: double.infinity,
@@ -3466,19 +3350,19 @@ class _ExpensesState extends State<Expenses> {
                       height: 120.0,
                     ),
                     customTitleWithWrap(
-                        text: "Nothing to display!",
+                        text: "Fetching Data!",
                         fontWeight: FontWeight.w700,
                         fontSize: 14.0,
                         textAlign: TextAlign.center,
                         color: Colors.blueGrey[400]),
                     customTitleWithWrap(
-                        text: "Sorry, there are no expenses to display",
+                        text: "Fetching Expenses Summary, Please wait...",
                         //fontWeight: FontWeight.w500,
                         fontSize: 12.0,
                         textAlign: TextAlign.center,
                         color: Colors.blueGrey[400])
                   ],
                 )),
-          );
+          ); */
   }
 }
