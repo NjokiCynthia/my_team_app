@@ -1,5 +1,6 @@
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/screens/login_password.dart';
 import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
@@ -158,10 +159,10 @@ class _LoginState extends State<Login> {
       title = "Confirm Phone Number";
     }
 
-    twoButtonAlertDialog(
+    twoButtonAlertDialogWithContentList(
         context: context,
         message: _identity,
-        title: title,
+        // title: title,
         action: () async {
           Navigator.of(context).pop();
           setState(() {
@@ -173,7 +174,7 @@ class _LoginState extends State<Login> {
             await Provider.of<Auth>(context, listen: false)
                 .generatePin(_identity, appSignature);
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => Verification(),
+                builder: (BuildContext context) => LoginPassword(),
                 settings: RouteSettings(arguments: _identity)));
           } on CustomException catch (error) {
             StatusHandler().handleStatus(
@@ -224,18 +225,18 @@ class _LoginState extends State<Login> {
                     heading1(
                         text: Config.appName,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context).primaryColor),
                     SizedBox(
                       height: 10,
                     ),
                     subtitle1(
-                        text: "Let's verify your identity first",
+                        text: "Let's get started",
                         // ignore: deprecated_member_use
                         color: Theme.of(context).textSelectionHandleColor),
-                    subtitle2(
-                        text: "Enter your phone number or email address below",
-                        // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                    // subtitle2(
+                    //     text: "Enter your phone number or email address below",
+                    //     // ignore: deprecated_member_use
+                    //     color: Theme.of(context).textSelectionHandleColor),
 
                     Row(
                       children: <Widget>[
@@ -259,6 +260,7 @@ class _LoginState extends State<Login> {
                                         initialSelection: 'KE',
                                         favorite: ['KE', 'UG', 'TZ', 'RW'],
                                         showCountryOnly: false,
+
                                         showOnlyCountryWhenClosed: false,
                                         alignLeft: false,
                                         flagWidth: 28.0,
@@ -298,7 +300,7 @@ class _LoginState extends State<Login> {
                                       enabledBorder: InputBorder.none,
                                       errorBorder: InputBorder.none,
                                       disabledBorder: InputBorder.none,
-                                      hintText: 'Email or mobile number',
+                                      hintText: 'Phone Number/Email',
                                     ),
                                     enabled: _isFormInputEnabled,
                                     focusNode: _focusNode,
@@ -428,40 +430,40 @@ class _LoginState extends State<Login> {
                         ? CircularProgressIndicator()
                         : defaultButton(
                             context: context,
-                            text: "Continue",
+                            text: "Generate Pin",
                             onPressed: () => _submit(context),
                           ),
                     SizedBox(
                       height: 24,
                     ),
-                    textWithExternalLinks(
-                        // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor,
-                        size: 12.0,
-                        textData: {
-                          'By continuing you agree to our': {},
-                          'terms & conditions': {
-                            "url": () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        WebViewLauncher(
-                                            helpUrl: termsandConditionsUrl,
-                                            type: 'terms'),
-                                  ),
-                                ),
+                    // textWithExternalLinks(
+                    //     // ignore: deprecated_member_use
+                    //     color: Theme.of(context).textSelectionHandleColor,
+                    //     size: 12.0,
+                    //     textData: {
+                    //       'By continuing you agree to our': {},
+                    //       'terms & conditions': {
+                    //         "url": () => Navigator.of(context).push(
+                    //               MaterialPageRoute(
+                    //                 builder: (BuildContext context) =>
+                    //                     WebViewLauncher(
+                    //                         helpUrl: termsandConditionsUrl,
+                    //                         type: 'terms'),
+                    //               ),
+                    //             ),
 
-                            // launchURL(
-                            //     'https://chamasoft.com/terms-and-conditions/'),
-                            "color": primaryColor,
-                            "weight": FontWeight.w500
-                          },
-                          // 'and': {},
-                          // 'privacy policy.': {
-                          //   "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
-                          //   "color": primaryColor,
-                          //   "weight": FontWeight.w500
-                          // },
-                        }),
+                    //         // launchURL(
+                    //         //     'https://chamasoft.com/terms-and-conditions/'),
+                    //         "color": primaryColor,
+                    //         "weight": FontWeight.w500
+                    //       },
+                    //       // 'and': {},
+                    //       // 'privacy policy.': {
+                    //       //   "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
+                    //       //   "color": primaryColor,
+                    //       //   "weight": FontWeight.w500
+                    //       // },
+                    //     }),
                   ],
                 ),
               ),

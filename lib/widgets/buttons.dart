@@ -819,3 +819,75 @@ Widget meetingMegaButton(
     onPressed: action,
   );
 }
+
+Widget textButton(
+    {String text,
+    Color color,
+    TextAlign textAlign = TextAlign.center,
+    Function action}) {
+  return TextButton(
+      onPressed: action,
+      child: Text(
+        text,
+        style: TextStyle(
+            fontWeight: FontWeight.w400,
+            fontSize: 16.0,
+            color: color,
+            fontFamily: 'SegoeUI'),
+        textAlign: textAlign,
+      ));
+}
+
+Widget actionDialogButtonWithBgColor(
+    {String text,
+    Color color,
+    Function action,
+    Color textColor,
+    double buttonSize}) {
+  // ignore: deprecated_member_use
+  return Padding(
+    padding: const EdgeInsets.only(left: 11.0),
+    child: SizedBox(
+        width: buttonSize,
+        child: ElevatedButton(
+            // style: ButtonStyle(
+
+            //     backgroundColor: MaterialStateProperty.all<Color>(color,)),
+            style: ElevatedButton.styleFrom(primary: color),
+            onPressed: action,
+            child: customTitle(
+              text: text,
+              color: textColor,
+              fontWeight: FontWeight.w600,
+            ))),
+  );
+}
+
+Widget defaultButtonWithBg(
+    {BuildContext context, String text, Function onPressed, Color btnColor}) {
+  // ignore: deprecated_member_use
+  // return RaisedButton(
+  //   color: primaryColor,
+  //   child: Padding(
+  //     padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+  //     child: Text(
+  //       text,
+  //       style: TextStyle(fontFamily: 'SegoeUI', fontWeight: FontWeight.w700),
+  //     ),
+  //   ),
+  //   textColor: Colors.white,
+  //   onPressed: onPressed,
+  // );
+  return SizedBox(
+    width: double.infinity,
+    height: 45,
+    child: ElevatedButton(
+        style: ElevatedButton.styleFrom(primary: btnColor),
+        onPressed: () {},
+        child: customTitle(
+          text: text,
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+        )),
+  );
+}

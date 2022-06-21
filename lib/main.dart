@@ -1,6 +1,7 @@
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/bankBalancesSummary.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
+import 'package:chamasoft/providers/chatmessage.dart';
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/expenses-summaries.dart';
 import 'package:chamasoft/providers/fine_summary.dart';
@@ -99,6 +100,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (_) => ChatMessage(),
+        ),
         ChangeNotifierProvider(
           create: (_) => Auth(),
         ),
