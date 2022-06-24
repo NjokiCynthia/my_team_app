@@ -171,8 +171,8 @@ class _LoginState extends State<Login> {
           });
           try {
             print("signature: $appSignature");
-            await Provider.of<Auth>(context, listen: false)
-                .generatePin(_identity, appSignature);
+            // await Provider.of<Auth>(context, listen: false)
+            //     .generatePin(_identity, appSignature);
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (BuildContext context) => LoginPassword(),
                 settings: RouteSettings(arguments: _identity)));

@@ -1,11 +1,14 @@
 import 'package:chamasoft/config.dart';
+import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/screens/chatwithcontactsupport.dart';
+import 'package:chamasoft/screens/register.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:libphonenumber/libphonenumber.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginPassword extends StatefulWidget {
@@ -20,6 +23,7 @@ class _LoginPasswordState extends State<LoginPassword> {
   bool _isFormInputEnabled = true;
   bool _passwordVisible = true;
   FocusNode _focusNode;
+  String _identity;
   final GlobalKey<FormState> _formKey = GlobalKey();
   String _logo = Config.appName.toLowerCase() == 'chamasoft'
       ? "cs.png"
@@ -42,7 +46,7 @@ class _LoginPasswordState extends State<LoginPassword> {
 
   Future<void> _launchContactNumber(String phoneNumber) async {
     if (await canLaunchUrl(Uri.parse(phoneNumber))) {
-      await launch(phoneNumber);
+      await launchUrl(Uri.parse(phoneNumber));
     } else {
       throw 'Could not launch $phoneNumber';
     }
@@ -74,6 +78,9 @@ class _LoginPasswordState extends State<LoginPassword> {
 
   @override
   Widget build(BuildContext context) {
+    _identity = ModalRoute.of(context).settings.arguments as String;
+    final auth = Provider.of<Auth>(context);
+
     return Scaffold(
       body: Builder(builder: (BuildContext context) {
         return Form(
@@ -131,7 +138,8 @@ class _LoginPasswordState extends State<LoginPassword> {
                                     Padding(
                                       padding:
                                           const EdgeInsets.only(left: 10.0),
-                                      child: subtitle1(text: "0741564020"),
+                                      child: subtitle1(text: _identity),
+                                      // child: subtitle1(text: auth.phoneNumber),
                                     )
                                   ],
                                 ),
@@ -169,6 +177,10 @@ class _LoginPasswordState extends State<LoginPassword> {
                             ),
                             defaultButtonWithBg(
                                 text: 'Sign In',
+                                action: () {
+                                  Navigator.of(context)
+                                      .pushNamed(RegisterScreen.namedRoute);
+                                },
                                 btnColor: Theme.of(context).primaryColor),
                             SizedBox(
                               height: 10,

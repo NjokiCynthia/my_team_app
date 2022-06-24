@@ -23,6 +23,7 @@ import 'package:chamasoft/screens/intro.dart';
 import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/screens/pinlogin.dart';
+import 'package:chamasoft/screens/register.dart';
 import 'package:chamasoft/screens/signup.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/notifications.dart';
@@ -262,6 +263,7 @@ class _MyAppState extends State<MyApp> {
             ChamasoftDashboard.namedRoute: (ctx) => ChamasoftDashboard(),
             ChamasoftTransactions.namedRoute: (ctx) => ChamasoftTransactions(),
             PinLogin.namedRoute: (ctx) => PinLogin(),
+            RegisterScreen.namedRoute: (ctx) => RegisterScreen(),
             '/reports': (ctx) => ChamasoftReports(),
           },
           onGenerateRoute: (settings) {

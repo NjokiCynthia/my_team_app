@@ -864,7 +864,7 @@ Widget actionDialogButtonWithBgColor(
 }
 
 Widget defaultButtonWithBg(
-    {BuildContext context, String text, Function onPressed, Color btnColor}) {
+    {BuildContext context, String text, Function action, Color btnColor}) {
   // ignore: deprecated_member_use
   // return RaisedButton(
   //   color: primaryColor,
@@ -883,7 +883,7 @@ Widget defaultButtonWithBg(
     height: 45,
     child: ElevatedButton(
         style: ElevatedButton.styleFrom(primary: btnColor),
-        onPressed: () {},
+        onPressed: action,
         child: customTitle(
           text: text,
           color: Colors.white,
