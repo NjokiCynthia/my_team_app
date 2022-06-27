@@ -1,6 +1,7 @@
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/screens/login_password.dart';
+import 'package:chamasoft/screens/register.dart';
 import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
@@ -41,6 +42,9 @@ class _LoginState extends State<Login> {
   bool _setStateCalled = false;
   String appSignature = "{{app signature}}";
   final termsandConditionsUrl = 'https://chamasoft.com/terms-and-conditions/';
+  Map<String, String> _authData = {
+    'identity': '',
+  };
 
   FocusNode _focusNode;
   bool _focused = false;
@@ -171,11 +175,15 @@ class _LoginState extends State<Login> {
           });
           try {
             print("signature: $appSignature");
-            // await Provider.of<Auth>(context, listen: false)
-            //     .generatePin(_identity, appSignature);
+
+            await Provider.of<Auth>(context, listen: false)
+                .generatePin(_identity, appSignature);
+
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => LoginPassword(),
+                builder: (BuildContext context) => Verification(),
                 settings: RouteSettings(arguments: _identity)));
+
+            // doesUserExist(context);
           } on CustomException catch (error) {
             StatusHandler().handleStatus(
                 context: context,
@@ -195,6 +203,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     //FirebaseCrashlytics.instance.crash();
+
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: Builder(builder: (BuildContext context) {

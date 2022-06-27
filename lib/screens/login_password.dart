@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginPassword extends StatefulWidget {
+  static const namedRoute = "/loginpassword";
   const LoginPassword({Key key}) : super(key: key);
 
   @override
@@ -79,6 +80,7 @@ class _LoginPasswordState extends State<LoginPassword> {
   @override
   Widget build(BuildContext context) {
     _identity = ModalRoute.of(context).settings.arguments as String;
+    String _userIdentity = _identity;
     final auth = Provider.of<Auth>(context);
 
     return Scaffold(
@@ -178,8 +180,9 @@ class _LoginPasswordState extends State<LoginPassword> {
                             defaultButtonWithBg(
                                 text: 'Sign In',
                                 action: () {
-                                  Navigator.of(context)
-                                      .pushNamed(RegisterScreen.namedRoute);
+                                  Navigator.of(context).pushNamed(
+                                      RegisterScreen.namedRoute,
+                                      arguments: _userIdentity);
                                 },
                                 btnColor: Theme.of(context).primaryColor),
                             SizedBox(

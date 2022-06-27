@@ -1,3 +1,4 @@
+import 'package:chamasoft/screens/login_password.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -32,6 +33,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String _identity = ModalRoute.of(context).settings.arguments as String;
     return Scaffold(
       body: Builder(builder: (BuildContext context) {
         return Form(
@@ -54,7 +56,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   height: 15,
                 ),
                 heading3(
-                    text: "0741564020", color: Theme.of(context).primaryColor),
+                    text: _identity, color: Theme.of(context).primaryColor),
                 SizedBox(
                   height: 15,
                 ),
@@ -152,6 +154,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           text: " Click here",
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
+                              Navigator.of(context).pushReplacementNamed(
+                                  LoginPassword.namedRoute,
+                                  arguments: _identity);
                               print("User has an account");
                             },
                           style:

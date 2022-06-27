@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/login_password.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/notifications.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
@@ -90,6 +92,7 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
             ? "cs.png"
             : "equity-logo.png";
     listenForCode();
+
     SmsAutoFill().getAppSignature.then((signature) {
       setState(() {
         appSignature = signature;
@@ -124,8 +127,10 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
     try {
       _authData["identity"] = _identity;
       _authData["pin"] = _pinEditingController.text;
+
       final response = await Provider.of<Auth>(context, listen: false)
           .verifyPin(_authData) as Map<String, dynamic>;
+
       if (response['userExists'] == 1) {
         if (response.containsKey('userGroups')) {
           Provider.of<Groups>(context, listen: false)
@@ -135,6 +140,7 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
         Navigator.of(context).pushNamedAndRemoveUntil(
             MyGroups.namedRoute, ModalRoute.withName('/'),
             arguments: 0);
+        Navigator.of(context).pushNamed(LoginPassword.namedRoute);
       } else {
         final uniqueCode = response['uniqueCode'];
         Navigator.pushReplacementNamed(context, SignUp.namedRoute, arguments: {
@@ -165,6 +171,7 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
     if (pin.toString().length == 4) {
       return true;
     }
+
     return false;
   }
 
@@ -229,15 +236,12 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
                                       : 50.0,
                             ),
                           ),
-                          heading1(
-                              text: "Verification",
-                              color:
-                                  // ignore: deprecated_member_use
-                                  Theme.of(context).textSelectionHandleColor),
+                          heading1(text: "EazzyClub"),
+                          subtitle1(text: "Verification"),
                           SizedBox(
                             height: 10,
                           ),
-                          subtitle1(
+                          subtitle2(
                               text: "A verification code has been sent to",
                               color:
                                   // ignore: deprecated_member_use
