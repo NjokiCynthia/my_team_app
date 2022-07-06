@@ -1,7 +1,12 @@
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chatwithcontactsupport.dart';
+import 'package:chamasoft/screens/forgotpasswordverification.dart';
+import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/screens/register.dart';
+import 'package:chamasoft/screens/resetpassword.dart';
+import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
@@ -25,6 +30,8 @@ class _LoginPasswordState extends State<LoginPassword> {
   bool _passwordVisible = true;
   FocusNode _focusNode;
   String _identity;
+  bool _isLoading = false;
+  String appSignature = "{{app signature}}";
   final GlobalKey<FormState> _formKey = GlobalKey();
   String _logo = Config.appName.toLowerCase() == 'chamasoft'
       ? "cs.png"
@@ -51,6 +58,42 @@ class _LoginPasswordState extends State<LoginPassword> {
     } else {
       throw 'Could not launch $phoneNumber';
     }
+  }
+
+  void _fogortPassword(String identity) {
+    twoButtonAlertDialogWithContentList(
+        context: context,
+        message: identity,
+        promptMessage: "Are you sure you want to reset your password?",
+        confirmMessage: "Is this your correct phone number ?",
+        // title: title,
+        action: () async {
+          Navigator.of(context).pop();
+          setState(() {
+            _isLoading = true;
+          });
+          try {
+            print("signature: $appSignature");
+            print("On Forgot Pwd the identity is: $identity");
+            await Provider.of<Auth>(context, listen: false)
+                .generatePin(identity, appSignature);
+            // Navigator.of(context)
+            //     .pushNamed(Verification.namedRoute, arguments: identity);
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    ForgotPassswordVerification(),
+                settings: RouteSettings(
+                  arguments: identity,
+                )));
+            // await Navigator.of(context).pushNamed(Verification.namedRoute);
+          } catch (error) {
+            throw error;
+          } finally {
+            setState(() {
+              _isLoading = false;
+            });
+          }
+        });
   }
 
   void _callcontactSupport(BuildContext context) {
@@ -80,8 +123,10 @@ class _LoginPasswordState extends State<LoginPassword> {
   @override
   Widget build(BuildContext context) {
     _identity = ModalRoute.of(context).settings.arguments as String;
-    String _userIdentity = _identity;
+
     final auth = Provider.of<Auth>(context);
+    String userIdentity = auth.phoneNumber;
+    print("The user's phone number is ${userIdentity}");
 
     return Scaffold(
       body: Builder(builder: (BuildContext context) {
@@ -140,16 +185,34 @@ class _LoginPasswordState extends State<LoginPassword> {
                                     Padding(
                                       padding:
                                           const EdgeInsets.only(left: 10.0),
-                                      child: subtitle1(text: _identity),
+                                      child:
+                                          subtitle1(text: "+${userIdentity}"),
                                       // child: subtitle1(text: auth.phoneNumber),
                                     )
                                   ],
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(bottom: 47),
-                                  child: Icon(Icons.more_vert,
-                                      color: Theme.of(context).primaryColor),
-                                ),
+                                    padding: const EdgeInsets.only(bottom: 47),
+                                    child: PopupMenuButton(
+                                      icon: Icon(
+                                        Icons.more_vert,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                      itemBuilder: (context) => [
+                                        PopupMenuItem(
+                                            value: 1,
+                                            child: subtitle1(
+                                                text: "Reset app",
+                                                color: Theme.of(context)
+                                                    .primaryColor))
+                                      ],
+                                      onSelected: (value) {
+                                        if (value == 1) {
+                                          Navigator.of(context).popUntil(
+                                              (route) => route.isFirst);
+                                        }
+                                      },
+                                    )),
                               ],
                             ),
                             SizedBox(
@@ -180,9 +243,8 @@ class _LoginPasswordState extends State<LoginPassword> {
                             defaultButtonWithBg(
                                 text: 'Sign In',
                                 action: () {
-                                  Navigator.of(context).pushNamed(
-                                      RegisterScreen.namedRoute,
-                                      arguments: _userIdentity);
+                                  Navigator.of(context)
+                                      .pushNamed(MyGroups.namedRoute);
                                 },
                                 btnColor: Theme.of(context).primaryColor),
                             SizedBox(
@@ -199,12 +261,15 @@ class _LoginPasswordState extends State<LoginPassword> {
                                     color: Colors.black,
                                     action: () => _callcontactSupport(context),
                                   ),
-                                  textButton(
-                                    text: "Forgot password",
-                                    color: Theme.of(context).primaryColor,
-                                    // action: () =>
-                                    //     _callcontactSupport(context),
-                                  ),
+                                  _isLoading
+                                      ? Center(
+                                          child: CircularProgressIndicator(),
+                                        )
+                                      : textButton(
+                                          text: "Forgot password",
+                                          color: Theme.of(context).primaryColor,
+                                          action: () =>
+                                              _fogortPassword(userIdentity)),
                                 ],
                               ),
                             )

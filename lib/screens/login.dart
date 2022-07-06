@@ -1,5 +1,6 @@
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/screens/chamasoft/settings/configure-preferences.dart';
 import 'package:chamasoft/screens/login_password.dart';
 import 'package:chamasoft/screens/register.dart';
 import 'package:chamasoft/screens/verification.dart';
@@ -163,41 +164,75 @@ class _LoginState extends State<Login> {
       title = "Confirm Phone Number";
     }
 
-    twoButtonAlertDialogWithContentList(
-        context: context,
-        message: _identity,
-        // title: title,
-        action: () async {
-          Navigator.of(context).pop();
-          setState(() {
-            _isLoading = true;
-            _isFormInputEnabled = false;
-          });
-          try {
-            print("signature: $appSignature");
-
-            await Provider.of<Auth>(context, listen: false)
-                .generatePin(_identity, appSignature);
-
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => Verification(),
-                settings: RouteSettings(arguments: _identity)));
-
-            // doesUserExist(context);
-          } on CustomException catch (error) {
-            StatusHandler().handleStatus(
-                context: context,
-                error: error,
-                callback: () {
-                  _submit(context);
+    Config.appName.toLowerCase == "chamasoft"
+        ? twoButtonAlertDialog(
+            context: context,
+            message: _identity,
+            title: title,
+            action: () async {
+              Navigator.of(context).pop();
+              setState(() {
+                _isLoading = true;
+                _isFormInputEnabled = false;
+              });
+              try {
+                print("signature: $appSignature");
+                await Provider.of<Auth>(context, listen: false)
+                    .generatePin(_identity, appSignature);
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => Verification(),
+                    settings: RouteSettings(arguments: _identity)));
+              } on CustomException catch (error) {
+                StatusHandler().handleStatus(
+                    context: context,
+                    error: error,
+                    callback: () {
+                      _submit(context);
+                    });
+              } finally {
+                setState(() {
+                  _isLoading = false;
+                  _isFormInputEnabled = true;
                 });
-          } finally {
-            setState(() {
-              _isLoading = false;
-              _isFormInputEnabled = true;
+              }
+            })
+        : twoButtonAlertDialogWithContentList(
+            context: context,
+            message: _identity,
+            promptMessage: "We will be verifying your phone number",
+            confirmMessage: "Is this your correct phone number ?",
+            // title: title,
+            action: () async {
+              Navigator.of(context).pop();
+              setState(() {
+                _isLoading = true;
+                _isFormInputEnabled = false;
+              });
+              try {
+                print("signature: $appSignature");
+
+                await Provider.of<Auth>(context, listen: false)
+                    .generatePin(_identity, appSignature);
+
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => Verification(),
+                    settings: RouteSettings(arguments: _identity)));
+
+                // doesUserExist(context);
+              } on CustomException catch (error) {
+                StatusHandler().handleStatus(
+                    context: context,
+                    error: error,
+                    callback: () {
+                      _submit(context);
+                    });
+              } finally {
+                setState(() {
+                  _isLoading = false;
+                  _isFormInputEnabled = true;
+                });
+              }
             });
-          }
-        });
   }
 
   @override
@@ -238,14 +273,19 @@ class _LoginState extends State<Login> {
                     SizedBox(
                       height: 10,
                     ),
-                    subtitle1(
-                        text: "Let's get started",
-                        // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
-                    // subtitle2(
-                    //     text: "Enter your phone number or email address below",
-                    //     // ignore: deprecated_member_use
-                    //     color: Theme.of(context).textSelectionHandleColor),
+                    Container(
+                        child: Config.appName.toLowerCase == 'chamasoft'
+                            ? subtitle2(
+                                text:
+                                    "Enter your phone number or email address below",
+                                // ignore: deprecated_member_use
+                                color:
+                                    Theme.of(context).textSelectionHandleColor)
+                            : subtitle1(
+                                text: "Let's get started",
+                                // ignore: deprecated_member_use
+                                color: Theme.of(context)
+                                    .textSelectionHandleColor)),
 
                     Row(
                       children: <Widget>[
@@ -439,7 +479,9 @@ class _LoginState extends State<Login> {
                         ? CircularProgressIndicator()
                         : defaultButton(
                             context: context,
-                            text: "Generate Pin",
+                            text: Config.appName.toLowerCase() == "chamasoft"
+                                ? "Continue"
+                                : "Generate Pin",
                             onPressed: () => _submit(context),
                           ),
                     SizedBox(

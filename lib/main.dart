@@ -9,6 +9,7 @@ import 'package:chamasoft/providers/loan-summaries.dart';
 import 'package:chamasoft/providers/notification_summary.dart';
 import 'package:chamasoft/providers/recent-transactions.dart';
 import 'package:chamasoft/providers/summaries.dart';
+import 'package:chamasoft/screens/accounttoaccountscreens/accounttoaccount.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/reports.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/create-bank-account.dart';
@@ -17,6 +18,7 @@ import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-contributio
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-members-manually.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/list-contacts.dart';
 import 'package:chamasoft/screens/chamasoft/transactions.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/account-to-account-transfer.dart';
 import 'package:chamasoft/screens/configure-group.dart';
 import 'package:chamasoft/screens/create-group.dart';
 import 'package:chamasoft/screens/intro.dart';
@@ -25,6 +27,7 @@ import 'package:chamasoft/screens/login_password.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/screens/pinlogin.dart';
 import 'package:chamasoft/screens/register.dart';
+import 'package:chamasoft/screens/resetpassword.dart';
 import 'package:chamasoft/screens/signup.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/notifications.dart';
@@ -266,6 +269,9 @@ class _MyAppState extends State<MyApp> {
             PinLogin.namedRoute: (ctx) => PinLogin(),
             RegisterScreen.namedRoute: (ctx) => RegisterScreen(),
             LoginPassword.namedRoute: (ctx) => LoginPassword(),
+            ResetPassword.namedRoute: (ctx) => ResetPassword(),
+            AccountToAccountTransferScreen.namedRoute: (ctx) 
+            => AccountToAccountTransferScreen(),
             '/reports': (ctx) => ChamasoftReports(),
           },
           onGenerateRoute: (settings) {

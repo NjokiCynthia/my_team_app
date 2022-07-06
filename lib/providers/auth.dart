@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io' as io;
 
+import 'package:chamasoft/config.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/endpoint-url.dart';
 import 'package:flutter/material.dart';
@@ -214,6 +215,7 @@ class Auth with ChangeNotifier {
 
   Future<void> generatePin(String identity, String appSignature) async {
     final url = EndpointUrl.GENERATE_OTP;
+
     print("The url generated is $url");
     final postRequest = json.encode({
       "identity": identity,

@@ -20,13 +20,17 @@ class CustomHelper {
   static const String EazzychamaProdUrl = "https://app.eazzychama.co.ke";
   static const String EazzykikundiProdUrl = "https://app.eazzykikundi.com";
   static const String EazzyclubProdUrl = "https://app.eazzyclub.co.ug";
+  static const String EazzyclubDevUrl =
+      "http://chamasoft-we-001-dev.azurewebsites.net";
   static final String imageUrl = baseUrl + "/uploads/groups/";
 
   static String _getBaseUrl() {
     String _url = chamasoftUatUrl;
     print("the flavor $_flavor");
     if (_flavor.contains("eazzyclub"))
-      _url = EazzyclubProdUrl;
+      //change back to prodUrl
+      // _url = EazzyclubDevUrl;
+      _url = chamasoftUatUrl;
     else if (_flavor.contains("eazzychamadev"))
       _url = EazzychamaProdUrl;
     else if (_flavor.contains("eazzykikundi"))

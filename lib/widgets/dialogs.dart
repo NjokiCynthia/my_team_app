@@ -151,6 +151,8 @@ void twoButtonAlertDialogWithContentList(
     String message,
     // String title,
     Function action,
+    String promptMessage,
+    String confirmMessage,
     String yesText = "YES",
     String noText = "Cancel"}) {
   showDialog(
@@ -164,9 +166,7 @@ void twoButtonAlertDialogWithContentList(
               child: SingleChildScrollView(
                 child: ListBody(
                   children: [
-                    subtitle2(
-                        text: "We will be verifying your phone number",
-                        textAlign: TextAlign.start),
+                    subtitle2(text: promptMessage, textAlign: TextAlign.start),
                     SizedBox(
                       height: 7,
                     ),
@@ -174,9 +174,7 @@ void twoButtonAlertDialogWithContentList(
                     SizedBox(
                       height: 7,
                     ),
-                    subtitle2(
-                        text: "Is this your correct phone number?",
-                        textAlign: TextAlign.start)
+                    subtitle2(text: confirmMessage, textAlign: TextAlign.start)
                   ],
                 ),
               ),
@@ -190,21 +188,14 @@ void twoButtonAlertDialogWithContentList(
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // negativeActionDialogButton(
-                  //   text: noText,
-                  //   // ignore: deprecated_member_use
-                  //   // color: Theme.of(context).textSelectionHandleColor,
-                  //   color: Theme.of(context).primaryColor,
-                  //   action: () {
-                  //     Navigator.of(context).pop();
-                  //   },
-                  // ),
                   actionDialogButtonWithBgColor(
                       text: noText,
                       buttonSize: 110,
                       textColor: Theme.of(context).primaryColor,
                       color: Color.fromRGBO(229, 212, 210, 1),
-                      action: action),
+                      action: () {
+                        Navigator.of(context).pop();
+                      }),
                   SizedBox(
                     width: 20.0,
                   ),
@@ -213,13 +204,6 @@ void twoButtonAlertDialogWithContentList(
                       buttonSize: 110,
                       color: Theme.of(context).primaryColor,
                       action: action),
-                  // positiveActionDialogButton(
-                  //   text: yesText,
-                  //   // color: primaryColor,
-                  //   color: Colors.white,
-                  //   action: action,
-                  // ),
-                  // plainButton(text: yesText, color: Colors.black),
                   SizedBox(
                     width: 6.0,
                   ),

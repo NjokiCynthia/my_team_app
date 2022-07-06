@@ -1,33 +1,33 @@
 import 'dart:async';
-import 'package:chamasoft/config.dart';
-import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/login_password.dart';
-import 'package:chamasoft/screens/my-groups.dart';
+
+import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
-import 'package:chamasoft/helpers/notifications.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/helpers/theme.dart';
+import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/screens/login_password.dart';
 import 'package:chamasoft/screens/register.dart';
+import 'package:chamasoft/screens/resetpassword.dart';
+import 'package:chamasoft/widgets/backgrounds.dart';
+import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:provider/provider.dart';
 import 'package:sms_autofill/sms_autofill.dart';
-import '../providers/auth.dart';
-import '../screens/signup.dart';
-import '../helpers/common.dart';
-import '../helpers/theme.dart';
-import '../widgets/backgrounds.dart';
-import '../widgets/buttons.dart';
-import '../widgets/textstyles.dart';
 
-class Verification extends StatefulWidget {
+import '../config.dart';
+
+class ForgotPassswordVerification extends StatefulWidget {
   static const namedRoute = '/verification-screen';
 
   @override
-  _VerificationState createState() => _VerificationState();
+  _ForgotPasswordVerificationState createState() =>
+      _ForgotPasswordVerificationState();
 }
 
-class _VerificationState extends State<Verification> with CodeAutoFill {
+class _ForgotPasswordVerificationState
+    extends State<ForgotPassswordVerification> with CodeAutoFill {
   String _logo = Config.appName.toLowerCase() == 'chamasoft'
       ? "cs.png"
       : "equity-logo.png";
@@ -141,7 +141,7 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
         //     MyGroups.namedRoute, ModalRoute.withName('/'),
         //     arguments: 0);
 
-        Navigator.of(context).pushReplacementNamed(LoginPassword.namedRoute,
+        Navigator.of(context).pushReplacementNamed(ResetPassword.namedRoute,
             arguments: _identity);
       } else {
         // final uniqueCode = response['uniqueCode'];

@@ -8,6 +8,7 @@ import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/providers/summaries.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/login.dart';
+import 'package:chamasoft/screens/login_password.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/theme.dart';
@@ -105,7 +106,10 @@ class IntroScreenState extends State<IntroScreen> {
                     : Navigator.of(context)
                         .pushReplacement(
                         MaterialPageRoute(
-                          builder: (BuildContext context) => MyGroups(),
+                          builder: (BuildContext context) =>
+                              Config.appName.toLowerCase() == "chamasoft"
+                                  ? MyGroups()
+                                  : LoginPassword(),
                         ),
                       )
                         .whenComplete(() {
