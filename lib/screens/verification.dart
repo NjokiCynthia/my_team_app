@@ -132,25 +132,31 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
           .verifyPin(_authData) as Map<String, dynamic>;
 
       if (response['userExists'] == 1) {
-        // if (response.containsKey('userGroups')) {
-        //   Provider.of<Groups>(context, listen: false)
-        //       .addGroups(response['userGroups']);
-        // }
-        // NotificationManager.registerUserToken(context, response["userId"]);
-        // Navigator.of(context).pushNamedAndRemoveUntil(
-        //     MyGroups.namedRoute, ModalRoute.withName('/'),
-        //     arguments: 0);
-
-        Navigator.of(context).pushReplacementNamed(LoginPassword.namedRoute,
-            arguments: _identity);
+        if (Config.appName.toLowerCase() == "chamasoft") {
+          if (response.containsKey('userGroups')) {
+            Provider.of<Groups>(context, listen: false)
+                .addGroups(response['userGroups']);
+          }
+          NotificationManager.registerUserToken(context, response["userId"]);
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              MyGroups.namedRoute, ModalRoute.withName('/'),
+              arguments: 0);
+        } else if (Config.appName.toLowerCase() == "eazzyclub") {
+          Navigator.of(context).pushReplacementNamed(LoginPassword.namedRoute,
+              arguments: _identity);
+        }
       } else {
-        // final uniqueCode = response['uniqueCode'];
-        // Navigator.pushReplacementNamed(context, SignUp.namedRoute, arguments: {
-        //   "identity": _identity,
-        //   "uniqueCode": uniqueCode,
-        // });
-        Navigator.of(context).pushReplacementNamed(RegisterScreen.namedRoute,
-            arguments: _identity);
+        if (Config.appName.toLowerCase() == "chamasoft") {
+          final uniqueCode = response['uniqueCode'];
+          Navigator.pushReplacementNamed(context, SignUp.namedRoute,
+              arguments: {
+                "identity": _identity,
+                "uniqueCode": uniqueCode,
+              });
+        } else if (Config.appName.toLowerCase() == "eazzyclub") {
+          Navigator.of(context).pushReplacementNamed(RegisterScreen.namedRoute,
+              arguments: _identity);
+        }
       }
     } on CustomException catch (error) {
       print("new error $error");

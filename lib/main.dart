@@ -9,7 +9,6 @@ import 'package:chamasoft/providers/loan-summaries.dart';
 import 'package:chamasoft/providers/notification_summary.dart';
 import 'package:chamasoft/providers/recent-transactions.dart';
 import 'package:chamasoft/providers/summaries.dart';
-import 'package:chamasoft/screens/accounttoaccountscreens/accounttoaccount.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/reports.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/create-bank-account.dart';
@@ -270,8 +269,6 @@ class _MyAppState extends State<MyApp> {
             RegisterScreen.namedRoute: (ctx) => RegisterScreen(),
             LoginPassword.namedRoute: (ctx) => LoginPassword(),
             ResetPassword.namedRoute: (ctx) => ResetPassword(),
-            AccountToAccountTransferScreen.namedRoute: (ctx) 
-            => AccountToAccountTransferScreen(),
             '/reports': (ctx) => ChamasoftReports(),
           },
           onGenerateRoute: (settings) {

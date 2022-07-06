@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
@@ -176,11 +177,38 @@ class _LoginPasswordState extends State<LoginPassword> {
                               children: [
                                 Row(
                                   children: [
-                                    CircleAvatar(
-                                      backgroundImage:
-                                          AssetImage('assets/no-user.png'),
-                                      backgroundColor: Colors.transparent,
-                                      radius: 39,
+                                    Padding(
+                                      padding: const EdgeInsets.all(0.0),
+                                      child: auth.displayAvatar != null
+                                          ? CachedNetworkImage(
+                                              imageUrl: auth.displayAvatar,
+                                              placeholder: (context, url) =>
+                                                  const CircleAvatar(
+                                                radius: 39.0,
+                                                backgroundImage:
+                                                    const AssetImage(
+                                                        'assets/no-user.png'),
+                                              ),
+                                              imageBuilder: (context, image) =>
+                                                  CircleAvatar(
+                                                backgroundImage: image,
+                                                radius: 39.0,
+                                              ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      const Icon(Icons.error),
+                                              fadeOutDuration:
+                                                  const Duration(seconds: 1),
+                                              fadeInDuration:
+                                                  const Duration(seconds: 3),
+                                            )
+                                          : CircleAvatar(
+                                              backgroundImage: AssetImage(
+                                                  'assets/no-user.png'),
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              radius: 39,
+                                            ),
                                     ),
                                     Padding(
                                       padding:

@@ -128,9 +128,12 @@ class _ResetPasswordState extends State<ResetPassword> {
                             focusNode: _passwordFocusNode,
                             style: TextStyle(fontFamily: 'SegoeUI'),
                             validator: (value) {
-                              if (value != null || value.length <= 5) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a password';
+                              } else if (value.length <= 5) {
                                 return "Password is too short";
                               }
+
                               return null;
                             },
                             onSaved: (value) {
@@ -159,6 +162,10 @@ class _ResetPasswordState extends State<ResetPassword> {
                             focusNode: _confirmPasswordFocusNode,
                             style: TextStyle(fontFamily: 'SegoeUI'),
                             validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please confirm your password ';
+                              }
+
                               if (value != _passwordController.text) {
                                 return "Password do not match";
                               }
@@ -173,7 +180,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                               text: 'Submit',
                               action: () {
                                 _submit();
-                                Navigator.of(context).pop();
+                                // Navigator.of(context).pop();
                               },
                               // print("on submit called");
                               // Navigator.of(context).pop();

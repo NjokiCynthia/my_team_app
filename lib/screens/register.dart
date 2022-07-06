@@ -1,9 +1,14 @@
+import 'dart:io';
+
+import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/screens/login_password.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const namedRoute = "/registerScreen";
@@ -27,6 +32,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void dispose() {
     _passwordController.dispose();
     super.dispose();
+  }
+
+  PickedFile avatar;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> retrieveLostData() async {
+    final LostData lostData = await _picker.getLostData();
+    if (lostData.isEmpty) return;
+
+    if (lostData.file != null) {
+      setState(() {
+        avatar = lostData.file;
+      });
+    } else {}
+  }
+
+  void _onImagePickerClicked(ImageSource source, BuildContext context) async {
+    try {
+      final pickedFile = await _picker.getImage(
+          source: source,
+          maxHeight: 300,
+          maxWidth: 300,
+          imageQuality: IMAGE_QUALITY);
+      setState(() {
+        avatar = pickedFile;
+      });
+    } catch (e) {
+      //show SnackBar?
+      //setState(() {});
+    }
   }
 
   Future<void> _submit(String identity) async {
@@ -61,10 +96,74 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     top: MediaQuery.of(context).size.height * 0.1),
                 child: Column(
                   children: [
-                    CircleAvatar(
-                      backgroundImage: AssetImage('assets/no-user.png'),
-                      backgroundColor: Colors.transparent,
-                      radius: 47,
+                    // CircleAvatar(
+                    //   backgroundImage: AssetImage('assets/no-user.png'),
+                    //   backgroundColor: Colors.transparent,
+                    //   radius: 47,
+                    // ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
+                      child: Stack(
+                        alignment: AlignmentDirectional.bottomEnd,
+                        children: <Widget>[
+                          !kIsWeb &&
+                                  defaultTargetPlatform ==
+                                      TargetPlatform.android
+                              ? FutureBuilder<void>(
+                                  future: retrieveLostData(),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<void> snapshot) {
+                                    switch (snapshot.connectionState) {
+                                      case ConnectionState.none:
+                                      case ConnectionState.waiting:
+                                        return CircleAvatar(
+                                          backgroundImage:
+                                              AssetImage('assets/no-user.png'),
+                                          backgroundColor: Colors.transparent,
+                                          radius: 50,
+                                        );
+                                      case ConnectionState.done:
+                                        return CircleAvatar(
+                                          backgroundImage: avatar == null
+                                              ? AssetImage('assets/no-user.png')
+                                              : FileImage(File(avatar.path)),
+                                          backgroundColor: Colors.transparent,
+                                          radius: 50,
+                                        );
+                                      default:
+                                        return CircleAvatar(
+                                          backgroundImage:
+                                              AssetImage('assets/no-user.png'),
+                                          backgroundColor: Colors.transparent,
+                                          radius: 50,
+                                        );
+                                    }
+                                  },
+                                )
+                              : CircleAvatar(
+                                  backgroundImage: avatar == null
+                                      ? AssetImage('assets/no-user.png')
+                                      : FileImage(File(avatar.path)),
+                                  backgroundColor: Colors.transparent,
+                                  radius: 50,
+                                ),
+                          Positioned(
+                            bottom: -12.0,
+                            right: -12.0,
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.camera_alt,
+                                color: Colors.black,
+                                size: 30.0,
+                              ),
+                              onPressed: () async {
+                                _onImagePickerClicked(
+                                    ImageSource.gallery, context);
+                              },
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 15,
@@ -75,8 +174,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 15,
                     ),
                     subtitle1(
-                        text:
-                            "Your phone number is not recognised, kindly complete the following form to register.",
+                        text: "Fill details to complete account setup",
                         textAlign: TextAlign.center),
                     SizedBox(
                       height: 15,
