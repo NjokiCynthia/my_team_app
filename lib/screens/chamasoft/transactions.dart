@@ -1,5 +1,6 @@
 // ignore_for_file: unused_import, unused_field
 
+import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/providers/notification_summary.dart';
@@ -17,6 +18,7 @@ import 'package:chamasoft/screens/chamasoft/transactions/income/record-income.da
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-miscellaneous-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/account-to-account-transfer.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/fine-member.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/send-to-mobile.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/create-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/record-loan-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
@@ -68,6 +70,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
   final bankLoanRepaymentKey = GlobalKey();
   final fineMemberKey = GlobalKey();
   final accountTransferKey = GlobalKey();
+  final sendToMobileKey = GlobalKey();
   int _information = 0;
 
   BuildContext transactionsContext;
@@ -265,7 +268,9 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                     icon: customIcons['money-bag'],
                     title: 'RECORD',
                     subtitle: 'MEMBER LOAN',
-                    color: Colors.blue[400],
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => CreateMemberLoan(),
@@ -286,7 +291,9 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                     icon: customIcons['safe'],
                     title: 'RECORD',
                     subtitle: 'REPAYMENTS',
-                    color: Colors.blue[400],
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => RecordLoanPayment(),
@@ -307,7 +314,9 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                     icon: customIcons['safe'],
                     title: 'BANK LOAN',
                     subtitle: 'REPAYMENTS',
-                    color: Colors.blue[400],
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => BankLoanRepayment(),
@@ -477,7 +486,9 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                         icon: customIcons['money-bag'],
                         title: 'RECONCILE',
                         subtitle: 'DEPOSITS',
-                        color: Colors.blue[400],
+                        color: Config.appName.toLowerCase() == "chamasoft"
+                            ? Colors.blue[400]
+                            : Theme.of(context).primaryColor,
                         isHighlighted: false,
                         action: () => _toUnreconciledDepositList(context),
                         margin: 0,
@@ -495,7 +506,9 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                   icon: customIcons['cash-register'],
                   title: 'CONTRIBUTION',
                   subtitle: "PAYMENTS",
-                  color: Colors.blue[400],
+                  color: Config.appName.toLowerCase() == "chamasoft"
+                      ? Colors.blue[400]
+                      : Theme.of(context).primaryColor,
                   isHighlighted: false,
                   action: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (BuildContext context) =>
@@ -513,7 +526,9 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                   icon: customIcons['refund'],
                   title: 'FINE',
                   subtitle: "PAYMENTS",
-                  color: Colors.blue[400],
+                  color: Config.appName.toLowerCase() == "chamasoft"
+                      ? Colors.blue[400]
+                      : Theme.of(context).primaryColor,
                   isHighlighted: false,
                   action: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (BuildContext context) => RecordFinePayment(),
@@ -529,7 +544,9 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                   context: context,
                   icon: customIcons['cash-in-hand'],
                   title: 'INCOME',
-                  color: Colors.blue[400],
+                  color: Config.appName.toLowerCase() == "chamasoft"
+                      ? Colors.blue[400]
+                      : Theme.of(context).primaryColor,
                   isHighlighted: false,
                   action: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (BuildContext context) => RecordIncome(),
@@ -545,7 +562,9 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                   context: context,
                   icon: customIcons['transaction'],
                   title: 'MISCELLANEOUS',
-                  color: Colors.blue[400],
+                  color: Config.appName.toLowerCase() == "chamasoft"
+                      ? Colors.blue[400]
+                      : Theme.of(context).primaryColor,
                   isHighlighted: false,
                   action: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (BuildContext context) =>
@@ -562,7 +581,9 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                   context: context,
                   icon: customIcons['bank'],
                   title: 'BANK LOANS',
-                  color: Colors.blue[400],
+                  color: Config.appName.toLowerCase() == "chamasoft"
+                      ? Colors.blue[400]
+                      : Theme.of(context).primaryColor,
                   isHighlighted: false,
                   action: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (BuildContext context) => RecordBankLoan(),
@@ -591,7 +612,9 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                           icon: customIcons['card-payment'],
                           title: 'RECONCILE',
                           subtitle: 'WITHDRAWALS',
-                          color: Colors.blue[400],
+                          color: Config.appName.toLowerCase() == "chamasoft"
+                              ? Colors.blue[400]
+                              : Theme.of(context).primaryColor,
                           isHighlighted: false,
                           action: () => Navigator.of(context).push(
                               MaterialPageRoute(
@@ -615,7 +638,9 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                     context: context,
                     icon: customIcons['invoice'],
                     title: 'EXPENSES',
-                    color: Colors.blue[400],
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => RecordExpense(),
@@ -636,7 +661,9 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                     icon: customIcons['money-bag'],
                     title: 'CONTRIBUTION',
                     subtitle: 'REFUND',
-                    color: Colors.blue[400],
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) =>
@@ -680,7 +707,9 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                     icon: customIcons['account'],
                     title: 'FINE',
                     subtitle: 'MEMBER',
-                    color: Colors.blue[400],
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => FineMember(),
@@ -718,7 +747,9 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                     icon: customIcons['bank-cards'],
                     title: 'ACCOUNT TO',
                     subtitle: 'ACCOUNT TRANSFER',
-                    color: Colors.blue[400],
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) =>
@@ -730,6 +761,26 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
           SizedBox(
             width: 16.0,
           ),
+          customShowCase(
+            key: sendToMobileKey,
+            description: 'Transfer Chama Money TO Your Phone Number ',
+            child: Container(
+                width: 132.0,
+                child: svgGridButton(
+                    context: context,
+                    icon: customIcons['bank-cards'],
+                    title: 'SEND',
+                    subtitle: 'TO MOBILE',
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
+                    isHighlighted: false,
+                    action: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => SendToMobile(),
+                        settings: RouteSettings(arguments: 0))),
+                    margin: 0,
+                    imageHeight: 100.0)),
+          ),
         ];
 
         return new WillPopScope(
@@ -740,47 +791,49 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                         // controller: _scrollController,
                         child: Column(
                           children: <Widget>[
-                            if (group.onlineBankingEnabled)
-                              Padding(
-                                padding:
-                                    EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      "E-Wallet",
-                                      style: TextStyle(
-                                        color: Colors.blueGrey[400],
-                                        fontFamily: 'SegoeUI',
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    IconButton(
-                                        icon: Icon(
-                                          Feather.more_horizontal,
-                                          color: Colors.blueGrey,
+                            if (Config.appName.toLowerCase() == "chamasoft")
+                              if (group.onlineBankingEnabled)
+                                Padding(
+                                  padding:
+                                      EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Text(
+                                        "E-Wallet",
+                                        style: TextStyle(
+                                          color: Colors.blueGrey[400],
+                                          fontFamily: 'SegoeUI',
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w600,
                                         ),
-                                        onPressed: () {})
-                                  ],
-                                ),
-                              ),
-                            if (group.onlineBankingEnabled)
-                              Padding(
-                                padding:
-                                    EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                                child: Container(
-                                  height: 160.0,
-                                  child: ListView(
-                                    scrollDirection: Axis.horizontal,
-                                    padding:
-                                        EdgeInsets.only(top: 5.0, bottom: 10.0),
-                                    physics: BouncingScrollPhysics(),
-                                    children: eWalletOptions,
+                                      ),
+                                      IconButton(
+                                          icon: Icon(
+                                            Feather.more_horizontal,
+                                            color: Colors.blueGrey,
+                                          ),
+                                          onPressed: () {})
+                                    ],
                                   ),
                                 ),
-                              ),
+                            if (Config.appName.toLowerCase() == "chamasoft")
+                              if (group.onlineBankingEnabled)
+                                Padding(
+                                  padding:
+                                      EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                                  child: Container(
+                                    height: 160.0,
+                                    child: ListView(
+                                      scrollDirection: Axis.horizontal,
+                                      padding: EdgeInsets.only(
+                                          top: 5.0, bottom: 10.0),
+                                      physics: BouncingScrollPhysics(),
+                                      children: eWalletOptions,
+                                    ),
+                                  ),
+                                ),
                             Padding(
                               padding:
                                   EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),

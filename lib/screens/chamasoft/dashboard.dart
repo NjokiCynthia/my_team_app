@@ -23,7 +23,6 @@ import 'package:rate_my_app/rate_my_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 
-
 // ignore: must_be_immutable
 class ChamasoftDashboard extends StatefulWidget {
   static const namedRoute = "/dashboard";
@@ -296,7 +295,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             automaticallyImplyLeading: false,
             actions: <Widget>[
               Visibility(
-                visible:  /*_group.isGroupAdmin*/ false ,
+                visible: /*_group.isGroupAdmin*/ false,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -380,16 +379,16 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                       // ignore: deprecated_member_use
                       textColor: Theme.of(context).textSelectionHandleColor,
                       child: IconButton(
-                          icon: Icon(
-                            Icons.notifications,
-                            color: Config.appName.toLowerCase() == 'chamasoft'
-                                ?
-                                // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionHandleColor
-                                : primaryColor,
-                          ),
-                          onPressed: null, // Disable notifications for now
-                          /*onPressed: () => {
+                        icon: Icon(
+                          Icons.notifications,
+                          color: Config.appName.toLowerCase() == 'chamasoft'
+                              ?
+                              // ignore: deprecated_member_use
+                              Theme.of(context).textSelectionHandleColor
+                              : primaryColor,
+                        ),
+                        onPressed: null, // Disable notifications for now
+                        /*onPressed: () => {
                                 _eventDispatcher
                                     .add('TAP'), //Closes the AppSwitcher
                                 Navigator.of(context).push(
@@ -398,7 +397,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                                         ChamasoftNotifications(),
                                   ),
                                 ),
-                              }*/),
+                              }*/
+                      ),
                     ),
                   ),
                   Visibility(
@@ -526,7 +526,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   textColor: Theme.of(context).textSelectionHandleColor,
                   child: Icon(
                     Feather.credit_card,
-                    color: _currentPage == /*2*/1
+                    color: _currentPage == /*2*/ 1
                         ? primaryColor
                         : Config.appName.toLowerCase() == 'chamasoft'
                             ? Colors.blueGrey[300]
@@ -537,7 +537,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 title: Text(
                   "Transactions",
                   style: TextStyle(
-                      color: _currentPage == /*2*/1
+                      color: _currentPage == /*2*/ 1
                           ? primaryColor
                           : Config.appName.toLowerCase() == 'chamasoft'
                               ? Colors.blueGrey[300]
@@ -556,7 +556,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   textColor: Theme.of(context).textSelectionHandleColor,
                   child: Icon(
                     Feather.copy,
-                    color: _currentPage == /*3*/2
+                    color: _currentPage == /*3*/ 2
                         ? primaryColor
                         : Config.appName.toLowerCase() == 'chamasoft'
                             ? Colors.blueGrey[300]
@@ -567,7 +567,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 title: Text(
                   "Reports",
                   style: TextStyle(
-                    color: _currentPage == /*3*/2
+                    color: _currentPage == /*3*/ 2
                         ? primaryColor
                         : Config.appName.toLowerCase() == 'chamasoft'
                             ? Colors.blueGrey[300]
@@ -610,12 +610,16 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               // ),
             ],
             onTap: (index) {
+              // setState(() {
+              //   if ((Config.appName.toLowerCase() != 'chamasoft') &&
+              //       (index > 0))
+              //     _currentPage = 0;
+              //   else
+              //     _currentPage = index;
+              // });
+
               setState(() {
-                if ((Config.appName.toLowerCase() != 'chamasoft') &&
-                    (index > 0))
-                  _currentPage = 0;
-                else
-                  _currentPage = index;
+                _currentPage = index;
               });
             },
           ),
@@ -651,11 +655,11 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   }
 
   getPage(int page) {
-    if ((Config.appName.toLowerCase() != 'chamasoft') && (page > 0)) {
-      return ChamasoftHome(
-        appBarElevation: (elevation) => _setElevation(elevation),
-      );
-    }
+    // if ((Config.appName.toLowerCase() != 'chamasoft') && (page > 0)) {
+    //   return ChamasoftHome(
+    //     appBarElevation: (elevation) => _setElevation(elevation),
+    //   );
+    // }
 
     switch (page) {
       case 0:
@@ -668,7 +672,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         //           _setNotificationCount(_notificationCount),
         //     ),
         //   );
-        return ChamasoftHome/*ChamasoftHomeOld*/(
+        return ChamasoftHome /*ChamasoftHomeOld*/ (
           appBarElevation: (elevation) => _setElevation(elevation),
           notificationCount: (_notificationCount) =>
               _setNotificationCount(_notificationCount),

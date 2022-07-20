@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:chamasoft/config.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/get_path.dart';
@@ -1120,30 +1121,31 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                           ),
                         ),
                       ),
-                      if (_onlineBankingEnabled)
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                "Make Payments",
-                                style: TextStyle(
-                                  color: Colors.blueGrey[400],
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              IconButton(
-                                  icon: Icon(
-                                    Feather.more_horizontal,
-                                    color: Colors.blueGrey,
+                      if (Config.appName.toLowerCase() == "chamasoft")
+                        if (_onlineBankingEnabled)
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(
+                                  "Make Payments",
+                                  style: TextStyle(
+                                    color: Colors.blueGrey[400],
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                  onPressed: () {})
-                            ],
-                          ),
+                                ),
+                                IconButton(
+                                    icon: Icon(
+                                      Feather.more_horizontal,
+                                      color: Colors.blueGrey,
+                                    ),
+                                    onPressed: () {})
+                              ],
+                            ),
 
-                          /* child: Text(
+                            /* child: Text(
                           "Make Payments",
                           style: TextStyle(
                             color: Colors.blueGrey[400],
@@ -1152,113 +1154,114 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             fontWeight: FontWeight.w800,
                           ),
                         ), */
-                        ),
-                      if (_onlineBankingEnabled)
-                        Padding(
-                          padding: const EdgeInsets.all(24.0),
-                          child: Row(
-                            // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 16.0,
-                                  ),
-                                  child: paymentActionButton(
-                                    color: primaryColor,
-                                    textColor: primaryColor,
-                                    icon: FontAwesome.chevron_right,
-                                    isFlat: false,
-                                    text: "PAY NOW",
-                                    iconSize: 12.0,
-                                    action: () => _openPayNowTray(context),
-                                  ),
-                                ),
-                              ),
-                              Visibility(
-                                visible: false,
-                                child: Expanded(
+                          ),
+                      if (Config.appName.toLowerCase() == "chamasoft")
+                        if (_onlineBankingEnabled)
+                          Padding(
+                            padding: const EdgeInsets.all(24.0),
+                            child: Row(
+                              // mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
                                   child: Padding(
                                     padding: EdgeInsets.symmetric(
                                       horizontal: 16.0,
                                     ),
                                     child: paymentActionButton(
-                                        color: primaryColor,
-                                        textColor: Colors.white,
-                                        icon: FontAwesome.chevron_right,
-                                        isFlat: true,
-                                        text: "APPLY LOAN",
-                                        iconSize: 12.0,
-                                        action:
-                                            () {} /* => Navigator.of(context).push(
+                                      color: primaryColor,
+                                      textColor: primaryColor,
+                                      icon: FontAwesome.chevron_right,
+                                      isFlat: false,
+                                      text: "PAY NOW",
+                                      iconSize: 12.0,
+                                      action: () => _openPayNowTray(context),
+                                    ),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: false,
+                                  child: Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 16.0,
+                                      ),
+                                      child: paymentActionButton(
+                                          color: primaryColor,
+                                          textColor: Colors.white,
+                                          icon: FontAwesome.chevron_right,
+                                          isFlat: true,
+                                          text: "APPLY LOAN",
+                                          iconSize: 12.0,
+                                          action:
+                                              () {} /* => Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (BuildContext context) =>
                                               /* ApplyLoan */(){},
                                         ),
                                       ), */
-                                        ),
+                                          ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              // /*  Expanded(
-                              //   child: */
-                              // Column(
-                              //   mainAxisAlignment: MainAxisAlignment.start,
-                              //   children: [
-                              //     circleIconButton(
-                              //       icon: Icons.import_export,
-                              //       backgroundColor:
-                              //           primaryColor /* rimaryColor.withOpacity(.3) */,
-                              //       color: Colors.white,
-                              //       iconSize: 24.0,
-                              //       padding: 0.0,
-                              //       onPressed: () => _openPayNowTray(context),
-                              //     ),
-                              //     SizedBox(height: 10),
-                              //     customTitle1(
-                              //       text: 'Make Payment',
-                              //       color: Theme.of(context)
-                              //           // ignore: deprecated_member_use
-                              //           .textSelectionHandleColor,
-                              //       textAlign: TextAlign.start,
-                              //       fontSize: 16,
-                              //       fontWeight: FontWeight.w600,
-                              //     ),
-                              //   ],
-                              // ),
-                              /*  ), */
-                              // SizedBox(width: 100),
-                              // Expanded(
-                              //   child: Column(
-                              //     children: [
-                              //       circleIconButton(
-                              //         icon: Icons.credit_card,
-                              //         backgroundColor:
-                              //             primaryColor /* rimaryColor.withOpacity(.3) */,
-                              //         color: Colors.white,
-                              //         iconSize: 24.0,
-                              //         padding: 0.0,
-                              //         onPressed:
-                              //             () /*  =>
-                              //               _showActions(context, incomeCategory) */
-                              //             {},
-                              //       ),
-                              //       SizedBox(height: 10),
-                              //       customTitle1(
-                              //         text: 'Apply Loan',
-                              //         color: Theme.of(context)
-                              //             // ignore: deprecated_member_use
-                              //             .textSelectionHandleColor,
-                              //         textAlign: TextAlign.start,
-                              //         fontSize: 16,
-                              //         fontWeight: FontWeight.w600,
-                              //       ),
-                              //     ],
-                              //   ),
-                              // )
-                            ],
+                                // /*  Expanded(
+                                //   child: */
+                                // Column(
+                                //   mainAxisAlignment: MainAxisAlignment.start,
+                                //   children: [
+                                //     circleIconButton(
+                                //       icon: Icons.import_export,
+                                //       backgroundColor:
+                                //           primaryColor /* rimaryColor.withOpacity(.3) */,
+                                //       color: Colors.white,
+                                //       iconSize: 24.0,
+                                //       padding: 0.0,
+                                //       onPressed: () => _openPayNowTray(context),
+                                //     ),
+                                //     SizedBox(height: 10),
+                                //     customTitle1(
+                                //       text: 'Make Payment',
+                                //       color: Theme.of(context)
+                                //           // ignore: deprecated_member_use
+                                //           .textSelectionHandleColor,
+                                //       textAlign: TextAlign.start,
+                                //       fontSize: 16,
+                                //       fontWeight: FontWeight.w600,
+                                //     ),
+                                //   ],
+                                // ),
+                                /*  ), */
+                                // SizedBox(width: 100),
+                                // Expanded(
+                                //   child: Column(
+                                //     children: [
+                                //       circleIconButton(
+                                //         icon: Icons.credit_card,
+                                //         backgroundColor:
+                                //             primaryColor /* rimaryColor.withOpacity(.3) */,
+                                //         color: Colors.white,
+                                //         iconSize: 24.0,
+                                //         padding: 0.0,
+                                //         onPressed:
+                                //             () /*  =>
+                                //               _showActions(context, incomeCategory) */
+                                //             {},
+                                //       ),
+                                //       SizedBox(height: 10),
+                                //       customTitle1(
+                                //         text: 'Apply Loan',
+                                //         color: Theme.of(context)
+                                //             // ignore: deprecated_member_use
+                                //             .textSelectionHandleColor,
+                                //         textAlign: TextAlign.start,
+                                //         fontSize: 16,
+                                //         fontWeight: FontWeight.w600,
+                                //       ),
+                                //     ],
+                                //   ),
+                                // )
+                              ],
+                            ),
                           ),
-                        ),
                       SizedBox(height: 5),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
