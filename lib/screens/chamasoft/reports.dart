@@ -1,3 +1,4 @@
+import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/reports/deposit-receipts.dart';
@@ -147,7 +148,9 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     icon: customIcons['invoice'],
                     title: 'FINE',
                     subtitle: 'STATEMENT',
-                    color: Colors.blue[400],
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) =>
@@ -170,7 +173,9 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     icon: customIcons['expense'],
                     title: 'LOAN',
                     subtitle: 'SUMMARY',
-                    color: Colors.blue[400],
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => LoanSummary(),
@@ -198,7 +203,9 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     icon: customIcons['cash-in-hand'],
                     title: 'DEPOSIT',
                     subtitle: 'RECEIPTS',
-                    color: Colors.blue[400],
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => DepositReceipts(),
@@ -220,7 +227,9 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     icon: customIcons['cash-register'],
                     title: 'WITHDRAWAL',
                     subtitle: 'RECEIPTS',
-                    color: Colors.blue[400],
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => WithdrawalReceipts(),
@@ -244,7 +253,9 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                   icon: customIcons['bank-cards'],
                   title: 'ACCOUNT',
                   subtitle: 'BALANCES',
-                  color: Colors.blue[400],
+                  color: Config.appName.toLowerCase() == "chamasoft"
+                      ? Colors.blue[400]
+                      : Theme.of(context).primaryColor,
                   isHighlighted: false,
                   action: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (BuildContext context) => AccountBalances(),
@@ -262,7 +273,9 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     icon: customIcons['money-bag'],
                     title: 'CONTRIBUTION',
                     subtitle: 'SUMMARY',
-                    color: Colors.blue[400],
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) =>
@@ -283,7 +296,9 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     icon: customIcons['expense'],
                     title: 'FINE',
                     subtitle: 'SUMMARY',
-                    color: Colors.blue[400],
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) =>
@@ -303,7 +318,9 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     icon: customIcons['transaction'],
                     title: 'LOAN',
                     subtitle: 'SUMMARY',
-                    color: Colors.blue[400],
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) =>
@@ -321,7 +338,9 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                   icon: customIcons['card-payment'],
                   title: 'EXPENSE',
                   subtitle: 'SUMMARY',
-                  color: Colors.blue[400],
+                  color: Config.appName.toLowerCase() == "chamasoft"
+                      ? Colors.blue[400]
+                      : Theme.of(context).primaryColor,
                   isHighlighted: false,
                   action: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (BuildContext context) => ExpenseSummary())),
@@ -338,7 +357,9 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     icon: customIcons['invoice'],
                     title: 'TRANSACTION',
                     subtitle: 'STATEMENT',
-                    color: Colors.blue[400],
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) =>
@@ -367,7 +388,9 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                           icon: customIcons['transaction'],
                           title: 'MEMBER',
                           subtitle: 'STATEMENTS',
-                          color: Colors.blue[400],
+                          color: Config.appName.toLowerCase() == "chamasoft"
+                              ? Colors.blue[400]
+                              : Theme.of(context).primaryColor,
                           isHighlighted: false,
                           action: () => Navigator.of(context).push(
                               MaterialPageRoute(

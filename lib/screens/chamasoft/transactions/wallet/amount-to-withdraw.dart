@@ -1,5 +1,6 @@
 // ignore_for_file: duplicate_import
 
+import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
@@ -51,33 +52,33 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
     });
 
     try {
-
-    /*  String message = "Withdrawal request has been submitted";
+      /*  String message = "Withdrawal request has been submitted";
       final requestId = await Provider.of<Groups>(context, listen: false)
           .createWithdrawalRequest(widget.formData);
       StatusHandler().showSuccessSnackBar(context, message);
 
       Future.delayed(const Duration(milliseconds: 2500), () {
-        *//*Navigator.pushAndRemoveUntil(
+        */ /*Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
             builder: (BuildContext context) => WithdrawalReceipts(),
           ),
               (route) => false,
-        );*//*
+        );*/ /*
         Navigator.of(context).push(MaterialPageRoute(
             builder: (BuildContext context) => WithdrawalReceipts(),
             settings: RouteSettings(arguments: 0)));
-        *//*Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(builder: (BuildContext context) => WithdrawalReceipts()));*//*
+        */ /*Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (BuildContext context) => WithdrawalReceipts()));*/ /*
       });*/
       final requestId = await Provider.of<Groups>(context, listen: false)
           .createWithdrawalRequest(widget.formData);
 
       alertDialogWithAction(context, "Withdrawal request has been submitted",
           () {
-            Navigator.of(context)
-                .pushReplacement(MaterialPageRoute(builder: (BuildContext context) => WithdrawalReceipts(requestId: WITHDRAWAL_REQUEST)));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) =>
+                WithdrawalReceipts(requestId: WITHDRAWAL_REQUEST)));
 
         // Navigator.of(context).pop();
         if (requestId == "-1") {
@@ -90,8 +91,9 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
           // );
         } else
           // Navigator.of(context).pop(requestId);
-          Navigator.of(context)
-              .pushReplacement(MaterialPageRoute(builder: (BuildContext context) => WithdrawalReceipts(requestId: WITHDRAWAL_REQUEST)));
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (BuildContext context) =>
+                  WithdrawalReceipts(requestId: WITHDRAWAL_REQUEST)));
       }, false);
       setState(() {
         _isLoading = false;
@@ -174,12 +176,15 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              subtitle1(
-                                text: "$namePlaceholder: ",
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
-                              ),
+                              Config.appName.toLowerCase() == "chamasoft"
+                                  ? subtitle1(
+                                      text: "$namePlaceholder: ",
+                                      color:
+                                          // ignore: deprecated_member_use
+                                          Theme.of(context)
+                                              .textSelectionHandleColor,
+                                    )
+                                  : SizedBox(),
                               Expanded(
                                 flex: 1,
                                 child: customTitle(

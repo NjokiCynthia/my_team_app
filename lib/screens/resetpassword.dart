@@ -51,6 +51,8 @@ class _ResetPasswordState extends State<ResetPassword> {
     }
 
     _formKey.currentState.save();
+
+    Navigator.of(context).pushReplacementNamed(LoginPassword.namedRoute);
   }
 
   @override
@@ -121,7 +123,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                                     : Icons.visibility),
                               ),
                               border: UnderlineInputBorder(),
-                              hintText: 'Password',
+                              hintText: 'New password',
                             ),
                             enabled: _isFormInputEnabled,
                             textInputAction: TextInputAction.next,

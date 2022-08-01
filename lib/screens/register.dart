@@ -1,6 +1,9 @@
 import 'dart:io';
 
 import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/screens/login_password.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -9,6 +12,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const namedRoute = "/registerScreen";
@@ -21,6 +25,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController _passwordController;
   bool _passwordVisible = true;
   bool _confirmPasswordVisible = true;
+  String _firstName,
+      _lastName,
+      _password,
+      _confirmPassword,
+      _identity,
+      _uniqueCode;
+
+  Map<String, String> _authData = {
+    'avatar': '',
+    'identity': '',
+    'firstName': '',
+    'lastName': '',
+    'password': ''
+  };
 
   @override
   void initState() {
@@ -58,30 +76,52 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() {
         avatar = pickedFile;
       });
+      print("Users avatar path is $avatar.path");
     } catch (e) {
       //show SnackBar?
       //setState(() {});
     }
   }
 
-  Future<void> _submit(String identity) async {
+  Future<void> _submit(BuildContext context) async {
     if (!_formKey.currentState.validate()) {
       return;
     }
 
     _formKey.currentState.save();
-    Navigator.of(context)
-        .pushReplacementNamed(LoginPassword.namedRoute, arguments: identity);
+
+    try {
+      _authData['firstName'] = _firstName;
+      _authData['lastName'] = _lastName;
+      _authData['identity'] = _identity;
+      _authData['uniqueCode'] = _uniqueCode;
+      _authData['password'] = _password;
+      _authData['confirm_password'] = _confirmPassword;
+      _authData['avatar'] = ((avatar != null) ? avatar.path : null);
+
+      await Provider.of<Auth>(context, listen: false).registerUser(_authData);
+
+      await Navigator.of(context)
+          .pushReplacementNamed(LoginPassword.namedRoute, arguments: _identity);
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _submit(context);
+          });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    String _identity = ModalRoute.of(context).settings.arguments as String;
-    Map<String, String> _authData = {
-      'firstName': '',
-      'lastName': '',
-      'password': ''
-    };
+    final modalRoute =
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    if (modalRoute.length > 0) {
+      _identity = modalRoute['identity'];
+      _uniqueCode = modalRoute['uniqueCode'];
+    }
+
     return Scaffold(
       body: Builder(builder: (BuildContext context) {
         return Form(
@@ -96,11 +136,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     top: MediaQuery.of(context).size.height * 0.1),
                 child: Column(
                   children: [
-                    // CircleAvatar(
-                    //   backgroundImage: AssetImage('assets/no-user.png'),
-                    //   backgroundColor: Colors.transparent,
-                    //   radius: 47,
-                    // ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
                       child: Stack(
@@ -174,7 +209,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 15,
                     ),
                     subtitle1(
-                        text: "Fill details to complete account setup",
+                        text: "Fill in the details to complete account setup",
                         textAlign: TextAlign.center),
                     SizedBox(
                       height: 15,
@@ -194,7 +229,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         return null;
                       },
                       onSaved: (value) {
-                        _authData['firstName'] = value;
+                        _firstName = value;
                       },
                     ),
                     SizedBox(
@@ -214,7 +249,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         return null;
                       },
                       onSaved: (value) {
-                        _authData['lastName'] = value;
+                        _lastName = value;
                       },
                     ),
                     SizedBox(
@@ -246,7 +281,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       textInputAction: TextInputAction.next,
                       style: TextStyle(fontFamily: 'SegoeUI'),
                       onSaved: (value) {
-                        _authData['password'] = value;
+                        _password = value;
                       },
                     ),
                     SizedBox(
@@ -275,6 +310,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         }
                         return null;
                       },
+                      onSaved: (value) {
+                        _confirmPassword = value;
+                      },
                       textInputAction: TextInputAction.done,
                       style: TextStyle(fontFamily: 'SegoeUI'),
                     ),
@@ -285,7 +323,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       context: context,
                       text: "Register",
                       onPressed: () {
-                        _submit(_identity);
+                        _submit(context);
                       },
                     ),
                     SizedBox(

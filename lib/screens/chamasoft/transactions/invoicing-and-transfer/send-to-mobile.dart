@@ -200,6 +200,9 @@ class _SendToMobileState extends State<SendToMobile> {
               title: "Select Transfer Purpose",
               message: "",
             ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.03,
+            ),
             Padding(
               padding: inputPagePadding,
               child: Form(

@@ -1,4 +1,5 @@
 import 'package:chamasoft/config.dart';
+import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/screens/chamasoft/settings/configure-preferences.dart';
 import 'package:chamasoft/screens/login_password.dart';
@@ -18,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
+import '../config.dart';
 import '../helpers/custom-helper.dart';
 
 class Login extends StatefulWidget {
@@ -164,75 +166,77 @@ class _LoginState extends State<Login> {
       title = "Confirm Phone Number";
     }
 
-    Config.appName.toLowerCase == "chamasoft"
-        ? twoButtonAlertDialog(
-            context: context,
-            message: _identity,
-            title: title,
-            action: () async {
-              Navigator.of(context).pop();
-              setState(() {
-                _isLoading = true;
-                _isFormInputEnabled = false;
-              });
-              try {
-                print("signature: $appSignature");
-                await Provider.of<Auth>(context, listen: false)
-                    .generatePin(_identity, appSignature);
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => Verification(),
-                    settings: RouteSettings(arguments: _identity)));
-              } on CustomException catch (error) {
-                StatusHandler().handleStatus(
-                    context: context,
-                    error: error,
-                    callback: () {
-                      _submit(context);
-                    });
-              } finally {
-                setState(() {
-                  _isLoading = false;
-                  _isFormInputEnabled = true;
-                });
-              }
-            })
-        : twoButtonAlertDialogWithContentList(
-            context: context,
-            message: _identity,
-            promptMessage: "We will be verifying your phone number",
-            confirmMessage: "Is this your correct phone number ?",
-            // title: title,
-            action: () async {
-              Navigator.of(context).pop();
-              setState(() {
-                _isLoading = true;
-                _isFormInputEnabled = false;
-              });
-              try {
-                print("signature: $appSignature");
-
-                await Provider.of<Auth>(context, listen: false)
-                    .generatePin(_identity, appSignature);
-
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => Verification(),
-                    settings: RouteSettings(arguments: _identity)));
-
-                // doesUserExist(context);
-              } on CustomException catch (error) {
-                StatusHandler().handleStatus(
-                    context: context,
-                    error: error,
-                    callback: () {
-                      _submit(context);
-                    });
-              } finally {
-                setState(() {
-                  _isLoading = false;
-                  _isFormInputEnabled = true;
-                });
-              }
+    if (Config.appName.toLowerCase() == "chamasoft") {
+      twoButtonAlertDialog(
+          context: context,
+          message: _identity,
+          title: title,
+          action: () async {
+            Navigator.of(context).pop();
+            setState(() {
+              _isLoading = true;
+              _isFormInputEnabled = false;
             });
+            try {
+              print("signature: $appSignature");
+              await Provider.of<Auth>(context, listen: false)
+                  .generatePin(_identity, appSignature);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => Verification(),
+                  settings: RouteSettings(arguments: _identity)));
+            } on CustomException catch (error) {
+              StatusHandler().handleStatus(
+                  context: context,
+                  error: error,
+                  callback: () {
+                    _submit(context);
+                  });
+            } finally {
+              setState(() {
+                _isLoading = false;
+                _isFormInputEnabled = true;
+              });
+            }
+          });
+    } else {
+      twoButtonAlertDialogWithContentList(
+          context: context,
+          message: _identity,
+          promptMessage: "We will be verifying your phone number",
+          confirmMessage: "Is this your correct phone number ?",
+          // title: title,
+          action: () async {
+            Navigator.of(context).pop();
+            setState(() {
+              _isLoading = true;
+              _isFormInputEnabled = false;
+            });
+            try {
+              print("signature: $appSignature");
+
+              await Provider.of<Auth>(context, listen: false)
+                  .generatePin(_identity, appSignature);
+
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => Verification(),
+                  settings: RouteSettings(arguments: _identity)));
+
+              // doesUserExist(context);
+            } on CustomException catch (error) {
+              StatusHandler().handleStatus(
+                  context: context,
+                  error: error,
+                  callback: () {
+                    _submit(context);
+                  });
+            } finally {
+              setState(() {
+                _isLoading = false;
+                _isFormInputEnabled = true;
+              });
+            }
+          });
+    }
   }
 
   @override

@@ -1573,7 +1573,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                           ),
                                           customTitle1(
                                             text: /* _currentGroup.disableArrears
-                                        ? */
+                                                                                ? */
                                                 _currentGroup.groupCurrency +
                                                     " " +
                                                     currencyFormat.format(
@@ -1590,8 +1590,8 @@ class _ContrubutionsState extends State<Contrubutions> {
                                             color: /* (dashboardData
                                                 .memberContributionArrears) >
                                             0
-                                        ? Colors.red[400]
-                                        : */
+                                                                                ? Colors.red[400]
+                                                                                : */
                                                 Theme.of(context)
                                                     // ignore: deprecated_member_use
                                                     .textSelectionHandleColor,

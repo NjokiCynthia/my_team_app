@@ -7,6 +7,8 @@ import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/screens/chamasoft/feedback.dart';
+import 'package:chamasoft/screens/login.dart';
+import 'package:chamasoft/screens/login_password.dart';
 import 'package:chamasoft/screens/webView-launcher.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -119,9 +121,19 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 color: Colors.red,
                 fontWeight: FontWeight.w600,
               ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                StatusHandler().logout(context);
+              onPressed: () async {
+                if (Config.appName.toLowerCase() == "chamasoft") {
+                  Navigator.of(context).pop();
+                  StatusHandler().logout(context);
+                } else {
+                  print("User is logged out");
+                  final result = await Navigator.of(context)
+                      .pushNamedAndRemoveUntil(
+                          LoginPassword.namedRoute, (route) => false);
+
+                  print("On pressing logout the route is $result");
+                  StatusHandler().logout(context);
+                }
               },
               shape: new RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(4.0)),

@@ -146,16 +146,19 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
               arguments: _identity);
         }
       } else {
+        final uniqueCode = response['uniqueCode'];
         if (Config.appName.toLowerCase() == "chamasoft") {
-          final uniqueCode = response['uniqueCode'];
           Navigator.pushReplacementNamed(context, SignUp.namedRoute,
               arguments: {
                 "identity": _identity,
                 "uniqueCode": uniqueCode,
               });
         } else if (Config.appName.toLowerCase() == "eazzyclub") {
-          Navigator.of(context).pushReplacementNamed(RegisterScreen.namedRoute,
-              arguments: _identity);
+          Navigator.of(context)
+              .pushReplacementNamed(RegisterScreen.namedRoute, arguments: {
+            "identity": _identity,
+            "uniqueCode": uniqueCode,
+          });
         }
       }
     } on CustomException catch (error) {

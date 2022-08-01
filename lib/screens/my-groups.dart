@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
+import 'package:chamasoft/screens/login_password.dart';
 import 'package:chamasoft/screens/new-group/new-group.dart';
 // import 'package:chamasoft/screens/pinlogin.dart';
 import 'package:chamasoft/helpers/common.dart';
@@ -144,8 +146,15 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
               text: "Cancel",
               // ignore: deprecated_member_use
               color: Theme.of(context).textSelectionHandleColor,
-              action: () {
-                Navigator.of(context).pop();
+              action: () async {
+                if (Config.appName.toLowerCase() == "chamasoft") {
+                  Navigator.of(context).pop();
+                } else {
+                  print("Logout was clicked from MyGroups Screen");
+                  await Navigator.of(context).pushNamedAndRemoveUntil(
+                      LoginPassword.namedRoute, (route) => false);
+                  StatusHandler().logout(context);
+                }
               },
             ),
             // ignore: deprecated_member_use

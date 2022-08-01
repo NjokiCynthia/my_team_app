@@ -4,6 +4,7 @@ import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chatwithcontactsupport.dart';
 import 'package:chamasoft/screens/forgotpasswordverification.dart';
+import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/screens/register.dart';
 import 'package:chamasoft/screens/resetpassword.dart';
@@ -27,13 +28,14 @@ class LoginPassword extends StatefulWidget {
 
 class _LoginPasswordState extends State<LoginPassword> {
   TextEditingController _passwordController;
+  final GlobalKey<FormState> _formKey = GlobalKey();
   bool _isFormInputEnabled = true;
   bool _passwordVisible = true;
   FocusNode _focusNode;
-  String _identity;
+
   bool _isLoading = false;
   String appSignature = "{{app signature}}";
-  final GlobalKey<FormState> _formKey = GlobalKey();
+
   String _logo = Config.appName.toLowerCase() == 'chamasoft'
       ? "cs.png"
       : "equity-logo.png";
@@ -110,7 +112,7 @@ class _LoginPasswordState extends State<LoginPassword> {
         },
         callAction: () {
           setState(() {
-            _launchContactNumber("tel:0741564020");
+            _launchContactNumber("tel:0733366240");
           });
         });
   }
@@ -121,10 +123,17 @@ class _LoginPasswordState extends State<LoginPassword> {
     });
   }
 
+  void _submit() {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+
+    _formKey.currentState.save();
+    Navigator.of(context).pushNamed(MyGroups.namedRoute);
+  }
+
   @override
   Widget build(BuildContext context) {
-    _identity = ModalRoute.of(context).settings.arguments as String;
-
     final auth = Provider.of<Auth>(context);
     String userIdentity = auth.phoneNumber;
     print("The user's phone number is ${userIdentity}");
@@ -236,8 +245,12 @@ class _LoginPasswordState extends State<LoginPassword> {
                                       ],
                                       onSelected: (value) {
                                         if (value == 1) {
-                                          Navigator.of(context).popUntil(
-                                              (route) => route.isFirst);
+                                          // Navigator.of(context).popUntil(
+                                          //     (route) => route.isFirst);
+                                          Navigator.of(context)
+                                              .pushNamedAndRemoveUntil(
+                                                  Login.namedRoute,
+                                                  (route) => false);
                                         }
                                       },
                                     )),
@@ -264,16 +277,22 @@ class _LoginPasswordState extends State<LoginPassword> {
                               focusNode: _focusNode,
                               style: TextStyle(fontFamily: 'SegoeUI'),
                               onSaved: (value) {},
+                              validator: (value) {
+                                if (value.trim() == '' ||
+                                    value.trim() == null) {
+                                  return 'Please enter your password';
+                                } else if (value.trim().length < 5) {
+                                  return 'Your password is too short';
+                                }
+                                return null;
+                              },
                             ),
                             SizedBox(
                               height: 15,
                             ),
                             defaultButtonWithBg(
                                 text: 'Sign In',
-                                action: () {
-                                  Navigator.of(context)
-                                      .pushNamed(MyGroups.namedRoute);
-                                },
+                                action: () => _submit(),
                                 btnColor: Theme.of(context).primaryColor),
                             SizedBox(
                               height: 10,
