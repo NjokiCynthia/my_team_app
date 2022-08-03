@@ -6,17 +6,23 @@ class ContributionStatementRow {
   double payable;
   double balance;
 
-
   ContributionStatementRow.header({this.isHeader, this.month});
 
-  ContributionStatementRow({this.isHeader, this.title, this.description, this.amount, this.date, this.payable, this.balance});
+  ContributionStatementRow(
+      {this.isHeader,
+      this.title,
+      this.description,
+      this.amount,
+      this.date,
+      this.payable,
+      this.balance});
 }
 
 class ContributionStatementModel {
   List<ContributionStatementRow> statements = [];
   double totalPaid, totalDue, totalBalance;
   String statementAsAt, statementFrom, statementTo;
-  String role, email, phone,memberName;
+  String role, email, phone, memberName;
 
   ContributionStatementModel(
       {this.statements,
