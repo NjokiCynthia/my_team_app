@@ -1404,7 +1404,7 @@ class _ContrubutionsState extends State<Contrubutions> {
   List<ContributionStatementRow> _contributionStatements = [];
   ContributionStatementModel _contributionStatementModel;
   double _totalContribution = 0;
-  bool _isInit = true;
+  // bool _isInit = true;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _isLoading = false;
 
@@ -1437,16 +1437,7 @@ class _ContrubutionsState extends State<Contrubutions> {
       });
     });
 
-    _isInit = false;
     return true;
-  }
-
-  @override
-  void didChangeDependencies() {
-    if (_isInit)
-      WidgetsBinding.instance
-          .addPostFrameCallback((_) => _fetchContributionBreakDownData());
-    super.didChangeDependencies();
   }
 
   Future<void> _getContributionStatement(BuildContext context) async {
@@ -1471,7 +1462,7 @@ class _ContrubutionsState extends State<Contrubutions> {
     final currencyFormat = new NumberFormat("#,##0", "en_US");
     Group _currentGroup =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
-    bool _isLoading = false;
+    // bool _isLoading = false;
 
     Future<void> _getContributionsSummary(BuildContext context) async {
       try {
@@ -1636,15 +1627,16 @@ class _ContrubutionsState extends State<Contrubutions> {
                                             width: 10,
                                           ),
                                           InkWell(
-                                            onTap: () {
+                                            onTap: () async {
                                               // Navigator.of(context).push(
                                               //     MaterialPageRoute(builder:
                                               //         (BuildContext context) {
                                               //   return ContributionStatement(
                                               //       statementFlag:
                                               //           CONTRIBUTION_STATEMENT);
-                                              // })
-                                              // );
+                                              // }));
+
+                                              await _fetchContributionBreakDownData();
 
                                               showDialog(
                                                   context: context,
@@ -1658,6 +1650,20 @@ class _ContrubutionsState extends State<Contrubutions> {
                                                                       10.0))),
                                                       title: Text(
                                                           "Contribution Summary"),
+                                                      actions: [
+                                                        TextButton(
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                            child: customTitle1(
+                                                                text: "Ok",
+                                                                fontSize: 14,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColor))
+                                                      ],
                                                       content: Container(
                                                         child:
                                                             SingleChildScrollView(
