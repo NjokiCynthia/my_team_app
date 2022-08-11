@@ -1,7 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:crisp/crisp_view.dart';
 import 'package:crisp/models/main.dart';
 import 'package:crisp/models/user.dart';
-import 'package:flutter/material.dart';
 
 class ChatWithContactSupportScreen extends StatefulWidget {
   @override

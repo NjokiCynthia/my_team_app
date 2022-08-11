@@ -46,6 +46,7 @@ dependencies:
   flutter_toggle_tab: "^0.0.1+2"
   back_button_interceptor: ^4.3.1
   grouped_list: ^4.2.0
+  crisp: ^0.3.1
  
   
 
@@ -68,9 +69,11 @@ dependencies:
   # contact_picker: any
   carousel_slider: ^4.0.0
   smooth_page_indicator: ^1.0.0+2
+  
   pie_chart: ^5.1.0
   get:
-  crisp: ^0.3.1
+ 
+  
   
   
  

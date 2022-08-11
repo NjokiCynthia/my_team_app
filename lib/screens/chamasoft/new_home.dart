@@ -1408,11 +1408,7 @@ class _ContrubutionsState extends State<Contrubutions> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _isLoading = false;
 
-  Future<bool> _fetchContributionBreakDownData() async {
-    setState(() {
-      _isLoading = true;
-    });
-
+  Future<void> _fetchContributionBreakDownData() async {
     _contributionStatementModel =
         Provider.of<Groups>(context, listen: false).getContributionStatements;
 
@@ -1422,22 +1418,193 @@ class _ContrubutionsState extends State<Contrubutions> {
       // _totalPaid = _contributionStatementModel.totalPaid;
     }
 
-    _getContributionStatement(context).then((_) {
+    await Provider.of<Groups>(context, listen: false)
+        .fetchContributionStatement(CONTRIBUTION_STATEMENT)
+        .then((_) {
       _contributionStatementModel =
           Provider.of<Groups>(context, listen: false).getContributionStatements;
-
-      setState(() {
-        _isLoading = false;
-
-        if (_contributionStatementModel != null) {
-          _contributionStatements = _contributionStatementModel.statements;
-          _totalContribution = _contributionStatementModel.totalPaid;
-          // _totalPaid = _contributionStatementModel.totalPaid;
-        }
-      });
+      if (_contributionStatementModel != null) {
+        _contributionStatements = _contributionStatementModel.statements;
+        _totalContribution = _contributionStatementModel.totalPaid;
+        // _totalPaid = _contributionStatementModel.totalPaid;
+      }
     });
+  }
 
-    return true;
+  void _contributionSummaryAlertDialog() async {
+    Group _currentGroup =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    await showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            title: Text("Contribution Summary"),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: customTitle1(
+                      text: "Ok",
+                      fontSize: 14,
+                      color: Theme.of(context).primaryColor))
+            ],
+            content: Container(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 2,
+                          child: subtitle3(
+                              text: "Date",
+                              color: Theme.of(context).primaryColor,
+                              textAlign: TextAlign.start),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: subtitle3(
+                              text: 'Paid (${_currentGroup.groupCurrency})',
+                              color: Theme.of(context).primaryColor,
+                              textAlign: TextAlign.end),
+                        ),
+                      ],
+                    ),
+                    Container(
+                        child: _contributionStatements.length > 0
+                            ? Container(
+                                // height:
+                                //     400,
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: _contributionStatements.length,
+                                    itemBuilder: (context, index) {
+                                      ContributionStatementRow row =
+                                          _contributionStatements[index];
+                                      return Container(
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 8.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 5.0),
+                                                child: Text(
+                                                  '\u2022',
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .primaryColor),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 2,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    customTitle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      text: row.date,
+                                                      color: Theme.of(context)
+                                                          .textSelectionHandleColor,
+                                                    ),
+                                                    customTitle2(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        text: row.title,
+                                                        color: Theme.of(context)
+                                                            .textSelectionHandleColor,
+                                                        textAlign:
+                                                            TextAlign.start),
+                                                  ],
+                                                ),
+                                              ),
+                                              Divider(
+                                                color: Colors.black,
+                                                thickness: 2,
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: customTitle(
+                                                    fontSize: 12,
+                                                    text: currencyFormat
+                                                        .format(row.amount),
+                                                    color: Theme.of(context)
+                                                        .textSelectionHandleColor,
+                                                    textAlign: TextAlign.end),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                              )
+                            : customTitle(
+                                text: "No Contributions yet",
+                                fontSize: 16,
+                                color: Theme.of(context)
+                                    .textSelectionHandleColor)),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          customTitle1(
+                              text: "Total Amount",
+                              fontSize: 14,
+                              textAlign: TextAlign.start),
+                          customTitle1(
+                              text: _currentGroup.groupCurrency +
+                                  " " +
+                                  currencyFormat.format(_totalContribution),
+                              fontSize: 16,
+                              textAlign: TextAlign.end)
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+  void _displayContributionSummaryDialog(BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return Dialog(
+            backgroundColor: Colors.white,
+            child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    customTitle1(text: "Loading", fontSize: 14)
+                  ],
+                )),
+          );
+        });
+
+    await _fetchContributionBreakDownData();
+    Navigator.of(context).pop();
+    _contributionSummaryAlertDialog();
   }
 
   Future<void> _getContributionStatement(BuildContext context) async {
@@ -1626,202 +1793,33 @@ class _ContrubutionsState extends State<Contrubutions> {
                                           SizedBox(
                                             width: 10,
                                           ),
-                                          InkWell(
-                                            onTap: () async {
-                                              // Navigator.of(context).push(
-                                              //     MaterialPageRoute(builder:
-                                              //         (BuildContext context) {
-                                              //   return ContributionStatement(
-                                              //       statementFlag:
-                                              //           CONTRIBUTION_STATEMENT);
-                                              // }));
-
-                                              await _fetchContributionBreakDownData();
-
-                                              showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return AlertDialog(
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius.circular(
-                                                                      10.0))),
-                                                      title: Text(
-                                                          "Contribution Summary"),
-                                                      actions: [
-                                                        TextButton(
-                                                            onPressed: () {
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
-                                                            },
-                                                            child: customTitle1(
-                                                                text: "Ok",
-                                                                fontSize: 14,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .primaryColor))
-                                                      ],
-                                                      content: Container(
-                                                        child:
-                                                            SingleChildScrollView(
-                                                          child: Column(
-                                                            children: [
-                                                              Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                children: <
-                                                                    Widget>[
-                                                                  Expanded(
-                                                                    flex: 2,
-                                                                    child: subtitle3(
-                                                                        text:
-                                                                            "Date",
-                                                                        color: Theme.of(context)
-                                                                            .primaryColor,
-                                                                        textAlign:
-                                                                            TextAlign.start),
-                                                                  ),
-                                                                  Expanded(
-                                                                    flex: 1,
-                                                                    child: subtitle3(
-                                                                        text:
-                                                                            'Paid (${_currentGroup.groupCurrency})',
-                                                                        color: Theme.of(context)
-                                                                            .primaryColor,
-                                                                        textAlign:
-                                                                            TextAlign.end),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              Container(
-                                                                  child: _contributionStatements.length >
-                                                                          0
-                                                                      ? Container(
-                                                                          // height:
-                                                                          //     400,
-                                                                          child: ListView.builder(
-                                                                              shrinkWrap: true,
-                                                                              itemCount: _contributionStatements.length,
-                                                                              itemBuilder: (context, index) {
-                                                                                ContributionStatementRow row = _contributionStatements[index];
-                                                                                return Container(
-                                                                                  child: Padding(
-                                                                                    padding: const EdgeInsets.only(top: 8.0),
-                                                                                    child: Row(
-                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                      children: [
-                                                                                        Padding(
-                                                                                          padding: const EdgeInsets.only(right: 5.0),
-                                                                                          child: Text(
-                                                                                            '\u2022',
-                                                                                            style: TextStyle(color: Theme.of(context).primaryColor),
-                                                                                          ),
-                                                                                        ),
-                                                                                        Expanded(
-                                                                                          flex: 2,
-                                                                                          child: Column(
-                                                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                            children: [
-                                                                                              customTitle(
-                                                                                                fontSize: 12,
-                                                                                                fontWeight: FontWeight.w500,
-                                                                                                text: row.date,
-                                                                                                color: Theme.of(context).textSelectionHandleColor,
-                                                                                              ),
-                                                                                              customTitle2(fontSize: 12, fontWeight: FontWeight.w500, text: row.title, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                        Divider(
-                                                                                          color: Colors.black,
-                                                                                          thickness: 2,
-                                                                                        ),
-                                                                                        Expanded(
-                                                                                          flex: 1,
-                                                                                          child: customTitle(fontSize: 12, text: currencyFormat.format(row.amount), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
-                                                                                        ),
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                );
-                                                                              }),
-                                                                        )
-                                                                      : customTitle(
-                                                                          text:
-                                                                              "No Contributions yet",
-                                                                          fontSize:
-                                                                              16,
-                                                                          color:
-                                                                              Theme.of(context).textSelectionHandleColor)),
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        top:
-                                                                            8.0),
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    customTitle1(
-                                                                        text:
-                                                                            "Total Amount",
-                                                                        fontSize:
-                                                                            14,
-                                                                        textAlign:
-                                                                            TextAlign.start),
-                                                                    customTitle1(
-                                                                        text: _currentGroup.groupCurrency +
-                                                                            " " +
-                                                                            currencyFormat.format(
-                                                                                _totalContribution),
-                                                                        fontSize:
-                                                                            16,
-                                                                        textAlign:
-                                                                            TextAlign.end)
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  });
-                                            },
-                                            child: customTitle1(
-                                              text: /* _currentGroup.disableArrears
-                                                                                  ? */
-                                                  _currentGroup.groupCurrency +
-                                                      " " +
-                                                      currencyFormat.format(
-                                                          /* dashboardData
-                                                  .memberContributionAmount */
-                                                          dashboardContributionSummary
-                                                              .memberContributionAmount
-                                                              .abs())
-                                              /*  : _currentGroup.groupCurrency +
-                                              " " +
-                                              currencyFormat.format(dashboardData
-                                                  .memberContributionArrears) */
-                                              ,
-                                              color: /* (dashboardData
-                                                  .memberContributionArrears) >
-                                              0
-                                                                                  ? Colors.red[400]
-                                                                                  : */
-                                                  Theme.of(context)
-                                                      // ignore: deprecated_member_use
-                                                      .textSelectionHandleColor,
-                                              textAlign: TextAlign.start,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                            ),
+                                          customTitle1(
+                                            text: /* _currentGroup.disableArrears
+                                                                                ? */
+                                                _currentGroup.groupCurrency +
+                                                    " " +
+                                                    currencyFormat.format(
+                                                        /* dashboardData
+                                                .memberContributionAmount */
+                                                        dashboardContributionSummary
+                                                            .memberContributionAmount
+                                                            .abs())
+                                            /*  : _currentGroup.groupCurrency +
+                                            " " +
+                                            currencyFormat.format(dashboardData
+                                                .memberContributionArrears) */
+                                            ,
+                                            color: /* (dashboardData
+                                                .memberContributionArrears) >
+                                            0
+                                                                                ? Colors.red[400]
+                                                                                : */
+                                                Theme.of(context)
+                                                    // ignore: deprecated_member_use
+                                                    .textSelectionHandleColor,
+                                            textAlign: TextAlign.start,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
                                           ),
                                         ],
                                       )
@@ -1854,7 +1852,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                         fontWeight: FontWeight.w600,
                                       ),
                                 SizedBox(
-                                  height: 20,
+                                  height: 10,
                                 ),
                                 customTitle(
                                   text: "Group Total Contribution",
@@ -1929,6 +1927,22 @@ class _ContrubutionsState extends State<Contrubutions> {
                                           ),
                                         ],
                                       ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    _displayContributionSummaryDialog(context);
+                                  },
+                                  child: customTitle(
+                                      text: "View your Contributions",
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.green),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
                               ],
                             ),
                           ],
@@ -2019,7 +2033,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                   children: [
                                     customTitle(
                                       text: "Next Contribution Date",
-                                      fontSize: 13,
+                                      fontSize: 11.5,
                                       textAlign: TextAlign.start,
                                       fontWeight: FontWeight.w400,
                                       color: Theme.of(context)
