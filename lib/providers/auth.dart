@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io' as io;
 
-import 'package:chamasoft/config.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/endpoint-url.dart';
 import 'package:flutter/material.dart';

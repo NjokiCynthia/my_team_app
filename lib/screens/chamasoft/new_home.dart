@@ -1940,9 +1940,9 @@ class _ContrubutionsState extends State<Contrubutions> {
                                       fontWeight: FontWeight.w400,
                                       color: Colors.green),
                                 ),
-                                SizedBox(
-                                  height: 10,
-                                ),
+                                // SizedBox(
+                                //   height: 3,
+                                // ),
                               ],
                             ),
                           ],
