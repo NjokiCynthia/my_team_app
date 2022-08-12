@@ -17,6 +17,7 @@ import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-contributio
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-members-manually.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/list-contacts.dart';
 import 'package:chamasoft/screens/chamasoft/transactions.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/account-to-account-transfer.dart';
 import 'package:chamasoft/screens/configure-group.dart';
 import 'package:chamasoft/screens/create-group.dart';
 import 'package:chamasoft/screens/intro.dart';
@@ -30,6 +31,7 @@ import 'package:chamasoft/screens/signup.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/notifications.dart';
 import 'package:chamasoft/helpers/theme.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -60,6 +62,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+// void logSents(){
+//   facebookAppEvents.
+// }
+
   void getCurrentAppTheme() async {
     themeChangeProvider.darkTheme =
         await themeChangeProvider.darkThemePreference.getTheme();

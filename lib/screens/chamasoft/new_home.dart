@@ -1716,199 +1716,169 @@ class _ContrubutionsState extends State<Contrubutions> {
                     0
                 ? Container(
                     color: Theme.of(context).backgroundColor,
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            chart.PieChart(
-                              dataMap: dataMap,
-                              animationDuration: Duration(milliseconds: 800),
-                              chartLegendSpacing: 32,
-                              chartRadius:
-                                  MediaQuery.of(context).size.width / 3.2,
-                              initialAngleInDegree: 0,
-                              ringStrokeWidth: 32,
-                              // colorList: [Colors.red[300], primaryColor],
-                              gradientList: gradientList,
-                              // gradientList: [colorMain, color],
-                              // centerTextStyle:
-                              //     TextStyle(fontFamily: 'SegoeUI', fontSize: 36.0),
-                              legendOptions: chart.LegendOptions(
-                                showLegendsInRow: false,
-                                legendPosition: chart.LegendPosition.bottom,
-                                showLegends: false,
-                                legendTextStyle: TextStyle(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              chart.PieChart(
+                                dataMap: dataMap,
+                                animationDuration: Duration(milliseconds: 800),
+                                chartLegendSpacing: 32,
+                                chartRadius:
+                                    MediaQuery.of(context).size.width / 3.2,
+                                initialAngleInDegree: 0,
+                                ringStrokeWidth: 32,
+                                // colorList: [Colors.red[300], primaryColor],
+                                gradientList: gradientList,
+                                // gradientList: [colorMain, color],
+                                // centerTextStyle:
+                                //     TextStyle(fontFamily: 'SegoeUI', fontSize: 36.0),
+                                legendOptions: chart.LegendOptions(
+                                  showLegendsInRow: false,
+                                  legendPosition: chart.LegendPosition.bottom,
+                                  showLegends: false,
+                                  legendTextStyle: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      // ignore: deprecated_member_use
+                                      color: Theme.of(context)
+                                          .textSelectionHandleColor),
+                                ),
+                                chartValuesOptions: chart.ChartValuesOptions(
+                                  showChartValueBackground: false,
+                                  showChartValues: true,
+                                  showChartValuesInPercentage: true,
+                                  showChartValuesOutside: false,
+                                  decimalPlaces: 0,
+                                  chartValueStyle: TextStyle(
+                                    fontFamily: 'SegoeUI',
+                                    fontSize: 14.0,
+                                    color: Theme.of(context)
+                                        // ignore: deprecated_member_use
+                                        .textSelectionColor,
                                     fontWeight: FontWeight.w500,
                                     // ignore: deprecated_member_use
+                                    /* color: Colors.black */
+                                  ),
+                                ),
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  customTitle(
+                                    text: "Your Total Contribution",
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
                                     color: Theme.of(context)
-                                        .textSelectionHandleColor),
-                              ),
-                              chartValuesOptions: chart.ChartValuesOptions(
-                                showChartValueBackground: false,
-                                showChartValues: true,
-                                showChartValuesInPercentage: true,
-                                showChartValuesOutside: false,
-                                decimalPlaces: 0,
-                                chartValueStyle: TextStyle(
-                                  fontFamily: 'SegoeUI',
-                                  fontSize: 14.0,
-                                  color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionColor,
-                                  fontWeight: FontWeight.w500,
-                                  // ignore: deprecated_member_use
-                                  /* color: Colors.black */
-                                ),
-                              ),
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                customTitle(
-                                  text: "Your Total Contribution",
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
-                                ),
-                                /* dashboardData.memberContributionAmount */
-                                dashboardContributionSummary
-                                            .memberContributionAmount
-                                            .abs() >
-                                        0
-                                    ? Row(
-                                        children: [
-                                          circleButton(
-                                            backgroundColor: /* dashboardData
-                                                .memberContributionAmount >
-                                            0
-                                        ?  */
-                                                // Colors.red[300]
-                                                primaryColor.withOpacity(.3)
-                                            /* : Colors
-                                            .white */ /* rimaryColor.withOpacity(.3) */,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          customTitle1(
-                                            text: /* _currentGroup.disableArrears
-                                                                                ? */
-                                                _currentGroup.groupCurrency +
-                                                    " " +
-                                                    currencyFormat.format(
-                                                        /* dashboardData
-                                                .memberContributionAmount */
-                                                        dashboardContributionSummary
-                                                            .memberContributionAmount
-                                                            .abs())
-                                            /*  : _currentGroup.groupCurrency +
-                                            " " +
-                                            currencyFormat.format(dashboardData
-                                                .memberContributionArrears) */
-                                            ,
-                                            color: /* (dashboardData
-                                                .memberContributionArrears) >
-                                            0
-                                                                                ? Colors.red[400]
-                                                                                : */
-                                                Theme.of(context)
-                                                    // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
-                                            textAlign: TextAlign.start,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ],
-                                      )
-                                    : customTitle1(
-                                        text: /* _currentGroup.disableArrears
-                                    ? */
-                                            _currentGroup.groupCurrency +
-                                                " " +
-                                                currencyFormat.format(
-                                                    /* dashboardData
-                                            .memberContributionAmount */
-                                                    dashboardContributionSummary
-                                                        .memberContributionAmount
-                                                        .abs())
-                                        /*  : _currentGroup.groupCurrency +
-                                        " " +
-                                        currencyFormat.format(dashboardData
-                                            .memberContributionArrears) */
-                                        ,
-                                        color:
-                                            /* (dashboardData.memberContributionArrears) >
-                                            0
-                                        ? Colors.red[400]
-                                        : */
-                                            Theme.of(context)
-                                                // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
-                                        textAlign: TextAlign.start,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                customTitle(
-                                  text: "Group Total Contribution",
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
-                                ),
-                                dashboardContributionSummary
-                                            .groupContributionAmount >
-                                        0
-                                    ? Row(children: [
-                                        circleButton(
-                                          backgroundColor: /*  dashboardData
-                                        .groupPendingLoanBalance >
-                                    0
-                                ? */
-                                              primaryColor
-                                          /*  : Colors
-                                    .white  */ /* rimaryColor.withOpacity(.3) */,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        customTitle1(
-                                          color: Theme.of(context)
-                                              // ignore: deprecated_member_use
-                                              .textSelectionHandleColor,
-                                          text: _currentGroup.groupCurrency +
+                                        // ignore: deprecated_member_use
+                                        .textSelectionHandleColor,
+                                  ),
+                                  /* dashboardData.memberContributionAmount */
+                                  dashboardContributionSummary
+                                              .memberContributionAmount
+                                              .abs() >
+                                          0
+                                      ? Row(
+                                          children: [
+                                            circleButton(
+                                              backgroundColor: /* dashboardData
+                                                  .memberContributionAmount >
+                                              0
+                                          ?  */
+                                                  // Colors.red[300]
+                                                  primaryColor.withOpacity(.3)
+                                              /* : Colors
+                                              .white */ /* rimaryColor.withOpacity(.3) */,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            customTitle1(
+                                              text: /* _currentGroup.disableArrears
+                                                                                  ? */
+                                                  _currentGroup.groupCurrency +
+                                                      " " +
+                                                      currencyFormat.format(
+                                                          /* dashboardData
+                                                  .memberContributionAmount */
+                                                          dashboardContributionSummary
+                                                              .memberContributionAmount
+                                                              .abs())
+                                              /*  : _currentGroup.groupCurrency +
                                               " " +
-                                              currencyFormat.format(
-                                                  /* dashboardData
-                                          .groupContributionAmount */
-                                                  dashboardContributionSummary
-                                                      .groupContributionAmount
-                                                      .abs()),
+                                              currencyFormat.format(dashboardData
+                                                  .memberContributionArrears) */
+                                              ,
+                                              color: /* (dashboardData
+                                                  .memberContributionArrears) >
+                                              0
+                                                                                  ? Colors.red[400]
+                                                                                  : */
+                                                  Theme.of(context)
+                                                      // ignore: deprecated_member_use
+                                                      .textSelectionHandleColor,
+                                              textAlign: TextAlign.start,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ],
+                                        )
+                                      : customTitle1(
+                                          text: /* _currentGroup.disableArrears
+                                      ? */
+                                              _currentGroup.groupCurrency +
+                                                  " " +
+                                                  currencyFormat.format(
+                                                      /* dashboardData
+                                              .memberContributionAmount */
+                                                      dashboardContributionSummary
+                                                          .memberContributionAmount
+                                                          .abs())
+                                          /*  : _currentGroup.groupCurrency +
+                                          " " +
+                                          currencyFormat.format(dashboardData
+                                              .memberContributionArrears) */
+                                          ,
+                                          color:
+                                              /* (dashboardData.memberContributionArrears) >
+                                              0
+                                          ? Colors.red[400]
+                                          : */
+                                              Theme.of(context)
+                                                  // ignore: deprecated_member_use
+                                                  .textSelectionHandleColor,
                                           textAlign: TextAlign.start,
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
                                         ),
-                                      ])
-                                    : Row(
-                                        children: [
-                                          //   circleButton(
-                                          //     backgroundColor: /*  dashboardData
-                                          //         .groupPendingLoanBalance >
-                                          //     0
-                                          // ? */
-                                          //         primaryColor
-                                          //     /*  : Colors
-                                          //     .white  */ /* rimaryColor.withOpacity(.3) */,
-                                          //   ),
-                                          //   SizedBox(
-                                          //     width: 10,
-                                          //   ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  customTitle(
+                                    text: "Group Total Contribution",
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context)
+                                        // ignore: deprecated_member_use
+                                        .textSelectionHandleColor,
+                                  ),
+                                  dashboardContributionSummary
+                                              .groupContributionAmount >
+                                          0
+                                      ? Row(children: [
+                                          circleButton(
+                                            backgroundColor: /*  dashboardData
+                                          .groupPendingLoanBalance >
+                                      0
+                                  ? */
+                                                primaryColor
+                                            /*  : Colors
+                                      .white  */ /* rimaryColor.withOpacity(.3) */,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
                                           customTitle1(
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
@@ -1925,60 +1895,150 @@ class _ContrubutionsState extends State<Contrubutions> {
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600,
                                           ),
-                                        ],
-                                      ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    _displayContributionSummaryDialog(context);
-                                  },
-                                  child: customTitle(
-                                      text: "View your Contributions",
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.green),
-                                ),
-                                // SizedBox(
-                                //   height: 3,
-                                // ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        DottedLine(
-                          direction: Axis.horizontal,
-                          lineLength: double.infinity,
-                          lineThickness: 0.5,
-                          dashLength: 2.0,
-                          dashColor: Colors.black45,
-                          dashRadius: 0.0,
-                          dashGapLength: 2.0,
-                          dashGapColor: Colors.transparent,
-                          dashGapRadius: 0.0,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                InkWell(
-                                  onTap: () {},
-                                  child: Column(
+                                        ])
+                                      : Row(
+                                          children: [
+                                            //   circleButton(
+                                            //     backgroundColor: /*  dashboardData
+                                            //         .groupPendingLoanBalance >
+                                            //     0
+                                            // ? */
+                                            //         primaryColor
+                                            //     /*  : Colors
+                                            //     .white  */ /* rimaryColor.withOpacity(.3) */,
+                                            //   ),
+                                            //   SizedBox(
+                                            //     width: 10,
+                                            //   ),
+                                            customTitle1(
+                                              color: Theme.of(context)
+                                                  // ignore: deprecated_member_use
+                                                  .textSelectionHandleColor,
+                                              text: _currentGroup
+                                                      .groupCurrency +
+                                                  " " +
+                                                  currencyFormat.format(
+                                                      /* dashboardData
+                                              .groupContributionAmount */
+                                                      dashboardContributionSummary
+                                                          .groupContributionAmount
+                                                          .abs()),
+                                              textAlign: TextAlign.start,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ],
+                                        ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      _displayContributionSummaryDialog(
+                                          context);
+                                    },
+                                    child: customTitle(
+                                        text: "View your Contributions",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.green),
+                                  ),
+                                  // SizedBox(
+                                  //   height: 3,
+                                  // ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          DottedLine(
+                            direction: Axis.horizontal,
+                            lineLength: double.infinity,
+                            lineThickness: 0.5,
+                            dashLength: 2.0,
+                            dashColor: Colors.black45,
+                            dashRadius: 0.0,
+                            dashGapLength: 2.0,
+                            dashGapColor: Colors.transparent,
+                            dashGapRadius: 0.0,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  InkWell(
+                                    onTap: () {},
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        customTitle(
+                                          text: (/* dashboardData.memberContributionArrears */ dashboardContributionSummary
+                                                      .memberContributionArrears) <
+                                                  0
+                                              ? "Your Contribution overpayment"
+                                              : "Your Contribution Arrears",
+                                          fontSize: 13,
+                                          textAlign: TextAlign.start,
+                                          fontWeight: FontWeight.w400,
+                                          color: Theme.of(context)
+                                              // ignore: deprecated_member_use
+                                              .textSelectionHandleColor,
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        customTitle1(
+                                          text: /*  _currentGroup.disableArrears
+                                          ?
+                                          _currentGroup.groupCurrency +
+                                              " " +
+                                              currencyFormat.format(dashboardData
+                                                  .memberContributionAmount)
+                                       : */
+                                              _currentGroup.groupCurrency +
+                                                  " " +
+                                                  currencyFormat.format(
+                                                      /* dashboardData
+                                              .memberContributionArrears
+                                              .abs() */
+                                                      dashboardContributionSummary
+                                                          .memberContributionArrears
+                                                          .abs()),
+                                          color:
+                                              (/* dashboardData
+                                              .memberContributionArrears */
+                                                          dashboardContributionSummary
+                                                              .memberContributionArrears) >
+                                                      0
+                                                  ? Colors.red[400]
+                                                  : (/* dashboardData
+                                                  .memberContributionArrears */
+                                                              dashboardContributionSummary
+                                                                  .memberContributionArrears) <
+                                                          0
+                                                      ? Colors.green
+                                                      : Theme.of(context)
+                                                          // ignore: deprecated_member_use
+                                                          .textSelectionHandleColor,
+                                          textAlign: TextAlign.start,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
                                       customTitle(
-                                        text: (/* dashboardData.memberContributionArrears */ dashboardContributionSummary
-                                                    .memberContributionArrears) <
-                                                0
-                                            ? "Your Contribution overpayment"
-                                            : "Your Contribution Arrears",
-                                        fontSize: 13,
+                                        text: "Next Contribution Date",
+                                        fontSize: 11.5,
                                         textAlign: TextAlign.start,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
@@ -1988,83 +2048,29 @@ class _ContrubutionsState extends State<Contrubutions> {
                                       SizedBox(
                                         height: 5,
                                       ),
-                                      customTitle1(
-                                        text: /*  _currentGroup.disableArrears
-                                        ?
-                                        _currentGroup.groupCurrency +
-                                            " " +
-                                            currencyFormat.format(dashboardData
-                                                .memberContributionAmount)
-                                     : */
-                                            _currentGroup.groupCurrency +
-                                                " " +
-                                                currencyFormat.format(
-                                                    /* dashboardData
-                                            .memberContributionArrears
-                                            .abs() */
-                                                    dashboardContributionSummary
-                                                        .memberContributionArrears
-                                                        .abs()),
-                                        color:
-                                            (/* dashboardData
-                                            .memberContributionArrears */
-                                                        dashboardContributionSummary
-                                                            .memberContributionArrears) >
-                                                    0
-                                                ? Colors.red[400]
-                                                : (/* dashboardData
-                                                .memberContributionArrears */
-                                                            dashboardContributionSummary
-                                                                .memberContributionArrears) <
-                                                        0
-                                                    ? Colors.green
-                                                    : Theme.of(context)
-                                                        // ignore: deprecated_member_use
-                                                        .textSelectionHandleColor,
-                                        textAlign: TextAlign.start,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    customTitle(
-                                      text: "Next Contribution Date",
-                                      fontSize: 11.5,
-                                      textAlign: TextAlign.start,
-                                      fontWeight: FontWeight.w400,
-                                      color: Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Row(
-                                      children: [
-                                        customTitle1(
-                                          text:
-                                              // "${DateFormat('MM-dd-yyyy').format(DateTime.fromMicrosecondsSinceEpoch(int.tryParse(dashboardContributionSummary.nextcontributionDate)))} (${dashboardContributionSummary.contributionDateDaysleft == "0 days" ? "today" : dashboardContributionSummary.contributionDateDaysleft != null ? "${dashboardContributionSummary.contributionDateDaysleft} left" : "--"})",
+                                      Row(
+                                        children: [
+                                          customTitle1(
+                                            text:
+                                                // "${DateFormat('MM-dd-yyyy').format(DateTime.fromMicrosecondsSinceEpoch(int.tryParse(dashboardContributionSummary.nextcontributionDate)))} (${dashboardContributionSummary.contributionDateDaysleft == "0 days" ? "today" : dashboardContributionSummary.contributionDateDaysleft != null ? "${dashboardContributionSummary.contributionDateDaysleft} left" : "--"})",
 
-                                              "${/* defaultDateFormat.format */ (nextContributionDateFormatted)} (${dashboardContributionSummary.contributionDateDaysleft == "0 days" ? "today" : dashboardContributionSummary.contributionDateDaysleft != null ? "${dashboardContributionSummary.contributionDateDaysleft} left" : "--"})",
-                                          // "${dashboardData.nextcontributionDate} (${(dashboardData.contributionDateDaysleft == "0 days" ? "today" : dashboardData.contributionDateDaysleft != null ? '${dashboardData.contributionDateDaysleft} left' : "--")})",
-                                          color: Theme.of(context)
-                                              // ignore: deprecated_member_use
-                                              .textSelectionHandleColor,
-                                          textAlign: TextAlign.start,
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                )
-                              ]),
-                        )
-                      ],
+                                                "${/* defaultDateFormat.format */ (nextContributionDateFormatted)} (${dashboardContributionSummary.contributionDateDaysleft == "0 days" ? "today" : dashboardContributionSummary.contributionDateDaysleft != null ? "${dashboardContributionSummary.contributionDateDaysleft} left" : "--"})",
+                                            // "${dashboardData.nextcontributionDate} (${(dashboardData.contributionDateDaysleft == "0 days" ? "today" : dashboardData.contributionDateDaysleft != null ? '${dashboardData.contributionDateDaysleft} left' : "--")})",
+                                            color: Theme.of(context)
+                                                // ignore: deprecated_member_use
+                                                .textSelectionHandleColor,
+                                            textAlign: TextAlign.start,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  )
+                                ]),
+                          )
+                        ],
+                      ),
                     ),
                   )
                 : Container(
