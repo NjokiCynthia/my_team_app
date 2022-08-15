@@ -2038,7 +2038,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                     children: [
                                       customTitle(
                                         text: "Next Contribution Date",
-                                        fontSize: 11.5,
+                                        fontSize: 13,
                                         textAlign: TextAlign.start,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
