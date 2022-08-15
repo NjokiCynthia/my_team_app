@@ -273,23 +273,24 @@ class _LoginState extends State<Login> {
                     heading1(
                         text: Config.appName,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).primaryColor),
+                        color: Config.appName.toLowerCase() == "chamasoft"
+                            ? Theme.of(context).textSelectionHandleColor
+                            : Theme.of(context).primaryColor),
                     SizedBox(
                       height: 10,
                     ),
-                    Container(
-                        child: Config.appName.toLowerCase == 'chamasoft'
-                            ? subtitle2(
-                                text:
-                                    "Enter your phone number or email address below",
-                                // ignore: deprecated_member_use
-                                color:
-                                    Theme.of(context).textSelectionHandleColor)
-                            : subtitle1(
-                                text: "Let's get started",
-                                // ignore: deprecated_member_use
-                                color: Theme.of(context)
-                                    .textSelectionHandleColor)),
+                    subtitle1(
+                        text: Config.appName.toLowerCase() == "chamasoft"
+                            ? "Let's verify your identity first"
+                            : "Let's get started",
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
+                    subtitle2(
+                        text: Config.appName.toLowerCase() == "chamasoft"
+                            ? "Enter your phone number or email address below"
+                            : "",
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
 
                     Row(
                       children: <Widget>[

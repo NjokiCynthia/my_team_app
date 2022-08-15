@@ -250,11 +250,10 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
                             ),
                           ),
                           heading1(
-                              text: Config.appName.toLowerCase() == "chamasoft"
-                                  ? "Chamasoft"
-                                  : "EazzyClub",
-                              color: Theme.of(context).primaryColor),
-                          subtitle1(text: "Verification"),
+                              text: "Verification",
+                              color: Config.appName.toLowerCase() == "chamasoft"
+                                  ? Theme.of(context).textSelectionHandleColor
+                                  : Theme.of(context).primaryColor),
                           SizedBox(
                             height: 10,
                           ),
