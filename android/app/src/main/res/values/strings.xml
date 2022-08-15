@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Chamasoft</string>
+    <string name="facebook_app_id">586493119602273</string>
+    <string name="fb_login_protocol_scheme">fb586493119602273</string>
+    <string name="facebook_client_token">b3654a70057d31105edac084d548936e</string>
 </resources>
