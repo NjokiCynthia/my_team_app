@@ -1982,7 +1982,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                                   0
                                               ? "Your Contribution overpayment"
                                               : "Your Contribution Arrears",
-                                          fontSize: 13,
+                                          fontSize: 12,
                                           textAlign: TextAlign.start,
                                           fontWeight: FontWeight.w400,
                                           color: Theme.of(context)
@@ -2038,7 +2038,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                     children: [
                                       customTitle(
                                         text: "Next Contribution Date",
-                                        fontSize: 13,
+                                        fontSize: 12,
                                         textAlign: TextAlign.start,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
