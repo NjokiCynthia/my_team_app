@@ -2026,7 +2026,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                                           // ignore: deprecated_member_use
                                                           .textSelectionHandleColor,
                                           textAlign: TextAlign.start,
-                                          fontSize: 13,
+                                          fontSize: 12,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ],
@@ -2060,7 +2060,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                                 // ignore: deprecated_member_use
                                                 .textSelectionHandleColor,
                                             textAlign: TextAlign.start,
-                                            fontSize: 13,
+                                            fontSize: 12,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ],
