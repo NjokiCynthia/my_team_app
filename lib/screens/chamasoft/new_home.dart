@@ -1436,7 +1436,7 @@ class _ContrubutionsState extends State<Contrubutions> {
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     await showDialog(
         context: context,
-        barrierDismissible: true,
+        barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
             shape: RoundedRectangleBorder(
@@ -1511,7 +1511,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     customTitle(
-                                                      fontSize: 12,
+                                                      fontSize: 13,
                                                       fontWeight:
                                                           FontWeight.w500,
                                                       text: row.date,
@@ -1519,7 +1519,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                                           .textSelectionHandleColor,
                                                     ),
                                                     customTitle2(
-                                                        fontSize: 12,
+                                                        fontSize: 14,
                                                         fontWeight:
                                                             FontWeight.w500,
                                                         text: row.title,
@@ -1537,7 +1537,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                               Expanded(
                                                 flex: 1,
                                                 child: customTitle(
-                                                    fontSize: 12,
+                                                    fontSize: 14,
                                                     text: currencyFormat
                                                         .format(row.amount),
                                                     color: Theme.of(context)
@@ -1982,7 +1982,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                                   0
                                               ? "Your Contribution overpayment"
                                               : "Your Contribution Arrears",
-                                          fontSize: 13,
+                                          fontSize: 12,
                                           textAlign: TextAlign.start,
                                           fontWeight: FontWeight.w400,
                                           color: Theme.of(context)
@@ -2038,7 +2038,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                     children: [
                                       customTitle(
                                         text: "Next Contribution Date",
-                                        fontSize: 13,
+                                        fontSize: 12,
                                         textAlign: TextAlign.start,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
