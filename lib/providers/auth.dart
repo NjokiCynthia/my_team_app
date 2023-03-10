@@ -14,16 +14,16 @@ class User {
   final String firstName;
   final String lastName;
   final String accessToken;
-  final String phone;
-  final String avatarName;
-  final String email;
-  final String mobileToken;
+  final String? phone;
+  final String? avatarName;
+  final String? email;
+  final String? mobileToken;
 
   User(
-      {@required this.userId,
-      @required this.firstName,
-      @required this.lastName,
-      @required this.accessToken,
+      {required this.userId,
+      required this.firstName,
+      required this.lastName,
+      required this.accessToken,
       this.phone,
       this.email,
       this.avatarName,
@@ -102,7 +102,7 @@ class Auth with ChangeNotifier {
     return io.File(avatarUrl).exists();
   }
 
-  String get displayAvatar {
+  String? get displayAvatar {
     var result = (_avatar != null && _avatar != 'null' && _avatar != '')
         ? CustomHelper.imageUrl + _avatar
         : null;
@@ -112,18 +112,18 @@ class Auth with ChangeNotifier {
   Future<void> setUserProfile() async {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(user)) {
-      String userObject = prefs.getString(user);
+      String? userObject = prefs.getString(user);
       try {
         final extractedUserData =
-            json.decode(userObject) as Map<String, Object>;
+            json.decode(userObject!) as Map<String, Object>;
         if (_phoneNumber == "") {
-          _phoneNumber = extractedUserData[phone]..toString();
+          _phoneNumber = extractedUserData[phone] as String;
         }
         if (_firstName == "") {
-          _firstName = extractedUserData[firstName]..toString();
+          _firstName = extractedUserData[firstName] as String;
         }
         if (_lastName == "") {
-          _lastName = extractedUserData[lastName]..toString();
+          _lastName = extractedUserData[lastName] as String;
         }
         if (_emailAddress == "") {
           _emailAddress = extractedUserData[email]..toString();

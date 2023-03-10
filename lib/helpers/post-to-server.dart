@@ -49,7 +49,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
 3QIDAQAB''';
 
       final parser = RSAKeyParser();
-      final key = parser.parse(splitStr(publicKey));
+      dynamic key = parser.parse(splitStr(publicKey));
       final encryptProtocol = Encrypter(RSA(publicKey: key));
       final encrypted = encryptProtocol.encrypt(randomKey);
       return encrypted.base64;
@@ -63,7 +63,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
     var end = '\n-----END PUBLIC KEY-----';
     int splitCount = str.length ~/ 64;
     // ignore: deprecated_member_use
-    List<String> strList = List();
+    List<String> strList = [];
 
     for (int i = 0; i < splitCount; i++) {
       strList.add(str.substring(64 * i, 64 * (i + 1)));
@@ -80,7 +80,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
     var end = '\n-----END PRIVATE KEY-----';
     int splitCount = str.length ~/ 64;
     // ignore: deprecated_member_use
-    List<String> strList = List();
+    List<String> strList = [];
 
     for (int i = 0; i < splitCount; i++) {
       strList.add(str.substring(64 * i, 64 * (i + 1)));
@@ -122,7 +122,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
           "LbklZ8LTNYtSPV7UrLazVYqN";
 
       final parser = RSAKeyParser();
-      final key = parser.parse(splitPrivateStr(privateKey));
+      dynamic key = parser.parse(splitPrivateStr(privateKey));
       final decryptProtocol = Encrypter(RSA(privateKey: key));
 
       final decrypted = decryptProtocol.decrypt64(encryptedSecretKey);
@@ -135,12 +135,10 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
   static Future<dynamic> generateResponse(String jsonObjectResponse) async {
     try {
       final response = json.decode(jsonObjectResponse);
-      final String secretKey = response["secret"];
-      final String body = response["body"];
+      final String secretKey = response["secret"] ?? "";
+      final String body = response["body"]?? "";
       try {
-        if (body == null ||
-            body.isEmpty ||
-            secretKey == null ||
+        if ( body.isEmpty ||
             secretKey.isEmpty) {
           return;
         }
@@ -174,7 +172,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
           final String versionCode =
               await CustomHelper.getApplicationBuildNumber();
           final String userAccessTokenKey = await Auth.getAccessToken();
-          final String userAccessToken = userAccessTokenKey != null
+          final String userAccessToken = userAccessTokenKey.isNotEmpty
               ? userAccessTokenKey
               : _defaultAuthenticationToken;
           final Map<String, String> headers = {
@@ -248,13 +246,11 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
                       newrequestDate.toString(), newResponseDate.toString());
 
                   throw CustomException(message: message);
-                  break;
                 case 1:
                   //request successful
                   await writeData(url, groupId, userId,
                       newrequestDate.toString(), newResponseDate.toString());
                   return responseBody;
-                  break;
                 case 2:
                 case 3:
                   //generic error
@@ -262,7 +258,6 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
                   await writeData(url, groupId, userId,
                       newrequestDate.toString(), newResponseDate.toString());
                   throw CustomException(message: message);
-                  break;
                 case 4:
                 case 8:
                 case 9:
@@ -272,7 +267,6 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
                   throw CustomException(
                       message: message,
                       status: ErrorStatusCode.statusRequireLogout);
-                  break;
                 case 5:
                 case 6:
                 case 10:
@@ -283,21 +277,18 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
                   throw CustomException(
                       message: message,
                       status: ErrorStatusCode.statusRequireRestart);
-                  break;
                 case 7:
                   //generic error
                   //display error
                   await writeData(url, groupId, userId,
                       newrequestDate.toString(), newResponseDate.toString());
                   throw CustomException(message: message);
-                  break;
                 case 11:
                 case 13:
                   //invalid request id or format
                   await writeData(url, groupId, userId,
                       newrequestDate.toString(), newResponseDate.toString());
                   throw CustomException(message: message);
-                  break;
                 case 12:
                   //duplicate request submitted
                   //treat as case 1
@@ -305,7 +296,6 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
                   await writeData(url, groupId, userId,
                       newrequestDate.toString(), newResponseDate.toString());
                   return responseBody;
-                  break;
                 case 400:
                   //log out user
                   await writeData(url, groupId, userId,
@@ -313,14 +303,12 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
                   throw CustomException(
                       message: ERROR_MESSAGE_LOGIN,
                       status: ErrorStatusCode.statusRequireLogout);
-                  break;
                 case 404:
                   //generic error
                   //display error
                   await writeData(url, groupId, userId,
                       newrequestDate.toString(), newResponseDate.toString());
                   throw CustomException(message: ERROR_MESSAGE);
-                  break;
                 default:
                   //generic error
                   //display error

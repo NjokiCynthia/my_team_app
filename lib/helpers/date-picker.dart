@@ -10,16 +10,16 @@ class DatePicker extends StatelessWidget {
   final ValueChanged<DateTime> selectDate;
 
   const DatePicker({
-    Key key,
-    this.labelText,
-    this.selectedDate,
-    this.selectDate,
-    this.lastDate,
-    this.firstDate,
+    required Key key,
+    required this.labelText,
+    required this.selectedDate,
+    required this.selectDate,
+    required this.lastDate,
+    required this.firstDate,
   }) : super(key: key);
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: firstDate==null?new DateTime(1970, 8):firstDate,
@@ -36,26 +36,26 @@ class DatePicker extends StatelessWidget {
       valueStyle: inputTextStyle(),
       onPressed: () {
         _selectDate(context);
-      },
+      }, child: null,
     );
   }
 }
 
 class _InputDropdown extends StatelessWidget {
   const _InputDropdown(
-      {Key key,
-      this.child,
-      this.labelText,
-      this.valueText,
-      this.valueStyle,
-      this.onPressed})
+      {Key? key, 
+        required this.child,
+      required this.labelText,
+      required this.valueText,
+      required this.valueStyle,
+      required this.onPressed})
       : super(key: key);
 
   final String labelText;
   final String valueText;
   final TextStyle valueStyle;
   final VoidCallback onPressed;
-  final Widget child;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {

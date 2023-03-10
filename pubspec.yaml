@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_vector_icons: ^2.0.0
-  # line_awesome_icons: ^1.0.4+2
+  line_awesome_flutter: ^2.0.0
   introduction_screen: ^3.1.6
   http: ^0.13.5
   launch_review: ^3.0.1
