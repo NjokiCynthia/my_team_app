@@ -3,10 +3,13 @@ import 'dart:math';
 
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/helpers/common.dart';
-import 'package:country_code_picker/country_code.dart';
+// import 'package:country_code_picker/country_code.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:image/image.dart';
 import 'package:libphonenumber/libphonenumber.dart';
-import 'package:package_info/package_info.dart';
+// import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+
 import 'package:path_provider/path_provider.dart' as syspaths;
 import 'package:url_launcher/url_launcher.dart';
 

@@ -24,10 +24,11 @@ dependencies:
   permission_handler: ^10.2.0
   fl_chart: ^0.61.0
   # package_info: ^2.0.2
+  package_info_plus: ^3.0.3
   encrypt: ^5.0.1
   tuple: ^2.0.1
   cached_network_image: ^3.2.3
-#  country_code_picker: ^1.4.0
+  country_code_picker: ^3.0.0
   libphonenumber: ^2.0.1
   shimmer: ^2.0.0
   flutter_svg: ^2.0.3
@@ -36,7 +37,7 @@ dependencies:
   sqflite: ^2.2.5
   date_time_picker: ^2.1.0
   flutter_share_me: ^1.4.0
-  # dropdown_formfield: ^0.1.4 - null safety
+  # dropdown_formfield: ^0.1.4
   firebase_messaging: ^14.2.6
   firebase_core: ^2.7.1
   flutter_local_notifications: ^6.0.0
@@ -54,7 +55,7 @@ dependencies:
   image_gallery_saver: '^1.6.9'
   pdf: any
   path_provider: ^2.0.13
-  open_file: ^3.1.0
+  # open_file: ^3.2.1
   dotted_line: ^3.0.0
   data_table_2: ^2.1.1
   webview_flutter: any
