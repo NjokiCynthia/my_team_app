@@ -5,20 +5,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 Widget defaultButton({BuildContext context, String text, Function onPressed}) {
   // ignore: deprecated_member_use
-  return RaisedButton(
-    color: primaryColor,
+  return ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: primaryColor,
+    ),
     child: Padding(
       padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
       child: Text(
         text,
-        style: TextStyle(fontFamily: 'SegoeUI', fontWeight: FontWeight.w700),
+        style: TextStyle(
+            fontFamily: 'SegoeUI',
+            fontWeight: FontWeight.w700,
+            color: Colors.white),
       ),
     ),
-    textColor: Colors.white,
     onPressed: onPressed,
   );
 }
@@ -34,17 +38,20 @@ Widget screenActionButton(
     width: buttonSize,
     height: buttonSize,
     // ignore: deprecated_member_use
-    child: FlatButton(
-      padding: EdgeInsets.all(0.0),
+    child: TextButton(
+      style: TextButton.styleFrom(
+          padding: EdgeInsets.all(0.0),
+          shape: new RoundedRectangleBorder(
+              borderRadius: new BorderRadius.circular(30.0)),
+          backgroundColor: backgroundColor),
+
       child: Icon(
         icon,
         size: iconSize,
       ),
       onPressed: action,
-      shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(30.0)),
-      textColor: textColor,
-      color: backgroundColor,
+
+      // textColor: textColor,
     ),
   );
 }
@@ -66,8 +73,10 @@ Widget groupInfoButton(
     margin: EdgeInsets.only(bottom: 10.0),
     // height: 42.0,
     // ignore: deprecated_member_use
-    child: OutlineButton(
-      padding: EdgeInsets.all(0.0),
+    child: OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        padding: EdgeInsets.all(0.0),
+      ),
       child: ListTile(
         dense: true,
         enabled: true,
@@ -136,8 +145,14 @@ Widget smallBadgeButton(
   return Container(
     height: buttonHeight,
     // ignore: deprecated_member_use
-    child: FlatButton(
-      padding: EdgeInsets.symmetric(horizontal: 6.0),
+    child: TextButton(
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.symmetric(horizontal: 6.0),
+        shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(30.0)),
+        backgroundColor: backgroundColor,
+      ),
+
       child: customTitle(
         text: text,
         color: textColor,
@@ -145,10 +160,8 @@ Widget smallBadgeButton(
         fontSize: textSize,
       ),
       onPressed: action,
-      shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(30.0)),
-      textColor: textColor,
-      color: backgroundColor,
+
+      //textColor: textColor,
     ),
   );
 }
@@ -160,12 +173,18 @@ Widget smallBadgeButtonWithIcon(
     Function action,
     double buttonHeight = 24.0,
     double textSize = 12.0,
-    IconData iconData = LineAwesomeIcons.warning}) {
+    IconData iconData = LineAwesomeIcons.parking}) {
   return Container(
     height: buttonHeight,
     // ignore: deprecated_member_use
-    child: FlatButton(
-      padding: EdgeInsets.symmetric(horizontal: 6.0),
+    child: TextButton(
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.symmetric(horizontal: 6.0),
+        shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(30.0)),
+        backgroundColor: backgroundColor,
+      ),
+
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -187,10 +206,8 @@ Widget smallBadgeButtonWithIcon(
         ],
       ),
       onPressed: action,
-      shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(30.0)),
-      textColor: textColor,
-      color: backgroundColor,
+
+      // textColor: textColor,
     ),
   );
 }
@@ -202,8 +219,12 @@ Widget cardAmountButton(
     double size,
     Color color}) {
   // ignore: deprecated_member_use
-  return FlatButton(
-    padding: EdgeInsets.fromLTRB(16.0, 0.0, 6.0, 0.0),
+  return TextButton(
+    style: TextButton.styleFrom(
+      padding: EdgeInsets.fromLTRB(16.0, 0.0, 6.0, 0.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      //overlayColor: Colors.blueGrey.withOpacity(0.1),
+    ),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
@@ -236,9 +257,7 @@ Widget cardAmountButton(
         )
       ],
     ),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
     onPressed: action,
-    highlightColor: Colors.blueGrey.withOpacity(0.1),
   );
 }
 
@@ -249,8 +268,12 @@ Widget plainButtonWithArrow(
     Color color,
     double spacing = 4.0}) {
   // ignore: deprecated_member_use
-  return FlatButton(
-    padding: EdgeInsets.fromLTRB(16.0, 0.0, 6.0, 0.0),
+  return TextButton(
+    style: TextButton.styleFrom(
+      padding: EdgeInsets.fromLTRB(16.0, 0.0, 6.0, 0.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+    ),
+
     child: Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
@@ -274,9 +297,9 @@ Widget plainButtonWithArrow(
         )
       ],
     ),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+
     onPressed: action,
-    highlightColor: Colors.blueGrey.withOpacity(0.1),
+    //highlightColor: Colors.blueGrey.withOpacity(0.1),
   );
 }
 
@@ -287,8 +310,13 @@ Widget buttonWithArrow(
     Color color,
     double spacing = 4.0}) {
   // ignore: deprecated_member_use
-  return FlatButton(
-    padding: EdgeInsets.fromLTRB(16.0, 0.0, 6.0, 0.0),
+  return TextButton(
+    style: TextButton.styleFrom(
+      padding: EdgeInsets.fromLTRB(16.0, 0.0, 6.0, 0.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      backgroundColor: primaryColor,
+    ),
+
     child: Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
@@ -312,10 +340,9 @@ Widget buttonWithArrow(
         )
       ],
     ),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+
     onPressed: action,
-    highlightColor: Colors.blueGrey.withOpacity(0.1),
-    color: primaryColor,
+    //highlightColor: Colors.blueGrey.withOpacity(0.1),
   );
 }
 
@@ -327,8 +354,12 @@ Widget plainButtonWithIcon(
     IconData iconData,
     double spacing = 4.0}) {
   // ignore: deprecated_member_use
-  return FlatButton(
-    padding: EdgeInsets.fromLTRB(16.0, 0.0, 6.0, 0.0),
+  return TextButton(
+    style: TextButton.styleFrom(
+      padding: EdgeInsets.fromLTRB(16.0, 0.0, 6.0, 0.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+    ),
+
     child: Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
@@ -353,9 +384,9 @@ Widget plainButtonWithIcon(
         )
       ],
     ),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+
     onPressed: action,
-    highlightColor: Colors.blueGrey.withOpacity(0.1),
+    //highlightColor: Colors.blueGrey.withOpacity(0.1),
   );
 }
 
@@ -366,8 +397,13 @@ Widget plainButton(
     Color color,
     double spacing = 4.0}) {
   // ignore: deprecated_member_use
-  return FlatButton(
-    padding: EdgeInsets.fromLTRB(16.0, 0.0, 6.0, 0.0),
+  return TextButton(
+    style: TextButton.styleFrom(
+      padding: EdgeInsets.fromLTRB(16.0, 0.0, 6.0, 0.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      //highlightColor: Colors.blueGrey.withOpacity(0.1),
+      // splashColor: primaryColor.withOpacity(0.2),
+    ),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -386,10 +422,7 @@ Widget plainButton(
         ),
       ],
     ),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
     onPressed: action,
-    highlightColor: Colors.blueGrey.withOpacity(0.1),
-    splashColor: primaryColor.withOpacity(0.2),
   );
 }
 
@@ -404,8 +437,16 @@ Widget paymentActionButton(
     bool showIcon = true}) {
   return (!isFlat)
       // ignore: deprecated_member_use
-      ? OutlineButton(
-          color: Colors.white,
+      ? OutlinedButton(
+          style: OutlinedButton.styleFrom(
+            backgroundColor: Colors.white,
+            //  borderSide: BorderSide(
+            //   width: 3.0,
+            //   color: color,
+            // ),
+            // highlightColor: color.withOpacity(0.1),
+            // highlightedBorderColor: color,
+          ),
           child: Row(
             children: <Widget>[
               Expanded(
@@ -432,17 +473,14 @@ Widget paymentActionButton(
               ),
             ],
           ),
-          borderSide: BorderSide(
-            width: 3.0,
-            color: color,
-          ),
-          highlightColor: color.withOpacity(0.1),
-          highlightedBorderColor: color,
           onPressed: action,
         )
       // ignore: deprecated_member_use
-      : FlatButton(
-          padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+      : TextButton(
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+            backgroundColor: color,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -470,7 +508,6 @@ Widget paymentActionButton(
               ),
             ],
           ),
-          color: color,
           onPressed: action,
         );
 }
@@ -491,8 +528,13 @@ Widget gridButton(
         gradient: isHighlighted ? csCardGradient() : plainCardGradient(context),
         context: context),
     // ignore: deprecated_member_use
-    child: FlatButton(
-      padding: EdgeInsets.all(0),
+    child: TextButton(
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.all(0),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+        //highlightColor: primaryColor.withOpacity(0.1),
+      ),
       child: Stack(
           fit: StackFit.expand,
           alignment: Alignment.center,
@@ -546,8 +588,6 @@ Widget gridButton(
               ],
             ),
           ]),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-      highlightColor: primaryColor.withOpacity(0.1),
       onPressed: action,
     ),
   );
@@ -571,8 +611,13 @@ Widget svgGridButton(
         gradient: isHighlighted ? csCardGradient() : plainCardGradient(context),
         context: context),
     // ignore: deprecated_member_use
-    child: FlatButton(
-      padding: EdgeInsets.all(0),
+    child: TextButton(
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.all(0),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+        //highlightColor: primaryColor.withOpacity(0.1),
+      ),
       child:
           Stack(fit: StackFit.expand, alignment: Alignment.center, children: [
         // Show the icon based on available notifications
@@ -645,8 +690,6 @@ Widget svgGridButton(
           ],
         ),
       ]),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-      highlightColor: primaryColor.withOpacity(0.1),
       onPressed: action,
     ),
   );
@@ -707,34 +750,41 @@ Widget circleButton(
 Widget negativeActionDialogButton(
     {String text = "Cancel", Color color, Function action}) {
   // ignore: deprecated_member_use
-  return FlatButton(
-    padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
+  return TextButton(
+    style: TextButton.styleFrom(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
+
+      //highlightColor: Colors.blueGrey.withOpacity(0.1),
+      // splashColor: primaryColor.withOpacity(0.2),
+      padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
+    ),
     child: customTitle(
       text: text,
       color: color,
       fontWeight: FontWeight.w600,
     ),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
     onPressed: action,
-    highlightColor: Colors.blueGrey.withOpacity(0.1),
-    splashColor: primaryColor.withOpacity(0.2),
   );
 }
 
 Widget positiveActionDialogButton({String text, Color color, Function action}) {
   // ignore: deprecated_member_use
-  return FlatButton(
-    padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+  return TextButton(
+    style: TextButton.styleFrom(
+      padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+      shape: new RoundedRectangleBorder(
+          borderRadius: new BorderRadius.circular(4.0)),
+      backgroundColor: primaryColor.withOpacity(0.2),
+    ),
+
     child: customTitle(
       text: text,
       color: color,
       fontWeight: FontWeight.w600,
     ),
     onPressed: action,
-    shape: new RoundedRectangleBorder(
-        borderRadius: new BorderRadius.circular(4.0)),
-    textColor: primaryColor,
-    color: primaryColor.withOpacity(0.2),
+
+    // textColor: primaryColor,
   );
 }
 
@@ -743,15 +793,17 @@ ButtonTheme groupSetupButton(
   return ButtonTheme(
     height: 36,
     // ignore: deprecated_member_use
-    child: FlatButton(
+    child: TextButton(
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.only(left: 4, right: 4),
+        shape: RoundedRectangleBorder(
+            side: BorderSide(
+                color: Theme.of(context).hintColor,
+                width: 1.0,
+                style: BorderStyle.solid),
+            borderRadius: BorderRadius.circular(4)),
+      ),
       onPressed: action,
-      padding: EdgeInsets.only(left: 4, right: 4),
-      shape: RoundedRectangleBorder(
-          side: BorderSide(
-              color: Theme.of(context).hintColor,
-              width: 1.0,
-              style: BorderStyle.solid),
-          borderRadius: BorderRadius.circular(4)),
       child: Row(
         children: <Widget>[
           Icon(
@@ -766,7 +818,7 @@ ButtonTheme groupSetupButton(
               text: text,
               fontSize: 12,
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor),
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor),
         ],
       ),
     ),
@@ -781,7 +833,7 @@ Widget meetingMegaButton(
     IconData icon,
     Function action}) {
   // ignore: deprecated_member_use
-  return OutlineButton(
+  return OutlinedButton(
     color: Colors.white,
     child: Padding(
       padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),

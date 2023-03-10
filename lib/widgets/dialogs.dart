@@ -20,12 +20,14 @@ void alertDialog(BuildContext context, String message,
                 text: title,
                 textAlign: TextAlign.start,
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor),
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor),
             actions: <Widget>[
               negativeActionDialogButton(
                   text: "OKAY",
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   action: () {
                     Navigator.of(context).pop();
                   })
@@ -48,7 +50,8 @@ void alertDialogWithAction(
               negativeActionDialogButton(
                   text: "OKAY",
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   action: action)
             ],
           ));
@@ -72,7 +75,8 @@ void twoButtonAlertDialog(
                 text: title,
                 textAlign: TextAlign.start,
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor),
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor),
             actions: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -80,7 +84,9 @@ void twoButtonAlertDialog(
                   negativeActionDialogButton(
                     text: noText,
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor,
                     action: () {
                       Navigator.of(context).pop();
                     },
@@ -119,7 +125,8 @@ void twoButtonAlertDialogwithConteiner(
                 text: title,
                 textAlign: TextAlign.start,
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor),
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor),
             actions: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -127,7 +134,9 @@ void twoButtonAlertDialogwithConteiner(
                   negativeActionDialogButton(
                     text: noText,
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor,
                     action: () {
                       Navigator.of(context).pop();
                     },

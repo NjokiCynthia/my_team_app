@@ -32,14 +32,14 @@ class CartItem extends StatelessWidget {
                   content: Text("Confirm removal of $title from the cart"),
                   actions: <Widget>[
                     // ignore: deprecated_member_use
-                    FlatButton(
+                    ElevatedButton(
                       onPressed: () {
                         Navigator.of(ctx).pop(false);
                       },
                       child: Text("No"),
                     ),
                     // ignore: deprecated_member_use
-                    FlatButton(
+                    ElevatedButton(
                       onPressed: () {
                         Navigator.of(ctx).pop(true);
                       },

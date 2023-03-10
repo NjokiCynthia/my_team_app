@@ -97,7 +97,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
     Navigator.of(context).pop();
   }
 
- /*  Future<void> _fetchNotifications() async {
+  /*  Future<void> _fetchNotifications() async {
     try {
       await Provider.of<GroupNotifications>(context, listen: false)
           .getGroupNotificationsSummary(_currentGroup.groupId);
@@ -196,7 +196,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
           text: 'Reconcile deposit',
           textAlign: TextAlign.start,
           // ignore: deprecated_member_use
-          color: Theme.of(context).textSelectionHandleColor),
+          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
       content: Container(
         width: MediaQuery.of(context).size.width * 0.8,
         child: SingleChildScrollView(
@@ -667,13 +667,15 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
         negativeActionDialogButton(
             text: "Cancel",
             // ignore: deprecated_member_use
-            color: Theme.of(context).textSelectionHandleColor,
+            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
             action: () {
               Navigator.of(context).pop();
             }),
         // ignore: deprecated_member_use
-        FlatButton(
-          padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+          ),
           child: customTitle(
               text: "Save Changes",
               color: primaryColor,

@@ -157,10 +157,12 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
     return AlertDialog(
       backgroundColor: Theme.of(context).backgroundColor,
       title: heading2(
-          text: 'Reconcile withdrawal',
-          textAlign: TextAlign.start,
-          // ignore: deprecated_member_use
-          color: Theme.of(context).textSelectionHandleColor),
+        text: 'Reconcile withdrawal',
+        textAlign: TextAlign.start,
+        // ignore: deprecated_member_use
+
+        color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+      ),
       content: Container(
         width: MediaQuery.of(context).size.width * 0.80,
         child: SingleChildScrollView(
@@ -631,13 +633,15 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
         negativeActionDialogButton(
             text: "Cancel",
             // ignore: deprecated_member_use
-            color: Theme.of(context).textSelectionHandleColor,
+            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
             action: () {
               Navigator.of(context).pop();
             }),
         // ignore: deprecated_member_use
-        FlatButton(
-          padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+          ),
           child: customTitle(
               text: "Save changes",
               color: primaryColor,
