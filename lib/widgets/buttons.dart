@@ -76,6 +76,8 @@ Widget groupInfoButton(
     child: OutlinedButton(
       style: OutlinedButton.styleFrom(
         padding: EdgeInsets.all(0.0),
+        side:
+            BorderSide(color: borderColor, style: BorderStyle.solid, width: 2),
       ),
       child: ListTile(
         dense: true,
@@ -124,13 +126,12 @@ Widget groupInfoButton(
               ),
       ),
       onPressed: action,
-      shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(50.0)),
-      borderSide:
-          BorderSide(color: borderColor, style: BorderStyle.solid, width: 2),
-      textColor: textColor,
-      color: backgroundColor,
-      highlightedBorderColor: borderColor,
+      // shape: new RoundedRectangleBorder(
+      //     borderRadius: new BorderRadius.circular(50.0)),
+
+      // textColor: textColor,
+      // color: backgroundColor,
+      // highlightedBorderColor: borderColor,
     ),
   );
 }
@@ -834,7 +835,15 @@ Widget meetingMegaButton(
     Function action}) {
   // ignore: deprecated_member_use
   return OutlinedButton(
-    color: Colors.white,
+    style: OutlinedButton.styleFrom(
+      backgroundColor: Colors.white,
+      side: BorderSide(
+        width: 0.0,
+        color: color.withOpacity(0.0),
+      ),
+      //highlightColor: color.withOpacity(0.1),
+      //highlightedBorderColor: color.withOpacity(0.0),
+    ),
     child: Padding(
       padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
       child: Row(
@@ -862,12 +871,6 @@ Widget meetingMegaButton(
         ],
       ),
     ),
-    borderSide: BorderSide(
-      width: 0.0,
-      color: color.withOpacity(0.0),
-    ),
-    highlightColor: color.withOpacity(0.1),
-    highlightedBorderColor: color.withOpacity(0.0),
     onPressed: action,
   );
 }

@@ -324,8 +324,12 @@ class _AppSwitcherState extends State<AppSwitcher> {
   Widget groupSwitcherButton(
       {BuildContext context, String title, String role}) {
     // ignore: deprecated_member_use
-    return FlatButton(
-      padding: EdgeInsets.fromLTRB(20.0, 0.0, 2.0, 0.0),
+    return TextButton(
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.fromLTRB(20.0, 0.0, 2.0, 0.0),
+        //backgroundColor: Theme.of(context).buttonColor.withOpacity(0.9),
+      ),
+
       child: Column(
         children: <Widget>[
           Container(
@@ -426,20 +430,19 @@ class _AppSwitcherState extends State<AppSwitcher> {
         _entryIsVisible ? _exitSwitcher() : _handleSwitch();
         // groupSwitcherDialog(widget.currentGroup["id"]);
       },
-      shape: _entryIsVisible
-          ? new RoundedRectangleBorder(
-              borderRadius: new BorderRadius.only(
-                topRight: Radius.circular(19.0),
-                topLeft: Radius.circular(20.0),
-              ),
-            )
-          : new RoundedRectangleBorder(
-              borderRadius: new BorderRadius.all(
-                Radius.circular(30.0),
-              ),
-            ),
-      textColor: primaryColor,
-      color: Theme.of(context).buttonColor.withOpacity(0.9),
+      // shape: _entryIsVisible
+      //     ? new RoundedRectangleBorder(
+      //         borderRadius: new BorderRadius.only(
+      //           topRight: Radius.circular(19.0),
+      //           topLeft: Radius.circular(20.0),
+      //         ),
+      //       )
+      //     : new RoundedRectangleBorder(
+      //         borderRadius: new BorderRadius.all(
+      //           Radius.circular(30.0),
+      //         ),
+      //       ),
+      // textColor: primaryColor,
     );
   }
 
