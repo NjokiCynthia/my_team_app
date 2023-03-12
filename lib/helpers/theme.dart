@@ -42,7 +42,7 @@ class Styles {
             indicatorColor:
                 isDarkTheme ? Colors.blueGrey[100] : Colors.blue[600],
             buttonColor: isDarkTheme
-                ? Colors.blueGrey[800].withOpacity(0.7)
+                ? Colors.blueGrey[800]?.withOpacity(0.7)
                 : Colors.white,
             hintColor: isDarkTheme ? Colors.blueGrey[400] : Colors.blueGrey,
             highlightColor:
@@ -72,10 +72,31 @@ class Styles {
             ),
             bottomAppBarColor:
                 isDarkTheme ? Colors.blueGrey[300] : Colors.blueGrey[400],
-            toggleableActiveColor:
-                isDarkTheme ? Colors.blue[700] : primaryColor,
             accentColor: isDarkTheme ? Colors.blue[700] : primaryColor,
-            dividerColor: isDarkTheme ? Colors.grey[900] : Colors.grey[300],
+            dividerColor: isDarkTheme ? Colors.grey[900] : Colors.grey[300], checkboxTheme: CheckboxThemeData(
+ fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ if (states.contains(MaterialState.disabled)) { return null; }
+ if (states.contains(MaterialState.selected)) { return isDarkTheme ? Colors.blue[700] : primaryColor; }
+ return null;
+ }),
+ ), radioTheme: RadioThemeData(
+ fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ if (states.contains(MaterialState.disabled)) { return null; }
+ if (states.contains(MaterialState.selected)) { return isDarkTheme ? Colors.blue[700] : primaryColor; }
+ return null;
+ }),
+ ), switchTheme: SwitchThemeData(
+ thumbColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ if (states.contains(MaterialState.disabled)) { return null; }
+ if (states.contains(MaterialState.selected)) { return isDarkTheme ? Colors.blue[700] : primaryColor; }
+ return null;
+ }),
+ trackColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ if (states.contains(MaterialState.disabled)) { return null; }
+ if (states.contains(MaterialState.selected)) { return isDarkTheme ? Colors.blue[700] : primaryColor; }
+ return null;
+ }),
+ ),
           )
         : ThemeData(
             primarySwatch: Colors.brown,
@@ -85,7 +106,7 @@ class Styles {
             indicatorColor:
                 isDarkTheme ? Colors.blueGrey[100] : Colors.brown[600],
             buttonColor: isDarkTheme
-                ? Colors.blueGrey[800].withOpacity(0.7)
+                ? Colors.blueGrey[800]?.withOpacity(0.7)
                 : Colors.white,
             hintColor: isDarkTheme ? Colors.blueGrey[400] : Colors.blueGrey,
             highlightColor:

@@ -12,10 +12,10 @@ import '../widgets/dialogs.dart';
 
 class StatusHandler {
   void handleStatus(
-      {BuildContext context,
-      CustomException error,
-      VoidCallback callback,
-      ScaffoldState scaffoldState}) {
+      {required BuildContext context,
+      required CustomException error,
+      required VoidCallback callback,
+      required ScaffoldState scaffoldState}) {
     switch (error.status) {
       case ErrorStatusCode.statusNormal:
         // showErrorDialog(context, error.message);
@@ -30,7 +30,7 @@ class StatusHandler {
         break;
       case ErrorStatusCode.statusNoInternet:
         if (scaffoldState != null) {
-          showSpecialRetrySnackBar(scaffoldState, error.message, callback);
+          showSpecialRetrySnackBar(context,scaffoldState, error.message, callback);
         } else
           showRetrySnackBar(context, error.message, callback);
         break;
@@ -48,9 +48,9 @@ class StatusHandler {
   }
 
   void showDialogWithAction(
-      {BuildContext context,
-      String message,
-      Function function,
+      {required BuildContext context,
+      required String message,
+      required Function function,
       bool dismissible = false}) {
     alertDialogWithAction(context, message, function, dismissible);
   }
@@ -71,11 +71,11 @@ class StatusHandler {
     );
 
     // ignore: deprecated_member_use
-    Scaffold.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   void showSpecialRetrySnackBar(
-      ScaffoldState scaffoldState, String message, VoidCallback voidCallback) {
+      BuildContext context, ScaffoldState scaffoldState, String message, VoidCallback voidCallback) {
     final snackBar = SnackBar(
       duration: Duration(seconds: 10),
       content: customTitleWithWrap(text: message, textAlign: TextAlign.start),
@@ -86,7 +86,7 @@ class StatusHandler {
     );
 
     // ignore: deprecated_member_use
-    scaffoldState.showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   void restartApp(BuildContext context) {
@@ -109,6 +109,6 @@ class StatusHandler {
       content: customTitleWithWrap(text: message, textAlign: TextAlign.start),
     );
     // ignore: deprecated_member_use
-    Scaffold.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
