@@ -17,7 +17,7 @@ import 'package:chamasoft/widgets/showCase.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -131,21 +131,21 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
             text: "Logout",
             textAlign: TextAlign.start,
             // ignore: deprecated_member_use
-            color: Theme.of(context).textSelectionHandleColor,
+            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
           ),
           content: customTitleWithWrap(
             text:
                 "Are you sure you want to log out? You'll have to login again to continue.",
             textAlign: TextAlign.start,
             // ignore: deprecated_member_use
-            color: Theme.of(context).textSelectionHandleColor,
+            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
             maxLines: null,
           ),
           actions: <Widget>[
             negativeActionDialogButton(
               text: "Cancel",
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               action: () async {
                 if (Config.appName.toLowerCase() == "chamasoft") {
                   Navigator.of(context).pop();
@@ -158,8 +158,11 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
               },
             ),
             // ignore: deprecated_member_use
-            FlatButton(
-              padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+            TextButton(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+              ),
+
               child: customTitle(
                 text: "Logout",
                 color: Colors.red,
@@ -169,10 +172,10 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                 Navigator.of(context).pop();
                 StatusHandler().logout(context);
               },
-              shape: new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(4.0)),
-              textColor: Colors.red,
-              color: Colors.red.withOpacity(0.2),
+              // shape: new RoundedRectangleBorder(
+              //     borderRadius: new BorderRadius.circular(4.0)),
+              // textColor: Colors.red,
+              // color: Colors.red.withOpacity(0.2),
             )
           ],
         );
@@ -220,12 +223,16 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                     heading1(
                       text: "My Groups",
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                     ),
                     subtitle1(
                       text: "All groups I belong to",
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                     ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
@@ -255,13 +262,16 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                     heading2(
                       text: auth.userName,
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                     ),
                     subtitle1(
                       text: auth.phoneNumber,
                       color: Theme.of(context)
                           // ignore: deprecated_member_use
-                          .textSelectionHandleColor
+                          .textSelectionTheme
+                          .selectionHandleColor
                           .withOpacity(0.6),
                     ),
                     Padding(
@@ -334,7 +344,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                                         itemBuilder: (ctx2, index) {
                                           return groupInfoButton(
                                             context: context,
-                                            leadingIcon: LineAwesomeIcons.group,
+                                            leadingIcon: LineAwesomeIcons.crop,
                                             trailingIcon:
                                                 LineAwesomeIcons.angle_right,
                                             backgroundColor:

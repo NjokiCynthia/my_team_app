@@ -276,7 +276,9 @@ class _LoginState extends State<Login> {
                         text: Config.appName,
                         // ignore: deprecated_member_use
                         color: Config.appName.toLowerCase() == "chamasoft"
-                            ? Theme.of(context).textSelectionHandleColor
+                            ? Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor
                             : Theme.of(context).primaryColor),
                     SizedBox(
                       height: 10,
@@ -286,13 +288,17 @@ class _LoginState extends State<Login> {
                             ? "Let's verify your identity first"
                             : "Let's get started",
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                     subtitle2(
                         text: Config.appName.toLowerCase() == "chamasoft"
                             ? "Enter your phone number or email address below"
                             : "",
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
 
                     Row(
                       children: <Widget>[
@@ -330,7 +336,8 @@ class _LoginState extends State<Login> {
                                             fontSize: 16,
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor),
+                                                .textSelectionTheme
+                                                .selectionHandleColor),
                                         onChanged: (countryCode) {
                                           setState(() {
                                             _countryCode = countryCode;
