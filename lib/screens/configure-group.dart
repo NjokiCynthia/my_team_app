@@ -518,7 +518,8 @@ class AccountsTabView extends StatelessWidget {
                     textAlign: TextAlign.start,
                     color: Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor
+                        .textSelectionTheme
+                        .selectionHandleColor
                         .withOpacity(0.6),
                     fontSize: 13.0,
                   ),
@@ -548,7 +549,8 @@ class AccountsTabView extends StatelessWidget {
                                     text: account.name,
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor,
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                     textAlign: TextAlign.start,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 15.0,
@@ -560,7 +562,8 @@ class AccountsTabView extends StatelessWidget {
                                           textAlign: TextAlign.start,
                                           color: Theme.of(context)
                                               // ignore: deprecated_member_use
-                                              .textSelectionHandleColor
+                                              .textSelectionTheme
+                                              .selectionHandleColor
                                               .withOpacity(0.5),
                                           fontSize: 12.0,
                                         )
@@ -613,7 +616,7 @@ class AccountsTabView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Icon(
-                  LineAwesomeIcons.bank,
+                  LineAwesomeIcons.ban,
                   size: 100,
                   color: Colors.blue[400].withOpacity(0.15),
                 ),
@@ -671,7 +674,8 @@ class ContributionsTabView extends StatelessWidget {
                                   text: '${contribution.name}',
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   fontWeight: FontWeight.w700,
                                   textAlign: TextAlign.start,
                                   fontSize: 15.0,
@@ -687,7 +691,8 @@ class ContributionsTabView extends StatelessWidget {
                                           textAlign: TextAlign.start,
                                           color: Theme.of(context)
                                               // ignore: deprecated_member_use
-                                              .textSelectionHandleColor
+                                              .textSelectionTheme
+                                              .selectionHandleColor
                                               .withOpacity(0.5),
                                           fontSize: 12.0,
                                         ),
@@ -698,7 +703,8 @@ class ContributionsTabView extends StatelessWidget {
                                             textAlign: TextAlign.start,
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor
+                                                .textSelectionTheme
+                                                .selectionHandleColor
                                                 .withOpacity(0.7),
                                             fontSize: 12.0,
                                           ),
@@ -713,7 +719,8 @@ class ContributionsTabView extends StatelessWidget {
                                           textAlign: TextAlign.start,
                                           color: Theme.of(context)
                                               // ignore: deprecated_member_use
-                                              .textSelectionHandleColor
+                                              .textSelectionTheme
+                                              .selectionHandleColor
                                               .withOpacity(0.5),
                                           fontSize: 12.0,
                                         ),
@@ -724,7 +731,8 @@ class ContributionsTabView extends StatelessWidget {
                                             textAlign: TextAlign.start,
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor
+                                                .textSelectionTheme
+                                                .selectionHandleColor
                                                 .withOpacity(0.7),
                                             fontSize: 12.0,
                                           ),
@@ -830,7 +838,7 @@ class MembersTabView extends StatelessWidget {
                           customTitleWithWrap(
                             text: '${member.name}',
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                             fontWeight: FontWeight.w800,
                             textAlign: TextAlign.start,
                             fontSize: 15.0,
@@ -841,7 +849,7 @@ class MembersTabView extends StatelessWidget {
                             textAlign: TextAlign.start,
                             color: Theme.of(context)
                                 // ignore: deprecated_member_use
-                                .textSelectionHandleColor
+                                .textSelectionTheme.selectionHandleColor
                                 .withOpacity(0.5),
                             fontSize: 12.0,
                           ),

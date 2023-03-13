@@ -130,7 +130,7 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
         title: "Add Member",
         action: () => Navigator.of(context).pop(),
         elevation: 0,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.clone,
         actions: [],
       ),
       backgroundColor: Theme.of(context).backgroundColor,
@@ -148,7 +148,7 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                   Icons.lightbulb_outline,
                   color: Theme.of(context)
                       // ignore: deprecated_member_use
-                      .textSelectionHandleColor,
+                      .textSelectionTheme.selectionHandleColor,
                   size: 24.0,
                   semanticLabel: 'Add member...',
                 ),
@@ -164,14 +164,14 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                         textAlign: TextAlign.start,
                         color: Theme.of(context)
                             // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
+                            .textSelectionTheme.selectionHandleColor,
                       ),
                       subtitle2(
                         text:
                             "Fill in the details below to add a member to the group.",
                         color: Theme.of(context)
                             // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
+                            .textSelectionTheme.selectionHandleColor,
                         textAlign: TextAlign.start,
                       ),
                     ],
@@ -230,7 +230,7 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                           textAlign: TextAlign.start,
                           fontSize: 11,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                         ),
                       ],
                     ),
@@ -274,7 +274,8 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                                             fontSize: 16,
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor),
+                                                .textSelectionTheme.selectionHandleColor
+                                                ),
                                         onChanged: (countryCode) {
                                           setState(() {
                                             _countryCode = countryCode;

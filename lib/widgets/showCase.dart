@@ -15,8 +15,10 @@ Widget customShowCase(
     title: title,
     targetShapeBorder: CircleBorder(),
     description: description,
-    showcaseBackgroundColor: primaryColor,
-    radius: BorderRadius.all(Radius.circular(40)),
+    overlayColor: primaryColor,
+    //backgroundColor: primaryColor,
+    targetBorderRadius: BorderRadius.all(Radius.circular(40)),
+    //radius: BorderRadius.all(Radius.circular(40)),
     titleTextStyle: TextStyle(
       fontWeight: FontWeight.w500,
       fontSize: 13.0,
