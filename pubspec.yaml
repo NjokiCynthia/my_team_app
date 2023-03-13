@@ -50,6 +50,7 @@ dependencies:
   back_button_interceptor: ^6.0.2
   grouped_list: ^5.1.2
   crisp: ^0.3.1
+
   # share: ^0.6.5+4
 #  share_plus: any
 
@@ -62,7 +63,8 @@ dependencies:
 
   dotted_line: ^3.1.0
   data_table_2: ^2.4.1
-  webview_flutter: ^4.0.6
+
+  webview_flutter: ^3.0.0
   showcaseview: ^2.0.2
 
   loading_overlay: ^0.3.0
