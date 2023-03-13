@@ -87,7 +87,7 @@ class _ListFineTypesState extends State<ListFineTypes> {
                                             style: TextStyle(
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme.selectionHandleColor,
                                               fontWeight: FontWeight.w800,
                                               fontSize: 18.0,
                                             ),
@@ -105,7 +105,7 @@ class _ListFineTypesState extends State<ListFineTypes> {
                                                           FontWeight.w600,
                                                       color: Theme.of(context)
                                                           // ignore: deprecated_member_use
-                                                          .textSelectionHandleColor
+                                                          .textSelectionTheme.selectionHandleColor
                                                           .withOpacity(0.5),
                                                       fontSize: 12.0,
                                                     ),
@@ -117,7 +117,7 @@ class _ListFineTypesState extends State<ListFineTypes> {
                                                           FontWeight.w700,
                                                       color: Theme.of(context)
                                                           // ignore: deprecated_member_use
-                                                          .textSelectionHandleColor
+                                                          .textSelectionTheme.selectionHandleColor
                                                           .withOpacity(0.7),
                                                       fontSize: 12.0,
                                                     ),
