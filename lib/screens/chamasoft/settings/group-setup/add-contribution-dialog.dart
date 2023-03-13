@@ -10,7 +10,7 @@ import 'package:chamasoft/widgets/textfields.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class AddContributionDialog extends StatefulWidget {
@@ -102,7 +102,7 @@ class _AddContributionDialogState extends State<AddContributionDialog> {
           Navigator.of(context).pop();
         },
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Builder(
         builder: (BuildContext context) {
           return SingleChildScrollView(
