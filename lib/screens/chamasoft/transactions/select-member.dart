@@ -109,7 +109,8 @@ class SelectMemberState extends State<SelectMember> {
                     ? primaryColor
                     : Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme
+                        .selectionHandleColor,
               ),
             ),
             subtitle: Text(
@@ -120,7 +121,8 @@ class SelectMemberState extends State<SelectMember> {
                     ? primaryColor
                     : Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme
+                        .selectionHandleColor,
               ),
             ),
             value: isSelected,
@@ -137,7 +139,8 @@ class SelectMemberState extends State<SelectMember> {
                     ? primaryColor
                     : Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme
+                        .selectionHandleColor,
                 child: Text(
                   CustomHelper.getInitials(
                     entry.name,
@@ -187,7 +190,7 @@ class SelectMemberState extends State<SelectMember> {
                   title: new Text("Please select a member"),
                   actions: <Widget>[
                     // ignore: deprecated_member_use
-                    new FlatButton(
+                    new TextButton(
                       child: new Text(
                         "OK",
                         style: TextStyle(color: Colors.blue),
