@@ -16,7 +16,8 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class SetMemberRoles extends StatefulWidget {
@@ -151,7 +152,7 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
                                 textAlign: TextAlign.center,
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor),
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor),
                             onPressed: () {
                               print(groupRole.roleName + " tapped");
                               setState(
@@ -176,7 +177,7 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
                   text: "Select Role",
                   textAlign: TextAlign.center,
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor),
+                  color: Theme.of(context).textSelectionTheme.selectionHandleColor),
               actions: <Widget>[
                 CupertinoDialogAction(
                   child: subtitle1(text: "Close", color: primaryColor),
@@ -190,7 +191,7 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         showDialog<String>(
-          barrierColor: Theme.of(context).backgroundColor.withOpacity(0.7),
+          barrierColor: Theme.of(context).colorScheme.background.withOpacity(0.7),
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
@@ -278,7 +279,7 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
         trailingIcon: LineAwesomeIcons.check,
         trailingAction: () async {
           showDialog<String>(
-            barrierColor: Theme.of(context).backgroundColor.withOpacity(0.7),
+            barrierColor: Theme.of(context).colorScheme.background.withOpacity(0.7),
             context: context,
             barrierDismissible: false,
             builder: (BuildContext context) {
@@ -292,7 +293,7 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
           await _submitMembers(context);
         },
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -311,7 +312,7 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
                     Icons.lightbulb_outline,
                     color: Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme.selectionHandleColor,
                     size: 24.0,
                     semanticLabel: 'Group roles...',
                   ),
@@ -327,13 +328,13 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
                           textAlign: TextAlign.start,
                           color: Theme.of(context)
                               // ignore: deprecated_member_use
-                              .textSelectionHandleColor,
+                              .textSelectionTheme.selectionHandleColor,
                         ),
                         subtitle2(
                           text: "Tap on the respective role to update it.",
                           color: Theme.of(context)
                               // ignore: deprecated_member_use
-                              .textSelectionHandleColor,
+                              .textSelectionTheme.selectionHandleColor,
                           textAlign: TextAlign.start,
                         ),
                       ],
@@ -378,7 +379,7 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
                                 textAlign: TextAlign.start,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
+                                    .textSelectionTheme.selectionHandleColor,
                               ),
                               phoneList.length >= 1 &&
                                       phoneList[0]?.value != null
@@ -387,7 +388,7 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
                                       textAlign: TextAlign.start,
                                       color: Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                          .textSelectionTheme.selectionHandleColor,
                                     )
                                   : Text(''),
                             ],
