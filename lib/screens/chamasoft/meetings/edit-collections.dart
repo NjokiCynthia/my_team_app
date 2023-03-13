@@ -13,9 +13,10 @@ import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:dropdown_formfield/dropdown_formfield.dart';
+// import 'package:dropdown_formfield/dropdown_formfield.dart';
 
 class EditCollections extends StatefulWidget {
   final String type;
@@ -265,33 +266,28 @@ class _EditCollectionsState extends State<EditCollections> {
             text: "Remove $_title",
             textAlign: TextAlign.start,
             // ignore: deprecated_member_use
-            color: Theme.of(context).textSelectionHandleColor,
+            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
           ),
           content: customTitleWithWrap(
             text:
                 "Are you sure you want to remove this ${_title.toString().toLowerCase()}?",
             textAlign: TextAlign.start,
             // ignore: deprecated_member_use
-            color: Theme.of(context).textSelectionColor,
+            color: Theme.of(context).textSelectionTheme.selectionColor,
             maxLines: null,
           ),
           actions: <Widget>[
             negativeActionDialogButton(
               text: "Cancel",
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               action: () {
                 Navigator.of(context).pop();
               },
             ),
             // ignore: deprecated_member_use
-            FlatButton(
-              padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
-              child: customTitle(
-                text: "Yes, remove",
-                color: Colors.red,
-                fontWeight: FontWeight.w600,
-              ),
+
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 setState(() {
@@ -300,12 +296,27 @@ class _EditCollectionsState extends State<EditCollections> {
                   widget.collections(_data);
                 });
               },
-              shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(4.0),
+              style: ButtonStyle(
+                padding: MaterialStateProperty.all<EdgeInsets>(
+                  EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+                ),
+
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                ),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  primaryColor.withOpacity(0.15),
+                ),
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
               ),
-              textColor: Colors.red,
-              color: Colors.red.withOpacity(0.15),
-            )
+              child: customTitle(
+                text: "Yes, remove",
+                color: Colors.red,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ],
         );
       },
@@ -314,13 +325,13 @@ class _EditCollectionsState extends State<EditCollections> {
 
   _showSnackbar(String msg, int duration) {
     // ignore: deprecated_member_use
-    _scaffoldKey.currentState.removeCurrentSnackBar();
+    ScaffoldMessenger.of(_scaffoldKey.currentState.context).hideCurrentSnackBar();
     final snackBar = SnackBar(
       content: Text(msg),
       duration: Duration(seconds: duration),
     );
     // ignore: deprecated_member_use
-    _scaffoldKey.currentState.showSnackBar(snackBar);
+    ScaffoldMessenger.of(_scaffoldKey.currentState.context).showSnackBar(snackBar);
   }
 
   int get contributedRepayedAndDisbursed {
@@ -398,7 +409,7 @@ class _EditCollectionsState extends State<EditCollections> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: "${_title}s",
         actions: [
           Padding(
@@ -408,7 +419,7 @@ class _EditCollectionsState extends State<EditCollections> {
               icon: Icon(
                 Icons.add,
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color: Theme.of(context).textSelectionTheme.selectionColor,
               ),
               onPressed: _isLoading
                   ? null
@@ -451,7 +462,7 @@ class _EditCollectionsState extends State<EditCollections> {
                           Icon(
                             Icons.lightbulb_outline,
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                             size: 24.0,
                           ),
                           SizedBox(
@@ -466,14 +477,14 @@ class _EditCollectionsState extends State<EditCollections> {
                                   textAlign: TextAlign.start,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme.selectionHandleColor,
                                 ),
                                 subtitle2(
                                   text:
                                       "You can add or remove ${widget.type} from the list",
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme.selectionHandleColor,
                                   textAlign: TextAlign.start,
                                 ),
                                 SizedBox(
@@ -486,7 +497,7 @@ class _EditCollectionsState extends State<EditCollections> {
                                         'Available amount to disburse is ${groupObject.groupCurrency} ${_totalAmountDisbursable > 0 ? currencyFormat.format(_totalAmountDisbursable) : 0}',
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor,
+                                        .textSelectionTheme.selectionHandleColor,
                                     textAlign: TextAlign.start,
                                   ),
                                 ),
@@ -503,7 +514,7 @@ class _EditCollectionsState extends State<EditCollections> {
                             separatorBuilder: (context, index) => Divider(
                               color: Theme.of(context)
                                   // ignore: deprecated_member_use
-                                  .textSelectionHandleColor
+                                  .textSelectionTheme.selectionHandleColor
                                   .withOpacity(0.5),
                               height: 0.0,
                             ),
@@ -534,7 +545,7 @@ class _EditCollectionsState extends State<EditCollections> {
                                                   ['name'],
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme.selectionHandleColor,
                                               textAlign: TextAlign.start,
                                             ),
                                             subtitle2(
@@ -542,7 +553,7 @@ class _EditCollectionsState extends State<EditCollections> {
                                                   ['identity'],
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme.selectionHandleColor,
                                               textAlign: TextAlign.start,
                                             ),
                                             if (widget.type == "fines" &&
@@ -631,7 +642,7 @@ class _EditCollectionsState extends State<EditCollections> {
                                             style: TextStyle(
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme.selectionHandleColor,
                                             ),
                                           ),
                                           SizedBox(
@@ -643,7 +654,7 @@ class _EditCollectionsState extends State<EditCollections> {
                                             style: TextStyle(
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme.selectionHandleColor,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -673,7 +684,7 @@ class _EditCollectionsState extends State<EditCollections> {
                               alignment: Alignment.center,
                               child: emptyList(
                                 color: Colors.blue[400],
-                                iconData: LineAwesomeIcons.file_text,
+                                iconData: LineAwesomeIcons.file,
                                 text: "There's nothing to show",
                               ),
                             ),
@@ -860,7 +871,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
         text: "New $title",
         textAlign: TextAlign.start,
         // ignore: deprecated_member_use
-        color: Theme.of(context).textSelectionHandleColor,
+        color: Theme.of(context).textSelectionTheme.selectionHandleColor,
       ),
       content: SingleChildScrollView(
         child: Form(
@@ -1223,30 +1234,38 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
         negativeActionDialogButton(
           text: "Cancel",
           // ignore: deprecated_member_use
-          color: Theme.of(context).textSelectionHandleColor,
+          color: Theme.of(context).textSelectionTheme.selectionHandleColor,
           action: () {
             Navigator.of(context).pop();
           },
         ),
         // ignore: deprecated_member_use
-        FlatButton(
-          padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
-          child: customTitle(
-            text: "Save Changes",
-            color: primaryColor,
-            fontWeight: FontWeight.w600,
-          ),
+        TextButton(
           onPressed: () async {
             if (_formKey.currentState.validate()) {
               Navigator.of(context).pop();
               widget.selected(_selected);
             }
           },
-          shape: new RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(4.0),
+          style: ButtonStyle(
+            padding: MaterialStateProperty.all<EdgeInsets>(
+              EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+            ),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+            ),
+            backgroundColor: MaterialStateProperty.all<Color>(
+              primaryColor.withOpacity(0.15),
+            ),
+            foregroundColor: MaterialStateProperty.all<Color>(primaryColor),
           ),
-          textColor: primaryColor,
-          color: primaryColor.withOpacity(0.15),
+          child: customTitle(
+            text: "Save Changes",
+            color: primaryColor,
+            fontWeight: FontWeight.w600,
+          ),
         )
       ],
     );

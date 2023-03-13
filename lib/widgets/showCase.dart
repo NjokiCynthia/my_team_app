@@ -13,7 +13,7 @@ Widget customShowCase(
     key: key,
     child: child,
     title: title,
-    shapeBorder: CircleBorder(),
+    targetShapeBorder: CircleBorder(),
     description: description,
     showcaseBackgroundColor: primaryColor,
     radius: BorderRadius.all(Radius.circular(40)),
