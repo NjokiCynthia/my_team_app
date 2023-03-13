@@ -12,11 +12,13 @@ import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/transaction-statement-model.dart';
 import 'package:flutter/services.dart';
-//import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
-import 'package:open_file/open_file.dart';
+
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+//import 'package:open_file/open_file.dart';
 
 class PdfApi {
   static Future<File> generateMemberLoanStatementPdf(
@@ -1138,7 +1140,7 @@ class PdfApi {
 
   static Future openFile(File file) async {
     final url = file.path;
-    // await PDFDocument.fromFile(file);
+    //await PDFDocument.fromFile(file);
     await OpenFile.open(url);
   }
 
