@@ -1,4 +1,4 @@
-// ignore_for_file: missing_return
+// ignore_for_file: missing_return, await_only_futures
 
 import 'dart:io';
 import 'dart:typed_data';
@@ -15,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -1141,7 +1142,13 @@ class PdfApi {
   static Future openFile(File file) async {
     final url = file.path;
     //await PDFDocument.fromFile(file);
-    await OpenFile.open(url);
+    //pdf read
+    await PDFView(
+      onPageChanged: (page, total) {
+        return url.length;
+      },
+    );
+    //open(url);
   }
 
   static depositTitle(String title) => Column(children: [
