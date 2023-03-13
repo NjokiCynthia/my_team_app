@@ -100,7 +100,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
     if (_isInit) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
       // ignore: deprecated_member_use
-      color = Theme.of(context).textSelectionHandleColor;
+      color = Theme.of(context).textSelectionTheme.selectionHandleColor;
     }
     super.didChangeDependencies();
   }
@@ -173,7 +173,9 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                 negativeActionDialogButton(
                     text: "Cancel",
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor,
                     action: () => Navigator.of(context).pop()),
                 positiveActionDialogButton(
                     text: "Yes",
@@ -197,7 +199,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
             text: "Reason for ${flag == 1 ? "Rejecting" : "Cancelling"}",
             textAlign: TextAlign.start,
             // ignore: deprecated_member_use
-            color: Theme.of(context).textSelectionHandleColor,
+            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
           ),
           content: TextFormField(
             controller: _controller,
@@ -218,7 +220,8 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
             negativeActionDialogButton(
                 text: "Cancel",
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
                 }),
@@ -279,7 +282,9 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                           child: heading2(
                             text: "${_withdrawalDetails.withdrawalFor}",
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             textAlign: TextAlign.start,
                           ),
                         ),
@@ -290,14 +295,18 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                               text: "${groupObject.groupCurrency} ",
                               fontSize: 18.0,
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               fontWeight: FontWeight.w400,
                             ),
                             heading2(
                               text:
                                   "${currencyFormat.format(_withdrawalDetails.amount)}",
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               textAlign: TextAlign.end,
                             ),
                           ],
@@ -320,14 +329,16 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                                     text: "Requested On",
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor,
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                     textAlign: TextAlign.start),
                                 customTitleWithWrap(
                                   text: _withdrawalDetails.date,
                                   fontSize: 12.0,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.start,
                                 )
                               ],
@@ -345,14 +356,16 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                                     text: "Initiated By",
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor,
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                     textAlign: TextAlign.end),
                                 customTitleWithWrap(
                                   text: _withdrawalDetails.requestBy,
                                   fontSize: 12.0,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.start,
                                 )
                               ],
@@ -365,13 +378,17 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                     subtitle2(
                         text: "Recipient",
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor,
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor,
                         textAlign: TextAlign.start),
                     customTitleWithWrap(
                       text: _withdrawalDetails.recipient,
                       fontSize: 12.0,
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                       textAlign: TextAlign.start,
                     ),
                     SizedBox(
@@ -380,7 +397,9 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                     subtitle2(
                         text: "Description",
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor,
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor,
                         textAlign: TextAlign.start),
                     customTitleWithWrap(
                         textAlign: TextAlign.start,
@@ -389,7 +408,9 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                             ? _withdrawalDetails.description
                             : "--",
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor,
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor,
                         maxLines: null),
                     SizedBox(
                       height: 5,
@@ -397,7 +418,9 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                     subtitle2(
                         text: "Status",
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor,
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor,
                         textAlign: TextAlign.start),
                     customTitleWithWrap(
                       text: _withdrawalDetails != null
@@ -427,7 +450,9 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                         child: heading2(
                             text: "Signatories",
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             textAlign: TextAlign.start),
                       ),
                       SizedBox(
@@ -470,8 +495,11 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             // ignore: deprecated_member_use
-                            FlatButton(
-                              color: Colors.blueAccent.withOpacity(.2),
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    Colors.blueAccent.withOpacity(.2),
+                              ),
                               onPressed: () =>
                                   approvalDialog(groupObject.groupCurrency),
                               child: Padding(
@@ -486,8 +514,11 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                               ),
                             ),
                             // ignore: deprecated_member_use
-                            FlatButton(
-                              color: Colors.redAccent.withOpacity(.2),
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    Colors.redAccent.withOpacity(.2),
+                              ),
                               onPressed: () {
                                 rejectDialog(1);
                               },
@@ -513,8 +544,10 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                             _isLoading != true,
                         child: Center(
                           // ignore: deprecated_member_use
-                          child: FlatButton(
-                            color: Colors.redAccent.withOpacity(.2),
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.redAccent.withOpacity(.2),
+                            ),
                             onPressed: () {
                               rejectDialog(2);
                             },
@@ -561,7 +594,8 @@ class WalletSignatoryCard extends StatelessWidget {
                   text: status.name,
                   textAlign: TextAlign.start,
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
 //              subtitle2(
 //                text: "$userRole",
@@ -579,7 +613,9 @@ class WalletSignatoryCard extends StatelessWidget {
                   ? primaryColor
                   : status.status == "PENDING"
                       // ignore: deprecated_member_use
-                      ? Theme.of(context).textSelectionHandleColor
+                      ? Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor
                       : Colors.red,
               backgroundColor: Theme.of(context).hintColor.withOpacity(0.1)),
         ],
