@@ -11,7 +11,7 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -144,8 +144,8 @@ class _FeedBackFormState extends State<FeedBackForm> {
       appBar: secondaryPageAppbar(
           context: context,
           title: "Feedback",
-          action: () => /* Navigator.of(context).pop() */ Navigator.of(context)
-              .popUntil((_) => count++ >= 2),
+          action: () => /* Navigator.of(context).pop() */
+              Navigator.of(context).popUntil((_) => count++ >= 2),
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left),
       backgroundColor: Theme.of(context).backgroundColor,

@@ -14,7 +14,7 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 // import 'package:flutter_share_me/flutter_share_me.dart';
 import 'settings/group-settings.dart';
@@ -43,26 +43,32 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
               text: "Post feedback",
               textAlign: TextAlign.start,
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor),
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor),
           content: customTitleWithWrap(
               text:
                   "Let us know how we can improve our service to serve you better.",
               textAlign: TextAlign.start,
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               maxLines: null),
           actions: <Widget>[
             negativeActionDialogButton(
               text: "Cancel",
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               action: () {
                 Navigator.of(context).pop();
               },
             ),
             // ignore: deprecated_member_use
-            FlatButton(
-              padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+            TextButton(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+                shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(4.0)),
+                //textColor: Colors.blue,
+                backgroundColor: Colors.blue.withOpacity(0.2),
+              ),
               child: customTitle(
                 text: "Continue",
                 color: Colors.blue,
@@ -75,10 +81,6 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                   ),
                 );
               },
-              shape: new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(4.0)),
-              textColor: Colors.blue,
-              color: Colors.blue.withOpacity(0.2),
             )
           ],
         );
@@ -96,26 +98,32 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
               text: "Logout",
               textAlign: TextAlign.start,
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor),
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor),
           content: customTitleWithWrap(
               text:
                   "Are you sure you want to log out? You'll have to login again to continue.",
               textAlign: TextAlign.start,
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               maxLines: null),
           actions: <Widget>[
             negativeActionDialogButton(
               text: "Cancel",
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               action: () {
                 Navigator.of(context).pop();
               },
             ),
             // ignore: deprecated_member_use
-            FlatButton(
-              padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+            TextButton(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+                shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(4.0)),
+                //textColor: Colors.red,
+                backgroundColor: Colors.red.withOpacity(0.2),
+              ),
               child: customTitle(
                 text: "Logout",
                 color: Colors.red,
@@ -135,10 +143,6 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                   StatusHandler().logout(context);
                 }
               },
-              shape: new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(4.0)),
-              textColor: Colors.red,
-              color: Colors.red.withOpacity(0.2),
             )
           ],
         );
@@ -233,11 +237,15 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                       heading2(
                           text: auth.userName,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor),
                       subtitle2(
                           text: auth.phoneNumber,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor),
                       Padding(
                         padding: EdgeInsets.only(
                           top: 10.0,
@@ -322,7 +330,9 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                       fontWeight: FontWeight.w500,
                       fontSize: 16.0,
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                     )),
                 subtitle: Text(
                   group.groupName,
@@ -429,7 +439,9 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                         "Theme",
                         style: TextStyle(
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                           fontWeight: FontWeight.w500,
                           fontSize: 16.0,
                         ),
@@ -509,7 +521,9 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor,
                   )),
               trailing: Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
@@ -550,7 +564,9 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor,
                   )),
               trailing: Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
@@ -580,7 +596,9 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor,
                   )),
               trailing: Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
@@ -604,7 +622,9 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor,
                   )),
               trailing: Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
@@ -655,7 +675,9 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                     )),
                 trailing: Padding(
                   padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
