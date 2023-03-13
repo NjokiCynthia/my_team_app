@@ -7,7 +7,7 @@ import 'package:chamasoft/widgets/custom-dropdown-strings-only.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 List<StringNamesListItem> orderByFields = [
@@ -136,14 +136,14 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
         refreshSettings();
       });
       // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully updated Group Settings",
       )));
     } on CustomException catch (error) {
       Navigator.of(context).pop();
       // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error updating Group Settings. ${error.message}",
       )));
@@ -236,7 +236,9 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                             style: TextStyle(
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context)
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                 fontWeight: FontWeight.w500),
                           ),
                           subtitle: Text(
@@ -265,7 +267,7 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                             style: TextStyle(
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 fontWeight: FontWeight.w500),
                           ),
                           subtitle: Text(
@@ -294,7 +296,7 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                             style: TextStyle(
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 fontWeight: FontWeight.w500),
                           ),
                           subtitle: Text(
@@ -323,7 +325,7 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                             style: TextStyle(
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 fontWeight: FontWeight.w500),
                           ),
                           subtitle: Text(
@@ -352,7 +354,7 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                             style: TextStyle(
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionHandleColor+,
                                 fontWeight: FontWeight.w500),
                           ),
                           subtitle: Text(

@@ -17,7 +17,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class NewGroup extends StatefulWidget {
@@ -94,13 +94,12 @@ class _NewGroupState extends State<NewGroup> {
   }
 
   _showSnackbar(String msg, int duration) {
-    // ignore: deprecated_member_use
     _scaffoldKey.currentState.removeCurrentSnackBar();
     final snackBar = SnackBar(
       content: Text(msg),
       duration: Duration(seconds: duration),
     );
-    // ignore: deprecated_member_use
+
     _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
@@ -108,13 +107,10 @@ class _NewGroupState extends State<NewGroup> {
     if (currentStep + 1 != steps.length) {
       if (currentStep == 0) {
         if (_stepOneFormKey.currentState.validate()) {
-           if(widget.groupId != null){
-           
+          if (widget.groupId != null) {
             // ignore: unnecessary_statements
             _data['name'] == widget.groupName;
-
-          } 
-         else if (_data['name'] == '') {
+          } else if (_data['name'] == '') {
             _showSnackbar("You need to fill group info to continue.", 4);
           } else {
             // goTo(1);
@@ -212,7 +208,7 @@ class _NewGroupState extends State<NewGroup> {
         color: currentStep >= step
             ? primaryColor
             // ignore: deprecated_member_use
-            : Theme.of(context).textSelectionHandleColor,
+            : Theme.of(context).textSelectionTheme.selectionHandleColor,
         fontFamily: 'SegoeUI',
         fontWeight: currentStep >= step ? FontWeight.bold : FontWeight.normal,
       ),
@@ -584,7 +580,8 @@ class _NewGroupState extends State<NewGroup> {
                 "Group Info",
                 style: TextStyle(
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   fontWeight: FontWeight.normal,
                 ),
               ),
@@ -598,13 +595,15 @@ class _NewGroupState extends State<NewGroup> {
               subtitle1(
                 text: "Select group avatar",
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start,
               ),
               subtitle2(
                 text: "Could be a logo or an image associated with your group",
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start,
               ),
               Padding(
@@ -836,14 +835,16 @@ class _NewGroupState extends State<NewGroup> {
               subtitle1(
                 text: "Do you have a referral code?",
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start,
               ),
               subtitle2(
                 text:
                     "Use it if referred by a Bank, an NGO, a Partner or anyone",
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start,
               ),
               Container(
@@ -877,7 +878,8 @@ class _NewGroupState extends State<NewGroup> {
                                         ? primaryColor
                                         : Theme.of(context)
                                             // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
+                                            .textSelectionTheme
+                                            .selectionHandleColor,
                                   ),
                                   textAlign: TextAlign.left,
                                 ),
@@ -939,7 +941,9 @@ class _NewGroupState extends State<NewGroup> {
                       Icon(
                         Icons.lightbulb_outline,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor,
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor,
                         size: 24.0,
                         semanticLabel: 'About new group...',
                       ),
@@ -959,7 +963,9 @@ class _NewGroupState extends State<NewGroup> {
                               text:
                                   "Follow all the steps and provide all required data about this group. You'll be able to preview a summary of the group before you submit.",
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               textAlign: TextAlign.start,
                             ),
                           ],
@@ -989,7 +995,7 @@ class _NewGroupState extends State<NewGroup> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           // ignore: deprecated_member_use
-                          RaisedButton(
+                          ElevatedButton(
                             color: primaryColor,
                             child: Padding(
                               padding:
@@ -1032,7 +1038,7 @@ class _NewGroupState extends State<NewGroup> {
                           ),
                           currentStep > 1
                               // ignore: deprecated_member_use
-                              ? OutlineButton(
+                              ? OutlinedButton(
                                   color: Colors.white,
                                   child: Text(
                                     "Go Back",

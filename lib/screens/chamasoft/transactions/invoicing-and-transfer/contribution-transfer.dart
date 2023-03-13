@@ -8,7 +8,7 @@ import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import 'create-invoice.dart';
 
@@ -62,7 +62,7 @@ class _ContributionTransferState extends State<ContributionTransfer> {
   int fineToId;
   double amount;
   String description;
-  Map<String,dynamic> _formData={};//,_formLoadData={};
+  Map<String, dynamic> _formData = {}; //,_formLoadData={};
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -87,8 +87,8 @@ class _ContributionTransferState extends State<ContributionTransfer> {
     super.dispose();
   }
 
-  void _submit(BuildContext context){
-    if(!_formKey.currentState.validate()){
+  void _submit(BuildContext context) {
+    if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
@@ -287,7 +287,7 @@ class _ContributionTransferState extends State<ContributionTransfer> {
                       defaultButton(
                         context: context,
                         text: "SAVE",
-                        onPressed: ()=>_submit(context),
+                        onPressed: () => _submit(context),
                       ),
                     ],
                   ),

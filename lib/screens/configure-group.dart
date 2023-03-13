@@ -101,7 +101,8 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                 fontSize: 12,
                 // ignore: deprecated_member_use
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor),
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor),
           ),
           PopupMenuItem(
             value: 2,
@@ -109,22 +110,26 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                 text: "ADD MANUALLY",
                 fontSize: 12,
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor),
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor),
           ),
         ],
         child: ButtonTheme(
           height: 36,
           // ignore: deprecated_member_use, missing_required_param
-          child: FlatButton(
+          child: TextButton(
             ///DON'T ADD 'onPressed', otherwise it will intercept the click event and prevent the
             ///PopupMenu from being triggered. Should have used a different widget, I know :(
-            padding: EdgeInsets.only(left: 4, right: 4),
-            shape: RoundedRectangleBorder(
-                side: BorderSide(
-                    color: Theme.of(context).hintColor,
-                    width: 1.0,
-                    style: BorderStyle.solid),
-                borderRadius: BorderRadius.circular(4)),
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.only(left: 4, right: 4),
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                      color: Theme.of(context).hintColor,
+                      width: 1.0,
+                      style: BorderStyle.solid),
+                  borderRadius: BorderRadius.circular(4)),
+            ),
+
             child: Row(
               children: <Widget>[
                 Icon(
@@ -139,7 +144,9 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                     text: "ADD MEMBERS",
                     fontSize: 12,
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor),
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor),
                 Container(
                   height: 36,
                   child: VerticalDivider(

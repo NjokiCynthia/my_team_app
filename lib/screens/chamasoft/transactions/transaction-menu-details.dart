@@ -12,7 +12,7 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import 'expenditure/bank-loan-repayments.dart';
 import 'expenditure/record-contribution-refund.dart';
@@ -45,8 +45,10 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
     switch (originFlag) {
       case 0:
         title = "E-Wallet Transactions";
-        list.add(TransactionMenu("CREATE WITHDRAWAL REQUEST", LineAwesomeIcons.google_wallet));
-        list.add(TransactionMenu("REVIEW WITHDRAWAL REQUESTS", LineAwesomeIcons.file_text));
+        list.add(TransactionMenu(
+            "CREATE WITHDRAWAL REQUEST", LineAwesomeIcons.google_wallet));
+        list.add(TransactionMenu(
+            "REVIEW WITHDRAWAL REQUESTS", LineAwesomeIcons.file_text));
         break;
       case 1:
         title = "Loan Transactions";
@@ -66,15 +68,20 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
       case 2:
         title = "Record Expenditure";
         list.add(TransactionMenu("EXPENSES", LineAwesomeIcons.file_text));
-        list.add(TransactionMenu("BANK LOAN REPAYMENTS", LineAwesomeIcons.file_text));
-        list.add(TransactionMenu("CONTRIBUTION REFUND", LineAwesomeIcons.file_text));
+        list.add(TransactionMenu(
+            "BANK LOAN REPAYMENTS", LineAwesomeIcons.file_text));
+        list.add(
+            TransactionMenu("CONTRIBUTION REFUND", LineAwesomeIcons.file_text));
         break;
       case 3:
         title = "Invoicing and Transfer";
-        list.add(TransactionMenu("INVOICE MEMBERS", LineAwesomeIcons.file_text));
+        list.add(
+            TransactionMenu("INVOICE MEMBERS", LineAwesomeIcons.file_text));
         list.add(TransactionMenu("FINE MEMBER", LineAwesomeIcons.file_text));
-        list.add(TransactionMenu("CONTRIBUTION TRANSFER", LineAwesomeIcons.file_text));
-        list.add(TransactionMenu("ACCOUNT TO ACCOUNT TRANSFER", LineAwesomeIcons.file_text));
+        list.add(TransactionMenu(
+            "CONTRIBUTION TRANSFER", LineAwesomeIcons.file_text));
+        list.add(TransactionMenu(
+            "ACCOUNT TO ACCOUNT TRANSFER", LineAwesomeIcons.file_text));
         break;
     }
 
@@ -102,8 +109,7 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
                     color: (index == 0) ? Colors.white : Colors.blue[400],
                     isHighlighted: (index == 0) ? true : false,
                     action: () => navigate(originFlag, index),
-                    margin: 12
-                  );
+                    margin: 12);
               }),
             );
           },

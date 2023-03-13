@@ -11,7 +11,7 @@ import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class RecordMiscellaneousPayment extends StatefulWidget {
@@ -78,7 +78,8 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
             );
           });
     });
-    formLoadData = await Provider.of<Groups>(context, listen: false).loadInitialFormData(member: true, acc: true);
+    formLoadData = await Provider.of<Groups>(context, listen: false)
+        .loadInitialFormData(member: true, acc: true);
     setState(() {
       _isInit = false;
     });
@@ -103,11 +104,13 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
     _formData["description"] = description;
 
     try {
-      String message = await Provider.of<Groups>(context, listen: false).recordMiscellaneousPayments(_formData);
+      String message = await Provider.of<Groups>(context, listen: false)
+          .recordMiscellaneousPayments(_formData);
       StatusHandler().showSuccessSnackBar(context, message);
 
       Future.delayed(const Duration(milliseconds: 2500), () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => DepositReceipts()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => DepositReceipts()));
       });
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -131,7 +134,7 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
           context: context,
           action: () => Navigator.of(context).pop(),
           elevation: _appBarElevation,
-          leadingIcon: LineAwesomeIcons.close,
+          leadingIcon: LineAwesomeIcons.clone,
           title: "Record Miscellaneous Payment",
         ),
         backgroundColor: Theme.of(context).backgroundColor,
@@ -145,7 +148,10 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                 controller: _scrollController,
                 child: Column(
                   children: <Widget>[
-                    toolTip(context: context, title: "Manually record miscellaneous payments", message: ""),
+                    toolTip(
+                        context: context,
+                        title: "Manually record miscellaneous payments",
+                        message: ""),
                     Padding(
                       padding: inputPagePadding,
                       child: Form(
@@ -163,7 +169,8 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                                     labelText: 'Select Deposit Date',
                                     lastDate: DateTime.now(),
                                     selectedDate: depositDate == null
-                                        ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                        ? new DateTime(now.year, now.month,
+                                            now.day - 1, 6, 30)
                                         : depositDate,
                                     selectDate: (selectedDate) {
                                       setState(() {
@@ -198,7 +205,10 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                             CustomDropDownButton(
                               labelText: 'Select Member',
                               enabled: _isFormInputEnabled,
-                              listItems: formLoadData.containsKey("memberOptions") ? formLoadData["memberOptions"] : [],
+                              listItems:
+                                  formLoadData.containsKey("memberOptions")
+                                      ? formLoadData["memberOptions"]
+                                      : [],
                               selectedItem: memberId,
                               validator: (value) {
                                 if (value == "" || value == null) {
@@ -216,7 +226,9 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                               labelText: 'Select Account',
                               enabled: _isFormInputEnabled,
                               listItems:
-                                  formLoadData.containsKey("accountOptions") ? formLoadData["accountOptions"] : [],
+                                  formLoadData.containsKey("accountOptions")
+                                      ? formLoadData["accountOptions"]
+                                      : [],
                               selectedItem: accountId,
                               validator: (value) {
                                 if (value == "" || value == null) {
@@ -260,7 +272,8 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                             _isLoading
                                 ? Padding(
                                     padding: EdgeInsets.all(10),
-                                    child: Center(child: CircularProgressIndicator()),
+                                    child: Center(
+                                        child: CircularProgressIndicator()),
                                   )
                                 : defaultButton(
                                     context: context,

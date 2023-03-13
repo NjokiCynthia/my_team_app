@@ -175,7 +175,8 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
               customTitle(
                   text: "General Details",
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   fontWeight: FontWeight.w400,
                   textAlign: TextAlign.start),
             ],
@@ -186,7 +187,8 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
               subtitle2(
                   text: "Set Guarantor Requirements and Loan Fees",
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   textAlign: TextAlign.start),
             ],
           ),
@@ -202,7 +204,9 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                         customTitle(
                             text: "Enable loan guarantors",
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             fontWeight: FontWeight.w600,
                             textAlign: TextAlign.start),
                         Switch(
@@ -225,7 +229,9 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                           customTitle(
                             text: "Choose guarantor option",
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             fontWeight: FontWeight.w500,
                             textAlign: TextAlign.start,
                           ),
@@ -248,7 +254,9 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                           customTitleWithWrap(
                               text: "Every time member applying loan",
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               fontWeight: FontWeight.w500,
                               textAlign: TextAlign.start),
                         ],
@@ -274,7 +282,9 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                                     "When a member loan request exceeds maximum loan amount",
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context)
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                 fontWeight: FontWeight.w500,
                                 textAlign: TextAlign.start),
                           ),
@@ -314,7 +324,9 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                         customTitle(
                             text: "Charge loan processing fee",
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             fontWeight: FontWeight.w600,
                             textAlign: TextAlign.start),
                         Switch(

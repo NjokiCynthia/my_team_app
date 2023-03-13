@@ -6,7 +6,7 @@ import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class EditFineType extends StatefulWidget {
@@ -91,7 +91,7 @@ class _EditFineTypeState extends State<EditFineType> {
 
       Navigator.pop(context);
       // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully updated the fine category",
       )));
@@ -104,7 +104,7 @@ class _EditFineTypeState extends State<EditFineType> {
       Navigator.pop(context);
 
       // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error updating the Fine Category. ${error.message} ",
       )));

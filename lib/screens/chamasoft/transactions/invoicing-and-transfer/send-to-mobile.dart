@@ -12,7 +12,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_connect/http/src/certificates/certificates.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class SendToMobile extends StatefulWidget {

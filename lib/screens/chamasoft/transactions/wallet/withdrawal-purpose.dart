@@ -15,15 +15,14 @@ import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'review-withdrawal.dart';
 
 class WithdrawalPurpose extends StatefulWidget {
   final String groupId;
-  const WithdrawalPurpose({Key key, this.groupId})
-      : super(key: key);
+  const WithdrawalPurpose({Key key, this.groupId}) : super(key: key);
   @override
   _WithdrawalPurposeState createState() => _WithdrawalPurposeState();
 }
@@ -50,8 +49,6 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
   int _contributionId;
   int _loanTypeId;
 
-
-
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
     if (_appBarElevation != newElevation) {
@@ -63,8 +60,8 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
 
   Future<void> _fetchMembers(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false)
-          .fetchMembers(/*widget.groupId*/);
+      await Provider.of<Groups>(context, listen: false).fetchMembers(
+          /*widget.groupId*/);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -211,9 +208,11 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
     } else {
       //send to phone
       formData['recipient'] = "1";
-      final result = await  Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) =>
-              ListMemberContacts(formLoadData:_formLoadData, formData: formData, groupId: groupId)));
+      final result = await Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) => ListMemberContacts(
+              formLoadData: _formLoadData,
+              formData: formData,
+              groupId: groupId)));
       if (result != null) {
         print("result: $result");
         final id = int.tryParse(result) ?? 0;
@@ -258,7 +257,8 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
     if (_isInit)
       WidgetsBinding.instance
           .addPostFrameCallback((_) => _fetchDefaultValues(context));
-    WidgetsBinding.instance.addPostFrameCallback((/*timeStamp*/_) => _fetchMembers(context));
+    WidgetsBinding.instance
+        .addPostFrameCallback((/*timeStamp*/ _) => _fetchMembers(context));
     super.didChangeDependencies();
   }
 

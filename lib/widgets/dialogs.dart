@@ -1,11 +1,8 @@
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/buttons.dart';
-import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'buttons.dart';
 
 void alertDialog(BuildContext context, String message,
     [String title = "Something went wrong"]) {

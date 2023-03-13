@@ -9,7 +9,7 @@ import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class SelectGroupMembers extends StatefulWidget {
@@ -129,7 +129,7 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.clone,
         title: _title,
         actions: [
           Padding(
@@ -138,7 +138,8 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
               icon: Icon(
                 Icons.add,
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
               ),
               onSelected: choiceAction,
               enabled: !_isLoading,
@@ -152,14 +153,18 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                           choice['icon'],
                           size: 22.0,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                         ),
                         SizedBox(width: 12.0),
                         Text(
                           choice['title'],
                           style: TextStyle(
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           ),
                         ),
                       ],
@@ -327,7 +332,8 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                             Icons.lightbulb_outline,
                             color: Theme.of(context)
                                 // ignore: deprecated_member_use
-                                .textSelectionHandleColor,
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             size: 24.0,
                             semanticLabel: 'Add members...',
                           ),
@@ -343,14 +349,16 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                                   textAlign: TextAlign.start,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 subtitle2(
                                   text:
                                       "Select the members you want to add to the group, you can also update their roles.",
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.start,
                                 ),
                               ],
@@ -381,7 +389,8 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                                                 '${_groupMembers[index]['name']}',
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
+                                                .textSelectionTheme
+                                                .selectionHandleColor,
                                             fontWeight: FontWeight.w800,
                                             textAlign: TextAlign.start,
                                             fontSize: 15.0,
@@ -393,7 +402,8 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                                             textAlign: TextAlign.start,
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor
+                                                .textSelectionTheme
+                                                .selectionHandleColor
                                                 .withOpacity(0.5),
                                             fontSize: 12.0,
                                           ),
@@ -408,7 +418,8 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                                                       : Colors.white,
                                               backgroundColor: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme
+                                                  .selectionHandleColor,
                                               child: Text(
                                                 getInitials(
                                                   _groupMembers[index]['name'],

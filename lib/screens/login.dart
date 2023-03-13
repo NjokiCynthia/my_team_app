@@ -1,5 +1,4 @@
 import 'package:chamasoft/config.dart';
-import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/screens/chamasoft/settings/configure-preferences.dart';
 import 'package:chamasoft/screens/login_password.dart';
@@ -12,8 +11,7 @@ import 'package:chamasoft/screens/webView-launcher.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
-import 'package:chamasoft/widgets/dialogs.dart';
-import 'package:chamasoft/widgets/dialogs.dart';
+//import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,7 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
-import '../config.dart';
+//import '../config.dart';
 import '../helpers/custom-helper.dart';
 
 class Login extends StatefulWidget {

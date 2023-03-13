@@ -11,7 +11,7 @@ import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class RecordExpense extends StatefulWidget {
@@ -81,7 +81,8 @@ class RecordExpenseState extends State<RecordExpense> {
             );
           });
     });
-    formLoadData = await Provider.of<Groups>(context, listen: false).loadInitialFormData(acc: true, exp: true);
+    formLoadData = await Provider.of<Groups>(context, listen: false)
+        .loadInitialFormData(acc: true, exp: true);
     setState(() {
       _isInit = false;
     });
@@ -105,12 +106,13 @@ class RecordExpenseState extends State<RecordExpense> {
     _formData["description"] = description;
     _formData["request_id"] = requestId;
     try {
-      String message = await Provider.of<Groups>(context, listen: false).recordExpensePayment(_formData);
+      String message = await Provider.of<Groups>(context, listen: false)
+          .recordExpensePayment(_formData);
       StatusHandler().showSuccessSnackBar(context, message);
 
       Future.delayed(const Duration(milliseconds: 2500), () {
-        Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(builder: (BuildContext context) => WithdrawalReceipts()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => WithdrawalReceipts()));
       });
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -134,7 +136,7 @@ class RecordExpenseState extends State<RecordExpense> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.clone,
         title: "Record Expense",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
@@ -152,7 +154,10 @@ class RecordExpenseState extends State<RecordExpense> {
               controller: _scrollController,
               child: Column(
                 children: <Widget>[
-                  toolTip(context: context, title: "Manually record expense payment", message: ""),
+                  toolTip(
+                      context: context,
+                      title: "Manually record expense payment",
+                      message: ""),
                   Padding(
                     padding: inputPagePadding,
                     child: Form(
@@ -170,7 +175,8 @@ class RecordExpenseState extends State<RecordExpense> {
                                   labelText: 'Select Expense Date',
                                   lastDate: DateTime.now(),
                                   selectedDate: expenseDate == null
-                                      ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                      ? new DateTime(now.year, now.month,
+                                          now.day - 1, 6, 30)
                                       : expenseDate,
                                   selectDate: (selectedDate) {
                                     setState(() {
@@ -208,7 +214,9 @@ class RecordExpenseState extends State<RecordExpense> {
                             labelText: 'Select Expense Category',
                             enabled: _isFormInputEnabled,
                             listItems:
-                                formLoadData.containsKey("expenseCategories") ? formLoadData["expenseCategories"] : [],
+                                formLoadData.containsKey("expenseCategories")
+                                    ? formLoadData["expenseCategories"]
+                                    : [],
                             selectedItem: expenseCategoryId,
                             validator: (value) {
                               if (value == null || value == "") {
@@ -225,7 +233,10 @@ class RecordExpenseState extends State<RecordExpense> {
                           CustomDropDownButton(
                             labelText: 'Select Account',
                             enabled: _isFormInputEnabled,
-                            listItems: formLoadData.containsKey("accountOptions") ? formLoadData["accountOptions"] : [],
+                            listItems:
+                                formLoadData.containsKey("accountOptions")
+                                    ? formLoadData["accountOptions"]
+                                    : [],
                             selectedItem: accountId,
                             validator: (value) {
                               if (value == null || value == "") {
@@ -269,7 +280,8 @@ class RecordExpenseState extends State<RecordExpense> {
                           _isLoading
                               ? Padding(
                                   padding: EdgeInsets.all(10),
-                                  child: Center(child: CircularProgressIndicator()),
+                                  child: Center(
+                                      child: CircularProgressIndicator()),
                                 )
                               : defaultButton(
                                   context: context,

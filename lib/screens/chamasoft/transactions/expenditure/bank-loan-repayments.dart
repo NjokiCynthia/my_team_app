@@ -11,7 +11,7 @@ import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class BankLoanRepayment extends StatefulWidget {
@@ -79,7 +79,8 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
             );
           });
     });
-    formLoadData = await Provider.of<Groups>(context, listen: false).loadInitialFormData(acc: true, bankLoans: true);
+    formLoadData = await Provider.of<Groups>(context, listen: false)
+        .loadInitialFormData(acc: true, bankLoans: true);
     setState(() {
       _isInit = false;
     });
@@ -103,12 +104,13 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
     _formData["description"] = description;
     _formData["request_id"] = requestId;
     try {
-      String message = await Provider.of<Groups>(context, listen: false).recordBankLoanRepayment(_formData);
+      String message = await Provider.of<Groups>(context, listen: false)
+          .recordBankLoanRepayment(_formData);
       StatusHandler().showSuccessSnackBar(context, message);
 
       Future.delayed(const Duration(milliseconds: 2500), () {
-        Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(builder: (BuildContext context) => WithdrawalReceipts()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => WithdrawalReceipts()));
       });
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -132,7 +134,7 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.clone,
         title: "Record Bank Loan Repayment",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
@@ -163,7 +165,9 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
                             labelText: 'Select Bank Loan',
                             enabled: _isFormInputEnabled,
                             listItems:
-                                formLoadData.containsKey("bankLoansOptions") ? formLoadData["bankLoansOptions"] : [],
+                                formLoadData.containsKey("bankLoansOptions")
+                                    ? formLoadData["bankLoansOptions"]
+                                    : [],
                             selectedItem: bankLoanId,
                             validator: (value) {
                               if (value == null || value.toString().isEmpty) {
@@ -181,7 +185,8 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
                             labelText: 'Select Repayment Date',
                             lastDate: now,
                             selectedDate: withdrawalDate == null
-                                ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                ? new DateTime(
+                                    now.year, now.month, now.day - 1, 6, 30)
                                 : withdrawalDate,
                             selectDate: (selectedDate) {
                               setState(() {
@@ -192,7 +197,10 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
                           CustomDropDownButton(
                             labelText: 'Select Account Withdrawn',
                             enabled: _isFormInputEnabled,
-                            listItems: formLoadData.containsKey("accountOptions") ? formLoadData["accountOptions"] : [],
+                            listItems:
+                                formLoadData.containsKey("accountOptions")
+                                    ? formLoadData["accountOptions"]
+                                    : [],
                             selectedItem: accountId,
                             validator: (value) {
                               if (value == null || value.toString().isEmpty) {
@@ -260,7 +268,8 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
                           _isLoading
                               ? Padding(
                                   padding: EdgeInsets.all(10),
-                                  child: Center(child: CircularProgressIndicator()),
+                                  child: Center(
+                                      child: CircularProgressIndicator()),
                                 )
                               : defaultButton(
                                   context: context,

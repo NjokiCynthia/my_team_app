@@ -18,7 +18,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 // ignore: unused_import
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 // ignore: must_be_immutable
 class ApplyLoanFromChamasoft extends StatefulWidget {
