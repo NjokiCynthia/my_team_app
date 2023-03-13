@@ -14,8 +14,8 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 // import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:share/share.dart';
-// import 'package:share_plus/share.dart';
+// import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class MemberDetailStatement extends StatefulWidget {
   final String groupName, groupEmail, groupPhone, date, title, description;
