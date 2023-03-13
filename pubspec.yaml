@@ -29,47 +29,47 @@ dependencies:
   tuple: ^2.0.1
   cached_network_image: ^3.2.3
   country_code_picker: ^3.0.0
-  libphonenumber: ^2.0.1
+  libphonenumber: ^2.0.2
   shimmer: ^2.0.0
   flutter_svg: ^2.0.3
-  image_picker: ^0.7.5+3
-  sms_autofill: ^2.0.0
+  image_picker: ^0.8.7
+  sms_autofill: ^2.3.0
   sqflite: ^2.2.5
   date_time_picker: ^2.1.0
   flutter_share_me: ^1.4.0
   # dropdown_formfield: ^0.1.4
   firebase_messaging: ^14.2.6
   firebase_core: ^2.7.1
-  flutter_local_notifications: ^6.0.0
-  modal_bottom_sheet: ^2.0.0
-  loader_overlay: ^2.0.2+1
-  fluttertoast: ^8.0.8
-  lite_rolling_switch: ^1.0.0
+  flutter_local_notifications: ^13.0.0
+  modal_bottom_sheet: ^2.1.2
+  loader_overlay: ^2.1.0
+  fluttertoast: ^8.2.1
+  lite_rolling_switch: ^1.0.0+2
   flutter_toggle_tab: ^1.2.0
   back_button_interceptor: ^6.0.2
-  grouped_list: ^4.2.0
+  grouped_list: ^5.1.2
   crisp: ^0.3.1
   # share: ^0.6.5+4
 #  share_plus: any
-  screenshot: ^1.2.3
-  image_gallery_saver: '^1.6.9'
-  pdf: any
+  screenshot: ^1.3.0
+  image_gallery_saver: ^1.7.1
+  pdf: 3.9.0
   path_provider: ^2.0.13
   # open_file: ^lastVersion 
-  dotted_line: ^3.0.0
-  data_table_2: ^2.1.1
-  webview_flutter: any
-  showcaseview: ^1.1.4
+  dotted_line: ^3.1.0
+  data_table_2: ^2.4.1
+  webview_flutter: 4.0.6
+  showcaseview: ^2.0.2
 
   loading_overlay: ^0.3.0
-  in_app_review: ^2.0.3
-  rate_my_app: ^1.1.1
+  in_app_review: ^2.0.6
+  rate_my_app: ^1.1.4
 
   # # contact_picker: any
-  carousel_slider: ^4.0.0
-  smooth_page_indicator: ^1.0.0+2
+  carousel_slider: ^4.2.1
+  smooth_page_indicator: ^1.0.1
   
-  pie_chart: ^5.1.0
+  pie_chart: ^5.3.2
   get: 4.6.5
  
 dependency_overrides:
