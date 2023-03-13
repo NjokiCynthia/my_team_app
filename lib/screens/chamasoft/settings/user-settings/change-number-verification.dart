@@ -8,8 +8,8 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:pin_input_text_field/pin_input_text_field.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
+// import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:provider/provider.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
@@ -91,7 +91,7 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
         content: subtitle2(
             text: "Resending verification code", textAlign: TextAlign.start));
     // ignore: deprecated_member_use
-    Scaffold.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
     try {
       await Provider.of<Auth>(context, listen: false)
           .resendPin(_identity, appSignature);
@@ -100,7 +100,7 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
               text: "Verification code has been sent",
               textAlign: TextAlign.start));
       // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -146,7 +146,7 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
                               text: "Change Phone Number",
                               color:
                                   // ignore: deprecated_member_use
-                                  Theme.of(context).textSelectionHandleColor),
+                                  Theme.of(context).textSelectionTheme.selectionHandleColor),
                           SizedBox(
                             height: 10,
                           ),
@@ -154,12 +154,12 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
                               text: "A verification code has been sent to",
                               color:
                                   // ignore: deprecated_member_use
-                                  Theme.of(context).textSelectionHandleColor),
+                                  Theme.of(context).textSelectionTheme.selectionHandleColor),
                           customTitle(
                               text: _identity,
                               color:
                                   // ignore: deprecated_member_use
-                                  Theme.of(context).textSelectionHandleColor),
+                                  Theme.of(context).textSelectionTheme.selectionHandleColor),
                           SizedBox(
                             height: 12,
                           ),
@@ -167,7 +167,7 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
                               text: "Enter your code here",
                               color:
                                   // ignore: deprecated_member_use
-                                  Theme.of(context).textSelectionHandleColor),
+                                  Theme.of(context).textSelectionTheme.selectionHandleColor),
                           Padding(
                             padding: EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 0.0),
                             child: PinInputTextFormField(
@@ -176,7 +176,7 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
                                 colorBuilder: PinListenColorBuilder(
                                     primaryColor,
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor),
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor),
                                 lineHeight: 2.0,
                                 textStyle: TextStyle(
                                   color: primaryColor,
@@ -227,7 +227,7 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
                                   text: "Didn't receive verification code? ",
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme.selectionHandleColor,
                                   fontSize: 13.0),
                               InkWell(
                                 child: Text(
