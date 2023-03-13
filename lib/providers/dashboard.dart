@@ -19,7 +19,7 @@ class BankAccountDashboardSummary {
   final double balance;
 
   BankAccountDashboardSummary(
-      {@required this.accountName, @required this.balance});
+      {this.accountName, this.balance});
 }
 
 class RecentTransactionSummary {
@@ -588,14 +588,15 @@ class Dashboard with ChangeNotifier {
 
     return BarChartGroupData(barsSpace: 4, x: x, barRods: [
       BarChartRodData(
-        y: y1,
-        colors: [depositsBarColor],
-        width: width,
+        fromY: y1,
+        color: depositsBarColor,
+        width: width, toY: 1.0,
       ),
       BarChartRodData(
-        y: y2,
-        colors: [withdrawalsBarColor],
+        fromY: y2,
+        color: withdrawalsBarColor,
         width: width,
+        toY:1.0
       ),
     ]);
   }

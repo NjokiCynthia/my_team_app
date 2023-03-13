@@ -18,10 +18,10 @@ class NotificationManager {
   // does not logout still updates their token
   static Future<void> registerUserToken(
       BuildContext context, String userId) async {
-    String? token = await FirebaseMessaging.instance.getToken();
+    String token = await FirebaseMessaging.instance.getToken();
     Map<String, String> notificationData = {
       'user_id': userId,
-      'mobile_token': token!,
+      'mobile_token': token,
     };
     print("refresh toke stream");
     try {
@@ -96,7 +96,7 @@ class NotificationManager {
     Map<String, dynamic> _message = {};
     FirebaseMessaging.instance
         .getInitialMessage()
-        .then((RemoteMessage? message) {
+        .then((RemoteMessage message) {
       print("initial message2 $message");
       // if (message != null) {
 
@@ -109,8 +109,8 @@ class NotificationManager {
       print("Listening to a message");
       print(message.data);
       //  uncomment this section when we get a nice icon
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
       if (notification != null && android != null) {
         flutterLocalNotificationsPlugin.show(
             notification.hashCode,
@@ -131,8 +131,8 @@ class NotificationManager {
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      print("notification ${notification?.title}");
+      RemoteNotification notification = message.notification;
+      print("notification ${notification.title}");
     });
 
     return _message;
@@ -143,10 +143,10 @@ class NotificationManager {
     _tokenStream.listen((token) async {
       print("new token $token");
       if (await getPreference("isLoggedIn") == true) {
-        String? token = await FirebaseMessaging.instance.getToken();
+        String token = await FirebaseMessaging.instance.getToken();
         Map<String, String> notificationData = {
           'user_id': Provider.of<Auth>(context, listen: false).id,
-          'mobile_token': token!,
+          'mobile_token': token,
         };
         await Provider.of<Auth>(context, listen: false)
             .updateUserToken(notificationData)

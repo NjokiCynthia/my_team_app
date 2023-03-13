@@ -47,8 +47,7 @@ class CustomHelper {
   }
 
   static bool validPhone(String phone) {
-    Pattern pattern = r'(^(?:[+0]9)?[0-9]{9,12}$)';
-    RegExp regex = new RegExp(pattern);
+    RegExp regex = new RegExp(r'(^(?:[+0]9)?[0-9]{9,12}$)');
     if (regex.hasMatch(phone))
       return true;
     else
@@ -65,9 +64,7 @@ class CustomHelper {
       : '';
 
   static bool validEmail(String email) {
-    Pattern pattern =
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-    RegExp regex = new RegExp(pattern);
+    RegExp regex = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
     if (regex.hasMatch(email))
       return true;
     else

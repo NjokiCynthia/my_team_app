@@ -14,16 +14,16 @@ class User {
   final String firstName;
   final String lastName;
   final String accessToken;
-  final String? phone;
-  final String? avatarName;
-  final String? email;
-  final String? mobileToken;
+  final String phone;
+  final String avatarName;
+  final String email;
+  final String mobileToken;
 
   User(
-      {required this.userId,
-      required this.firstName,
-      required this.lastName,
-      required this.accessToken,
+      {@required this.userId,
+      @required this.firstName,
+      @required this.lastName,
+      @required this.accessToken,
       this.phone,
       this.email,
       this.avatarName,
@@ -102,7 +102,7 @@ class Auth with ChangeNotifier {
     return io.File(avatarUrl).exists();
   }
 
-  String? get displayAvatar {
+  String get displayAvatar {
     var result = (_avatar != null && _avatar != 'null' && _avatar != '')
         ? CustomHelper.imageUrl + _avatar
         : null;
@@ -112,27 +112,27 @@ class Auth with ChangeNotifier {
   Future<void> setUserProfile() async {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(user)) {
-      String? userObject = prefs.getString(user);
+      String userObject = prefs.getString(user);
       try {
         final extractedUserData =
-            json.decode(userObject!) as Map<String, Object>;
+            json.decode(userObject) as Map<String, Object>;
         if (_phoneNumber == "") {
-          _phoneNumber = extractedUserData[phone] as String;
+          _phoneNumber = extractedUserData[phone].toString();
         }
         if (_firstName == "") {
-          _firstName = extractedUserData[firstName] as String;
+          _firstName = extractedUserData[firstName].toString();
         }
         if (_lastName == "") {
-          _lastName = extractedUserData[lastName] as String;
+          _lastName = extractedUserData[lastName].toString();
         }
         if (_emailAddress == "") {
-          _emailAddress = extractedUserData[email]..toString();
+          _emailAddress = extractedUserData[email].toString();
         }
         if (_avatar == "") {
-          _avatar = extractedUserData[userAvatar]..toString();
+          _avatar = extractedUserData[userAvatar].toString();
         }
         if (_userId == "") {
-          _userId = extractedUserData[userId]..toString();
+          _userId = extractedUserData[userId].toString();
         }
       } catch (error) {}
     }
@@ -201,14 +201,14 @@ class Auth with ChangeNotifier {
           final data = json.encode(extractedUserData);
           setUserObject(data);
         } else {
-          return "";
+          return;
         }
       } catch (error) {
         throw CustomException(
             message: "JSON Passing error " + error.toString());
       }
     } else {
-      return "";
+      return;
     }
   }
 

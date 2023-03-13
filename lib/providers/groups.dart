@@ -310,10 +310,10 @@ class Borrower {
   final bool ishidden;
 
   Borrower({
-    this.id,
-    this.name,
-    this.description,
-    this.ishidden,
+    @required this.id,
+    @required this.name,
+    @required this.description,
+    @required this.ishidden,
   });
 }
 

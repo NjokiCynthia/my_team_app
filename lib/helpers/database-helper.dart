@@ -23,12 +23,12 @@ class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
 
   // only have a single app-wide reference to the database
-  static Database? _database;
+  static Database _database;
   Future<Database> get database async {
-    if (_database != null) return _database!;
+    if (_database != null) return _database;
     // lazily instantiate the db the first time it is accessed
     _database = await _initDatabase();
-    return _database!;
+    return _database;
   }
 
   // this opens the database (and creates it if it doesn't exist)
@@ -245,9 +245,9 @@ class DatabaseHelper {
   }
 
   Future<List<Map<String, dynamic>>> queryWhere({
-    required String table,
-    required String column,
-    required List<dynamic> whereArguments,
+    String table,
+    String column,
+    List<dynamic> whereArguments,
     String orderBy = 'id',
     String order = 'DESC',
     bool isMeeting = false,
@@ -264,9 +264,9 @@ class DatabaseHelper {
   }
 
   Future<List<Map<String, dynamic>>> queryMultipleWhere({
-    required String table,
-    required List<dynamic> columns,
-    required List<dynamic> whereArguments,
+    String table,
+    List<dynamic> columns,
+    List<dynamic> whereArguments,
     String orderBy = 'id',
     String order = 'DESC',
     bool isMeeting = false,
@@ -288,7 +288,7 @@ class DatabaseHelper {
 
   // All of the methods (insert, query, update, delete) can also be done using
   // raw SQL commands. This method uses a raw query to give the row count.
-  Future<int?> queryRowCount(String table) async {
+  Future<int> queryRowCount(String table) async {
     //try {
     Database db = await instance.database;
     return Sqflite.firstIntValue(

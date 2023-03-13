@@ -12,10 +12,10 @@ import '../widgets/dialogs.dart';
 
 class StatusHandler {
   void handleStatus(
-      {required BuildContext context,
-      required CustomException error,
-      required VoidCallback callback,
-      required ScaffoldState scaffoldState}) {
+      {BuildContext context,
+      CustomException error,
+      VoidCallback callback,
+      ScaffoldState scaffoldState}) {
     switch (error.status) {
       case ErrorStatusCode.statusNormal:
         // showErrorDialog(context, error.message);
@@ -48,9 +48,9 @@ class StatusHandler {
   }
 
   void showDialogWithAction(
-      {required BuildContext context,
-      required String message,
-      required Function function,
+      {BuildContext context,
+      String message,
+      Function function,
       bool dismissible = false}) {
     alertDialogWithAction(context, message, function, dismissible);
   }
