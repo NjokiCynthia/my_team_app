@@ -115,7 +115,8 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                   text: ('CANCEL'),
                   color: Theme.of(context)
                       // ignore: deprecated_member_use
-                      .textSelectionHandleColor,
+                      .textSelectionTheme
+                      .selectionHandleColor,
                   action: () {
                     Navigator.of(context).pop();
                   },
