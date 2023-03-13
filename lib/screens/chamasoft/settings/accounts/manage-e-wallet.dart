@@ -5,6 +5,7 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +26,7 @@ class _ManageEWalletState extends State<ManageEWallet> {
     return Scaffold(
       appBar: secondaryPageAppbar(
           title: "Manage E-Wallet Account",
-          leadingIcon: LineAwesomeIcons.close,
+          leadingIcon: LineAwesomeIcons.times,
           elevation: 2,
           action: () => Navigator.of(context).pop(),
           context: context),

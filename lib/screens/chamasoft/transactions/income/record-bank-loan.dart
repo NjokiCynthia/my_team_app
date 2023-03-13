@@ -134,7 +134,7 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
         title: "Record Bank Loan",
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.clone,
+        leadingIcon: LineAwesomeIcons.times_circle,
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(

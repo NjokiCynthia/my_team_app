@@ -183,7 +183,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
           context: context,
           title: "Reconcile deposit",
           action: () => reset(context),
-          leadingIcon: LineAwesomeIcons.clone,
+          leadingIcon: LineAwesomeIcons.times,
           elevation: _appBBarElevation,
           actions: [
             Padding(

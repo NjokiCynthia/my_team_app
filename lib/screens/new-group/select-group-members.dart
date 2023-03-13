@@ -129,7 +129,7 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.clone,
+        leadingIcon: LineAwesomeIcons.times_circle,
         title: _title,
         actions: [
           Padding(

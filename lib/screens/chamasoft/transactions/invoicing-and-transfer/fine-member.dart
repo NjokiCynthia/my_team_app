@@ -159,7 +159,7 @@ class FineMemberState extends State<FineMember> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: "Fine Member",
       ),
       backgroundColor: Theme.of(context).backgroundColor,

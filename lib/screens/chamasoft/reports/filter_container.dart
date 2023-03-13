@@ -8,6 +8,7 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -194,7 +195,7 @@ class _FilterContainerState extends State<FilterContainer> {
           title: "Filter By",
           action: () => Navigator.of(context).pop(),
           elevation: 1,
-          leadingIcon: LineAwesomeIcons.close,
+          leadingIcon: LineAwesomeIcons.times,
           trailingIcon: LineAwesomeIcons.check,
           trailingAction: () =>
               Navigator.pop(context, [_selectedItems, _selectedMembers])),

@@ -102,7 +102,7 @@ class _ContributionTransferState extends State<ContributionTransfer> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: "Record Contribution Transfer",
       ),
       backgroundColor: Theme.of(context).backgroundColor,

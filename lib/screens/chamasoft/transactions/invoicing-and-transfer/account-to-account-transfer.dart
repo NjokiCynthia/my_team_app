@@ -128,7 +128,7 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.clone,
+        leadingIcon: LineAwesomeIcons.times_circle,
         title: "Account to Account Transfer",
       ),
       backgroundColor: Theme.of(context).backgroundColor,

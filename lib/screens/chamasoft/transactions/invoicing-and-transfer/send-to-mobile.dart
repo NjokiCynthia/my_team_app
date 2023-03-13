@@ -188,7 +188,7 @@ class _SendToMobileState extends State<SendToMobile> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: "Send to Mobile",
       ),
       backgroundColor: Theme.of(context).backgroundColor,

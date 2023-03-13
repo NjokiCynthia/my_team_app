@@ -726,7 +726,7 @@ Widget transactionToolTip(
             Visibility(
               visible: false,
               child: screenActionButton(
-                  icon: LineAwesomeIcons.clone,
+                  icon: LineAwesomeIcons.times_circle,
                   // ignore: deprecated_member_use
                   textColor:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
@@ -793,7 +793,7 @@ Widget toolTip(
             Visibility(
               visible: false,
               child: screenActionButton(
-                  icon: LineAwesomeIcons.clone,
+                  icon: LineAwesomeIcons.times_circle,
                   // ignore: deprecated_member_use
                   textColor:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,

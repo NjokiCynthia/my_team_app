@@ -94,7 +94,10 @@ class _NewGroupState extends State<NewGroup> {
   }
 
   _showSnackbar(String msg, int duration) {
-    _scaffoldKey.currentState.removeCurrentSnackBar();
+    while (_scaffoldKey.currentState.snackBars.isNotEmpty) {
+      _scaffoldKey.currentState.hideCurrentSnackBar();
+    }
+    //_scaffoldKey.currentState.removeCurrentSnackBar();
     final snackBar = SnackBar(
       content: Text(msg),
       duration: Duration(seconds: duration),

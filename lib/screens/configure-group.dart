@@ -594,7 +594,7 @@ class AccountsTabView extends StatelessWidget {
 //                                                            ),
 //                                                            SizedBox(width: 10.0),
 //                                                            screenActionButton(
-//                                                              icon: LineAwesomeIcons.close,
+//                                                              icon: LineAwesomeIcons.times,
 //                                                              backgroundColor: Colors.red.withOpacity(0.1),
 //                                                              textColor: Colors.red,
 //                                                              action: () {},
@@ -879,7 +879,7 @@ class MembersTabView extends StatelessWidget {
                     ),
                     SizedBox(width: 10.0),
 //                      screenActionButton(
-//                        icon: LineAwesomeIcons.close,
+//                        icon: LineAwesomeIcons.times,
 //                        backgroundColor: Colors.red.withOpacity(0.1),
 //                        textColor: Colors.red,
 //                        action: () {},

@@ -8,6 +8,7 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -86,7 +87,7 @@ class _ListContactsState extends State<ListContacts> {
           context: context,
           action: () => Navigator.of(context).pop(),
           elevation: 2.5,
-          leadingIcon: LineAwesomeIcons.close,
+          leadingIcon: LineAwesomeIcons.times,
           title:
               "Add Members${_selectedContacts.length == 0 ? '' : '(${_selectedContacts.length})'}",
           trailingIcon: LineAwesomeIcons.check,

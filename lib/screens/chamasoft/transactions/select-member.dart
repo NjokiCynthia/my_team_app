@@ -172,7 +172,7 @@ class SelectMemberState extends State<SelectMember> {
         context: context,
         action: () => Navigator.pop(context, selectedMembersList),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: pageTitle,
         trailingIcon: LineAwesomeIcons.check,
         trailingAction: () async {

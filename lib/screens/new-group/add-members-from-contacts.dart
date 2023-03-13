@@ -86,7 +86,7 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: 0,
-        leadingIcon: LineAwesomeIcons.clone,
+        leadingIcon: LineAwesomeIcons.times_circle,
         title:
             "Select Members${_selectedContacts.length == 0 ? '' : ' (${_selectedContacts.length})'}",
         trailingIcon: LineAwesomeIcons.check,

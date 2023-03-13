@@ -88,7 +88,7 @@ class _ContactListState extends State<ContactList> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: 2.5,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title:
             "Select Contact${_selectedContacts.length == 0 ? '' : '(${_selectedContacts.length})'}",
         /*   trailingIcon: LineAwesomeIcons.check,

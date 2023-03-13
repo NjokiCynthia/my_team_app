@@ -113,7 +113,7 @@ class _ListBanksState extends State<ListBanks> {
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: title,
       ),
       backgroundColor: Theme.of(context).backgroundColor,
