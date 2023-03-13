@@ -9,15 +9,15 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class TotalAccountBalanceReciept extends StatefulWidget {
   final int totalBalance;
-  const TotalAccountBalanceReciept({Key key,this.totalBalance})
+  const TotalAccountBalanceReciept({Key key, this.totalBalance})
       : super(key: key);
 
   @override
@@ -105,7 +105,8 @@ class _TotalAccountBalanceRecieptState
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor),
+                                          .textSelectionTheme
+                                          .selectionHandleColor),
                             ),
                             Image.asset(
                               'assets/icon/main.png',
@@ -119,7 +120,8 @@ class _TotalAccountBalanceRecieptState
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
                                   // ignore: deprecated_member_use
-                                  .textSelectionHandleColor,
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                             ),
                             SizedBox(
                               height: 15.0,
@@ -144,7 +146,8 @@ class _TotalAccountBalanceRecieptState
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 customTitleWithWrap(
                                   text: groupObject.groupPhone != "null"
@@ -154,7 +157,8 @@ class _TotalAccountBalanceRecieptState
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 customTitleWithWrap(
                                   text: groupObject.groupEmail != "null"
@@ -164,7 +168,8 @@ class _TotalAccountBalanceRecieptState
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                               ],
                             ),
@@ -193,7 +198,8 @@ class _TotalAccountBalanceRecieptState
                                   fontWeight: FontWeight.w600,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 SizedBox(
                                   height: 5.0,
@@ -207,7 +213,8 @@ class _TotalAccountBalanceRecieptState
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                               ],
                             ),
@@ -287,7 +294,8 @@ class _TotalAccountBalanceRecieptState
                               fontWeight: FontWeight.w300,
                               color: Theme.of(context)
                                   // ignore: deprecated_member_use
-                                  .textSelectionHandleColor,
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                             ),
                           ],
                         ),
@@ -327,7 +335,8 @@ class _TotalAccountBalanceRecieptState
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                               ],
                             ),
@@ -352,7 +361,7 @@ class _TotalAccountBalanceRecieptState
                             children: [
                               IconButton(
                                 icon: Icon(
-                                  LineAwesomeIcons.mobile,
+                                  LineAwesomeIcons.mobile_phone,
                                 ),
                                 iconSize: 20.0,
                                 onPressed: () async {
@@ -368,7 +377,8 @@ class _TotalAccountBalanceRecieptState
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
+                                    .textSelectionTheme
+                                    .selectionColor,
                               ),
                             ],
                           ),
