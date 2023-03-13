@@ -105,7 +105,8 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor),
+                                          .textSelectionTheme
+                                          .selectionHandleColor),
                             ),
                             Image.asset(
                               'assets/icon/main.png',
@@ -119,7 +120,8 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
                                   // ignore: deprecated_member_use
-                                  .textSelectionHandleColor,
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                             ),
                             SizedBox(
                               height: 15.0,
@@ -144,7 +146,8 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 customTitleWithWrap(
                                   text: groupObject.groupPhone != "null"
