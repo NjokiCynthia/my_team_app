@@ -48,45 +48,38 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
         list.add(TransactionMenu(
             "CREATE WITHDRAWAL REQUEST", LineAwesomeIcons.google_wallet));
         list.add(TransactionMenu(
-            "REVIEW WITHDRAWAL REQUESTS", LineAwesomeIcons.file_prescription));
+            "REVIEW WITHDRAWAL REQUESTS", LineAwesomeIcons.file));
         break;
       case 1:
         title = "Loan Transactions";
-        list.add(TransactionMenu(
-            "REVIEW LOAN APPLICATIONS", LineAwesomeIcons.file_prescription));
-        list.add(TransactionMenu(
-            "RECORD LOAN REPAYMENTS", LineAwesomeIcons.file_prescription));
+        list.add(
+            TransactionMenu("REVIEW LOAN APPLICATIONS", LineAwesomeIcons.file));
+        list.add(
+            TransactionMenu("RECORD LOAN REPAYMENTS", LineAwesomeIcons.file));
         break;
       case 1:
         title = "Record Payments";
-        list.add(TransactionMenu(
-            "CONTRIBUTIONS", LineAwesomeIcons.file_prescription));
-        list.add(TransactionMenu("FINES", LineAwesomeIcons.file_prescription));
-        list.add(TransactionMenu("INCOME", LineAwesomeIcons.file_prescription));
-        list.add(TransactionMenu(
-            "MISCELLANEOUS", LineAwesomeIcons.file_prescription));
-        list.add(
-            TransactionMenu("BANK LOANS", LineAwesomeIcons.file_prescription));
+        list.add(TransactionMenu("CONTRIBUTIONS", LineAwesomeIcons.file));
+        list.add(TransactionMenu("FINES", LineAwesomeIcons.file));
+        list.add(TransactionMenu("INCOME", LineAwesomeIcons.file));
+        list.add(TransactionMenu("MISCELLANEOUS", LineAwesomeIcons.file));
+        list.add(TransactionMenu("BANK LOANS", LineAwesomeIcons.file));
         break;
       case 2:
         title = "Record Expenditure";
+        list.add(TransactionMenu("EXPENSES", LineAwesomeIcons.file));
         list.add(
-            TransactionMenu("EXPENSES", LineAwesomeIcons.file_prescription));
-        list.add(TransactionMenu(
-            "BANK LOAN REPAYMENTS", LineAwesomeIcons.file_prescription));
-        list.add(TransactionMenu(
-            "CONTRIBUTION REFUND", LineAwesomeIcons.file_prescription));
+            TransactionMenu("BANK LOAN REPAYMENTS", LineAwesomeIcons.file));
+        list.add(TransactionMenu("CONTRIBUTION REFUND", LineAwesomeIcons.file));
         break;
       case 3:
         title = "Invoicing and Transfer";
-        list.add(TransactionMenu(
-            "INVOICE MEMBERS", LineAwesomeIcons.file_prescription));
+        list.add(TransactionMenu("INVOICE MEMBERS", LineAwesomeIcons.file));
+        list.add(TransactionMenu("FINE MEMBER", LineAwesomeIcons.file));
         list.add(
-            TransactionMenu("FINE MEMBER", LineAwesomeIcons.file_prescription));
+            TransactionMenu("CONTRIBUTION TRANSFER", LineAwesomeIcons.file));
         list.add(TransactionMenu(
-            "CONTRIBUTION TRANSFER", LineAwesomeIcons.file_prescription));
-        list.add(TransactionMenu(
-            "ACCOUNT TO ACCOUNT TRANSFER", LineAwesomeIcons.file_prescription));
+            "ACCOUNT TO ACCOUNT TRANSFER", LineAwesomeIcons.file));
         break;
     }
 
