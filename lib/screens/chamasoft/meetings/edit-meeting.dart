@@ -938,7 +938,7 @@ class _EditMeetingState extends State<EditMeeting> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
@@ -1058,7 +1058,7 @@ class _EditMeetingState extends State<EditMeeting> {
                           // ),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: primaryColor,
+                              backgroundColor: primaryColor,
                             ),
                             child: Padding(
                               padding:
@@ -1129,8 +1129,7 @@ class _EditMeetingState extends State<EditMeeting> {
                               //   )
                               ? OutlinedButton(
                                   style: OutlinedButton.styleFrom(
-                                    primary: Colors.white,
-                                    side: BorderSide(
+                                    foregroundColor: Colors.white, side: BorderSide(
                                       width: 2.0,
                                       color: Theme.of(context)
                                           // ignore: deprecated_member_use
