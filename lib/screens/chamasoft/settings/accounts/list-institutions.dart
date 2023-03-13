@@ -5,7 +5,7 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 enum InstitutionFlag {
@@ -116,7 +116,7 @@ class _ListInstitutionsState extends State<ListInstitutions> {
         leadingIcon: LineAwesomeIcons.times,
         title: title,
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Builder(
         builder: (BuildContext context) {
           return Container(
