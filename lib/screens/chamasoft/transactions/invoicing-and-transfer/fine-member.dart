@@ -260,7 +260,7 @@ class FineMemberState extends State<FineMember> {
                               children: memberWidgets.toList(),
                             ),
                             // ignore: deprecated_member_use
-                            FlatButton(
+                            TextButton(
                               onPressed: () async {
                                 //open select members dialog
                                 await Navigator.push(
