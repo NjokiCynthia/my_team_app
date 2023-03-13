@@ -63,7 +63,7 @@ class _NumberKeyBoardState extends State<NumberKeyBoard> {
                   keyboardType: TextInputType.none,
                   inputFormatters: <TextInputFormatter>[
                     // ignore: deprecated_member_use
-                    WhitelistingTextInputFormatter.digitsOnly
+                    FilteringTextInputFormatter.digitsOnly
                   ],
                   decoration: InputDecoration(
                     floatingLabelBehavior: FloatingLabelBehavior.auto,
