@@ -7,7 +7,7 @@ import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class SelectMembers extends StatefulWidget {
@@ -68,14 +68,14 @@ class _SelectMembersState extends State<SelectMembers> {
           text: "1 member " + _type,
           textAlign: TextAlign.start,
           // ignore: deprecated_member_use
-          color: Theme.of(context).textSelectionHandleColor,
+          color: Theme.of(context).textSelectionTheme.selectionHandleColor,
         ));
       else if (_members[type].length > 1)
         _tmpMbrs.add(subtitle2(
           text: _members[type].length.toString() + " members " + _type,
           textAlign: TextAlign.start,
           // ignore: deprecated_member_use
-          color: Theme.of(context).textSelectionHandleColor,
+          color: Theme.of(context).textSelectionTheme.selectionHandleColor,
         ));
     });
     return {
@@ -165,29 +165,54 @@ class _SelectMembersState extends State<SelectMembers> {
               text: "Clear Selection",
               textAlign: TextAlign.start,
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor),
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor),
           content: customTitleWithWrap(
               text: "Are you sure you want to clear all selected members?",
               textAlign: TextAlign.start,
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               maxLines: null),
           actions: <Widget>[
             negativeActionDialogButton(
               text: "Cancel",
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               action: () {
                 Navigator.of(context).pop();
               },
             ),
             // ignore: deprecated_member_use
-            FlatButton(
-              padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
-              child: customTitle(
-                text: "Yes, clear all",
-                color: Colors.red,
-                fontWeight: FontWeight.w600,
+            // FlatButton(
+            //   padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+            //   child: customTitle(
+            //     text: "Yes, clear all",
+            //     color: Colors.red,
+            //     fontWeight: FontWeight.w600,
+            //   ),
+            //   onPressed: () {
+            //     Navigator.of(context).pop();
+            //     widget.members({
+            //       'present': [],
+            //       'late': [],
+            //       'withApology': [],
+            //       'withoutApology': [],
+            //     });
+            //     Navigator.of(context).pop();
+            //   },
+            //   shape: new RoundedRectangleBorder(
+            //     borderRadius: new BorderRadius.circular(4.0),
+            //   ),
+            //   textColor: Colors.red,
+            //   color: Colors.red.withOpacity(0.2),
+            // )
+            TextButton(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                ),
+                backgroundColor: Colors.red.withOpacity(0.2),
+                primary: Colors.red,
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -199,12 +224,13 @@ class _SelectMembersState extends State<SelectMembers> {
                 });
                 Navigator.of(context).pop();
               },
-              shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(4.0),
+              child: customTitle(
+                text: "Yes, clear all",
+                color: Colors.red,
+                fontWeight: FontWeight.w600,
               ),
-              textColor: Colors.red,
-              color: Colors.red.withOpacity(0.2),
             )
+
           ],
         );
       },
@@ -274,7 +300,7 @@ class _SelectMembersState extends State<SelectMembers> {
                                   Icons.lightbulb_outline,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme.selectionHandleColor,
                                   size: 24.0,
                                   semanticLabel: 'Select members...',
                                 )
@@ -282,7 +308,7 @@ class _SelectMembersState extends State<SelectMembers> {
                                   Icons.group,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor
+                                      .textSelectionTheme.selectionHandleColor
                                       .withOpacity(0.7),
                                   size: 24.0,
                                   semanticLabel: 'Selected members...',
@@ -300,7 +326,7 @@ class _SelectMembersState extends State<SelectMembers> {
                                         textAlign: TextAlign.start,
                                         color: Theme.of(context)
                                             // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
+                                            .textSelectionTheme.selectionHandleColor,
                                       )
                                     : subtitle1(
                                         text: _selectedMembers()['count']
@@ -309,7 +335,7 @@ class _SelectMembersState extends State<SelectMembers> {
                                         textAlign: TextAlign.start,
                                         color: Theme.of(context)
                                             // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
+                                            .textSelectionTheme.selectionHandleColor,
                                       ),
                                 _selectedMembers()['count'] == 0
                                     ? subtitle2(
@@ -317,7 +343,7 @@ class _SelectMembersState extends State<SelectMembers> {
                                             "Select the members you want to add and save.",
                                         color: Theme.of(context)
                                             // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
+                                            .textSelectionTheme.selectionHandleColor,
                                         textAlign: TextAlign.start,
                                       )
                                     : _selectedMembers()['render'],
@@ -368,7 +394,7 @@ class _SelectMembersState extends State<SelectMembers> {
                                                 ? primaryColor
                                                 : Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                           ),
                                         ),
                                         subtitle: Text(
@@ -380,7 +406,7 @@ class _SelectMembersState extends State<SelectMembers> {
                                                 ? primaryColor
                                                 : Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                           ),
                                         ),
                                         value: _groupMembers[index]['isCheck'],
@@ -400,7 +426,7 @@ class _SelectMembersState extends State<SelectMembers> {
                                                 ? primaryColor
                                                 : Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                             child: Text(
                                               getInitials(
                                                 _groupMembers[index]['name'],
@@ -424,7 +450,7 @@ class _SelectMembersState extends State<SelectMembers> {
                                 alignment: Alignment.center,
                                 child: emptyList(
                                   color: Colors.blue[400],
-                                  iconData: LineAwesomeIcons.file_text,
+                                  iconData: LineAwesomeIcons.file,
                                   text: "There are no members to show",
                                 ),
                               ),
