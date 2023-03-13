@@ -54,7 +54,7 @@ class _DetailRecieptState extends State<DetailReciept> {
           action: () => Navigator.of(context).pop(),
           elevation: 1,
           leadingIcon: LineAwesomeIcons.arrow_left),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: RefreshIndicator(
           backgroundColor: (themeChangeProvider.darkTheme)
               ? Colors.blueGrey[800]

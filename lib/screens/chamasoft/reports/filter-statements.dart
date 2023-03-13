@@ -54,7 +54,7 @@ class _FilterStatementsState extends State<FilterStatements> {
       height: 250,
       padding: EdgeInsets.all(10.0),
       width: double.infinity,
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).colorScheme.background,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -71,7 +71,7 @@ class _FilterStatementsState extends State<FilterStatements> {
           subtitle1(
               text: "Filter " + defaultTitle,
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               textAlign: TextAlign.start),
           SizedBox(
             height: 5,
@@ -79,7 +79,7 @@ class _FilterStatementsState extends State<FilterStatements> {
           subtitle2(
               text: "Select " + single,
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               textAlign: TextAlign.start),
           FilterButton(
             text: "All " + defaultTitle,
@@ -90,7 +90,7 @@ class _FilterStatementsState extends State<FilterStatements> {
           subtitle2(
               text: "Statement Period",
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               textAlign: TextAlign.start),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -104,7 +104,7 @@ class _FilterStatementsState extends State<FilterStatements> {
                 child: subtitle2(
                     text: "to",
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
+                    color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                     textAlign: TextAlign.start),
               ),
               FilterButton(
@@ -114,15 +114,29 @@ class _FilterStatementsState extends State<FilterStatements> {
             ],
           ),
           // ignore: deprecated_member_use
-          RaisedButton(
-            color: primaryColor,
+          // RaisedButton(
+          //   color: primaryColor,
+          //   child: Padding(
+          //     padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+          //     child: Text("Apply Filter"),
+          //   ),
+          //   textColor: Colors.white,
+          //   onPressed: () => applyFilter(),
+          // )
+          ElevatedButton(
+            onPressed: () => applyFilter(),
             child: Padding(
               padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
               child: Text("Apply Filter"),
             ),
-            textColor: Colors.white,
-            onPressed: () => applyFilter(),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: primaryColor, // sets the button's background color
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0), // sets the button's border radius
+              ),
+            ),
           )
+
         ],
       ),
     );
@@ -138,18 +152,33 @@ class FilterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // ignore: deprecated_member_use
-    return new OutlineButton(
-        child: subtitle1(
-            text: text, color: primaryColor, textAlign: TextAlign.center),
-        onPressed: onPressed,
-        color: primaryColor,
-        highlightedBorderColor: primaryColor.withOpacity(0.5),
-        disabledBorderColor: primaryColor.withOpacity(0.5),
-        borderSide: BorderSide(
+    // return OutlineButton(
+    //     child: subtitle1(
+    //         text: text, color: primaryColor, textAlign: TextAlign.center),
+    //     onPressed: onPressed,
+    //     color: primaryColor,
+    //     highlightedBorderColor: primaryColor.withOpacity(0.5),
+    //     disabledBorderColor: primaryColor.withOpacity(0.5),
+    //     borderSide: BorderSide(
+    //       width: 2.0,
+    //       color: primaryColor.withOpacity(0.5),
+    //     ),
+    //     shape: new RoundedRectangleBorder(
+    //         borderRadius: new BorderRadius.circular(5.0)));
+    return OutlinedButton(
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        foregroundColor: primaryColor, shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.0), // sets the button's border radius
+        ), disabledForegroundColor: primaryColor.withOpacity(0.5).withOpacity(0.38),
+        side: BorderSide(
+          color: primaryColor.withOpacity(0.5), // sets the button's border color
           width: 2.0,
-          color: primaryColor.withOpacity(0.5),
         ),
-        shape: new RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(5.0)));
+        backgroundColor: primaryColor,
+      ),
+      child: subtitle1(text: text, color: primaryColor, textAlign: TextAlign.center),
+    );
+
   }
 }
