@@ -5,8 +5,9 @@ import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statemen
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:chamasoft/providers/groups.dart' as GroupsProvider;
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class NotificationAlert extends StatefulWidget {
@@ -152,7 +153,7 @@ class _NotificationAlertState extends State<NotificationAlert> {
                 top: 50.0,
                 right: 0.0,
                 child: screenActionButton(
-                  icon: LineAwesomeIcons.remove,
+                  icon: LineAwesomeIcons.minus,
                   backgroundColor: Colors.red.withOpacity(0.2),
                   textColor: Colors.red,
                   action: () => Navigator.of(context).pop(),

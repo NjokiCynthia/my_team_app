@@ -10,7 +10,8 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/dashed-divider.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 // import 'notification-alert.dart';
 
@@ -52,7 +53,7 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
       await Provider.of<GroupProvider.Groups>(context, listen: false)
           .markAllNotificationsAsRead();
       // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "All notifications marked as read",
       )));
@@ -78,7 +79,7 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
           action: () => Navigator.pop(context, true),
           elevation: 2.5,
           leadingIcon: LineAwesomeIcons.arrow_left),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Builder(builder: (context) {
         return Column(
           children: <Widget>[
@@ -99,7 +100,7 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
                         subtitle1(
                             text: "Mark as Read",
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                             textAlign: TextAlign.start),
                         RichText(
                           text: TextSpan(
@@ -108,7 +109,7 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
                                   fontSize: 13.0,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme.selectionHandleColor,
                                   fontFamily: 'SegoeUI'),
                               children: [
                                 TextSpan(text: "Mark all notifications as "),
@@ -119,7 +120,7 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
                                         fontSize: 13.0,
                                         color: Theme.of(context)
                                             // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
+                                            .textSelectionTheme.selectionHandleColor,
                                         fontFamily: 'SegoeUI'))
                               ]),
                         ),
@@ -129,7 +130,7 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
                   screenActionButton(
                       icon: LineAwesomeIcons.check,
                       // ignore: deprecated_member_use
-                      textColor: Theme.of(context).textSelectionHandleColor,
+                      textColor: Theme.of(context).textSelectionTheme.selectionHandleColor,
                       action: () async {
                         showDialog(
                             context: context,
@@ -204,7 +205,7 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
                                                           color: Theme.of(
                                                                   context)
                                                               // ignore: deprecated_member_use
-                                                              .textSelectionHandleColor,
+                                                              .textSelectionTheme.selectionHandleColor,
                                                           fontFamily:
                                                               'SegoeUI'),
                                                       textAlign:
@@ -222,7 +223,7 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
                                                           : FontWeight.w400,
                                                   color: Theme.of(context)
                                                       // ignore: deprecated_member_use
-                                                      .textSelectionHandleColor,
+                                                      .textSelectionTheme.selectionHandleColor,
                                                   textAlign: TextAlign.end),
                                             ],
                                           ),
