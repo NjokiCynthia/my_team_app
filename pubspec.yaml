@@ -19,7 +19,7 @@ dependencies:
   pin_input_text_field: ^4.5.0
   # md2_tab_indicator: ^1.0.2
   shared_preferences: ^2.0.18
-  intl: ^0.17.0
+  intl: 0.17.0
   contacts_service: ^0.6.3
   permission_handler: ^10.2.0
   fl_chart: ^0.61.0
@@ -44,7 +44,7 @@ dependencies:
   modal_bottom_sheet: ^2.1.2
   loader_overlay: ^2.1.0
   fluttertoast: ^8.2.1
-  lite_rolling_switch: ^1.0.0+2
+  lite_rolling_switch: ^1.0.0
   flutter_toggle_tab: ^1.2.0
   back_button_interceptor: ^6.0.2
   grouped_list: ^5.1.2
