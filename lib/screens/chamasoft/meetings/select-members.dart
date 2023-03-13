@@ -160,7 +160,7 @@ class _SelectMembersState extends State<SelectMembers> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).colorScheme.background,
           title: heading2(
               text: "Clear Selection",
               textAlign: TextAlign.start,
@@ -207,12 +207,11 @@ class _SelectMembersState extends State<SelectMembers> {
             // )
             TextButton(
               style: TextButton.styleFrom(
-                padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+                foregroundColor: Colors.red, padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
                 ),
                 backgroundColor: Colors.red.withOpacity(0.2),
-                primary: Colors.red,
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -269,7 +268,7 @@ class _SelectMembersState extends State<SelectMembers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
