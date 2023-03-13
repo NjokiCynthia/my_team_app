@@ -16,6 +16,7 @@ import 'package:chamasoft/widgets/country-dropdown.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -94,16 +95,21 @@ class _NewGroupState extends State<NewGroup> {
   }
 
   _showSnackbar(String msg, int duration) {
-    while (_scaffoldKey.currentState.snackBars.isNotEmpty) {
-      _scaffoldKey.currentState.hideCurrentSnackBar();
-    }
+    ScaffoldMessenger.of(_scaffoldKey.currentState.context)
+        .hideCurrentSnackBar();
+    //  // while (
+    //       ScaffoldMessenger.of(_scaffoldKey.currentState.)
+    //    // _scaffoldKey.currentState.snackBars.isNotEmpty) {
+    //     _scaffoldKey.currentState.hideCurrentSnackBar();
+    //   }
     //_scaffoldKey.currentState.removeCurrentSnackBar();
     final snackBar = SnackBar(
       content: Text(msg),
       duration: Duration(seconds: duration),
     );
 
-    _scaffoldKey.currentState.showSnackBar(snackBar);
+    ScaffoldMessenger.of(_scaffoldKey.currentState.context)
+        .showSnackBar(snackBar);
   }
 
   next() {
@@ -985,7 +991,9 @@ class _NewGroupState extends State<NewGroup> {
                   onStepTapped: (step) => goTo(step),
                   onStepCancel: cancel,
                   controlsBuilder: (
-                    BuildContext context, {
+                    BuildContext context,
+                    ControlsDetails controlDetails, {
+                    // BuildContext context, {
                     VoidCallback onStepContinue,
                     VoidCallback onStepCancel,
                   }) {
@@ -999,7 +1007,9 @@ class _NewGroupState extends State<NewGroup> {
                         children: <Widget>[
                           // ignore: deprecated_member_use
                           ElevatedButton(
-                            color: primaryColor,
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: primaryColor),
+                            //color: primaryColor,
                             child: Padding(
                               padding:
                                   EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
@@ -1011,7 +1021,8 @@ class _NewGroupState extends State<NewGroup> {
                                         : "Save & Continue",
                                     style: TextStyle(
                                         fontFamily: 'SegoeUI',
-                                        fontWeight: FontWeight.w700),
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.white),
                                   ),
                                   (_saving)
                                       ? SizedBox(width: 10.0)
@@ -1033,7 +1044,7 @@ class _NewGroupState extends State<NewGroup> {
                                 ],
                               ),
                             ),
-                            textColor: Colors.white,
+                            // textColor: Colors.white,
                             onPressed: (!_saving) ? onStepContinue : null,
                           ),
                           SizedBox(
@@ -1042,30 +1053,36 @@ class _NewGroupState extends State<NewGroup> {
                           currentStep > 1
                               // ignore: deprecated_member_use
                               ? OutlinedButton(
-                                  color: Colors.white,
+                                  style: OutlinedButton.styleFrom(
+                                    backgroundColor: Colors.white,
+                                    side: BorderSide(
+                                      width: 2.0,
+                                      color: Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionTheme
+                                          .selectionHandleColor
+                                          .withOpacity(0.5),
+                                    ),
+                                  ),
+                                  // color: Colors.white,
                                   child: Text(
                                     "Go Back",
                                     style: TextStyle(
                                       color: Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                     ),
                                   ),
-                                  borderSide: BorderSide(
-                                    width: 2.0,
-                                    color: Theme.of(context)
-                                        // ignore: deprecated_member_use
-                                        .textSelectionHandleColor
-                                        .withOpacity(0.5),
-                                  ),
-                                  highlightColor: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor
-                                      .withOpacity(0.1),
-                                  highlightedBorderColor: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor
-                                      .withOpacity(0.6),
+
+                                  // highlightColor: Theme.of(context)
+                                  //     // ignore: deprecated_member_use
+                                  //     .textSelectionTheme.selectionHandleColor,
+                                  //     .withOpacity(0.1),
+                                  // highlightedBorderColor: Theme.of(context)
+                                  //     // ignore: deprecated_member_use
+                                  //     .textSelectionTheme.selectionHandleColor
+                                  //     .withOpacity(0.6),
                                   onPressed: (!_saving) ? onStepCancel : null,
                                 )
                               : SizedBox(),
