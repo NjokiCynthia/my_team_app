@@ -49,7 +49,7 @@ class _ListMembersState extends State<ListMembers> {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Material(
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).colorScheme.background,
                   child: InkWell(
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
@@ -71,12 +71,12 @@ class _ListMembersState extends State<ListMembers> {
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
                 ),
                 Material(
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).colorScheme.background,
                   child: InkWell(
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
@@ -98,7 +98,7 @@ class _ListMembersState extends State<ListMembers> {
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
                 ),
@@ -124,7 +124,7 @@ class _ListMembersState extends State<ListMembers> {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Material(
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).colorScheme.background,
                   child: InkWell(
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
@@ -144,18 +144,18 @@ class _ListMembersState extends State<ListMembers> {
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
                 ),
                 Material(
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).colorScheme.background,
                   child: InkWell(
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
                       Navigator.of(context).pop();
                       // ignore: deprecated_member_use
-                      Scaffold.of(context).showSnackBar(SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           duration: Duration(milliseconds: 4000),
                           content: Text(
                             "You can not edit an active member. Kindly communicate to the member to update their profile",
@@ -171,7 +171,7 @@ class _ListMembersState extends State<ListMembers> {
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
                 ),
@@ -199,7 +199,7 @@ class _ListMembersState extends State<ListMembers> {
                 //           fontWeight: FontWeight.w600,
                 //           textAlign: TextAlign.start,
                 //           // ignore: deprecated_member_use
-                //           color: Theme.of(context).textSelectionHandleColor),
+                //           color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                 //     ),
                 //   ),
                 // ),
@@ -222,7 +222,7 @@ class _ListMembersState extends State<ListMembers> {
                 //           fontWeight: FontWeight.w600,
                 //           textAlign: TextAlign.start,
                 //           // ignore: deprecated_member_use
-                //           color: Theme.of(context).textSelectionHandleColor),
+                //           color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                 //     ),
                 //   ),
                 // ),
@@ -455,7 +455,7 @@ class _ListMembersState extends State<ListMembers> {
                                                 text: '${member.name}',
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 fontWeight: FontWeight.w800,
                                                 fontSize: 18.0,
                                               ),
@@ -471,7 +471,7 @@ class _ListMembersState extends State<ListMembers> {
                                                             FontWeight.w700,
                                                         color: Theme.of(context)
                                                             // ignore: deprecated_member_use
-                                                            .textSelectionHandleColor
+                                                            .textSelectionTheme.selectionHandleColor
                                                             .withOpacity(0.7),
                                                         fontSize: 12.0,
                                                       ),

@@ -83,7 +83,7 @@ class _ListGroupRolesState extends State<ListGroupRoles> {
                                       style: TextStyle(
                                         color: Theme.of(context)
                                             // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
+                                            .textSelectionTheme.selectionHandleColor,
                                         fontWeight: FontWeight.w800,
                                         fontSize: 18.0,
                                       ),
