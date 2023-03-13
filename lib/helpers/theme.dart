@@ -41,9 +41,14 @@ class Styles {
             primaryColor: isDarkTheme ? Colors.blueGrey[100] : primaryColor,
             indicatorColor:
                 isDarkTheme ? Colors.blueGrey[100] : Colors.blue[600],
-            buttonColor: isDarkTheme
-                ? Colors.blueGrey[800]?.withOpacity(0.7)
-                : Colors.white,
+            buttonTheme: ButtonThemeData(
+              buttonColor: isDarkTheme
+                  ? Colors.blueGrey[800]?.withOpacity(0.7)
+                  : Colors.white,
+              colorScheme:
+              isDarkTheme ? ColorScheme.dark() : ColorScheme.light(),//  <-- this auto selects the right color
+            ),
+
             hintColor: isDarkTheme ? Colors.blueGrey[400] : Colors.blueGrey,
             highlightColor:
                 isDarkTheme ? Colors.blueGrey[800] : Colors.grey[300],
@@ -52,21 +57,19 @@ class Styles {
             selectedRowColor:
                 isDarkTheme ? Colors.blueGrey[800] : Colors.blue[100],
             // ignore: deprecated_member_use
-            textSelectionHandleColor:
-                isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey,
+            textSelectionTheme: TextSelectionThemeData(
+              cursorColor: Colors.yellow,
+              selectionColor: isDarkTheme ? Colors.white : Colors.blueGrey[800],
+              selectionHandleColor: isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey,
+            ),
             disabledColor: Colors.grey,
             unselectedWidgetColor:
                 isDarkTheme ? Colors.black38 : Colors.blueGrey[100],
             // ignore: deprecated_member_use
-            textSelectionColor:
-                isDarkTheme ? Colors.white : Colors.blueGrey[800],
+
             cardColor: isDarkTheme ? Colors.blueGrey : Colors.white,
             canvasColor: isDarkTheme ? Colors.black : Colors.grey[50],
             brightness: isDarkTheme ? Brightness.dark : Brightness.light,
-            buttonTheme: Theme.of(context).buttonTheme.copyWith(
-                  colorScheme:
-                      isDarkTheme ? ColorScheme.dark() : ColorScheme.light(),
-                ),
             bottomAppBarTheme: BottomAppBarTheme(
               color: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             ),
@@ -74,24 +77,24 @@ class Styles {
                 isDarkTheme ? Colors.blueGrey[300] : Colors.blueGrey[400],
             accentColor: isDarkTheme ? Colors.blue[700] : primaryColor,
             dividerColor: isDarkTheme ? Colors.grey[900] : Colors.grey[300], checkboxTheme: CheckboxThemeData(
- fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ fillColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
  if (states.contains(MaterialState.disabled)) { return null; }
  if (states.contains(MaterialState.selected)) { return isDarkTheme ? Colors.blue[700] : primaryColor; }
  return null;
  }),
  ), radioTheme: RadioThemeData(
- fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ fillColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
  if (states.contains(MaterialState.disabled)) { return null; }
  if (states.contains(MaterialState.selected)) { return isDarkTheme ? Colors.blue[700] : primaryColor; }
  return null;
  }),
  ), switchTheme: SwitchThemeData(
- thumbColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ thumbColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
  if (states.contains(MaterialState.disabled)) { return null; }
  if (states.contains(MaterialState.selected)) { return isDarkTheme ? Colors.blue[700] : primaryColor; }
  return null;
  }),
- trackColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ trackColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
  if (states.contains(MaterialState.disabled)) { return null; }
  if (states.contains(MaterialState.selected)) { return isDarkTheme ? Colors.blue[700] : primaryColor; }
  return null;
@@ -105,9 +108,13 @@ class Styles {
             primaryColor: isDarkTheme ? Colors.blueGrey[100] : primaryColor,
             indicatorColor:
                 isDarkTheme ? Colors.blueGrey[100] : Colors.brown[600],
-            buttonColor: isDarkTheme
-                ? Colors.blueGrey[800]?.withOpacity(0.7)
-                : Colors.white,
+            buttonTheme: ButtonThemeData(
+              buttonColor: isDarkTheme
+                  ? Colors.blueGrey[800]?.withOpacity(0.7)
+                  : Colors.white,
+              colorScheme:
+              isDarkTheme ? ColorScheme.dark() : ColorScheme.light(),//  <-- this auto selects the right color
+            ),
             hintColor: isDarkTheme ? Colors.blueGrey[400] : Colors.blueGrey,
             highlightColor:
                 isDarkTheme ? Colors.blueGrey[800] : Colors.grey[300],
@@ -116,21 +123,19 @@ class Styles {
             selectedRowColor:
                 isDarkTheme ? Colors.blueGrey[800] : Colors.orange[50],
             // ignore: deprecated_member_use
-            textSelectionHandleColor:
-                isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey,
+            textSelectionTheme: TextSelectionThemeData(
+              cursorColor: Colors.yellow,
+              selectionColor: isDarkTheme ? Colors.white : Colors.blueGrey[800],
+              selectionHandleColor: isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey,
+            ),
             disabledColor: Colors.grey,
             unselectedWidgetColor:
                 isDarkTheme ? Colors.black38 : Colors.blueGrey[100],
             // ignore: deprecated_member_use
-            textSelectionColor:
-                isDarkTheme ? Colors.white : Colors.blueGrey[800],
             cardColor: isDarkTheme ? Colors.blueGrey : Colors.white,
             canvasColor: isDarkTheme ? Colors.black : Colors.grey[50],
             brightness: isDarkTheme ? Brightness.dark : Brightness.light,
-            buttonTheme: Theme.of(context).buttonTheme.copyWith(
-                  colorScheme:
-                      isDarkTheme ? ColorScheme.dark() : ColorScheme.light(),
-                ),
+
             bottomAppBarTheme: BottomAppBarTheme(
               color: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             ),

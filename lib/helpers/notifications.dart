@@ -49,7 +49,7 @@ class NotificationManager {
   static const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
     'High Importance Notifications', // title
-    'This channel is used for important notifications.', // description
+    description: 'This channel is used for important notifications.', // description
     importance: Importance.high,
   );
 
@@ -120,7 +120,7 @@ class NotificationManager {
               android: AndroidNotificationDetails(
                 channel.id,
                 channel.name,
-                channel.description,
+                channelDescription: channel.description,
       // ignore: todo
       // TODO add a proper drawable resource to android, for now using
       //      one that already exists in example app.
