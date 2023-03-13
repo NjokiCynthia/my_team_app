@@ -149,7 +149,7 @@ class _ContributionMembersState extends State<ContributionMembers> {
               ),
               subtitle: Text(
                 "Select members who will contribute",
-                style: TextStyle(color: Theme.of(context).bottomAppBarColor),
+                style: TextStyle(color: Theme.of(context).bottomAppBarTheme.color),
               ),
             ),
             CheckboxListTile(
