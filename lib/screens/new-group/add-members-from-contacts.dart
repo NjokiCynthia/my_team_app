@@ -86,7 +86,7 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: 0,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.clone,
         title:
             "Select Members${_selectedContacts.length == 0 ? '' : ' (${_selectedContacts.length})'}",
         trailingIcon: LineAwesomeIcons.check,
@@ -175,13 +175,15 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
                     text: "Retrieving contact list",
                     color: Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme
+                        .selectionHandleColor,
                   ),
                   subtitle2(
                     text: "Please be patient",
                     color: Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme
+                        .selectionHandleColor,
                   ),
                 ],
               ),
@@ -230,7 +232,8 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
             ? primaryColor
             : Theme.of(context)
                 // ignore: deprecated_member_use
-                .textSelectionHandleColor,
+                .textSelectionTheme
+                .selectionHandleColor,
       ),
       subtitle: list.length >= 1 && list[0]?.value != null
           ? subtitle1(
@@ -240,7 +243,8 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
                   ? primaryColor
                   : Theme.of(context)
                       // ignore: deprecated_member_use
-                      .textSelectionHandleColor,
+                      .textSelectionTheme
+                      .selectionHandleColor,
             )
           : Text(''),
     );
