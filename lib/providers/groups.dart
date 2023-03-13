@@ -313,7 +313,7 @@ class Borrower {
     @required this.id,
     @required this.name,
     @required this.description,
-    @required this.ishidden,
+    this.ishidden,
   });
 }
 
