@@ -138,7 +138,7 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
           context: context,
           action: () => Navigator.of(context).pop(),
           elevation: 1,
-          leadingIcon: LineAwesomeIcons.close,
+          leadingIcon: LineAwesomeIcons.times_circle,
           title: "Set Amount To Withdraw",
         ),
         backgroundColor: Theme.of(context).backgroundColor,

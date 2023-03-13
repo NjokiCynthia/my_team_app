@@ -594,7 +594,7 @@ class AccountsTabView extends StatelessWidget {
 //                                                            ),
 //                                                            SizedBox(width: 10.0),
 //                                                            screenActionButton(
-//                                                              icon: LineAwesomeIcons.close,
+//                                                              icon: LineAwesomeIcons.times,
 //                                                              backgroundColor: Colors.red.withOpacity(0.1),
 //                                                              textColor: Colors.red,
 //                                                              action: () {},
@@ -838,7 +838,9 @@ class MembersTabView extends StatelessWidget {
                           customTitleWithWrap(
                             text: '${member.name}',
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             fontWeight: FontWeight.w800,
                             textAlign: TextAlign.start,
                             fontSize: 15.0,
@@ -849,7 +851,8 @@ class MembersTabView extends StatelessWidget {
                             textAlign: TextAlign.start,
                             color: Theme.of(context)
                                 // ignore: deprecated_member_use
-                                .textSelectionTheme.selectionHandleColor
+                                .textSelectionTheme
+                                .selectionHandleColor
                                 .withOpacity(0.5),
                             fontSize: 12.0,
                           ),
@@ -876,7 +879,7 @@ class MembersTabView extends StatelessWidget {
                     ),
                     SizedBox(width: 10.0),
 //                      screenActionButton(
-//                        icon: LineAwesomeIcons.close,
+//                        icon: LineAwesomeIcons.times,
 //                        backgroundColor: Colors.red.withOpacity(0.1),
 //                        textColor: Colors.red,
 //                        action: () {},

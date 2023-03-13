@@ -288,13 +288,13 @@ class WithdrawalRequestCard extends StatelessWidget {
     Color color = Colors.blueGrey;
     if (request.statusCode == 3) {
       //failed
-      iconData = LineAwesomeIcons.close;
+      iconData = LineAwesomeIcons.times;
       color = Colors.red;
     } else if (request.statusCode == 5) {
       iconData = LineAwesomeIcons.check;
       color = Colors.green;
     } else if (request.statusCode == 6) {
-      iconData = LineAwesomeIcons.close;
+      iconData = LineAwesomeIcons.times;
       color = Colors.red;
     }
     return Padding(

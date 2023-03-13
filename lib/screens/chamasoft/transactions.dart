@@ -1043,7 +1043,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                                               color: Theme.of(
                                                                       context)
                                                                   // ignore: deprecated_member_use
-                                                                  .textSelectionHandleColor,
+                                                                  .textSelectionTheme
+                                                                  .selectionHandleColor,
                                                               textAlign:
                                                                   TextAlign
                                                                       .start),
@@ -1053,7 +1054,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                                               color: Theme.of(
                                                                       context)
                                                                   // ignore: deprecated_member_use
-                                                                  .textSelectionHandleColor,
+                                                                  .textSelectionTheme
+                                                                  .selectionHandleColor,
                                                               textAlign:
                                                                   TextAlign
                                                                       .start),
@@ -1064,7 +1066,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                                               color: Theme.of(
                                                                       context)
                                                                   // ignore: deprecated_member_use
-                                                                  .textSelectionHandleColor,
+                                                                  .textSelectionTheme
+                                                                  .selectionHandleColor,
                                                               textAlign:
                                                                   TextAlign
                                                                       .start)
@@ -1087,7 +1090,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                                                   .paymentAmount),
                                                       color: Theme.of(context)
                                                           // ignore: deprecated_member_use
-                                                          .textSelectionHandleColor,
+                                                          .textSelectionTheme
+                                                          .selectionHandleColor,
                                                       textAlign:
                                                           TextAlign.start),
                                                   subtitle2(
@@ -1095,7 +1099,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                                           .paymentDate,
                                                       color: Theme.of(context)
                                                           // ignore: deprecated_member_use
-                                                          .textSelectionHandleColor,
+                                                          .textSelectionTheme
+                                                          .selectionHandleColor,
                                                       textAlign:
                                                           TextAlign.start),
                                                 ],

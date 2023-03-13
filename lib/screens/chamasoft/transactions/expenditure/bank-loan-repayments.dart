@@ -134,7 +134,7 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.clone,
+        leadingIcon: LineAwesomeIcons.times,
         title: "Record Bank Loan Repayment",
       ),
       backgroundColor: Theme.of(context).backgroundColor,

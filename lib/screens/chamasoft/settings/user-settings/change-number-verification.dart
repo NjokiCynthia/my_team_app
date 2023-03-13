@@ -7,6 +7,7 @@ import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:provider/provider.dart';
@@ -251,7 +252,7 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
                   top: 50.0,
                   left: 20.0,
                   child: screenActionButton(
-                    icon: LineAwesomeIcons.close,
+                    icon: LineAwesomeIcons.times,
                     backgroundColor: primaryColor.withOpacity(0.2),
                     textColor: primaryColor,
                     action: () => Navigator.of(context).pop(),

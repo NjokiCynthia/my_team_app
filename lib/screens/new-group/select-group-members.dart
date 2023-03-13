@@ -129,7 +129,7 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.clone,
+        leadingIcon: LineAwesomeIcons.times_circle,
         title: _title,
         actions: [
           Padding(
@@ -449,7 +449,7 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                                   alignment: Alignment.center,
                                   child: emptyList(
                                     color: Colors.blue[400],
-                                    iconData: LineAwesomeIcons.file_text,
+                                    iconData: LineAwesomeIcons.pdf_file_1,
                                     text: "There are no members to show",
                                   ),
                                 ),

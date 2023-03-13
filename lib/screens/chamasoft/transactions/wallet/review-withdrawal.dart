@@ -252,7 +252,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
           context: context,
           action: () => Navigator.of(context).pop(_responseSubmitted),
           elevation: 1,
-          leadingIcon: LineAwesomeIcons.close,
+          leadingIcon: LineAwesomeIcons.times,
           title: "Review Withdrawal Request",
         ),
         backgroundColor: Theme.of(context).backgroundColor,

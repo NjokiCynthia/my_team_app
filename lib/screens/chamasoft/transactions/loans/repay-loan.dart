@@ -109,7 +109,7 @@ class _RepayLoanState extends State<RepayLoan> {
           context: context,
           action: () => Navigator.of(context).pop(),
           elevation: _appBarElevation,
-          leadingIcon: LineAwesomeIcons.close,
+          leadingIcon: LineAwesomeIcons.times,
           title: "Repay Loan",
         ),
         backgroundColor: Theme.of(context).backgroundColor,

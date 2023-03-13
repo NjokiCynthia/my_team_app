@@ -136,7 +136,7 @@ class RecordExpenseState extends State<RecordExpense> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.clone,
+        leadingIcon: LineAwesomeIcons.times_circle,
         title: "Record Expense",
       ),
       backgroundColor: Theme.of(context).backgroundColor,

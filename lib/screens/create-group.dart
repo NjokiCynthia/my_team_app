@@ -301,7 +301,7 @@ class _CreateGroupState extends State<CreateGroup> {
                   top: 50.0,
                   left: 20.0,
                   child: screenActionButton(
-                    icon: LineAwesomeIcons.clone,
+                    icon: LineAwesomeIcons.times_circle,
                     backgroundColor: primaryColor.withOpacity(0.2),
                     textColor: primaryColor,
                     action: () => Navigator.of(context).pop(),

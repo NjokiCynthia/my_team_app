@@ -10,6 +10,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -105,7 +106,8 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor),
+                                          .textSelectionTheme
+                                          .selectionHandleColor),
                             ),
                             Image.asset(
                               'assets/icon/main.png',
@@ -119,7 +121,8 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
                                   // ignore: deprecated_member_use
-                                  .textSelectionHandleColor,
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                             ),
                             SizedBox(
                               height: 15.0,
@@ -144,7 +147,8 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 customTitleWithWrap(
                                   text: groupObject.groupPhone != "null"
@@ -154,7 +158,8 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 customTitleWithWrap(
                                   text: groupObject.groupEmail != "null"
@@ -164,7 +169,8 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                               ],
                             ),
@@ -193,7 +199,8 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                                   fontWeight: FontWeight.w600,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 SizedBox(
                                   height: 5.0,
@@ -207,7 +214,8 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                               ],
                             ),
@@ -287,7 +295,8 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                               fontWeight: FontWeight.w300,
                               color: Theme.of(context)
                                   // ignore: deprecated_member_use
-                                  .textSelectionHandleColor,
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                             ),
                           ],
                         ),
@@ -327,7 +336,8 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                               ],
                             ),
@@ -352,7 +362,7 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                             children: [
                               IconButton(
                                 icon: Icon(
-                                  LineAwesomeIcons.mobile,
+                                  LineAwesomeIcons.mobile_phone,
                                 ),
                                 iconSize: 20.0,
                                 onPressed: () async {
@@ -368,7 +378,8 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                               ),
                             ],
                           ),

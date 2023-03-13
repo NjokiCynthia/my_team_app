@@ -174,7 +174,7 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
           context: context,
           action: () => Navigator.of(context).pop(),
           elevation: 2.5,
-          leadingIcon: LineAwesomeIcons.close,
+          leadingIcon: LineAwesomeIcons.times,
           title: "Select Recipient",
           trailingIcon: LineAwesomeIcons.user_plus,
           trailingAction: () => _numberPrompt()),

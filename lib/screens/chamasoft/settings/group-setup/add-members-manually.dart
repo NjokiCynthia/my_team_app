@@ -13,6 +13,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -382,7 +383,7 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                                           visible:
                                               !(addedCurrentUser && index == 0),
                                           child: screenActionButton(
-                                            icon: LineAwesomeIcons.close,
+                                            icon: LineAwesomeIcons.times,
                                             backgroundColor:
                                                 Colors.red.withOpacity(0.1),
                                             textColor: Colors.red,

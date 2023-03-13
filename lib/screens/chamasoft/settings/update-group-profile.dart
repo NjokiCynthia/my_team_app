@@ -640,7 +640,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: "",
       ),
       backgroundColor: Theme.of(context).backgroundColor,

@@ -134,7 +134,7 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
           context: context,
           action: () => Navigator.of(context).pop(),
           elevation: _appBarElevation,
-          leadingIcon: LineAwesomeIcons.clone,
+          leadingIcon: LineAwesomeIcons.times_circle,
           title: "Record Miscellaneous Payment",
         ),
         backgroundColor: Theme.of(context).backgroundColor,

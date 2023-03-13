@@ -155,7 +155,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
             // back to the previous screen
             Navigator.of(context).pop();
           },
-          leadingIcon: LineAwesomeIcons.clone,
+          leadingIcon: LineAwesomeIcons.times_circle,
           elevation: _appBBarElevation,
           actions: [
             Padding(

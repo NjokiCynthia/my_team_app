@@ -7,6 +7,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class AddMemberDialog extends StatefulWidget {
@@ -110,7 +111,7 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
           title: "Add Member",
           action: () => Navigator.of(context).pop(),
           elevation: 1.0,
-          leadingIcon: LineAwesomeIcons.close,
+          leadingIcon: LineAwesomeIcons.times,
           actions: []),
       backgroundColor: Theme.of(context).backgroundColor,
       body: SingleChildScrollView(

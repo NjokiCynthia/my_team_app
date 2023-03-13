@@ -137,7 +137,7 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.clone,
+        leadingIcon: LineAwesomeIcons.times,
         title: "Record Contribution Refund",
       ),
       backgroundColor: Theme.of(context).backgroundColor,

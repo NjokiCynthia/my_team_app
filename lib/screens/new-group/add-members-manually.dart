@@ -130,7 +130,7 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
         title: "Add Member",
         action: () => Navigator.of(context).pop(),
         elevation: 0,
-        leadingIcon: LineAwesomeIcons.clone,
+        leadingIcon: LineAwesomeIcons.times,
         actions: [],
       ),
       backgroundColor: Theme.of(context).backgroundColor,

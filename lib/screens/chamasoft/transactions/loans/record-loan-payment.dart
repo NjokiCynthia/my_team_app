@@ -209,7 +209,7 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: "Record Loan Repayment",
       ),
       backgroundColor: Theme.of(context).backgroundColor,

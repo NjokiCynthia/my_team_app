@@ -152,7 +152,7 @@ class _RecordIncomeState extends State<RecordIncome> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.clone,
+        leadingIcon: LineAwesomeIcons.times_circle,
         title: "Record Income",
       ),
       backgroundColor: Theme.of(context).backgroundColor,

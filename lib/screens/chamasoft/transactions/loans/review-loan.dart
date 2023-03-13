@@ -127,7 +127,7 @@ class ReviewLoanState extends State<ReviewLoan> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: appbarTitle,
       ),
       backgroundColor: Colors.transparent,

@@ -74,7 +74,7 @@ class _BankListState extends State<BankList> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: 1,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: "Select Your Bank",
       ),
       backgroundColor: Colors.transparent,
