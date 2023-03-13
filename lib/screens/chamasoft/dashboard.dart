@@ -460,6 +460,14 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             ],
           ),
           bottomNavigationBar: BottomNavigationBar(
+            selectedLabelStyle: TextStyle(
+                color: _currentPage == /*2*/ 1
+                    ? primaryColor
+                    : Config.appName.toLowerCase() == 'chamasoft'
+                        ? Colors.blueGrey[300]
+                        : Colors.blueGrey[300].withOpacity(0.5),
+                fontFamily: 'SegoeUI',
+                fontWeight: FontWeight.w700),
             backgroundColor: (themeChangeProvider.darkTheme)
                 ? Colors.blueGrey[900] //.withOpacity(0.95)
                 : Config.appName.toLowerCase() == 'chamasoft'
@@ -485,15 +493,15 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                         _currentPage == 0 ? primaryColor : Colors.blueGrey[300],
                   ),
                 ),
-                title: Text(
-                  toBeginningOfSentenceCase(getUserName(auth.userName)),
-                  style: TextStyle(
-                    color:
-                        _currentPage == 0 ? primaryColor : Colors.blueGrey[300],
-                    fontFamily: 'SegoeUI',
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+                label: toBeginningOfSentenceCase(getUserName(auth.userName)),
+
+                // style: TextStyle(
+                //   color:
+                //       _currentPage == 0 ? primaryColor : Colors.blueGrey[300],
+                //   fontFamily: 'SegoeUI',
+                //   fontWeight: FontWeight.w700,
+                // ),
+                //),
               ),
               // BottomNavigationBarItem(
               //   icon: customShowCase(
@@ -547,18 +555,9 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   ),
                 ),
                 // ignore: deprecated_member_use
-                title: Text(
-                  "Transactions",
-                  style: TextStyle(
-                      color: _currentPage == /*2*/ 1
-                          ? primaryColor
-                          : Config.appName.toLowerCase() == 'chamasoft'
-                              ? Colors.blueGrey[300]
-                              : Colors.blueGrey[300].withOpacity(0.5),
-                      fontFamily: 'SegoeUI',
-                      fontWeight: FontWeight.w700),
-                ),
+                label: "Transactions",
               ),
+              //),
               BottomNavigationBarItem(
                 icon: customShowCase(
                   key: reportKey,
@@ -579,15 +578,15 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 ),
                 // ignore: deprecated_member_use
                 label: 'Reports',
-                style: TextStyle(
-                  color: _currentPage == /*3*/ 2
-                      ? primaryColor
-                      : Config.appName.toLowerCase() == 'chamasoft'
-                          ? Colors.blueGrey[300]
-                          : Colors.blueGrey[300].withOpacity(0.5),
-                  fontFamily: 'SegoeUI',
-                  fontWeight: FontWeight.w700,
-                ),
+                // style: TextStyle(
+                //   color: _currentPage == /*3*/ 2
+                //       ? primaryColor
+                //       : Config.appName.toLowerCase() == 'chamasoft'
+                //           ? Colors.blueGrey[300]
+                //           : Colors.blueGrey[300].withOpacity(0.5),
+                //   fontFamily: 'SegoeUI',
+                //   fontWeight: FontWeight.w700,
+                // ),
               ),
               //),
               // BottomNavigationBarItem(
