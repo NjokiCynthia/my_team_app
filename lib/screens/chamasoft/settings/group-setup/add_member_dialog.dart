@@ -8,7 +8,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class AddMemberDialog extends StatefulWidget {
   @override
@@ -24,7 +24,7 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
   FocusNode _focusNode;
   bool _focused = false;
 
-  CountryCode _countryCode = CountryCode.fromCode("KE");
+  CountryCode _countryCode = CountryCode.fromCountryCode("KE");
   final _phoneController = TextEditingController();
 
   BorderSide _customInputBorderSide = BorderSide(
@@ -113,7 +113,7 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
           elevation: 1.0,
           leadingIcon: LineAwesomeIcons.times,
           actions: []),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
         padding: EdgeInsets.all(40.0),
         child: Form(
@@ -159,7 +159,7 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                       textAlign: TextAlign.start,
                       fontSize: 11,
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor),
+                      color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                 ],
               ),
               Row(
@@ -189,14 +189,14 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                                   flagWidth: 28.0,
                                   textStyle: TextStyle(
                                     fontFamily:
-                                        'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/
+                                        'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionTheme.selectionHandleColor*/
                                   ),
                                   searchStyle: TextStyle(
                                       fontFamily: 'SegoeUI',
                                       fontSize: 16,
                                       color: Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor),
+                                          .textSelectionTheme.selectionHandleColor),
                                   onChanged: (countryCode) {
                                     setState(() {
                                       _countryCode = countryCode;
