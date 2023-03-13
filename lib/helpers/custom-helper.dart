@@ -169,8 +169,13 @@ class CustomHelper {
     return double.tryParse(s) != null;
   }
 
-  static void callNumber(String number) {
-    launch("tel://$number");
+  static Future<void> callNumber(String number) async {
+    // launch("tel://$number");
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: number,
+    );
+    await launchUrl(launchUri);
   }
 }
 
