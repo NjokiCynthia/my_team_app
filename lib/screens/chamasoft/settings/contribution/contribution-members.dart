@@ -144,12 +144,12 @@ class _ContributionMembersState extends State<ContributionMembers> {
                 "Members",
                 style: TextStyle(
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
+                    color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                     fontWeight: FontWeight.w500),
               ),
               subtitle: Text(
                 "Select members who will contribute",
-                style: TextStyle(color: Theme.of(context).bottomAppBarColor),
+                style: TextStyle(color: Theme.of(context).bottomAppBarTheme.color),
               ),
             ),
             CheckboxListTile(
@@ -157,7 +157,7 @@ class _ContributionMembersState extends State<ContributionMembers> {
                 "Select All",
                 style: TextStyle(
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
+                    color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                     fontWeight: FontWeight.w500),
               ),
               value: selectAll,
