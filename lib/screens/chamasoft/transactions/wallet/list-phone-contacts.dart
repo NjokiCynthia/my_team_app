@@ -34,7 +34,7 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
   PermissionStatus _permissionStatus = PermissionStatus.denied;
   // undetermined
   // ignore: deprecated_member_use
-  List<CustomContact> _contacts = new List<CustomContact>();
+  List<CustomContact> _contacts = <CustomContact>[];
   bool _isLoading = false;
   String floatingButtonLabel;
   Color floatingButtonColor;

@@ -21,7 +21,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'amount-to-withdraw.dart';
+//import 'amount-to-withdraw.dart';
 
 class ListMemberContacts extends StatefulWidget {
   final Map<String, String> formData;
@@ -46,7 +46,9 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
   PermissionStatus _permissionStatus = PermissionStatus.denied;
   // undetermined
   // ignore: deprecated_member_use
-  List<CustomContact> _contacts = new List<CustomContact>();
+  //List<CustomContact> _contacts = new List<CustomContact>();
+  List<CustomContact> _contacts = <CustomContact>[];
+
   bool _isLoading = false;
   String floatingButtonLabel;
   Color floatingButtonColor;
