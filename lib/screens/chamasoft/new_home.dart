@@ -46,6 +46,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:pie_chart/pie_chart.dart' as chart;
@@ -233,7 +234,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .resetGroupLoanSummary(_currentGroup.groupId);
 
         // Provider.of(context, listen: false).fetchMemberLoans();
-
       }
       // if (!Provider.of<Dashboard>(context, listen: false)
       //     .memberGroupDataExists(_currentGroup.groupId)) {
@@ -556,7 +556,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
       print("Data saved to the server");
       await _myFile.delete();
       // readFileData();
-
     } else {
       print("Hello, its less than 10kb");
       // readFileData();
@@ -785,19 +784,20 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             FlSpot(8, 3),
           ],
           isCurved: false,
-          colors: [primaryColor],
+          color: primaryColor,
           barWidth: 1,
           isStrokeCapRound: false,
           dotData: FlDotData(show: false),
           belowBarData: BarAreaData(
             show: true,
-            colors: [
-              primaryColor.withOpacity(0.07),
-              primaryColor.withOpacity(0.0),
-            ],
-            gradientColorStops: [0.5, 1.0],
-            gradientFrom: const Offset(0, 0),
-            gradientTo: const Offset(0, 1),
+            color:
+                //[
+                primaryColor.withOpacity(0.07),
+            //primaryColor.withOpacity(0.0),
+            //  ],
+            // gradientColorStops: [0.5, 1.0],
+            // gradient: const Offset(0, 0),
+            // gradientTo: const Offset(0, 1),
           ),
         ),
       ],
@@ -1306,7 +1306,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                     // ignore: deprecated_member_use
                                     Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor,
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                 child: Container(
                                   height: 180.0,
                                   child: ListView(
@@ -1516,7 +1517,8 @@ class _ContrubutionsState extends State<Contrubutions> {
                                                           FontWeight.w500,
                                                       text: row.date,
                                                       color: Theme.of(context)
-                                                          .textSelectionHandleColor,
+                                                          .textSelectionTheme
+                                                          .selectionHandleColor,
                                                     ),
                                                     customTitle2(
                                                         fontSize: 14,
@@ -1524,7 +1526,8 @@ class _ContrubutionsState extends State<Contrubutions> {
                                                             FontWeight.w500,
                                                         text: row.title,
                                                         color: Theme.of(context)
-                                                            .textSelectionHandleColor,
+                                                            .textSelectionTheme
+                                                            .selectionHandleColor,
                                                         textAlign:
                                                             TextAlign.start),
                                                   ],
@@ -1541,7 +1544,8 @@ class _ContrubutionsState extends State<Contrubutions> {
                                                     text: currencyFormat
                                                         .format(row.amount),
                                                     color: Theme.of(context)
-                                                        .textSelectionHandleColor,
+                                                        .textSelectionTheme
+                                                        .selectionHandleColor,
                                                     textAlign: TextAlign.end),
                                               ),
                                             ],
@@ -1554,7 +1558,8 @@ class _ContrubutionsState extends State<Contrubutions> {
                                 text: "No Contributions yet",
                                 fontSize: 16,
                                 color: Theme.of(context)
-                                    .textSelectionHandleColor)),
+                                    .textSelectionTheme
+                                    .selectionHandleColor)),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Row(
@@ -1742,7 +1747,8 @@ class _ContrubutionsState extends State<Contrubutions> {
                                       fontWeight: FontWeight.w500,
                                       // ignore: deprecated_member_use
                                       color: Theme.of(context)
-                                          .textSelectionHandleColor),
+                                          .textSelectionTheme
+                                          .selectionHandleColor),
                                 ),
                                 chartValuesOptions: chart.ChartValuesOptions(
                                   showChartValueBackground: false,
@@ -1755,7 +1761,8 @@ class _ContrubutionsState extends State<Contrubutions> {
                                     fontSize: 14.0,
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionColor,
+                                        .textSelectionTheme
+                                        .selectionColor,
                                     fontWeight: FontWeight.w500,
                                     // ignore: deprecated_member_use
                                     /* color: Colors.black */
@@ -1772,7 +1779,8 @@ class _ContrubutionsState extends State<Contrubutions> {
                                     fontWeight: FontWeight.w400,
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor,
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                   ),
                                   /* dashboardData.memberContributionAmount */
                                   dashboardContributionSummary
@@ -1817,7 +1825,8 @@ class _ContrubutionsState extends State<Contrubutions> {
                                                                                   : */
                                                   Theme.of(context)
                                                       // ignore: deprecated_member_use
-                                                      .textSelectionHandleColor,
+                                                      .textSelectionTheme
+                                                      .selectionHandleColor,
                                               textAlign: TextAlign.start,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w600,
@@ -1847,7 +1856,8 @@ class _ContrubutionsState extends State<Contrubutions> {
                                           : */
                                               Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme
+                                                  .selectionHandleColor,
                                           textAlign: TextAlign.start,
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
@@ -1861,7 +1871,8 @@ class _ContrubutionsState extends State<Contrubutions> {
                                     fontWeight: FontWeight.w400,
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor,
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                   ),
                                   dashboardContributionSummary
                                               .groupContributionAmount >
@@ -1882,7 +1893,8 @@ class _ContrubutionsState extends State<Contrubutions> {
                                           customTitle1(
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
+                                                .textSelectionTheme
+                                                .selectionHandleColor,
                                             text: _currentGroup.groupCurrency +
                                                 " " +
                                                 currencyFormat.format(
@@ -1913,7 +1925,8 @@ class _ContrubutionsState extends State<Contrubutions> {
                                             customTitle1(
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme
+                                                  .selectionHandleColor,
                                               text: _currentGroup
                                                       .groupCurrency +
                                                   " " +
@@ -1987,7 +2000,8 @@ class _ContrubutionsState extends State<Contrubutions> {
                                           fontWeight: FontWeight.w400,
                                           color: Theme.of(context)
                                               // ignore: deprecated_member_use
-                                              .textSelectionHandleColor,
+                                              .textSelectionTheme
+                                              .selectionHandleColor,
                                         ),
                                         SizedBox(
                                           height: 5,
@@ -2024,7 +2038,8 @@ class _ContrubutionsState extends State<Contrubutions> {
                                                       ? Colors.green
                                                       : Theme.of(context)
                                                           // ignore: deprecated_member_use
-                                                          .textSelectionHandleColor,
+                                                          .textSelectionTheme
+                                                          .selectionHandleColor,
                                           textAlign: TextAlign.start,
                                           fontSize: 13,
                                           fontWeight: FontWeight.w600,
@@ -2043,7 +2058,8 @@ class _ContrubutionsState extends State<Contrubutions> {
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
                                             // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
+                                            .textSelectionTheme
+                                            .selectionHandleColor,
                                       ),
                                       SizedBox(
                                         height: 5,
@@ -2058,7 +2074,8 @@ class _ContrubutionsState extends State<Contrubutions> {
                                             // "${dashboardData.nextcontributionDate} (${(dashboardData.contributionDateDaysleft == "0 days" ? "today" : dashboardData.contributionDateDaysleft != null ? '${dashboardData.contributionDateDaysleft} left' : "--")})",
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
+                                                .textSelectionTheme
+                                                .selectionHandleColor,
                                             textAlign: TextAlign.start,
                                             fontSize: 13,
                                             fontWeight: FontWeight.w600,
@@ -2272,7 +2289,8 @@ class _FinesState extends State<Fines> {
                                   fontWeight: FontWeight.w500,
                                   // ignore: deprecated_member_use
                                   color: Theme.of(context)
-                                      .textSelectionHandleColor),
+                                      .textSelectionTheme
+                                      .selectionHandleColor),
                             ),
                             chartValuesOptions: chart.ChartValuesOptions(
                                 showChartValueBackground: false,
@@ -2287,7 +2305,8 @@ class _FinesState extends State<Fines> {
                                     // ignore: deprecated_member_use
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionColor)),
+                                        .textSelectionTheme
+                                        .selectionHandleColor)),
                           ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -2299,7 +2318,8 @@ class _FinesState extends State<Fines> {
                                 fontWeight: FontWeight.w400,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
+                                    .textSelectionTheme
+                                    .selectionColor,
                               ),
                               /* dashboardData.memberFineAmount */ dashboardFineSummary
                                           .memberFinePaid
@@ -2340,7 +2360,8 @@ class _FinesState extends State<Fines> {
                                       : */
                                               Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme
+                                                  .selectionHandleColor,
                                           textAlign: TextAlign.start,
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
@@ -2366,7 +2387,8 @@ class _FinesState extends State<Fines> {
                                   :  */
                                           Theme.of(context)
                                               // ignore: deprecated_member_use
-                                              .textSelectionHandleColor,
+                                              .textSelectionTheme
+                                              .selectionHandleColor,
                                       textAlign: TextAlign.start,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
@@ -2380,7 +2402,8 @@ class _FinesState extends State<Fines> {
                                 fontWeight: FontWeight.w400,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                               ),
                               dashboardFineSummary.totalGroupFinePaid > 0
                                   ? Row(
@@ -2394,7 +2417,8 @@ class _FinesState extends State<Fines> {
                                         customTitle1(
                                           color: Theme.of(context)
                                               // ignore: deprecated_member_use
-                                              .textSelectionHandleColor,
+                                              .textSelectionTheme
+                                              .selectionHandleColor,
                                           text: _currentGroup.groupCurrency +
                                               " " +
                                               currencyFormat.format(
@@ -2410,7 +2434,8 @@ class _FinesState extends State<Fines> {
                                   : customTitle1(
                                       color: Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                       text: _currentGroup.groupCurrency +
                                           " " +
                                           currencyFormat.format(
@@ -2461,7 +2486,8 @@ class _FinesState extends State<Fines> {
                                       fontWeight: FontWeight.w400,
                                       color: Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                     ),
                                     SizedBox(
                                       height: 5,
@@ -2492,7 +2518,8 @@ class _FinesState extends State<Fines> {
                                               ? Colors.green
                                               : Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme
+                                                  .selectionHandleColor,
                                       textAlign: TextAlign.start,
                                       fontSize: 13,
                                       fontWeight: FontWeight.w600,
@@ -2648,88 +2675,90 @@ class _BalancesState extends State<Balances> {
 
     return !_isLoading
         ? Container(
-            child: /* loanDashboardSummary.totalGroupLoanBalance?? */ loanDashboardSummary
-                        .totalGroupLoanBalanceDouble >
-                    0
-                ? Container(
-                    color: Theme.of(context).backgroundColor,
-                    child: Column(children: [
-                      Row(
-                        children: [
-                          chart.PieChart(
-                            dataMap: dataMap,
-                            animationDuration: Duration(milliseconds: 800),
-                            chartLegendSpacing: 32,
-                            chartRadius:
-                                MediaQuery.of(context).size.width / 3.2,
-                            initialAngleInDegree: 0,
-                            ringStrokeWidth: 32,
-                            // colorList: [Colors.red[300], primaryColor],
-                            gradientList: gradientList,
-                            legendOptions: chart.LegendOptions(
-                              showLegendsInRow: false,
-                              legendPosition: chart.LegendPosition.right,
-                              showLegends: false,
-                              legendTextStyle: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  // ignore: deprecated_member_use
-                                  color: Theme.of(context)
-                                      .textSelectionHandleColor),
-                            ),
-                            chartValuesOptions: chart.ChartValuesOptions(
-                                showChartValueBackground: false,
-                                showChartValues: true,
-                                showChartValuesInPercentage: true,
-                                showChartValuesOutside: false,
-                                decimalPlaces: 0,
-                                chartValueStyle: TextStyle(
-                                    fontFamily: 'SegoeUI',
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w500,
-                                    // ignore: deprecated_member_use
+            child: /* loanDashboardSummary.totalGroupLoanBalance?? */
+                loanDashboardSummary.totalGroupLoanBalanceDouble > 0
+                    ? Container(
+                        color: Theme.of(context).backgroundColor,
+                        child: Column(children: [
+                          Row(
+                            children: [
+                              chart.PieChart(
+                                dataMap: dataMap,
+                                animationDuration: Duration(milliseconds: 800),
+                                chartLegendSpacing: 32,
+                                chartRadius:
+                                    MediaQuery.of(context).size.width / 3.2,
+                                initialAngleInDegree: 0,
+                                ringStrokeWidth: 32,
+                                // colorList: [Colors.red[300], primaryColor],
+                                gradientList: gradientList,
+                                legendOptions: chart.LegendOptions(
+                                  showLegendsInRow: false,
+                                  legendPosition: chart.LegendPosition.right,
+                                  showLegends: false,
+                                  legendTextStyle: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      // ignore: deprecated_member_use
+                                      color: Theme.of(context)
+                                          .textSelectionTheme
+                                          .selectionHandleColor),
+                                ),
+                                chartValuesOptions: chart.ChartValuesOptions(
+                                    showChartValueBackground: false,
+                                    showChartValues: true,
+                                    showChartValuesInPercentage: true,
+                                    showChartValuesOutside: false,
+                                    decimalPlaces: 0,
+                                    chartValueStyle: TextStyle(
+                                        fontFamily: 'SegoeUI',
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.w500,
+                                        // ignore: deprecated_member_use
+                                        color: Theme.of(context)
+                                            // ignore: deprecated_member_use
+                                            .textSelectionTheme
+                                            .selectionColor)),
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  customTitle(
+                                    text: "Your Total Loan",
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionColor)),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              customTitle(
-                                text: "Your Total Loan",
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: Theme.of(context)
-                                    // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
-                              ),
-                              // Text(
-                              //   "My Loan Balances",
-                              //   style: TextStyle(
-                              //     color: Colors.blueGrey[400],
-                              //     fontFamily: 'SegoeUI',
-                              //     fontSize: 14.0,
-                              //     fontWeight: FontWeight.w800,
-                              //   ),
-                              // ),
-                              /* dashboardData.memberTotalLoanBalance */
-                              loanDashboardSummary.totalLoanAmount > 0
-                                  ? Row(
-                                      children: [
-                                        circleButton(
-                                          backgroundColor: /* : dashboardData
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
+                                  ),
+                                  // Text(
+                                  //   "My Loan Balances",
+                                  //   style: TextStyle(
+                                  //     color: Colors.blueGrey[400],
+                                  //     fontFamily: 'SegoeUI',
+                                  //     fontSize: 14.0,
+                                  //     fontWeight: FontWeight.w800,
+                                  //   ),
+                                  // ),
+                                  /* dashboardData.memberTotalLoanBalance */
+                                  loanDashboardSummary.totalLoanAmount > 0
+                                      ? Row(
+                                          children: [
+                                            circleButton(
+                                              backgroundColor: /* : dashboardData
                                         .memberTotalLoanBalance >
                                     0
                                 ? */
-                                              primaryColor.withOpacity(.3)
-                                          /*  : Colors
+                                                  primaryColor.withOpacity(.3)
+                                              /*  : Colors
                                     .white */ /* rimaryColor.withOpacity(.3) */,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        customTitle1(
-                                          text: /* _currentGroup.disableArrears
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            customTitle1(
+                                              text: /* _currentGroup.disableArrears
                                       ? _currentGroup.groupCurrency +
                                           " " +
                                           currencyFormat.format(dashboardData
@@ -2738,284 +2767,301 @@ class _BalancesState extends State<Balances> {
                                           " " +
                                           currencyFormat.format(dashboardData
                                               .memberTotalLoanBalance) */
-                                              _currentGroup.groupCurrency +
+                                                  _currentGroup.groupCurrency +
+                                                      " " +
+                                                      currencyFormat.format(
+                                                          loanDashboardSummary
+                                                              .totalLoanAmount),
+                                              color: Theme.of(context)
+                                                  // ignore: deprecated_member_use
+                                                  .textSelectionTheme
+                                                  .selectionHandleColor,
+                                              textAlign: TextAlign.start,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ],
+                                        )
+                                      : customTitle1(
+                                          text: _currentGroup.disableArrears
+                                              ? _currentGroup.groupCurrency +
                                                   " " +
                                                   currencyFormat.format(
+                                                      /* dashboardData.memberTotalLoanBalance */
+                                                      loanDashboardSummary
+                                                          .totalLoanAmount)
+                                              : _currentGroup.groupCurrency +
+                                                  " " +
+                                                  currencyFormat.format(
+                                                      /* dashboardData.memberTotalLoanBalance */
                                                       loanDashboardSummary
                                                           .totalLoanAmount),
                                           color: Theme.of(context)
                                               // ignore: deprecated_member_use
-                                              .textSelectionHandleColor,
+                                              .textSelectionTheme
+                                              .selectionHandleColor,
                                           textAlign: TextAlign.start,
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600,
                                         ),
-                                      ],
-                                    )
-                                  : customTitle1(
-                                      text: _currentGroup.disableArrears
-                                          ? _currentGroup.groupCurrency +
-                                              " " +
-                                              currencyFormat.format(
-                                                  /* dashboardData.memberTotalLoanBalance */
-                                                  loanDashboardSummary
-                                                      .totalLoanAmount)
-                                          : _currentGroup.groupCurrency +
-                                              " " +
-                                              currencyFormat.format(
-                                                  /* dashboardData.memberTotalLoanBalance */
-                                                  loanDashboardSummary
-                                                      .totalLoanAmount),
-                                      color: Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
-                                      textAlign: TextAlign.start,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              customTitle(
-                                text: "Group Loan Balances",
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: Theme.of(context)
-                                    // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
-                              ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  customTitle(
+                                    text: "Group Loan Balances",
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context)
+                                        // ignore: deprecated_member_use
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
+                                  ),
 
-                              /* dashboardData.groupLoanedAmount */
-                              loanDashboardSummary.totalGroupLoanBalanceDouble >
-                                      0
-                                  ? Row(
-                                      children: [
-                                        circleButton(
-                                          backgroundColor: /*  dashboardData
+                                  /* dashboardData.groupLoanedAmount */
+                                  loanDashboardSummary
+                                              .totalGroupLoanBalanceDouble >
+                                          0
+                                      ? Row(
+                                          children: [
+                                            circleButton(
+                                              backgroundColor: /*  dashboardData
                                         .groupPendingLoanBalance >
                                     0
                                 ?  */
-                                              primaryColor
-                                          /*  : Colors
+                                                  primaryColor
+                                              /*  : Colors
                                     .white  */ /* rimaryColor.withOpacity(.3) */,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        customTitle1(
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            customTitle1(
+                                              color: Theme.of(context)
+                                                  // ignore: deprecated_member_use
+                                                  .textSelectionTheme
+                                                  .selectionHandleColor,
+                                              text: _currentGroup
+                                                      .groupCurrency +
+                                                  " " +
+                                                  currencyFormat.format(
+                                                      /* dashboardData.groupLoanedAmount */
+                                                      loanDashboardSummary
+                                                          .totalGroupLoanBalanceDouble),
+                                              textAlign: TextAlign.start,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ],
+                                        )
+                                      : customTitle1(
                                           color: Theme.of(context)
                                               // ignore: deprecated_member_use
-                                              .textSelectionHandleColor,
+                                              .textSelectionTheme
+                                              .selectionHandleColor,
                                           text: _currentGroup.groupCurrency +
                                               " " +
                                               currencyFormat.format(
                                                   /* dashboardData.groupLoanedAmount */
                                                   loanDashboardSummary
-                                                      .totalGroupLoanBalanceDouble),
+                                                      .totalGroupLoanBalance),
                                           textAlign: TextAlign.start,
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600,
                                         ),
-                                      ],
-                                    )
-                                  : customTitle1(
-                                      color: Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
-                                      text: _currentGroup.groupCurrency +
-                                          " " +
-                                          currencyFormat.format(
-                                              /* dashboardData.groupLoanedAmount */
-                                              loanDashboardSummary
-                                                  .totalGroupLoanBalance),
-                                      textAlign: TextAlign.start,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                ],
+                              ),
                             ],
                           ),
-                        ],
-                      ),
-                      DottedLine(
-                        direction: Axis.horizontal,
-                        lineLength: double.infinity,
-                        lineThickness: 0.5,
-                        dashLength: 2.0,
-                        dashColor: Colors.black45,
-                        dashRadius: 0.0,
-                        dashGapLength: 2.0,
-                        dashGapColor: Colors.transparent,
-                        dashGapRadius: 0.0,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              InkWell(
-                                onTap: () {},
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    customTitle(
-                                      text:
-                                          /*(*/ /* dashboardData.memberLoanArrears */ /* loanDashboardSummary
+                          DottedLine(
+                            direction: Axis.horizontal,
+                            lineLength: double.infinity,
+                            lineThickness: 0.5,
+                            dashLength: 2.0,
+                            dashColor: Colors.black45,
+                            dashRadius: 0.0,
+                            dashGapLength: 2.0,
+                            dashGapColor: Colors.transparent,
+                            dashGapRadius: 0.0,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  InkWell(
+                                    onTap: () {},
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        customTitle(
+                                          text:
+                                              /*(*/ /* dashboardData.memberLoanArrears */ /* loanDashboardSummary
                                               .loanBalance) <
                                           0
                                       ?*/
-                                          "Your Loan Balance",
-                                      /*: "Your Loan Overpayment",*/
-                                      fontSize: 12,
-                                      textAlign: TextAlign.start,
-                                      fontWeight: FontWeight.w400,
-                                      color: Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    customTitle1(
-                                      text: /*  _currentGroup.disableArrears
+                                              "Your Loan Balance",
+                                          /*: "Your Loan Overpayment",*/
+                                          fontSize: 12,
+                                          textAlign: TextAlign.start,
+                                          fontWeight: FontWeight.w400,
+                                          color: Theme.of(context)
+                                              // ignore: deprecated_member_use
+                                              .textSelectionTheme
+                                              .selectionHandleColor,
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        customTitle1(
+                                          text: /*  _currentGroup.disableArrears
                                         ?
                                         _currentGroup.groupCurrency +
                                             " " +
                                             currencyFormat.format(dashboardData
                                                 .memberContributionAmount)
                                      : */
-                                          // _currentGroup.groupCurrency +
-                                          //     " " +
-                                          //     currencyFormat.format(dashboardData
-                                          //         .memberContributionArrears
-                                          //         .abs()),
-                                          _currentGroup.groupCurrency +
-                                              " " +
-                                              currencyFormat.format(
-                                                  loanDashboardSummary
-                                                      .loanBalance),
-                                      color: (loanDashboardSummary
-                                                  .loanBalance) >
-                                              0
-                                          ? Colors.red[400]
-                                          : (/* dashboardData.memberContributionArrears */ loanDashboardSummary
-                                                      .loanBalance) <
+                                              // _currentGroup.groupCurrency +
+                                              //     " " +
+                                              //     currencyFormat.format(dashboardData
+                                              //         .memberContributionArrears
+                                              //         .abs()),
+                                              _currentGroup.groupCurrency +
+                                                  " " +
+                                                  currencyFormat.format(
+                                                      loanDashboardSummary
+                                                          .loanBalance),
+                                          color: (loanDashboardSummary
+                                                      .loanBalance) >
                                                   0
-                                              ? Colors.green
-                                              : Theme.of(context)
-                                                  // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
-                                      textAlign: TextAlign.start,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
+                                              ? Colors.red[400]
+                                              : (/* dashboardData.memberContributionArrears */ loanDashboardSummary
+                                                          .loanBalance) <
+                                                      0
+                                                  ? Colors.green
+                                                  : Theme.of(context)
+                                                      // ignore: deprecated_member_use
+                                                      .textSelectionTheme
+                                                      .selectionHandleColor,
+                                          textAlign: TextAlign.start,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  customTitle(
-                                    text: "Next instalment",
-                                    fontSize: 12,
-                                    textAlign: TextAlign.start,
-                                    fontWeight: FontWeight.w400,
-                                    color: Theme.of(context)
-                                        // ignore: deprecated_member_use
-                                        .textSelectionHandleColor,
                                   ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Row(
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      customTitle1(
-                                        text: _currentGroup.groupCurrency +
-                                            " " +
-                                            currencyFormat.format(
-                                                loanDashboardSummary
-                                                        .nextInstalmentAmount
-                                                        .abs() ??
+                                      customTitle(
+                                        text: "Next instalment",
+                                        fontSize: 12,
+                                        textAlign: TextAlign.start,
+                                        fontWeight: FontWeight.w400,
+                                        color: Theme.of(context)
+                                            // ignore: deprecated_member_use
+                                            .textSelectionTheme
+                                            .selectionHandleColor,
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Row(
+                                        children: [
+                                          customTitle1(
+                                            text: _currentGroup.groupCurrency +
+                                                " " +
+                                                currencyFormat.format(
                                                     loanDashboardSummary
-                                                        .nextInstalmentAmount
-                                                        .abs()),
-                                        // "${dashboardData.nextcontributionDate} (${(dashboardData.contributionDateDaysleft == "0 days" ? "today" : dashboardData.contributionDateDaysleft != null ? '${dashboardData.contributionDateDaysleft} left' : "--")})",
-                                        color: Theme.of(context)
-                                            // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
-                                        textAlign: TextAlign.start,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                                            .nextInstalmentAmount
+                                                            .abs() ??
+                                                        loanDashboardSummary
+                                                            .nextInstalmentAmount
+                                                            .abs()),
+                                            // "${dashboardData.nextcontributionDate} (${(dashboardData.contributionDateDaysleft == "0 days" ? "today" : dashboardData.contributionDateDaysleft != null ? '${dashboardData.contributionDateDaysleft} left' : "--")})",
+                                            color: Theme.of(context)
+                                                // ignore: deprecated_member_use
+                                                .textSelectionTheme
+                                                .selectionHandleColor,
+                                            textAlign: TextAlign.start,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ],
+                                      )
                                     ],
-                                  )
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  customTitle(
-                                    text: "Next Repayment Date",
-                                    fontSize: 12,
-                                    textAlign: TextAlign.start,
-                                    fontWeight: FontWeight.w400,
-                                    color: Theme.of(context)
-                                        // ignore: deprecated_member_use
-                                        .textSelectionHandleColor,
                                   ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Row(
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      customTitle1(
-                                        text:
-                                            "${/*defaultDateFormat.format*/ (nextInstallmentRepaymentDateFormatted)} (${loanDashboardSummary.nexttoNextInstalmentDay == "0 days" ? "today" : loanDashboardSummary.nexttoNextInstalmentDay != null ? "${loanDashboardSummary.nexttoNextInstalmentDay} left" : "--"})",
-
-                                        // "${dashboardData.nextcontributionDate} (${(dashboardData.contributionDateDaysleft == "0 days" ? "today" : dashboardData.contributionDateDaysleft != null ? '${dashboardData.contributionDateDaysleft} left' : "--")})",
+                                      customTitle(
+                                        text: "Next Repayment Date",
+                                        fontSize: 12,
+                                        textAlign: TextAlign.start,
+                                        fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
                                             // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
-                                        textAlign: TextAlign.start,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
+                                            .textSelectionTheme
+                                            .selectionHandleColor,
                                       ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Row(
+                                        children: [
+                                          customTitle1(
+                                            text:
+                                                "${/*defaultDateFormat.format*/ (nextInstallmentRepaymentDateFormatted)} (${loanDashboardSummary.nexttoNextInstalmentDay == "0 days" ? "today" : loanDashboardSummary.nexttoNextInstalmentDay != null ? "${loanDashboardSummary.nexttoNextInstalmentDay} left" : "--"})",
+
+                                            // "${dashboardData.nextcontributionDate} (${(dashboardData.contributionDateDaysleft == "0 days" ? "today" : dashboardData.contributionDateDaysleft != null ? '${dashboardData.contributionDateDaysleft} left' : "--")})",
+                                            color: Theme.of(context)
+                                                // ignore: deprecated_member_use
+                                                .textSelectionTheme
+                                                .selectionHandleColor,
+                                            textAlign: TextAlign.start,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ],
+                                      )
                                     ],
                                   )
-                                ],
-                              )
-                            ]),
-                      )
-                    ]))
-                : Container(
-                    child: Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.all(16.0),
-                        decoration: flatGradient(context),
-                        child: Column(
-                          children: [
-                            SvgPicture.asset(
-                              customIcons['no-data'],
-                              semanticsLabel: 'icon',
-                              height: 120.0,
-                            ),
-                            customTitleWithWrap(
-                                text: "Nothing to display!",
-                                fontWeight: FontWeight.w700,
-                                fontSize: 14.0,
-                                textAlign: TextAlign.center,
-                                color: Colors.blueGrey[400]),
-                            customTitleWithWrap(
-                                text: "Sorry, There are no Loans available",
-                                //fontWeight: FontWeight.w500,
-                                fontSize: 12.0,
-                                textAlign: TextAlign.center,
-                                color: Colors.blueGrey[400])
-                          ],
-                        )),
-                  ),
+                                ]),
+                          )
+                        ]))
+                    : Container(
+                        child: Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(16.0),
+                            decoration: flatGradient(context),
+                            child: Column(
+                              children: [
+                                SvgPicture.asset(
+                                  customIcons['no-data'],
+                                  semanticsLabel: 'icon',
+                                  height: 120.0,
+                                ),
+                                customTitleWithWrap(
+                                    text: "Nothing to display!",
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14.0,
+                                    textAlign: TextAlign.center,
+                                    color: Colors.blueGrey[400]),
+                                customTitleWithWrap(
+                                    text: "Sorry, There are no Loans available",
+                                    //fontWeight: FontWeight.w500,
+                                    fontSize: 12.0,
+                                    textAlign: TextAlign.center,
+                                    color: Colors.blueGrey[400])
+                              ],
+                            )),
+                      ),
           )
         : Container(
             child: Container(
@@ -3218,8 +3264,9 @@ class _ExpensesState extends State<Expenses> {
                           legendTextStyle: TextStyle(
                               fontWeight: FontWeight.w500,
                               // ignore: deprecated_member_use
-                              color:
-                                  Theme.of(context).textSelectionHandleColor),
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor),
                         ),
                         chartValuesOptions: chart.ChartValuesOptions(
                             showChartValueBackground: false,
@@ -3234,7 +3281,8 @@ class _ExpensesState extends State<Expenses> {
                                 // ignore: deprecated_member_use
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionColor)),
+                                    .textSelectionTheme
+                                    .selectionColor)),
                       ),
                       SizedBox(
                         width: 30.0,
@@ -3257,7 +3305,8 @@ class _ExpensesState extends State<Expenses> {
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context)
                                 // ignore: deprecated_member_use
-                                .textSelectionHandleColor,
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           ),
                           SizedBox(height: 5),
                           Row(
@@ -3296,7 +3345,8 @@ class _ExpensesState extends State<Expenses> {
                                         ("(${(((_expenseSummary.newExpensesSummariesList.length > 0 ? _expenseSummary.newExpensesSummariesList[0].expenseAmount : 0) / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                                 textAlign: TextAlign.start,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
@@ -3329,7 +3379,8 @@ class _ExpensesState extends State<Expenses> {
                                   fontWeight: FontWeight.w400,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 )
                               : SizedBox(height: 0),
                           SizedBox(height: 5),
@@ -3359,7 +3410,8 @@ class _ExpensesState extends State<Expenses> {
                                     customTitle1(
                                       color: Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                       text: _currentGroup.groupCurrency +
                                           " " +
                                           /* currencyFormat.format(
@@ -3410,7 +3462,8 @@ class _ExpensesState extends State<Expenses> {
                                   fontWeight: FontWeight.w400,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 )
                               : SizedBox(height: 0),
                           SizedBox(height: 5),
@@ -3439,7 +3492,8 @@ class _ExpensesState extends State<Expenses> {
                                     customTitle1(
                                       color: Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                       text: _currentGroup.groupCurrency +
                                           " " +
                                           /*currencyFormat.format(
@@ -3516,7 +3570,8 @@ class _ExpensesState extends State<Expenses> {
                                   fontWeight: FontWeight.w400,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 )
                               : SizedBox(height: 0),
                           /* : Container(),*/
@@ -3541,7 +3596,8 @@ class _ExpensesState extends State<Expenses> {
                                     customTitle1(
                                       color: Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                       text: _currentGroup.groupCurrency +
                                           " " +
                                           currencyFormat
