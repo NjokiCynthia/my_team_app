@@ -9,12 +9,12 @@ import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class UpdateProfile extends StatefulWidget {
@@ -110,7 +110,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
           _userAvatar = null;
         });
         // ignore: deprecated_member_use
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated your profile picture",
         )));
@@ -140,7 +140,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
       if (name != _oldName) {
         await Provider.of<Auth>(context, listen: false).updateUserName(name);
         // ignore: deprecated_member_use
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "Name successfully updated",
         )));
@@ -192,7 +192,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
         await Provider.of<Auth>(context, listen: false)
             .updateUserEmailAddress(emailAddress);
         // ignore: deprecated_member_use
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated your email address",
         )));
@@ -238,7 +238,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
   //                   children: <Widget>[
   //                     customTitle(
   //                         text: "New Phone Number", textAlign: TextAlign.start, fontSize: 11, // ignore: deprecated_member_use
-// color: Theme.of(context).textSelectionHandleColor),
+// color: Theme.of(context).textSelectionTheme.selectionHandleColor),
   //                   ],
   //                 ),
   //                 Row(
@@ -266,10 +266,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
   //                                     alignLeft: false,
   //                                     flagWidth: 28.0,
   //                                     textStyle: TextStyle(
-  //                                       fontFamily: 'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/
+  //                                       fontFamily: 'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionTheme.selectionHandleColor*/
   //                                     ),
   //                                     searchStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16, // ignore: deprecated_member_use
-// color: Theme.of(context).textSelectionHandleColor),
+// color: Theme.of(context).textSelectionTheme.selectionHandleColor),
   //                                     onChanged: (countryCode) {
   //                                       setState(() {
   //                                         _countryCode = countryCode;
@@ -327,7 +327,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
   //                   mainAxisAlignment: MainAxisAlignment.end,
   //                   children: <Widget>[
   //                     negativeActionDialogButton(
-  //                         color: Theme.of(context).textSelectionHandleColor,
+  //                         color: Theme.of(context).textSelectionTheme.selectionHandleColor,
   //                         action: () {
   //                           Navigator.of(context).pop();
   //                         }),
@@ -369,7 +369,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
       context: context,
       builder: (_) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).colorScheme.background,
           title: new Text("Update Name"),
           content: Form(
             key: _userNameFormKey,
@@ -411,7 +411,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
           actions: <Widget>[
             negativeActionDialogButton(
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
                 }),
@@ -435,7 +435,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
       context: context,
       builder: (_) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).colorScheme.background,
           title: new Text("Update Email Address"),
           content: Form(
             key: _emailFormKey,
@@ -474,7 +474,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
           actions: <Widget>[
             negativeActionDialogButton(
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
                 }),
@@ -504,7 +504,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
         leadingIcon: LineAwesomeIcons.times,
         title: "",
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Builder(
         builder: (BuildContext context) {
           return SingleChildScrollView(
@@ -517,11 +517,11 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   heading1(
                       text: "Update Profile",
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor),
+                      color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                   subtitle2(
                       text: "Update your Chamasoft Profile",
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor),
+                      color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                   SizedBox(
                     height: 20.0,
                   ),
@@ -632,7 +632,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     icon: Icons.edit,
                     onPressed: () {
                       // ignore: deprecated_member_use
-                      Scaffold.of(context).showSnackBar(SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
                         "Coming Soon",
                       )));
@@ -676,13 +676,13 @@ class InfoUpdateTile extends StatelessWidget {
       title: Text("$labelText",
           style: TextStyle(
             fontSize: 14.0,
-            color: Theme.of(context).bottomAppBarColor,
+            color: Theme.of(context).bottomAppBarTheme.color,
           )),
       subtitle: Text(
         "$updateText",
         style: TextStyle(
           // ignore: deprecated_member_use
-          color: Theme.of(context).textSelectionHandleColor,
+          color: Theme.of(context).textSelectionTheme.selectionHandleColor,
           fontSize: 20.0,
         ),
       ),
@@ -724,13 +724,13 @@ class ProfileUpdateTile extends StatelessWidget {
       title: Text("$labelText",
           style: TextStyle(
             fontSize: 14.0,
-            color: Theme.of(context).bottomAppBarColor,
+            color: Theme.of(context).bottomAppBarTheme.color,
           )),
       subtitle: Text(
         "$updateText",
         style: TextStyle(
           // ignore: deprecated_member_use
-          color: Theme.of(context).textSelectionHandleColor,
+          color: Theme.of(context).textSelectionTheme.selectionHandleColor,
           fontSize: 20.0,
         ),
       ),
