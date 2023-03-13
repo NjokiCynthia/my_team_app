@@ -6,9 +6,9 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class CreateMobileMoneyAccount extends StatefulWidget {
@@ -82,7 +82,7 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
 
       Navigator.pop(context);
       // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully added a Mobile Money Account",
       )));
@@ -95,7 +95,7 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
       Navigator.pop(context);
 
       // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error Adding the Mobile Money Account. ${error.message} ",
       )));
@@ -108,11 +108,11 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
       builder: (BuildContext context) {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            backgroundColor: Theme.of(context).backgroundColor,
+            backgroundColor: Theme.of(context).colorScheme.background,
             title: heading2(
                 text: "Select Mobile Money Provider",
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start),
             content: Container(
               //height: MediaQuery.of(context).size.height,
@@ -162,7 +162,7 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
                                       style: TextStyle(
                                           color: Theme.of(context)
                                               // ignore: deprecated_member_use
-                                              .textSelectionHandleColor,
+                                              .textSelectionTheme.selectionHandleColor,
                                           fontWeight: FontWeight.w500),
                                     ),
                                     onChanged: (value) async {
@@ -188,7 +188,7 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
                                           style: TextStyle(
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme.selectionHandleColor,
                                               fontWeight: FontWeight.w500),
                                         ),
                                         onChanged: (value) async {
@@ -214,29 +214,33 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
             ),
             actions: <Widget>[
               // ignore: deprecated_member_use
-              new FlatButton(
-                child: new Text(
+              ElevatedButton(
+                child: Text(
                   "Cancel",
                   style: TextStyle(
-                      // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
-                      fontFamily: 'SegoeUI'),
+                    color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                    fontFamily: 'SegoeUI',
+                  ),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
+
               // ignore: deprecated_member_use
-              new FlatButton(
-                child: new Text(
+              ElevatedButton(
+                child: Text(
                   "Continue",
-                  style:
-                      new TextStyle(color: primaryColor, fontFamily: 'SegoeUI'),
+                  style: TextStyle(
+                    color: primaryColor,
+                    fontFamily: 'SegoeUI',
+                  ),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-              ),
+              )
+
             ],
           );
         });
@@ -259,7 +263,7 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
         ),
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: Builder(builder: (context) {
           return Form(
             key: _formKey,
