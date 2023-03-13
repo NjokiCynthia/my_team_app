@@ -13,7 +13,8 @@ import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class ContributionSummary extends StatefulWidget {
@@ -193,7 +194,7 @@ class _ContributionSummaryState extends State<ContributionSummary> {
         title: appbarTitle,
         //trailingAction: () => _showFilter(context),
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: RefreshIndicator(
         backgroundColor: (themeChangeProvider.darkTheme)
             ? Colors.blueGrey[800]
@@ -224,11 +225,11 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                             heading2(
                               text: "Total " + defaultTitle,
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                             ),
 //                            customTitle(
 //                              text: "Total " + defaultTitle,
-//                              color: Theme.of(context).textSelectionHandleColor,
+//                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
 //                              fontSize: 14.0,
 //                              fontWeight: FontWeight.w700,
 //                            ),
@@ -249,12 +250,12 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                             fontWeight: FontWeight.w400,
                             fontSize: 18.0,
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                           ),
                           heading2(
                             text: currencyFormat.format(_totalAmount),
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                             textAlign: TextAlign.end,
                           ),
                         ],
@@ -266,12 +267,12 @@ class _ContributionSummaryState extends State<ContributionSummary> {
 //                  ),
 //                  subtitle2(
 //                    text: "Statement as at",
-//                    color: Theme.of(context).textSelectionHandleColor,
+//                    color: Theme.of(context).textSelectionTheme.selectionHandleColor,
 //                    textAlign: TextAlign.start,
 //                  ),
 //                  subtitle1(
 //                    text: defaultDateFormat.format(DateTime.now()),
-//                    color: Theme.of(context).textSelectionHandleColor,
+//                    color: Theme.of(context).textSelectionTheme.selectionHandleColor,
 //                    textAlign: TextAlign.start,
 //                  ),
                 ],
