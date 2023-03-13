@@ -176,7 +176,7 @@ class ApplyLoanState extends State<ApplyLoan> {
                             height: MediaQuery.of(context).size.height * 0.04,
                             borderRadius: 10.0,
                             labels: ['From Group', 'From ChamaSoft'],
-                            initialIndex: 0,
+                            selectedIndex: 0,
                             selectedLabelIndex: (index) {
                               setState(() {
                                 if (index == 0) {
