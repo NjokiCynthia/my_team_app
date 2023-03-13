@@ -13,7 +13,9 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:md2_tab_indicator/md2_tab_indicator.dart';
+//import 'package:md2_tab_indicator/md2_tab_indicator.dart';
+import 'package:tab_indicator_styler/tab_indicator_styler.dart';
+
 import 'package:provider/provider.dart';
 
 import 'chamasoft/settings/accounts/create-bank-account.dart';
@@ -444,10 +446,11 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                   : Colors.white54,
                               automaticallyImplyLeading: false,
                               bottom: TabBar(
-                                indicator: MD2Indicator(
-                                  indicatorHeight: 3,
-                                  indicatorColor: primaryColor,
-                                  indicatorSize: MD2IndicatorSize.normal,
+                                indicator: MaterialIndicator(
+                                  height: 3,
+                                  color: primaryColor,
+
+                                  // indicatorSize: MD2IndicatorSize.normal,
                                 ),
                                 labelColor: primaryColor,
                                 unselectedLabelColor: Colors.blueGrey,
@@ -781,7 +784,7 @@ class ContributionsTabView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Icon(
-                  LineAwesomeIcons.file_text,
+                  LineAwesomeIcons.file,
                   size: 100,
                   color: Colors.blue[400].withOpacity(0.15),
                 ),
