@@ -82,9 +82,9 @@ class _WalletState extends State<Wallet> {
             color: primaryColor.withOpacity(0.07),
             //primaryColor.withOpacity(0.0),
 
-            gradientColorStops: [0.5, 1.0],
-            gradientFrom: const Offset(0, 0),
-            gradientTo: const Offset(0, 1),
+            // gradientColorStops: [0.5, 1.0],
+            // gradientFrom: const Offset(0, 0),
+            // gradientTo: const Offset(0, 1),
           ),
         ),
         LineChartBarData(
@@ -114,9 +114,9 @@ class _WalletState extends State<Wallet> {
             color: Colors.red.withOpacity(0.07),
             // Colors.red.withOpacity(0.0),
 
-            gradientColorStops: [0.5, 1.0],
-            gradientFrom: const Offset(0, 0),
-            gradientTo: const Offset(0, 1),
+            // gradientColorStops: [0.5, 1.0],
+            // gradientFrom: const Offset(0, 0),
+            // gradientTo: const Offset(0, 1),
           ),
         ),
       ],
@@ -302,11 +302,18 @@ class _WalletState extends State<Wallet> {
                           horizontal: 16.0,
                         ),
                         // ignore: deprecated_member_use
-                        child: FlatButton(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 10.0,
-                            horizontal: 12.0,
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 10.0,
+                              horizontal: 12.0,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6.0),
+                            ),
+                            backgroundColor: primaryColor,
                           ),
+
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
@@ -324,10 +331,8 @@ class _WalletState extends State<Wallet> {
                               ),
                             ],
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.0),
-                          ),
-                          color: primaryColor,
+
+                          // color: primaryColor,
                           onPressed: () {},
                         ),
                       ),
@@ -338,8 +343,20 @@ class _WalletState extends State<Wallet> {
                           horizontal: 16.0,
                         ),
                         // ignore: deprecated_member_use
-                        child: OutlineButton(
-                          color: Colors.white,
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            side: BorderSide(
+                              width: 2.0,
+                              color: primaryColor,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6.0),
+                            ),
+
+                            //highlightColor: primaryColor.withOpacity(0.1),
+                            // highlightedBorderColor: primaryColor,
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
@@ -357,15 +374,6 @@ class _WalletState extends State<Wallet> {
                               ),
                             ],
                           ),
-                          borderSide: BorderSide(
-                            width: 2.0,
-                            color: primaryColor,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.0),
-                          ),
-                          highlightColor: primaryColor.withOpacity(0.1),
-                          highlightedBorderColor: primaryColor,
                           onPressed: () {},
                         ),
                       ),
