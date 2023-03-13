@@ -135,7 +135,9 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                       subtitle1(
                           text: _loanProduct.name /*widget.typeLoan.loanName*/,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                           textAlign: TextAlign.start),
                       Spacer(),
                       subtitle2(
@@ -143,7 +145,9 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                               "${groupObject.groupCurrency} ${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}",
                           //generalAmount.toString(),
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                           textAlign: TextAlign.start)
                     ],
                   ),
@@ -159,13 +163,17 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                           subtitle1(
                             text: "Interest Rate: ",
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           ),
                           subtitle2(
                             textAlign: TextAlign.start,
                             text: _loanProduct.description,
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           ),
                         ],
                       ),
@@ -175,13 +183,17 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                           subtitle1(
                             text: "Repayment Period: ",
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           ),
                           subtitle2(
                             textAlign: TextAlign.start,
                             text: "${widget.repaymentPeriod} Month(s)",
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           ),
                         ],
                       ),
@@ -191,13 +203,17 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                           subtitle1(
                             text: "Application Date: ",
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           ),
                           subtitle2(
                             textAlign: TextAlign.start,
                             text: formate2,
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           ),
                         ],
                       ),
