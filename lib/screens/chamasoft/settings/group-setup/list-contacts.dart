@@ -9,7 +9,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class ListContacts extends StatefulWidget {
@@ -28,9 +28,9 @@ class _ListContactsState extends State<ListContacts> {
   PermissionStatus _permissionStatus = PermissionStatus.denied;
   // initially permissionstatus was undetermined
   // ignore: deprecated_member_use
-  List<CustomContact> _contacts = new List<CustomContact>();
+  List<CustomContact> _contacts = [];
   // ignore: deprecated_member_use
-  List<CustomContact> _selectedContacts = List<CustomContact>();
+  List<CustomContact> _selectedContacts = [];
   bool _isLoading = false;
   String floatingButtonLabel;
   Color floatingButtonColor;
@@ -102,7 +102,7 @@ class _ListContactsState extends State<ListContacts> {
               }
             }
           }),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: !_isLoading
           ? Container(
               child: Column(
