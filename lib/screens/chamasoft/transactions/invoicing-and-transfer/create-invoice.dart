@@ -220,7 +220,7 @@ class CreateInvoiceState extends State<CreateInvoice> {
                                 children: memberWidgets.toList(),
                               ),
                               // ignore: deprecated_member_use
-                              FlatButton(
+                              TextButton(
                                 onPressed: () async {
                                   //open select members dialog
                                   selectedMembersList = await Navigator.push(
