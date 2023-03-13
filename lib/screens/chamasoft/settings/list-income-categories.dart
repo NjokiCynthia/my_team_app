@@ -65,7 +65,7 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
       }
 
       // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         message,
       )));
@@ -116,7 +116,7 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Material(
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).colorScheme.background,
                   child: InkWell(
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
@@ -146,12 +146,12 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
                 ),
                 Material(
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).colorScheme.background,
                   child: InkWell(
                     onTap: () {
                       Navigator.pop(context);
@@ -173,12 +173,12 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
                 ),
                 Material(
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).colorScheme.background,
                   child: InkWell(
                     onTap: () {
                       Navigator.pop(context);
@@ -196,7 +196,7 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
                 ),
@@ -301,7 +301,7 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                                                 textAlign: TextAlign.start,
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                               ),
                                               Visibility(
                                                 visible: incomeCategory
@@ -311,7 +311,7 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                                                       '${incomeCategory.description}',
                                                   color: Theme.of(context)
                                                       // ignore: deprecated_member_use
-                                                      .textSelectionHandleColor,
+                                                      .textSelectionTheme.selectionHandleColor,
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: 12.0,
                                                   textAlign: TextAlign.start,
@@ -322,7 +322,7 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                                                     '${incomeCategory.isHidden ? "Hidden" : "Active"}',
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,

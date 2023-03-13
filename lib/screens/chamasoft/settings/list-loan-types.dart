@@ -114,7 +114,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
       }
 
       // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         message,
       )));
@@ -143,7 +143,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Material(
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).colorScheme.background,
                   child: InkWell(
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
@@ -166,12 +166,12 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
                 ),
                 Material(
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).colorScheme.background,
                   child: InkWell(
                     onTap: () {
                       Navigator.pop(context);
@@ -193,12 +193,12 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
                 ),
                 Material(
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).colorScheme.background,
                   child: InkWell(
                     onTap: () {
                       Navigator.pop(context);
@@ -216,7 +216,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
                 ),
@@ -322,14 +322,14 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                                                 fontSize: 16.0,
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                               ),
                                               richTextWithWrap(
                                                 title: 'Loan Amount: ',
                                                 message: loanType.loanAmount,
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
                                               ),
@@ -339,7 +339,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                                                     loanType.repaymentPeriod,
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
                                               ),
@@ -348,7 +348,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                                                 message: loanType.interestRate,
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
                                               ),
@@ -358,7 +358,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                                                     loanType.loanProcessing,
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
                                               ),
@@ -367,7 +367,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                                                 message: loanType.guarantors,
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
                                               ),
@@ -377,7 +377,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                                                     loanType.latePaymentFines,
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
                                               ),
@@ -388,7 +388,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                                                     .outstandingPaymentFines,
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
                                               ),
