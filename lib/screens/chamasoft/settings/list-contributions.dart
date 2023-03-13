@@ -84,7 +84,7 @@ class _ListContributionsState extends State<ListContributions> {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Material(
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).colorScheme.background,
                   child: InkWell(
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
@@ -107,7 +107,7 @@ class _ListContributionsState extends State<ListContributions> {
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
                 ),
@@ -126,7 +126,7 @@ class _ListContributionsState extends State<ListContributions> {
 //                          fontWeight: FontWeight.w600,
 //                          textAlign: TextAlign.start,
 //                          // ignore: deprecated_member_use
-//  	                      color: Theme.of(context).textSelectionHandleColor),
+//  	                      color: Theme.of(context).textSelectionTheme.selectionHandleColor),
 //                      onTap: () {
 //                        Navigator.pop(context);
 //                      },
@@ -173,7 +173,7 @@ class _ListContributionsState extends State<ListContributions> {
               icon: Icon(
                 Icons.add,
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               ),
               onPressed: () async {
                 Navigator.of(_scaffoldKey.currentContext)
@@ -215,7 +215,7 @@ class _ListContributionsState extends State<ListContributions> {
               },
             )
           : SizedBox(),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       // backgroundColor: Colors.transparent,
       body: Builder(
         builder: (BuildContext context) {
@@ -269,14 +269,14 @@ class _ListContributionsState extends State<ListContributions> {
                                                 fontSize: 16.0,
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                               ),
                                               richTextWithWrap(
                                                 title: 'Contribution Type: ',
                                                 message: contribution.type,
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
                                               ),
@@ -285,7 +285,7 @@ class _ListContributionsState extends State<ListContributions> {
                                                 message: contribution.frequency,
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
                                               ),
@@ -294,7 +294,7 @@ class _ListContributionsState extends State<ListContributions> {
                                                     '$_groupCurrency ${currencyFormat.format(double.tryParse(contribution.amount) ?? 0)}',
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
