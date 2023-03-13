@@ -17,6 +17,7 @@ dependencies:
   provider: ^6.0.5
   url_launcher: ^6.1.10
   pin_input_text_field: ^4.5.0
+  md2_tab_indicator: ^1.0.2
   # md2_tab_indicator: ^1.0.2
   shared_preferences: ^2.0.18
   intl: 0.17.0
@@ -59,7 +60,7 @@ dependencies:
 
   dotted_line: ^3.1.0
   data_table_2: ^2.4.1
-  webview_flutter: 4.0.6
+  webview_flutter: ^4.0.6
   showcaseview: ^2.0.2
 
   loading_overlay: ^0.3.0

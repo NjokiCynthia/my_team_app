@@ -838,7 +838,9 @@ class MembersTabView extends StatelessWidget {
                           customTitleWithWrap(
                             text: '${member.name}',
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             fontWeight: FontWeight.w800,
                             textAlign: TextAlign.start,
                             fontSize: 15.0,
@@ -849,7 +851,8 @@ class MembersTabView extends StatelessWidget {
                             textAlign: TextAlign.start,
                             color: Theme.of(context)
                                 // ignore: deprecated_member_use
-                                .textSelectionTheme.selectionHandleColor
+                                .textSelectionTheme
+                                .selectionHandleColor
                                 .withOpacity(0.5),
                             fontSize: 12.0,
                           ),
