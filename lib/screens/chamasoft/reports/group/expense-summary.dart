@@ -12,7 +12,8 @@ import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class ExpenseSummary extends StatefulWidget {
@@ -143,7 +144,7 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
           trailingAction: () =>
               _downoadExpensesSummaryPdf(context, groupObject),
         ),
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: RefreshIndicator(
             backgroundColor: (themeChangeProvider.darkTheme)
                 ? Colors.blueGrey[800]
@@ -178,7 +179,7 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                                     text: "Total Expenses",
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor,
+                                        .textSelectionTheme.selectionHandleColor,
                                   ),
                                   subtitle2(
                                     text: _expenseRows.length == 1
@@ -186,7 +187,7 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                                         : "${_expenseRows.length} Expenses",
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor,
+                                        .textSelectionTheme.selectionHandleColor,
                                     textAlign: TextAlign.start,
                                   ),
                                 ],
@@ -200,13 +201,13 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                                   fontSize: 18.0,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme.selectionHandleColor,
                                 ),
                                 heading2(
                                   text: currencyFormat.format(_totalExpenses),
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme.selectionHandleColor,
                                   textAlign: TextAlign.end,
                                 ),
                               ],

@@ -7,7 +7,8 @@ import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class GroupLoanApplications extends StatefulWidget {
@@ -152,14 +153,14 @@ class GroupApplicationCard extends StatelessWidget {
                               text: application.loanName,
                               fontWeight: FontWeight.w700,
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               textAlign: TextAlign.start,
                             ),
                             subtitle2(
                                 text: "Applied By Jackie Chan",
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.start),
                           ],
                         ),
@@ -187,14 +188,14 @@ class GroupApplicationCard extends StatelessWidget {
                                 text: "Applied On",
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.start),
                             subtitle1(
                                 text: defaultDateFormat
                                     .format(application.requestDate),
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.start)
                           ],
                         ),
@@ -205,14 +206,14 @@ class GroupApplicationCard extends StatelessWidget {
                             subtitle1(
                               text: "${groupObject.groupCurrency} ",
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                             ),
                             customTitle(
                               text: currencyFormat.format(application.amount),
                               textAlign: TextAlign.end,
                               fontSize: 20.0,
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               fontWeight: FontWeight.w700,
                             ),
                           ],

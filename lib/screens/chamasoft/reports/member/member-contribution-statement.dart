@@ -9,7 +9,8 @@ import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class MemberContributionStatement extends StatefulWidget {
@@ -134,7 +135,7 @@ class _MemberContributionStatementState
             action: () => Navigator.of(context).pop(),
             elevation: _appBarElevation,
             leadingIcon: LineAwesomeIcons.arrow_left),
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: RefreshIndicator(
             backgroundColor: (themeChangeProvider.darkTheme)
                 ? Colors.blueGrey[800]
@@ -158,19 +159,19 @@ class _MemberContributionStatementState
                                 text: "Contribution Statement for:  ",
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
+                                    .textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.start),
                             subtitle1(
                                 text: widget.memberName,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
+                                    .textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.start),
                             // customTitle(
                             //     text: widget.memberName,
                             //     color: Theme.of(context)
                             //         // ignore: deprecated_member_use
-                            //         .textSelectionHandleColor,
+                            //         .textSelectionTheme.selectionHandleColor,
                             //     fontSize: 14,
                             //     fontWeight: FontWeight.w500,
                             //     textAlign: TextAlign.start),
@@ -195,7 +196,7 @@ class _MemberContributionStatementState
                                         text: "Total Contibution",
                                         color: Theme.of(context)
                                             // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
+                                            .textSelectionTheme.selectionHandleColor,
                                         textAlign: TextAlign.start),
                                     SizedBox(
                                       height: 10,
@@ -208,7 +209,7 @@ class _MemberContributionStatementState
                                             text: "Total amount due ",
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
+                                                .textSelectionTheme.selectionHandleColor,
                                             textAlign: TextAlign.start),
                                         customTitle(
                                             text: groupObject.groupCurrency +
@@ -217,7 +218,7 @@ class _MemberContributionStatementState
                                                     .format(_totalDue),
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
+                                                .textSelectionTheme.selectionHandleColor,
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500,
                                             textAlign: TextAlign.start)
@@ -234,7 +235,7 @@ class _MemberContributionStatementState
                                             text: "Balance ",
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
+                                                .textSelectionTheme.selectionHandleColor,
                                             textAlign: TextAlign.start),
                                         customTitle(
                                           text: groupObject.groupCurrency +
@@ -244,7 +245,7 @@ class _MemberContributionStatementState
                                           fontWeight: FontWeight.w500,
                                           color: Theme.of(context)
                                               // ignore: deprecated_member_use
-                                              .textSelectionHandleColor,
+                                              .textSelectionTheme.selectionHandleColor,
                                           textAlign: TextAlign.start,
                                         ),
                                       ],
@@ -259,7 +260,7 @@ class _MemberContributionStatementState
                                   " " +
                                   currencyFormat.format(_totalContributions),
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               textAlign: TextAlign.start),
                         ],
                       ),
@@ -276,7 +277,7 @@ class _MemberContributionStatementState
                                 text: "Statement as At",
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.start,
                               ),
                               customTitle(
@@ -285,7 +286,7 @@ class _MemberContributionStatementState
                                 fontWeight: FontWeight.w500,
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.start,
                               ),
                             ],
@@ -298,7 +299,7 @@ class _MemberContributionStatementState
                                   text: "Statement Period",
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme.selectionHandleColor,
                                   textAlign: TextAlign.end,
                                 ),
                                 customTitle(
@@ -309,7 +310,7 @@ class _MemberContributionStatementState
                                       : "",
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme.selectionHandleColor,
                                   textAlign: TextAlign.end,
                                 ),
                               ],
@@ -342,7 +343,7 @@ class _MemberContributionStatementState
                           )
                         : emptyList(
                             color: Colors.blue[400],
-                            iconData: LineAwesomeIcons.file_text,
+                            iconData: LineAwesomeIcons.file,
                             text:
                                 "There are no statements for ${widget.memberName}"))
               ],

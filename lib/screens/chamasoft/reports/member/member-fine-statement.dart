@@ -13,7 +13,8 @@ import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class MemberFineStatement extends StatefulWidget {
@@ -175,7 +176,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
           leadingIcon: LineAwesomeIcons.arrow_left,
           trailingIcon: LineAwesomeIcons.download,
           trailingAction: () => _downloadFinePdf(context, groupObject)),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: RefreshIndicator(
         backgroundColor: (themeChangeProvider.darkTheme)
             ? Colors.blueGrey[800]
@@ -247,7 +248,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                             // ignore: deprecated_member_use
                             color:
                                 // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionHandleColor,
+                                Theme.of(context).textSelectionTheme.selectionHandleColor,
                             textAlign: TextAlign.start,
                           ),
                           SizedBox(
@@ -260,7 +261,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                             // ignore: deprecated_member_use
                             color:
                                 // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionHandleColor,
+                                Theme.of(context).textSelectionTheme.selectionHandleColor,
                           ),
                           SizedBox(
                             height: 10.0,
@@ -271,7 +272,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                             // ignore: deprecated_member_use
                             color:
                                 // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionHandleColor,
+                                Theme.of(context).textSelectionTheme.selectionHandleColor,
                           ),
                           SizedBox(
                             height: 3.0,
@@ -282,7 +283,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                             // ignore: deprecated_member_use
                             color:
                                 // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionHandleColor,
+                                Theme.of(context).textSelectionTheme.selectionHandleColor,
                           )
                         ],
                       ),
@@ -316,7 +317,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                         fontSize: 13,
                         color:
                             // ignore: deprecated_member_use
-                            Theme.of(context).textSelectionHandleColor,
+                            Theme.of(context).textSelectionTheme.selectionHandleColor,
                         textAlign: TextAlign.start,
                       ),
                       subtitle2(
@@ -325,7 +326,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                         // fontWeight: FontWeight.w500,
                         color:
                             // ignore: deprecated_member_use
-                            Theme.of(context).textSelectionHandleColor,
+                            Theme.of(context).textSelectionTheme.selectionHandleColor,
                         textAlign: TextAlign.start,
                       ),
                     ],
@@ -340,7 +341,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                           fontSize: 13,
                           color: Theme.of(context)
                               // ignore: deprecated_member_use
-                              .textSelectionHandleColor,
+                              .textSelectionTheme.selectionHandleColor,
                           textAlign: TextAlign.end,
                         ),
                         subtitle2(
@@ -351,7 +352,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                               : "",
                           color: Theme.of(context)
                               // ignore: deprecated_member_use
-                              .textSelectionHandleColor,
+                              .textSelectionTheme.selectionHandleColor,
                           textAlign: TextAlign.end,
                         ),
                       ],
@@ -422,7 +423,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                                   ? (themeChangeProvider.darkTheme)
                                       ? Colors.blueGrey[800]
                                       : Color(0xffededfe)
-                                  : Theme.of(context).backgroundColor,
+                                  : Theme.of(context).colorScheme.background,
                               padding: EdgeInsets.only(
                                   left: 0.0, top: 0.0, right: 0.0, bottom: 5.0),
                               child: InkWell(
@@ -459,7 +460,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                       )
                     : emptyList(
                         color: Colors.blue[400],
-                        iconData: LineAwesomeIcons.file_text,
+                        iconData: LineAwesomeIcons.file,
                         text:
                             "There are no fine statements for ${widget.memberNames}")),
             SizedBox(
@@ -501,7 +502,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                             : (_balance < 0
                                 ? Colors.green
                                 // ignore: deprecated_member_use
-                                : Theme.of(context).textSelectionHandleColor),
+                                : Theme.of(context).textSelectionTheme.selectionHandleColor),
                         textAlign: TextAlign.end),
                   ),
                 ],
@@ -523,7 +524,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                       // ignore: deprecated_member_use
                       color:
                           // ignore: deprecated_member_use
-                          Theme.of(context).textSelectionHandleColor,
+                          Theme.of(context).textSelectionTheme.selectionHandleColor,
                     ),
                   )
                 ],
