@@ -46,7 +46,7 @@ class _ListBanksState extends State<ListBanks> {
           title: heading2(
               text: "Set Bank Account",
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               textAlign: TextAlign.start),
           content: TextFormField(
             controller: _accountController,
@@ -54,7 +54,7 @@ class _ListBanksState extends State<ListBanks> {
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               // ignore: deprecated_member_use
-              WhitelistingTextInputFormatter.digitsOnly
+              FilteringTextInputFormatter.digitsOnly
             ],
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -71,7 +71,8 @@ class _ListBanksState extends State<ListBanks> {
             negativeActionDialogButton(
                 text: "Cancel",
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
                 }),

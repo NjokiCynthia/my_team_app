@@ -179,7 +179,7 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
           title: heading2(
               text: "Set Recipient Contact",
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               textAlign: TextAlign.start),
           content: TextFormField(
             controller: _phoneController,
@@ -187,7 +187,7 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               // ignore: deprecated_member_use
-              WhitelistingTextInputFormatter.digitsOnly
+              FilteringTextInputFormatter.digitsOnly
             ],
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -204,7 +204,8 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
             negativeActionDialogButton(
                 text: "Cancel",
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
                 }),
