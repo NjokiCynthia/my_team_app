@@ -330,7 +330,9 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                             subtitle1(
                               text: accountName,
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               textAlign: TextAlign.center,
                             ),
                             SizedBox(
@@ -344,7 +346,8 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                                   text: "Account Balance ",
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.center,
                                 ),
                                 SizedBox(
@@ -356,7 +359,8 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                                   // ignore: deprecated_member_use
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.center,
                                 ),
                               ],
