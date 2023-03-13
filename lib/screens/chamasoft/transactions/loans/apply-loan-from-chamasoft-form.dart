@@ -113,7 +113,8 @@ class _ApplyLoanFromChamasoftFormState
                   text: ('CANCEL'),
                   color: Theme.of(_buildContext)
                       // ignore: deprecated_member_use
-                      .textSelectionHandleColor,
+                      .textSelectionTheme
+                      .selectionHandleColor,
                   action: () {
                     Navigator.of(_buildContext).pop();
                   },
