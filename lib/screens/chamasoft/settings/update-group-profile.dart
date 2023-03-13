@@ -53,6 +53,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
 
   void _onImagePickerClicked(ImageSource source, BuildContext context) async {
     try {
+      // ignore: deprecated_member_use
       final pickedFile = await _picker.getImage(
           source: source,
           maxHeight: 300,
@@ -69,6 +70,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   }
 
   Future<void> retrieveLostData() async {
+    // ignore: deprecated_member_use
     final LostData lostData = await _picker.getLostData();
     if (lostData.isEmpty) return;
 
@@ -293,7 +295,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
             negativeActionDialogButton(
                 text: "Cancel",
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
                 }),
@@ -375,7 +378,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
             negativeActionDialogButton(
                 text: "Cancel",
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
                 }),
@@ -456,7 +460,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
             negativeActionDialogButton(
                 text: "Cancel",
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
                 }),
@@ -493,7 +498,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 text: "Update Group Currency",
                 textAlign: TextAlign.start,
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionTheme.selectionHandleColor),
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -517,7 +523,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
               negativeActionDialogButton(
                   text: "Cancel",
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   action: () {
                     Navigator.of(context).pop();
                   }),
@@ -574,7 +581,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
               negativeActionDialogButton(
                   text: "Cancel",
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   action: () {
                     Navigator.of(context).pop();
                   }),
@@ -658,11 +666,15 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 heading1(
                     text: "Update Group Profile",
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionTheme.selectionHandleColor),
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor),
                 subtitle2(
                     text: "Update the profile info for your Group",
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionTheme.selectionHandleColor),
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor),
                 SizedBox(
                   height: 20.0,
                 ),

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:io';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/configure-group.dart';
@@ -157,19 +159,15 @@ class _CreateGroupState extends State<CreateGroup> {
                         children: [
                           heading1(
                               text: "Create Group",
-                              color:
-                                  // ignore: deprecated_member_use
-                                  Theme.of(context)
-                                      .textSelectionTheme
-                                      .selectionHandleColor),
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor),
                           subtitle1(
                               text:
                                   "Give your group a name, profile photo and country",
-                              color:
-                                  // ignore: deprecated_member_use
-                                  Theme.of(context)
-                                      .textSelectionTheme
-                                      .selectionHandleColor),
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor),
                           SizedBox(
                             height: 24,
                           ),

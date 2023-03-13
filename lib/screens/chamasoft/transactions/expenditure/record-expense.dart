@@ -139,7 +139,7 @@ class RecordExpenseState extends State<RecordExpense> {
         leadingIcon: LineAwesomeIcons.times_circle,
         title: "Record Expense",
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Builder(
         builder: (BuildContext context) {
           return GestureDetector(

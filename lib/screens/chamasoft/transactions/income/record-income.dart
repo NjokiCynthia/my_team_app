@@ -155,7 +155,7 @@ class _RecordIncomeState extends State<RecordIncome> {
         leadingIcon: LineAwesomeIcons.times_circle,
         title: "Record Income",
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Builder(
         builder: (BuildContext context) {
           return GestureDetector(

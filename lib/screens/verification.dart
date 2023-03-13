@@ -9,7 +9,7 @@ import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:pin_input_text_field/pin_input_text_field.dart';
+//import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:provider/provider.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import '../providers/auth.dart';
@@ -362,7 +362,8 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
                                         ? primaryColor
                                         : Theme.of(context)
                                             // ignore: deprecated_member_use
-                                            .textSelectionTheme.selectionHandleColor,
+                                            .textSelectionTheme
+                                            .selectionHandleColor,
                                     fontWeight: FontWeight.w700,
                                     decoration: TextDecoration.underline,
                                   ),

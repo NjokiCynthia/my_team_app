@@ -12,7 +12,7 @@ import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:dotted_line/dotted_line.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 // import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -175,7 +175,7 @@ class _MemeberSatementState extends State<MemeberSatement> {
                                     ? MemberCard(
                                         member: member,
                                         position: index,
-                                         bodyContext: context,
+                                        bodyContext: context,
                                       )
                                     : member.name
                                             .toLowerCase()
@@ -287,7 +287,9 @@ class MemberCard extends StatelessWidget {
                                 // ignore: deprecated_member_use
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                    Theme.of(context)
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                 textAlign: TextAlign.start,
                               ),
                               SizedBox(
@@ -300,7 +302,9 @@ class MemberCard extends StatelessWidget {
                                 // ignore: deprecated_member_use
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                    Theme.of(context)
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                               ),
                               SizedBox(
                                 height: 10.0,
@@ -311,7 +315,9 @@ class MemberCard extends StatelessWidget {
                                 // ignore: deprecated_member_use
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                    Theme.of(context)
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                               )
                             ],
                           ),

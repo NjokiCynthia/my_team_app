@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
@@ -7,7 +9,7 @@ import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/screens/chamasoft/feedback.dart';
-import 'package:chamasoft/screens/login.dart';
+//import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/screens/login_password.dart';
 import 'package:chamasoft/screens/webView-launcher.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -38,29 +40,25 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).colorScheme.background,
           title: heading2(
               text: "Post feedback",
               textAlign: TextAlign.start,
-              // ignore: deprecated_member_use
               color: Theme.of(context).textSelectionTheme.selectionHandleColor),
           content: customTitleWithWrap(
               text:
                   "Let us know how we can improve our service to serve you better.",
               textAlign: TextAlign.start,
-              // ignore: deprecated_member_use
               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               maxLines: null),
           actions: <Widget>[
             negativeActionDialogButton(
               text: "Cancel",
-              // ignore: deprecated_member_use
               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               action: () {
                 Navigator.of(context).pop();
               },
             ),
-            // ignore: deprecated_member_use
             TextButton(
               style: TextButton.styleFrom(
                 padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
@@ -93,29 +91,25 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).colorScheme.background,
           title: heading2(
               text: "Logout",
               textAlign: TextAlign.start,
-              // ignore: deprecated_member_use
               color: Theme.of(context).textSelectionTheme.selectionHandleColor),
           content: customTitleWithWrap(
               text:
                   "Are you sure you want to log out? You'll have to login again to continue.",
               textAlign: TextAlign.start,
-              // ignore: deprecated_member_use
               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               maxLines: null),
           actions: <Widget>[
             negativeActionDialogButton(
               text: "Cancel",
-              // ignore: deprecated_member_use
               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               action: () {
                 Navigator.of(context).pop();
               },
             ),
-            // ignore: deprecated_member_use
             TextButton(
               style: TextButton.styleFrom(
                 padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
@@ -186,7 +180,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
     });
     final auth = Provider.of<Auth>(context);
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
@@ -236,13 +230,11 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                     children: <Widget>[
                       heading2(
                           text: auth.userName,
-                          // ignore: deprecated_member_use
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor),
                       subtitle2(
                           text: auth.phoneNumber,
-                          // ignore: deprecated_member_use
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor),
@@ -329,7 +321,6 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 16.0,
-                      // ignore: deprecated_member_use
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,
@@ -438,7 +429,6 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                       title: Text(
                         "Theme",
                         style: TextStyle(
-                          // ignore: deprecated_member_use
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -520,7 +510,6 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
-                    // ignore: deprecated_member_use
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor,
@@ -563,7 +552,6 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
-                    // ignore: deprecated_member_use
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor,
@@ -595,7 +583,6 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
-                    // ignore: deprecated_member_use
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor,
@@ -621,7 +608,6 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
-                    // ignore: deprecated_member_use
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor,
@@ -674,7 +660,6 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
-                      // ignore: deprecated_member_use
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,

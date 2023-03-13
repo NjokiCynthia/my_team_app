@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:io';
 
 import 'package:chamasoft/providers/auth.dart';
@@ -136,13 +138,11 @@ class _SignUpState extends State<SignUp> {
                   children: [
                     heading1(
                         text: "Profile",
-                        // ignore: deprecated_member_use
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
                     subtitle1(
                         text: "Fill details to complete\naccount setup",
-                        // ignore: deprecated_member_use
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),

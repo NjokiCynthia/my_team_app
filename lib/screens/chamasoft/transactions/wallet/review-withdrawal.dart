@@ -10,7 +10,7 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+//import 'package:flutter/services.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -194,7 +194,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).colorScheme.background,
           title: heading2(
             text: "Reason for ${flag == 1 ? "Rejecting" : "Cancelling"}",
             textAlign: TextAlign.start,
@@ -258,7 +258,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
           leadingIcon: LineAwesomeIcons.times,
           title: "Review Withdrawal Request",
         ),
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: Container(
           width: double.infinity,
           height: double.infinity,

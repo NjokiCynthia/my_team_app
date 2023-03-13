@@ -24,7 +24,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).colorScheme.background,
           title: heading2(
               text: "Confirm Mpesa Number",
               // ignore: deprecated_member_use
@@ -60,7 +60,8 @@ class _NotificationDetailsState extends State<NotificationDetails> {
               child: Text(
                 "Cancel",
                 style: TextStyle(
-                  color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   fontFamily: 'SegoeUI',
                 ),
               ),
@@ -79,7 +80,6 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                 ),
               ),
             )
-
           ],
         );
       },
@@ -92,10 +92,10 @@ class _NotificationDetailsState extends State<NotificationDetails> {
       appBar: secondaryPageAppbar(
           context: context,
           title: widget.notification.subject,
-          action: () => Navigator.pop(context,true),
+          action: () => Navigator.pop(context, true),
           elevation: 2.5,
           leadingIcon: LineAwesomeIcons.times),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Column(
         children: <Widget>[
           Container(
@@ -118,7 +118,9 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                       child: heading2(
                         text: widget.notification.message,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor,
                         textAlign: TextAlign.start,
                       ),
                     ),
@@ -128,13 +130,17 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                           text: "Ksh ",
                           fontSize: 18.0,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                           fontWeight: FontWeight.w400,
                         ),
                         heading2(
                           text: "2,000",
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                           textAlign: TextAlign.end,
                         ),
                       ],
@@ -150,13 +156,17 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                     subtitle1(
                       text: "Group: ",
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                     ),
                     customTitle(
                       textAlign: TextAlign.start,
                       text: "Freedom Welfare Caucus",
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                       fontWeight: FontWeight.w600,
                     ),
                   ],
@@ -167,13 +177,17 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                     subtitle1(
                       text: "Invoice Date: ",
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                     ),
                     customTitle(
                       textAlign: TextAlign.start,
                       text: "12 May 2020",
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                       fontWeight: FontWeight.w600,
                     ),
                   ],
@@ -184,13 +198,17 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                     subtitle1(
                       text: "Due Date: ",
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                     ),
                     customTitle(
                       textAlign: TextAlign.start,
                       text: "20 May 2020",
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                       fontWeight: FontWeight.w600,
                     ),
                   ],

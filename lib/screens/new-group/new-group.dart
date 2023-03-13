@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:io';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
@@ -16,7 +18,7 @@ import 'package:chamasoft/widgets/country-dropdown.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+//import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -216,7 +218,7 @@ class _NewGroupState extends State<NewGroup> {
       style: TextStyle(
         color: currentStep >= step
             ? primaryColor
-            // ignore: deprecated_member_use
+            
             : Theme.of(context).textSelectionTheme.selectionHandleColor,
         fontFamily: 'SegoeUI',
         fontWeight: currentStep >= step ? FontWeight.bold : FontWeight.normal,
@@ -588,7 +590,6 @@ class _NewGroupState extends State<NewGroup> {
             : Text(
                 "Group Info",
                 style: TextStyle(
-                  // ignore: deprecated_member_use
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                   fontWeight: FontWeight.normal,
@@ -603,14 +604,14 @@ class _NewGroupState extends State<NewGroup> {
             children: <Widget>[
               subtitle1(
                 text: "Select group avatar",
-                // ignore: deprecated_member_use
+               
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start,
               ),
               subtitle2(
                 text: "Could be a logo or an image associated with your group",
-                // ignore: deprecated_member_use
+               
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start,
@@ -843,7 +844,7 @@ class _NewGroupState extends State<NewGroup> {
             children: <Widget>[
               subtitle1(
                 text: "Do you have a referral code?",
-                // ignore: deprecated_member_use
+                
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start,
@@ -851,7 +852,7 @@ class _NewGroupState extends State<NewGroup> {
               subtitle2(
                 text:
                     "Use it if referred by a Bank, an NGO, a Partner or anyone",
-                // ignore: deprecated_member_use
+              
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start,
@@ -886,7 +887,7 @@ class _NewGroupState extends State<NewGroup> {
                                     color: _hasReferralCode == option['value']
                                         ? primaryColor
                                         : Theme.of(context)
-                                            // ignore: deprecated_member_use
+                                            
                                             .textSelectionTheme
                                             .selectionHandleColor,
                                   ),
@@ -949,7 +950,7 @@ class _NewGroupState extends State<NewGroup> {
                     children: <Widget>[
                       Icon(
                         Icons.lightbulb_outline,
-                        // ignore: deprecated_member_use
+                        
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor,
@@ -971,7 +972,7 @@ class _NewGroupState extends State<NewGroup> {
                             subtitle2(
                               text:
                                   "Follow all the steps and provide all required data about this group. You'll be able to preview a summary of the group before you submit.",
-                              // ignore: deprecated_member_use
+                              
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -1005,7 +1006,7 @@ class _NewGroupState extends State<NewGroup> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          // ignore: deprecated_member_use
+                         
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: primaryColor),
@@ -1051,14 +1052,14 @@ class _NewGroupState extends State<NewGroup> {
                             width: 20.0,
                           ),
                           currentStep > 1
-                              // ignore: deprecated_member_use
+                             
                               ? OutlinedButton(
                                   style: OutlinedButton.styleFrom(
                                     backgroundColor: Colors.white,
                                     side: BorderSide(
                                       width: 2.0,
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                          
                                           .textSelectionTheme
                                           .selectionHandleColor
                                           .withOpacity(0.5),
@@ -1069,7 +1070,7 @@ class _NewGroupState extends State<NewGroup> {
                                     "Go Back",
                                     style: TextStyle(
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                        
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                     ),

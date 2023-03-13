@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/set-member-roles.dart';
@@ -146,9 +148,8 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
               children: <Widget>[
                 Icon(
                   Icons.lightbulb_outline,
-                  color: Theme.of(context)
-                      // ignore: deprecated_member_use
-                      .textSelectionTheme.selectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   size: 24.0,
                   semanticLabel: 'Add member...',
                 ),
@@ -163,15 +164,15 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                         text: "Add member",
                         textAlign: TextAlign.start,
                         color: Theme.of(context)
-                            // ignore: deprecated_member_use
-                            .textSelectionTheme.selectionHandleColor,
+                            .textSelectionTheme
+                            .selectionHandleColor,
                       ),
                       subtitle2(
                         text:
                             "Fill in the details below to add a member to the group.",
                         color: Theme.of(context)
-                            // ignore: deprecated_member_use
-                            .textSelectionTheme.selectionHandleColor,
+                            .textSelectionTheme
+                            .selectionHandleColor,
                         textAlign: TextAlign.start,
                       ),
                     ],
@@ -229,8 +230,9 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                           text: "Phone Number",
                           textAlign: TextAlign.start,
                           fontSize: 11,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                         ),
                       ],
                     ),
@@ -273,9 +275,8 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                                             fontFamily: 'SegoeUI',
                                             fontSize: 16,
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
-                                                .textSelectionTheme.selectionHandleColor
-                                                ),
+                                                .textSelectionTheme
+                                                .selectionHandleColor),
                                         onChanged: (countryCode) {
                                           setState(() {
                                             _countryCode = countryCode;

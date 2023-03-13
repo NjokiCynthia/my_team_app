@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'dart:async';
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
 import 'package:chamasoft/helpers/common.dart';
@@ -95,7 +97,7 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).colorScheme.background,
           title: heading2(
               text: "Set Recipient Contact",
               // ignore: deprecated_member_use
@@ -179,7 +181,7 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
           title: "Select Recipient",
           trailingIcon: LineAwesomeIcons.user_plus,
           trailingAction: () => _numberPrompt()),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: !_isLoading
           ? Container(
               child: Column(

@@ -201,7 +201,7 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Builder(builder: (BuildContext context) {
         return GestureDetector(
           onTap: () {

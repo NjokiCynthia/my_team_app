@@ -42,7 +42,7 @@ class _SortContainerState extends State<SortContainer> {
       children: [
         Container(
           width: double.infinity,
-          color: Theme.of(context).backgroundColor,
+          color: Theme.of(context).colorScheme.background,
           child: Column(
             children: [
               Container(
@@ -69,7 +69,9 @@ class _SortContainerState extends State<SortContainer> {
                           text: "Transaction Date: Newest First",
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor),
                       onChanged: (value) {
                         widget.applySort("date_desc");
                         Navigator.pop(context);
@@ -84,7 +86,9 @@ class _SortContainerState extends State<SortContainer> {
                           text: "Transaction Date: Oldest First",
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor),
                       onChanged: (value) {
                         widget.applySort("date_asc");
                         Navigator.pop(context);
@@ -99,7 +103,9 @@ class _SortContainerState extends State<SortContainer> {
                           text: "Amount: Highest to Lowest",
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor),
                       onChanged: (value) {
                         widget.applySort("amount_desc");
                         Navigator.pop(context);
@@ -114,7 +120,9 @@ class _SortContainerState extends State<SortContainer> {
                           text: "Amount: Lowest to Highest",
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor),
                       onChanged: (value) {
                         widget.applySort("amount_asc");
                         Navigator.pop(context);

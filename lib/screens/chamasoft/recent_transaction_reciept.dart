@@ -1,4 +1,4 @@
-// ignore_for_file: unused_element
+// ignore_for_file: unused_element, deprecated_member_use
 
 import 'dart:io';
 import 'dart:typed_data';
@@ -94,30 +94,24 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
                             SizedBox(
                               height: 10,
                             ),
-                            // ignore: deprecated_member_use
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: heading2(
                                   text: widget.data.description,
-                                  color:
-                                      // ignore: deprecated_member_use
-                                      Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionTheme
-                                          .selectionHandleColor),
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor),
                             ),
                             Image.asset(
                               'assets/icon/main.png',
                               width: 80.0,
                               height: 90.0,
                             ),
-
                             customTitleWithWrap(
                               text: widget.data.paymentTitle,
                               fontSize: 22,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
-                                  // ignore: deprecated_member_use
                                   .textSelectionTheme
                                   .selectionHandleColor,
                             ),
@@ -143,7 +137,6 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -154,7 +147,6 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -165,7 +157,6 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -198,7 +189,6 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -213,25 +203,20 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
                               ],
                             ),
-
                             SizedBox(height: 5.0),
                             Padding(
                               padding: EdgeInsets.all(10.0),
                               child: subtitle2(
                                   text: "${widget.data.paymentMethod} Payment",
                                   fontSize: 14.0,
-                                  color:
-                                      // ignore: deprecated_member_use
-                                      Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionTheme
-                                          .selectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.center),
                             ),
                             SizedBox(
@@ -306,7 +291,6 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
                               fontSize: 18,
                               fontWeight: FontWeight.w300,
                               color: Theme.of(context)
-                                  // ignore: deprecated_member_use
                                   .textSelectionTheme
                                   .selectionHandleColor,
                             ),
@@ -345,7 +329,6 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
                                     .textSelectionTheme
                                     .selectionHandleColor,
                               ),

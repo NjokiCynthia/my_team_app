@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/withdrawal-request.dart';
 import 'package:chamasoft/screens/chamasoft/reports/filter_container.dart';
@@ -180,13 +182,11 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
                                 children: [
                                   Icon(LineAwesomeIcons.sort,
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
                                           .textSelectionTheme
                                           .selectionHandleColor),
                                   subtitle1(
                                       text: "Sort",
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
                                           .textSelectionTheme
                                           .selectionHandleColor)
                                 ],
@@ -219,13 +219,11 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
                                 children: [
                                   Icon(LineAwesomeIcons.filter,
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
                                           .textSelectionTheme
                                           .selectionHandleColor),
                                   subtitle1(
                                       text: "Filter",
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
                                           .textSelectionTheme
                                           .selectionHandleColor)
                                 ],
@@ -324,7 +322,6 @@ class WithdrawalRequestCard extends StatelessWidget {
                         text: request.withdrawalFor,
                         fontWeight: FontWeight.w700,
                         fontSize: 16.0,
-                        // ignore: deprecated_member_use
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor,
@@ -340,7 +337,6 @@ class WithdrawalRequestCard extends StatelessWidget {
                         customTitle(
                           text: "${groupObject.groupCurrency} ",
                           fontSize: 16.0,
-                          // ignore: deprecated_member_use
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -349,7 +345,6 @@ class WithdrawalRequestCard extends StatelessWidget {
                           text: currencyFormat.format(request.amount),
                           fontWeight: FontWeight.w700,
                           fontSize: 16.0,
-                          // ignore: deprecated_member_use
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -373,16 +368,13 @@ class WithdrawalRequestCard extends StatelessWidget {
                           children: <Widget>[
                             subtitle2(
                                 text: "Requested On",
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context)
-                                        .textSelectionTheme
-                                        .selectionHandleColor,
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                                 textAlign: TextAlign.start),
                             customTitleWithWrap(
                               text: request.requestDate,
                               fontSize: 12.0,
-                              // ignore: deprecated_member_use
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -401,16 +393,13 @@ class WithdrawalRequestCard extends StatelessWidget {
                           children: <Widget>[
                             subtitle2(
                                 text: "Initiate By",
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context)
-                                        .textSelectionTheme
-                                        .selectionHandleColor,
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                                 textAlign: TextAlign.end),
                             customTitleWithWrap(
                               text: request.name,
                               fontSize: 12.0,
-                              // ignore: deprecated_member_use
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -425,7 +414,6 @@ class WithdrawalRequestCard extends StatelessWidget {
                 ),
                 subtitle2(
                     text: "Recipient",
-                    // ignore: deprecated_member_use
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor,
@@ -433,7 +421,6 @@ class WithdrawalRequestCard extends StatelessWidget {
                 customTitleWithWrap(
                   text: request.recipient,
                   fontSize: 12.0,
-                  // ignore: deprecated_member_use
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                   textAlign: TextAlign.start,
@@ -450,7 +437,6 @@ class WithdrawalRequestCard extends StatelessWidget {
                           text: request.statusCode == 5
                               ? "Disbursed To"
                               : "Disbursement Status",
-                          // ignore: deprecated_member_use
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -458,7 +444,6 @@ class WithdrawalRequestCard extends StatelessWidget {
                       customTitleWithWrap(
                         text: request.description,
                         fontSize: 12.0,
-                        // ignore: deprecated_member_use
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor,
@@ -488,7 +473,6 @@ class WithdrawalRequestCard extends StatelessWidget {
                               text: request.status,
                               fontSize: 12.0,
                               fontWeight: FontWeight.w600,
-                              // ignore: deprecated_member_use
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -512,7 +496,6 @@ class WithdrawalRequestCard extends StatelessWidget {
                         size: 16.0,
                         spacing: 2.0,
                         color: Theme.of(context)
-                            // ignore: deprecated_member_use
                             .textSelectionTheme
                             .selectionHandleColor
                             .withOpacity(.8),

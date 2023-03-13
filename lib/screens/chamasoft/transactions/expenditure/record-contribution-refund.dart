@@ -140,7 +140,7 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
         leadingIcon: LineAwesomeIcons.times,
         title: "Record Contribution Refund",
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Builder(
         builder: (BuildContext context) {
           return GestureDetector(

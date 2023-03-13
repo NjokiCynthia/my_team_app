@@ -39,6 +39,7 @@ class _TotalAccountBalanceRecieptState
     //final subject = "${widget.title}";
 
     // await Share.share([image.path] );
+    // ignore: deprecated_member_use
     await Share.shareFiles([image.path], text: text);
 
     // Share.share(imageFile);
@@ -64,7 +65,7 @@ class _TotalAccountBalanceRecieptState
         leadingIcon: LineAwesomeIcons
             .arrow_left, /* trailingIcon: LineAwesomeIcons.download */
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: RefreshIndicator(
           backgroundColor: (themeChangeProvider.darkTheme)
               ? Colors.blueGrey[800]

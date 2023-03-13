@@ -31,7 +31,7 @@ Widget dataLoadingEffect(
         height: height,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
-          color: Theme.of(context).backgroundColor,
+          color: Theme.of(context).colorScheme.background,
         ),
       ),
     ),

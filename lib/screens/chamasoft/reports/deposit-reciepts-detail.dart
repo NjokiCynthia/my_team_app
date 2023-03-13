@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -86,25 +88,23 @@ class _DetailRecieptState extends State<DetailReciept> {
                             SizedBox(
                               height: 10,
                             ),
-                            // ignore: deprecated_member_use
                             heading2(
                                 text: widget.deposit.type.toUpperCase(),
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionTheme.selectionHandleColor),
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor),
                             Image.asset(
                               'assets/icon/main.png',
                               width: 80.0,
                               height: 90.0,
                             ),
-
                             customTitleWithWrap(
                               text: widget.deposit.depositor,
                               fontSize: 22,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
-                                  // ignore: deprecated_member_use
-                                  .textSelectionTheme.selectionHandleColor,
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                             ),
                             SizedBox(
                               height: 15.0,
@@ -128,8 +128,8 @@ class _DetailRecieptState extends State<DetailReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionTheme.selectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 customTitleWithWrap(
                                   text: group.groupPhone != "null"
@@ -138,8 +138,8 @@ class _DetailRecieptState extends State<DetailReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionTheme.selectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 customTitleWithWrap(
                                   text: group.groupEmail != "null"
@@ -148,8 +148,8 @@ class _DetailRecieptState extends State<DetailReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionTheme.selectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                               ],
                             ),
@@ -180,8 +180,8 @@ class _DetailRecieptState extends State<DetailReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionTheme.selectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 SizedBox(
                                   height: 5.0,
@@ -191,8 +191,8 @@ class _DetailRecieptState extends State<DetailReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionTheme.selectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 SizedBox(
                                   height: 5.0,
@@ -204,23 +204,20 @@ class _DetailRecieptState extends State<DetailReciept> {
                                   textAlign: TextAlign.center,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionTheme.selectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                               ],
                             ),
-
                             SizedBox(height: 5.0),
                             Padding(
                               padding: EdgeInsets.all(10.0),
                               child: subtitle2(
                                   text: "${widget.deposit.narration} ",
                                   fontSize: 14.0,
-                                  color:
-                                      // ignore: deprecated_member_use
-                                      Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionTheme.selectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.center),
                             ),
                           ],
@@ -270,8 +267,8 @@ class _DetailRecieptState extends State<DetailReciept> {
                               fontSize: 18,
                               fontWeight: FontWeight.w300,
                               color: Theme.of(context)
-                                  // ignore: deprecated_member_use
-                                  .textSelectionTheme.selectionHandleColor,
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                             ),
                           ],
                         ),
@@ -294,8 +291,8 @@ class _DetailRecieptState extends State<DetailReciept> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
-                                    .textSelectionTheme.selectionHandleColor,
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                               ),
                             ],
                           ),
@@ -330,8 +327,8 @@ class _DetailRecieptState extends State<DetailReciept> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
-                                    .textSelectionTheme.selectionHandleColor,
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                               ),
                             ],
                           ),

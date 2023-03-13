@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_import
+
 import 'dart:developer';
 
 import 'package:chamasoft/providers/groups.dart';
@@ -209,7 +211,7 @@ class _RecordContributionPaymentState extends State<CreateMemberLoan> {
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Builder(
         builder: (BuildContext context) {
           return GestureDetector(

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -6,11 +8,11 @@ import 'package:intl/intl.dart';
 class DateTimePicker extends StatelessWidget {
   const DateTimePicker(
       {Key key,
-        this.labelText,
-        this.selectedDate,
-        this.selectedTime,
-        this.selectDate,
-        this.selectTime})
+      this.labelText,
+      this.selectedDate,
+      this.selectedTime,
+      this.selectDate,
+      this.selectTime})
       : super(key: key);
 
   final String labelText;
@@ -30,7 +32,7 @@ class DateTimePicker extends StatelessWidget {
 
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay picked =
-    await showTimePicker(context: context, initialTime: selectedTime);
+        await showTimePicker(context: context, initialTime: selectedTime);
     if (picked != null && picked != selectedTime) selectTime(picked);
   }
 
@@ -48,7 +50,8 @@ class DateTimePicker extends StatelessWidget {
             valueStyle: valueStyle,
             onPressed: () {
               _selectDate(context);
-            }, child: null,
+            },
+            child: null,
           ),
         ),
         const SizedBox(width: 12.0),
@@ -59,7 +62,8 @@ class DateTimePicker extends StatelessWidget {
             valueStyle: valueStyle,
             onPressed: () {
               _selectTime(context);
-            }, labelText: '',
+            },
+            labelText: '',
             child: null,
           ),
         ),
@@ -71,11 +75,11 @@ class DateTimePicker extends StatelessWidget {
 class _InputDropdown extends StatelessWidget {
   const _InputDropdown(
       {Key key,
-        this.child,
-        this.labelText,
-        this.valueText,
-        this.valueStyle,
-        this.onPressed})
+      this.child,
+      this.labelText,
+      this.valueText,
+      this.valueStyle,
+      this.onPressed})
       : super(key: key);
 
   final String labelText;

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, unused_local_variable
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
@@ -136,7 +138,7 @@ class _LoginPasswordState extends State<LoginPassword> {
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context);
     String userIdentity = auth.phoneNumber;
-    print("The user's phone number is ${userIdentity}");
+    print("The user's phone number is $userIdentity");
 
     return Scaffold(
       body: Builder(builder: (BuildContext context) {
@@ -222,8 +224,7 @@ class _LoginPasswordState extends State<LoginPassword> {
                                     Padding(
                                       padding:
                                           const EdgeInsets.only(left: 10.0),
-                                      child:
-                                          subtitle1(text: "+${userIdentity}"),
+                                      child: subtitle1(text: "+$userIdentity"),
                                       // child: subtitle1(text: auth.phoneNumber),
                                     )
                                   ],

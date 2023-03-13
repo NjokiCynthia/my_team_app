@@ -42,7 +42,7 @@ class _ListBanksState extends State<ListBanks> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).colorScheme.background,
           title: heading2(
               text: "Set Bank Account",
               // ignore: deprecated_member_use
@@ -117,7 +117,7 @@ class _ListBanksState extends State<ListBanks> {
         leadingIcon: LineAwesomeIcons.times,
         title: title,
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Builder(
         builder: (BuildContext context) {
           return Container(

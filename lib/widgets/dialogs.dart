@@ -1,7 +1,7 @@
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:flutter/cupertino.dart';
+//import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void alertDialog(BuildContext context, String message,
@@ -179,7 +179,7 @@ void twoButtonAlertDialogWithContentList(
                     SizedBox(
                       height: 7,
                     ),
-                    Text("Phone: ${message}"),
+                    Text("Phone: $message"),
                     SizedBox(
                       height: 7,
                     ),

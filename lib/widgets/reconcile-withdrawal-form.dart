@@ -155,7 +155,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       title: heading2(
         text: 'Reconcile withdrawal',
         textAlign: TextAlign.start,

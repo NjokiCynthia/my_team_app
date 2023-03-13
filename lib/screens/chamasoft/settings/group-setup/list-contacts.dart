@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'dart:async';
 
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';

@@ -1,6 +1,6 @@
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:flutter/cupertino.dart';
+//import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'buttons.dart';
@@ -27,7 +27,7 @@ Widget secondaryPageAppbar(
       ],
     ),
     elevation: elevation,
-    backgroundColor: Theme.of(context).backgroundColor,
+    backgroundColor: Theme.of(context).colorScheme.background,
     automaticallyImplyLeading: false,
     actions: actions,
   );
@@ -56,7 +56,7 @@ Widget secondaryPageTabbedAppbar(
       ],
     ),
     elevation: elevation,
-    backgroundColor: Theme.of(context).backgroundColor,
+    backgroundColor: Theme.of(context).colorScheme.background,
     automaticallyImplyLeading: false,
     actions: actions,
     bottom: bottom,
@@ -101,7 +101,7 @@ Widget tertiaryPageAppbar(
       ],
     ),
     elevation: elevation,
-    backgroundColor: Theme.of(context).backgroundColor,
+    backgroundColor: Theme.of(context).colorScheme.background,
     automaticallyImplyLeading: false,
     actions: actions,
   );

@@ -136,7 +136,7 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.times_circle,
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Builder(
         builder: (BuildContext context) {
           return GestureDetector(

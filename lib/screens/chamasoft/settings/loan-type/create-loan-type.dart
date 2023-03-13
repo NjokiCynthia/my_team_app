@@ -3,9 +3,9 @@ import 'package:chamasoft/screens/chamasoft/settings/loan-type/loan-type-fines.d
 import 'package:chamasoft/screens/chamasoft/settings/loan-type/loan-type-settings.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
-import 'package:flutter/cupertino.dart';
+//import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+//import 'package:flutter/rendering.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class CreateLoanType extends StatefulWidget {
@@ -54,7 +54,7 @@ class _CreateLoanTypeState extends State<CreateLoanType>
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
         ),
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: Builder(
           builder: (BuildContext context) {
             return Container(

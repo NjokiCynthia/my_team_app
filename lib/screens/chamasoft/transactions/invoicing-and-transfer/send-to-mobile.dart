@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
@@ -191,7 +193,7 @@ class _SendToMobileState extends State<SendToMobile> {
         leadingIcon: LineAwesomeIcons.times,
         title: "Send to Mobile",
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -260,7 +262,7 @@ class _SendToMobileState extends State<SendToMobile> {
                 _prepareSubmission(context, _groupObject.groupId);
               },
               style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).primaryColor),
+                  backgroundColor: Theme.of(context).primaryColor),
               child: Padding(
                 padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
                 child: Text(

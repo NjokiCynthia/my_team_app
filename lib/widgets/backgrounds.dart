@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:chamasoft/config.dart';
 import 'package:flutter/material.dart';
 
@@ -5,7 +7,7 @@ BoxDecoration primaryGradient(BuildContext context) {
   return BoxDecoration(
       gradient: RadialGradient(
     colors: [
-      Theme.of(context).backgroundColor,
+      Theme.of(context).colorScheme.background,
       Theme.of(context).selectedRowColor
     ],
     radius: 2.0,

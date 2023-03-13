@@ -66,6 +66,7 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
     //final subject = "${widget.title}";
 
     // await Share.share([image.path] );
+    // ignore: deprecated_member_use
     await Share.shareFiles([image.path], text: text);
 
     // Share.share(imageFile);
@@ -124,7 +125,8 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionTheme.selectionHandleColor),
+                                          .textSelectionTheme
+                                          .selectionHandleColor),
                             ),
                             Image.asset(
                               'assets/icon/main.png',
@@ -138,7 +140,8 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
                                   // ignore: deprecated_member_use
-                                  .textSelectionTheme.selectionHandleColor,
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                             ),
                             SizedBox(
                               height: 15.0,
@@ -163,7 +166,8 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionTheme.selectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 customTitleWithWrap(
                                   text: widget.groupPhone != "null"
@@ -173,7 +177,8 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionTheme.selectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 customTitleWithWrap(
                                   text: widget.groupEmail != "null"
@@ -183,7 +188,8 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionTheme.selectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                               ],
                             ),
@@ -214,7 +220,8 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                   fontWeight: FontWeight.w600,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionTheme.selectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 SizedBox(
                                   height: 5.0,
@@ -228,7 +235,8 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                   fontWeight: FontWeight.w600,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionTheme.selectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 SizedBox(
                                   height: 5.0,
@@ -243,7 +251,8 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                   fontWeight: FontWeight.w600,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionTheme.selectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 SizedBox(
                                   height: 5.0,
@@ -254,7 +263,8 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionTheme.selectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                               ],
                             ),
@@ -269,7 +279,8 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionTheme.selectionHandleColor,
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                   textAlign: TextAlign.center),
                             ),
                             SizedBox(
@@ -344,7 +355,8 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                               fontWeight: FontWeight.w300,
                               color: Theme.of(context)
                                   // ignore: deprecated_member_use
-                                  .textSelectionTheme.selectionHandleColor,
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                             ),
                           ],
                         ),
@@ -382,7 +394,8 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionTheme.selectionHandleColor,
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                               ),
                             ],
                           ),
@@ -422,7 +435,8 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionTheme.selectionHandleColor,
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                               ),
                             ],
                           ),

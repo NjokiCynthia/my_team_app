@@ -5,9 +5,9 @@ import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:flutter/cupertino.dart';
+//import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+//import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
@@ -67,7 +67,7 @@ class ReviewLoanState extends State<ReviewLoan> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).colorScheme.background,
           title: new Text("Reason for Rejecting"),
           content: TextFormField(
             controller: controller,
@@ -135,7 +135,7 @@ class ReviewLoanState extends State<ReviewLoan> {
       backgroundColor: Colors.transparent,
       body: SafeArea(
         child: Container(
-          color: Theme.of(context).backgroundColor,
+          color: Theme.of(context).colorScheme.background,
           width: double.infinity,
           height: double.infinity,
           child: Column(

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/helpers/theme.dart';
@@ -106,7 +108,6 @@ class _NotificationAlertState extends State<NotificationAlert> {
                   SizedBox(
                     height: 20.0,
                   ),
-                  // ignore: deprecated_member_use
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [

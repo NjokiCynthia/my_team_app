@@ -24,7 +24,7 @@ class _BankListState extends State<BankList> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).colorScheme.background,
           title: new Text("Acoount Number"),
           content: TextFormField(
             //controller: controller,
@@ -82,7 +82,7 @@ class _BankListState extends State<BankList> {
       backgroundColor: Colors.transparent,
       body: Container(
         //decoration: primaryGradient(context),
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).colorScheme.background,
         width: double.infinity,
         height: double.infinity,
         child: Column(
@@ -111,7 +111,7 @@ class _BankListState extends State<BankList> {
                 itemBuilder: (context, index) {
                   Bank bank = list[index];
                   return Material(
-                    color: Theme.of(context).backgroundColor,
+                    color: Theme.of(context).colorScheme.background,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(22.0)),
                     child: InkWell(

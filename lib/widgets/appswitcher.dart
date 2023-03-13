@@ -124,7 +124,6 @@ class _CustomOverlay extends StatelessWidget {
 }
 
 class SwitcherScrollBehavior extends ScrollBehavior {
-  @override
   Widget buildViewportChrome(
       BuildContext context, Widget child, AxisDirection axisDirection) {
     return child;

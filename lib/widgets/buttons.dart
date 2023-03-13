@@ -1,7 +1,7 @@
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:flutter/cupertino.dart';
+//import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -908,7 +908,7 @@ Widget actionDialogButtonWithBgColor(
             // style: ButtonStyle(
 
             //     backgroundColor: MaterialStateProperty.all<Color>(color,)),
-            style: ElevatedButton.styleFrom(primary: color),
+            style: ElevatedButton.styleFrom(backgroundColor: color),
             onPressed: action,
             child: customTitle(
               text: text,
@@ -937,7 +937,7 @@ Widget defaultButtonWithBg(
     width: double.infinity,
     height: 45,
     child: ElevatedButton(
-        style: ElevatedButton.styleFrom(primary: btnColor),
+        style: ElevatedButton.styleFrom(backgroundColor: btnColor),
         onPressed: action,
         child: customTitle(
           text: text,

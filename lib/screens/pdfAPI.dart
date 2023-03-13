@@ -1,4 +1,4 @@
-// ignore_for_file: missing_return, await_only_futures
+// ignore_for_file: missing_return, await_only_futures, unnecessary_import
 
 import 'dart:io';
 import 'dart:typed_data';
@@ -17,8 +17,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
+//import 'package:pdf/widgets.dart' as pw;
 //import 'package:open_file/open_file.dart';
 
 class PdfApi {

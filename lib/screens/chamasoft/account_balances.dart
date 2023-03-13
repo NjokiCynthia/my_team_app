@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -96,30 +98,24 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                             SizedBox(
                               height: 10,
                             ),
-                            // ignore: deprecated_member_use
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: heading2(
                                   text: widget.data.accountName,
-                                  color:
-                                      // ignore: deprecated_member_use
-                                      Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionTheme
-                                          .selectionHandleColor),
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor),
                             ),
                             Image.asset(
                               'assets/icon/main.png',
                               width: 80.0,
                               height: 90.0,
                             ),
-
                             customTitleWithWrap(
                               text: "Account Balance",
                               fontSize: 22,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
-                                  // ignore: deprecated_member_use
                                   .textSelectionTheme
                                   .selectionHandleColor,
                             ),
@@ -145,7 +141,6 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -156,7 +151,6 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -167,7 +161,6 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -197,7 +190,6 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -212,13 +204,11 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
                               ],
                             ),
-
                             SizedBox(
                               height: 10,
                             )
@@ -293,7 +283,6 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                               fontSize: 18,
                               fontWeight: FontWeight.w300,
                               color: Theme.of(context)
-                                  // ignore: deprecated_member_use
                                   .textSelectionTheme
                                   .selectionHandleColor,
                             ),
@@ -334,7 +323,6 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -376,7 +364,6 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
                                     .textSelectionTheme
                                     .selectionHandleColor,
                               ),

@@ -176,7 +176,7 @@ class IntroScreenState extends State<IntroScreen> {
 
     Widget _pageLoading() {
       return Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

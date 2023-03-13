@@ -182,7 +182,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
           ),
           backgroundColor: primaryColor,
         ),
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: Builder(builder: (BuildContext context) {
           _bodyContext = context;
           return GestureDetector(
@@ -218,7 +218,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
                           trailing: IconButton(
                             onPressed: () => removeReconciledWithdrawal(index),
                             icon: Icon(Icons.close),
-                            color: Theme.of(context).errorColor,
+                            color: Theme.of(context).colorScheme.error,
                           ),
                         );
                       },

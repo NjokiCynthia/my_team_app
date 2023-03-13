@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'dart:async';
 
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
@@ -107,7 +109,7 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
           }
         },
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: !_isLoading
           ? Container(
               child: Column(

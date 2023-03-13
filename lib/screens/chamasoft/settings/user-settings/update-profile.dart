@@ -50,6 +50,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
   void _onImagePickerClicked(ImageSource source, BuildContext context) async {
     try {
+      // ignore: deprecated_member_use
       final pickedFile = await _picker.getImage(
           source: source,
           maxHeight: 300,
@@ -66,6 +67,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
   }
 
   Future<void> retrieveLostData() async {
+    // ignore: deprecated_member_use
     final LostData lostData = await _picker.getLostData();
     if (lostData.isEmpty) return;
 
@@ -411,7 +413,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
           actions: <Widget>[
             negativeActionDialogButton(
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
                 }),
@@ -474,7 +477,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
           actions: <Widget>[
             negativeActionDialogButton(
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
                 }),
@@ -517,11 +521,15 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   heading1(
                       text: "Update Profile",
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionTheme.selectionHandleColor),
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor),
                   subtitle2(
                       text: "Update your Chamasoft Profile",
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionTheme.selectionHandleColor),
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor),
                   SizedBox(
                     height: 20.0,
                   ),
@@ -712,7 +720,6 @@ class ProfileUpdateTile extends StatelessWidget {
   final String labelText;
   final String updateText;
 
-
   const ProfileUpdateTile({
     this.labelText,
     this.updateText,
@@ -734,7 +741,6 @@ class ProfileUpdateTile extends StatelessWidget {
           fontSize: 20.0,
         ),
       ),
-    
       onTap: () {},
     );
   }

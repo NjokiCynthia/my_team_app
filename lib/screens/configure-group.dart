@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_import
+
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
@@ -191,7 +193,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
         child: Builder(
           builder: (BuildContext context) {
             return Scaffold(
-              backgroundColor: Theme.of(context).backgroundColor,
+              backgroundColor: Theme.of(context).colorScheme.background,
               body: Builder(
                 builder: (BuildContext context) {
                   return SingleChildScrollView(

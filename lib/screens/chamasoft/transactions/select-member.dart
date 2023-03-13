@@ -186,7 +186,7 @@ class SelectMemberState extends State<SelectMember> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  backgroundColor: Theme.of(context).backgroundColor,
+                  backgroundColor: Theme.of(context).colorScheme.background,
                   title: new Text("Please select a member"),
                   actions: <Widget>[
                     // ignore: deprecated_member_use
@@ -206,7 +206,7 @@ class SelectMemberState extends State<SelectMember> {
           }
         },
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
         controller: _scrollController,
         child: Container(

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'dart:async';
 
 import 'package:chamasoft/helpers/theme.dart';
@@ -32,7 +34,7 @@ class _ContactListState extends State<ContactList> {
 //  List<CustomContact> _contacts = new List<CustomContact>();
   List<CustomContact> _contacts = <CustomContact>[];
   // ignore: deprecated_member_use
- // List<CustomContact> _selectedContacts = List<CustomContact>();
+  // List<CustomContact> _selectedContacts = List<CustomContact>();
   List<CustomContact> _selectedContacts = <CustomContact>[];
   bool _isLoading = false;
   String floatingButtonLabel;
@@ -106,7 +108,7 @@ class _ContactListState extends State<ContactList> {
             }
           } */
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: !_isLoading
           ? Container(
               child: Column(

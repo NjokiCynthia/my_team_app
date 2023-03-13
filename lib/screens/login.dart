@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, unnecessary_import, deprecated_member_use, unused_field
+
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/screens/chamasoft/settings/configure-preferences.dart';
@@ -272,7 +274,6 @@ class _LoginState extends State<Login> {
                     ),
                     heading1(
                         text: Config.appName,
-                        // ignore: deprecated_member_use
                         color: Config.appName.toLowerCase() == "chamasoft"
                             ? Theme.of(context)
                                 .textSelectionTheme
@@ -285,7 +286,6 @@ class _LoginState extends State<Login> {
                         text: Config.appName.toLowerCase() == "chamasoft"
                             ? "Let's verify your identity first"
                             : "Let's get started",
-                        // ignore: deprecated_member_use
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
@@ -293,7 +293,6 @@ class _LoginState extends State<Login> {
                         text: Config.appName.toLowerCase() == "chamasoft"
                             ? "Enter your phone number or email address below"
                             : "",
-                        // ignore: deprecated_member_use
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
@@ -333,7 +332,6 @@ class _LoginState extends State<Login> {
                                             fontFamily: 'SegoeUI',
                                             fontSize: 16,
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
                                                 .textSelectionTheme
                                                 .selectionHandleColor),
                                         onChanged: (countryCode) {

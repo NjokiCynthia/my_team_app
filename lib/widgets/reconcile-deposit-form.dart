@@ -191,7 +191,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       title: heading2(
           text: 'Reconcile deposit',
           textAlign: TextAlign.start,
