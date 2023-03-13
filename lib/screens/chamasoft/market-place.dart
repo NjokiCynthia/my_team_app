@@ -120,16 +120,29 @@ class _ChamasoftMarketPlaceState extends State<ChamasoftMarketPlace> {
     return null;
   }
 
-  void _launchURL() async {
+  // void _launchURL() async {
+  //   final Uri params = Uri(
+  //     scheme: 'mailto',
+  //     path: 'sales@imelaplace.co.ke',
+  //   );
+  //   String url = params.toString();
+  //   if (await canLaunch(url)) {
+  //     await launch(url);
+  //   } else {
+  //     print('Could not launch $url');
+  //   }
+  // }
+
+  Future<void> _launchURL() async {
     final Uri params = Uri(
       scheme: 'mailto',
       path: 'sales@imelaplace.co.ke',
     );
-    String url = params.toString();
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      print('Could not launch $url');
+    if (!await launchUrl(
+      params,
+      mode: LaunchMode.externalApplication,
+    )) {
+      throw Exception('Could not launch $params');
     }
   }
 
@@ -215,7 +228,7 @@ class _ChamasoftMarketPlaceState extends State<ChamasoftMarketPlace> {
                                   ],
                                 ),
                                 InkWell(
-                                  onTap: () {
+                                  onTap: () async {
                                     CustomHelper.callNumber("+254733366240");
                                   },
                                   child: Text(

@@ -64,7 +64,8 @@ class CustomHelper {
       : '';
 
   static bool validEmail(String email) {
-    RegExp regex = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    RegExp regex = RegExp(
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
     if (regex.hasMatch(email))
       return true;
     else
@@ -166,8 +167,13 @@ class CustomHelper {
     return double.tryParse(s) != null;
   }
 
-  static void callNumber(String number) {
-    launch("tel://$number");
+  static Future<void> callNumber(String number) async {
+    // launch("tel://$number");
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: number,
+    );
+    await launchUrl(launchUri);
   }
 }
 
