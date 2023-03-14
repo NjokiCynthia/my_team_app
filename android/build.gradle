@@ -1,16 +1,18 @@
 buildscript {
-    ext.kotlin_version = '1.5.21'
+    ext.kotlin_version = '1.7.20'
     repositories {
         google()
         jcenter()
         mavenCentral()
          maven {
-            url 'http://storage.googleapis.com/r8-releases/raw'
+            url 'https://storage.googleapis.com/r8-releases/raw'
+            allowInsecureProtocol = true
         }
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
+        // classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath 'com.android.tools.build:gradle:7.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.3.4'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
