@@ -10,6 +10,8 @@
         "--flavor",
         "chamasoftDev",
         "--dart-define=flavor=chamasoftDev",
+        "--no-sound-null-safety",
+        // "--stacktrace"
       ]
     },
     {
