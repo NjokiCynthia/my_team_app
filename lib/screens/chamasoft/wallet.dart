@@ -126,7 +126,7 @@ class _WalletState extends State<Wallet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),

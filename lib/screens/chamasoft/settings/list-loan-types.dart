@@ -143,7 +143,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Material(
-                  color: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).backgroundColor,
                   child: InkWell(
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
@@ -171,7 +171,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                   ),
                 ),
                 Material(
-                  color: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).backgroundColor,
                   child: InkWell(
                     onTap: () {
                       Navigator.pop(context);
@@ -198,7 +198,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                   ),
                 ),
                 Material(
-                  color: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).backgroundColor,
                   child: InkWell(
                     onTap: () {
                       Navigator.pop(context);

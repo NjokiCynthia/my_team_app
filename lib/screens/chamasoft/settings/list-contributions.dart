@@ -84,7 +84,7 @@ class _ListContributionsState extends State<ListContributions> {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Material(
-                  color: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).backgroundColor,
                   child: InkWell(
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
@@ -215,7 +215,7 @@ class _ListContributionsState extends State<ListContributions> {
               },
             )
           : SizedBox(),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       // backgroundColor: Colors.transparent,
       body: Builder(
         builder: (BuildContext context) {

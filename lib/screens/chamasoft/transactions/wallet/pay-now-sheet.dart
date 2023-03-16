@@ -276,7 +276,7 @@ class _PayNowSheetState extends State<PayNowSheet> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).backgroundColor,
           title: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -365,7 +365,7 @@ class _PayNowSheetState extends State<PayNowSheet> {
             bottom: MediaQuery.of(context).viewInsets.bottom + 45,
           ),
           width: double.infinity,
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).backgroundColor,
           child: Column(
             children: [
               Container(

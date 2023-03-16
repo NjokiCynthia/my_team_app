@@ -160,7 +160,7 @@ class _SelectMembersState extends State<SelectMembers> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
               text: "Clear Selection",
               textAlign: TextAlign.start,
@@ -268,7 +268,7 @@ class _SelectMembersState extends State<SelectMembers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),

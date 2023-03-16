@@ -199,7 +199,7 @@ class _FilterContainerState extends State<FilterContainer> {
           trailingIcon: LineAwesomeIcons.check,
           trailingAction: () =>
               Navigator.pop(context, [_selectedItems, _selectedMembers])),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Container(
         width: double.infinity,
         child: Row(

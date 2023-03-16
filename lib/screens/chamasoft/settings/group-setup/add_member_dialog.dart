@@ -113,7 +113,7 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
           elevation: 1.0,
           leadingIcon: LineAwesomeIcons.times,
           actions: []),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: SingleChildScrollView(
         padding: EdgeInsets.all(40.0),
         child: Form(

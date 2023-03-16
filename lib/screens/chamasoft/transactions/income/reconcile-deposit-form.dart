@@ -210,7 +210,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
           ),
           backgroundColor: primaryColor,
         ),
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).backgroundColor,
         body: Builder(builder: (BuildContext context) {
           _bodyContext = context;
           return GestureDetector(

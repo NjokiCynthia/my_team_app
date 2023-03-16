@@ -52,7 +52,7 @@ class _RepayLoanState extends State<RepayLoan> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).backgroundColor,
           title: new Text("Confirm Mpesa Number"),
           content: TextFormField(
             //controller: controller,
@@ -114,7 +114,7 @@ class _RepayLoanState extends State<RepayLoan> {
           leadingIcon: LineAwesomeIcons.times,
           title: "Repay Loan",
         ),
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).backgroundColor,
         body: GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
@@ -122,7 +122,7 @@ class _RepayLoanState extends State<RepayLoan> {
           child: SingleChildScrollView(
             controller: _scrollController,
             child: Container(
-              color: Theme.of(context).colorScheme.background,
+              color: Theme.of(context).backgroundColor,
               width: double.infinity,
               child: Column(
                 children: <Widget>[

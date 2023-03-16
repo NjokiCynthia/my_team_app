@@ -194,7 +194,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
             text: "Reason for ${flag == 1 ? "Rejecting" : "Cancelling"}",
             textAlign: TextAlign.start,
@@ -258,7 +258,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
           leadingIcon: LineAwesomeIcons.times,
           title: "Review Withdrawal Request",
         ),
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).backgroundColor,
         body: Container(
           width: double.infinity,
           height: double.infinity,

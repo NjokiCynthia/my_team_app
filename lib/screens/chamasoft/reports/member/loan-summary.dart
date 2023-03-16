@@ -101,7 +101,7 @@ class _LoanSummaryState extends State<LoanSummary> {
             action: () => Navigator.of(context).pop(),
             elevation: _appBarElevation,
             leadingIcon: LineAwesomeIcons.arrow_left),
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).backgroundColor,
         body: Builder(
           builder: (BuildContext context) {
             return RefreshIndicator(

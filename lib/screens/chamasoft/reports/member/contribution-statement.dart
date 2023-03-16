@@ -211,7 +211,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                 : _downloadContributionPdf(
                     context, groupObject) /* _showFilter(context) */
             ),
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
             backgroundColor: (themeChangeProvider.darkTheme)
                 ? Colors.blueGrey[800]
@@ -438,7 +438,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                                     ? (themeChangeProvider.darkTheme)
                                         ? Colors.blueGrey[800]
                                         : Color(0xffededfe)
-                                    : Theme.of(context).colorScheme.background,
+                                    : Theme.of(context).backgroundColor,
                                 padding: EdgeInsets.only(
                                     left: 0.0,
                                     top: 0.0,

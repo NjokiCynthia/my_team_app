@@ -176,7 +176,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
           leadingIcon: LineAwesomeIcons.arrow_left,
           trailingIcon: LineAwesomeIcons.download,
           trailingAction: () => _downloadFinePdf(context, groupObject)),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: RefreshIndicator(
         backgroundColor: (themeChangeProvider.darkTheme)
             ? Colors.blueGrey[800]
@@ -423,7 +423,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                                   ? (themeChangeProvider.darkTheme)
                                       ? Colors.blueGrey[800]
                                       : Color(0xffededfe)
-                                  : Theme.of(context).colorScheme.background,
+                                  : Theme.of(context).backgroundColor,
                               padding: EdgeInsets.only(
                                   left: 0.0, top: 0.0, right: 0.0, bottom: 5.0),
                               child: InkWell(

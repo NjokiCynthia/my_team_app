@@ -7,7 +7,7 @@ BoxDecoration primaryGradient(BuildContext context) {
   return BoxDecoration(
       gradient: RadialGradient(
     colors: [
-      Theme.of(context).colorScheme.background,
+      Theme.of(context).backgroundColor,
       Theme.of(context).selectedRowColor
     ],
     radius: 2.0,

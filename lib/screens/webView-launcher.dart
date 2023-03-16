@@ -46,7 +46,7 @@ class _WebViewLauncherState extends State<WebViewLauncher> {
           action: () => Navigator.of(context).pop(),
           elevation: 1,
           leadingIcon: LineAwesomeIcons.arrow_left),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Stack(
         children: [
           WebView(

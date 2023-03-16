@@ -162,7 +162,7 @@ class FineMemberState extends State<FineMember> {
         leadingIcon: LineAwesomeIcons.times,
         title: "Fine Member",
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();

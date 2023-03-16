@@ -110,7 +110,7 @@ class CreateInvoiceState extends State<CreateInvoice> {
         },
         child: Container(
           height: MediaQuery.of(context).size.height,
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).backgroundColor,
           child: Column(
             children: <Widget>[
               toolTip(

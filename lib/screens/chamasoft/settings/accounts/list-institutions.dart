@@ -116,7 +116,7 @@ class _ListInstitutionsState extends State<ListInstitutions> {
         leadingIcon: LineAwesomeIcons.times,
         title: title,
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(
         builder: (BuildContext context) {
           return Container(

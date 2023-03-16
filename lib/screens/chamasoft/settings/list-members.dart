@@ -49,7 +49,7 @@ class _ListMembersState extends State<ListMembers> {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Material(
-                  color: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).backgroundColor,
                   child: InkWell(
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
@@ -76,7 +76,7 @@ class _ListMembersState extends State<ListMembers> {
                   ),
                 ),
                 Material(
-                  color: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).backgroundColor,
                   child: InkWell(
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
@@ -124,7 +124,7 @@ class _ListMembersState extends State<ListMembers> {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Material(
-                  color: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).backgroundColor,
                   child: InkWell(
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
@@ -149,7 +149,7 @@ class _ListMembersState extends State<ListMembers> {
                   ),
                 ),
                 Material(
-                  color: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).backgroundColor,
                   child: InkWell(
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {

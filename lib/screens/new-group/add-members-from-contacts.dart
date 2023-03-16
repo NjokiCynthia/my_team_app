@@ -109,7 +109,7 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
           }
         },
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: !_isLoading
           ? Container(
               child: Column(

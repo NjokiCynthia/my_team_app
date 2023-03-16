@@ -137,7 +137,7 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
           leadingIcon: LineAwesomeIcons.times_circle,
           title: "Record Miscellaneous Payment",
         ),
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).backgroundColor,
         body: Builder(
           builder: (BuildContext context) {
             return GestureDetector(

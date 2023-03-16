@@ -123,7 +123,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
         leadingIcon: LineAwesomeIcons.arrow_left,
         title: "Loan Terms & Amortization",
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         children: [
           _isLoading ? showLinearProgressIndicator() : SizedBox(height: 0.0),

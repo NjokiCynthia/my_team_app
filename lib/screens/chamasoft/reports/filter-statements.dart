@@ -54,7 +54,7 @@ class _FilterStatementsState extends State<FilterStatements> {
       height: 250,
       padding: EdgeInsets.all(10.0),
       width: double.infinity,
-      color: Theme.of(context).colorScheme.background,
+      color: Theme.of(context).backgroundColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

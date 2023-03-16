@@ -113,7 +113,7 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Material(
-                  color: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).backgroundColor,
                   child: InkWell(
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
@@ -146,7 +146,7 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                   ),
                 ),
                 Material(
-                  color: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).backgroundColor,
                   child: InkWell(
                     onTap: () {
                       Navigator.pop(context);

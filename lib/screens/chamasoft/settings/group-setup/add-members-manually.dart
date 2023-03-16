@@ -263,7 +263,7 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                   await _submitMembers(context);
                 }
               : null),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Container(
         width: double.infinity,
         height: double.infinity,

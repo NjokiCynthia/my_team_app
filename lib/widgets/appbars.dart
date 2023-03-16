@@ -27,7 +27,7 @@ Widget secondaryPageAppbar(
       ],
     ),
     elevation: elevation,
-    backgroundColor: Theme.of(context).colorScheme.background,
+    backgroundColor: Theme.of(context).backgroundColor,
     automaticallyImplyLeading: false,
     actions: actions,
   );
@@ -56,7 +56,7 @@ Widget secondaryPageTabbedAppbar(
       ],
     ),
     elevation: elevation,
-    backgroundColor: Theme.of(context).colorScheme.background,
+    backgroundColor: Theme.of(context).backgroundColor,
     automaticallyImplyLeading: false,
     actions: actions,
     bottom: bottom,
@@ -101,7 +101,7 @@ Widget tertiaryPageAppbar(
       ],
     ),
     elevation: elevation,
-    backgroundColor: Theme.of(context).colorScheme.background,
+    backgroundColor: Theme.of(context).backgroundColor,
     automaticallyImplyLeading: false,
     actions: actions,
   );

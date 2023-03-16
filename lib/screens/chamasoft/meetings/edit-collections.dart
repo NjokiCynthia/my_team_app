@@ -266,7 +266,7 @@ class _EditCollectionsState extends State<EditCollections> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
             text: "Remove $_title",
             textAlign: TextAlign.start,
@@ -410,7 +410,7 @@ class _EditCollectionsState extends State<EditCollections> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
@@ -884,7 +884,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
   Widget build(BuildContext context) {
     List<dynamic> outputFineResults = (widget.groupAccounts);
     return AlertDialog(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       title: heading2(
         text: "New $title",
         textAlign: TextAlign.start,

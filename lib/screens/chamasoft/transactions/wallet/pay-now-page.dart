@@ -293,7 +293,7 @@ class _PayNowState extends State<PayNow> {
       context: scaffoldContext,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).backgroundColor,
           title: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -373,7 +373,7 @@ class _PayNowState extends State<PayNow> {
         leadingIcon: LineAwesomeIcons.arrow_left,
         title: "Wallet Payment",
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(
         builder: (BuildContext context) {
           return GestureDetector(

@@ -40,7 +40,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
               text: "Post feedback",
               textAlign: TextAlign.start,
@@ -91,7 +91,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
               text: "Logout",
               textAlign: TextAlign.start,
@@ -180,7 +180,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
     });
     final auth = Provider.of<Auth>(context);
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),

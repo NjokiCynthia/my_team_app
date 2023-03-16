@@ -131,7 +131,7 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
         leadingIcon: LineAwesomeIcons.times_circle,
         title: "Account to Account Transfer",
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();

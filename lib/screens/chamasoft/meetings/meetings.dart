@@ -148,7 +148,7 @@ class _MeetingsState extends State<Meetings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
@@ -383,7 +383,7 @@ class _MeetingsState extends State<Meetings> {
                               itemBuilder: (context, index) {
                                 return Container(
                                   color: (meetings[index]['synced'] == 1)
-                                      ? Theme.of(context).colorScheme.background
+                                      ? Theme.of(context).backgroundColor
                                       : Colors.red[700].withOpacity(0.04),
                                   padding:
                                       EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),

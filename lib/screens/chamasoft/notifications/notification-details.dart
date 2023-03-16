@@ -24,7 +24,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
               text: "Confirm Mpesa Number",
               // ignore: deprecated_member_use
@@ -95,7 +95,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
           action: () => Navigator.pop(context, true),
           elevation: 2.5,
           leadingIcon: LineAwesomeIcons.times),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         children: <Widget>[
           Container(

@@ -105,7 +105,7 @@ class _ContributionTransferState extends State<ContributionTransfer> {
         leadingIcon: LineAwesomeIcons.times,
         title: "Record Contribution Transfer",
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();

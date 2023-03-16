@@ -79,7 +79,7 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
           action: () => Navigator.pop(context, true),
           elevation: 2.5,
           leadingIcon: LineAwesomeIcons.arrow_left),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(builder: (context) {
         return Column(
           children: <Widget>[

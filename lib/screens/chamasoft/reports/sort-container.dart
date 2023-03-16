@@ -42,7 +42,7 @@ class _SortContainerState extends State<SortContainer> {
       children: [
         Container(
           width: double.infinity,
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).backgroundColor,
           child: Column(
             children: [
               Container(

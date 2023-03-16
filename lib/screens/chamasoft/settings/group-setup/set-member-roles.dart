@@ -191,7 +191,7 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         showDialog<String>(
-          barrierColor: Theme.of(context).colorScheme.background.withOpacity(0.7),
+          barrierColor: Theme.of(context).backgroundColor.withOpacity(0.7),
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
@@ -279,7 +279,7 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
         trailingIcon: LineAwesomeIcons.check,
         trailingAction: () async {
           showDialog<String>(
-            barrierColor: Theme.of(context).colorScheme.background.withOpacity(0.7),
+            barrierColor: Theme.of(context).backgroundColor.withOpacity(0.7),
             context: context,
             barrierDismissible: false,
             builder: (BuildContext context) {
@@ -293,7 +293,7 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
           await _submitMembers(context);
         },
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Container(
         width: double.infinity,
         height: double.infinity,

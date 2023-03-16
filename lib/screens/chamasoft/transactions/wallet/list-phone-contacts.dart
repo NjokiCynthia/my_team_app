@@ -97,7 +97,7 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
               text: "Set Recipient Contact",
               // ignore: deprecated_member_use
@@ -181,7 +181,7 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
           title: "Select Recipient",
           trailingIcon: LineAwesomeIcons.user_plus,
           trailingAction: () => _numberPrompt()),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: !_isLoading
           ? Container(
               child: Column(

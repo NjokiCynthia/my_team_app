@@ -104,7 +104,7 @@ class _LoanStatementState extends State<LoanStatement> {
           // trailingAction: () =>
           // _downloadMemberLoanStatement(context, groupObject),
         ),
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).backgroundColor,
         body: Builder(
           builder: (BuildContext context) {
             return FutureBuilder(

@@ -102,7 +102,7 @@ class _AddContributionDialogState extends State<AddContributionDialog> {
           Navigator.of(context).pop();
         },
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(
         builder: (BuildContext context) {
           return SingleChildScrollView(

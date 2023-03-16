@@ -30,7 +30,7 @@ class _ManageEWalletState extends State<ManageEWallet> {
           elevation: 2,
           action: () => Navigator.of(context).pop(),
           context: context),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Container(
         width: double.infinity,
         //decoration: primaryGradient(context),

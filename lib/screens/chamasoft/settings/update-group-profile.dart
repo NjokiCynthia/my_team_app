@@ -240,7 +240,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
               text: "Update Phone Number",
               textAlign: TextAlign.start,
@@ -327,7 +327,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
               text: "Update Group Name",
               textAlign: TextAlign.start,
@@ -410,7 +410,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
               text: "Update Group Email Address",
               textAlign: TextAlign.start,
@@ -493,7 +493,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
       builder: (BuildContext context) {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            backgroundColor: Theme.of(context).colorScheme.background,
+            backgroundColor: Theme.of(context).backgroundColor,
             title: heading2(
                 text: "Update Group Currency",
                 textAlign: TextAlign.start,
@@ -555,7 +555,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
       builder: (BuildContext context) {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            backgroundColor: Theme.of(context).colorScheme.background,
+            backgroundColor: Theme.of(context).backgroundColor,
             title: new Text("Update Country"),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -651,7 +651,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
         leadingIcon: LineAwesomeIcons.times,
         title: "",
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(builder: (BuildContext context) {
         return (SingleChildScrollView(
           controller: _scrollController,

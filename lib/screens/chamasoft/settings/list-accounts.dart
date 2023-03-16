@@ -276,7 +276,7 @@ class _ListAccountsState extends State<ListAccounts> {
           key: _refreshIndicatorKey,
           onRefresh: () => _fetchAccounts(context),
           child: Container(
-              color: Theme.of(context).colorScheme.background,
+              color: Theme.of(context).backgroundColor,
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
               // decoration: primaryGradient(context),

@@ -141,7 +141,7 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
           leadingIcon: LineAwesomeIcons.times_circle,
           title: "Set Amount To Withdraw",
         ),
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).backgroundColor,
         body: Builder(builder: (BuildContext context) {
           return GestureDetector(
             onTap: () {

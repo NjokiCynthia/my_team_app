@@ -183,7 +183,7 @@ class _MemberContributionStatementState
           leadingIcon: LineAwesomeIcons.arrow_left,
           trailingIcon: LineAwesomeIcons.download,
           trailingAction: () => _downloadContributionPdf(context, groupObject)),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: RefreshIndicator(
         backgroundColor: (themeChangeProvider.darkTheme)
             ? Colors.blueGrey[800]
@@ -434,7 +434,7 @@ class _MemberContributionStatementState
                                   ? (themeChangeProvider.darkTheme)
                                       ? Colors.blueGrey[800]
                                       : Color(0xffededfe)
-                                  : Theme.of(context).colorScheme.background,
+                                  : Theme.of(context).backgroundColor,
                               padding: EdgeInsets.only(
                                   left: 0.0, top: 0.0, right: 0.0, bottom: 5.0),
                               child: InkWell(

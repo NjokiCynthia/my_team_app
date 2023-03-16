@@ -144,7 +144,7 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
           trailingAction: () =>
               _downoadExpensesSummaryPdf(context, groupObject),
         ),
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
             backgroundColor: (themeChangeProvider.darkTheme)
                 ? Colors.blueGrey[800]

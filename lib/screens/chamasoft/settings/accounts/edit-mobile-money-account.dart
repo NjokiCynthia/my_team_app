@@ -156,7 +156,7 @@ class _EditMobileMoneyAccountState extends State<EditMobileMoneyAccount> {
       builder: (BuildContext context) {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            backgroundColor: Theme.of(context).colorScheme.background,
+            backgroundColor: Theme.of(context).backgroundColor,
             title: heading2(
                 text: "Select Mobile Money Provider",
                 // ignore: deprecated_member_use
@@ -306,7 +306,7 @@ class _EditMobileMoneyAccountState extends State<EditMobileMoneyAccount> {
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(builder: (context) {
         return pageLoaded
             ? Form(

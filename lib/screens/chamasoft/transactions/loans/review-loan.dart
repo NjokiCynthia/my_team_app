@@ -67,7 +67,7 @@ class ReviewLoanState extends State<ReviewLoan> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).backgroundColor,
           title: new Text("Reason for Rejecting"),
           content: TextFormField(
             controller: controller,
@@ -135,7 +135,7 @@ class ReviewLoanState extends State<ReviewLoan> {
       backgroundColor: Colors.transparent,
       body: SafeArea(
         child: Container(
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).backgroundColor,
           width: double.infinity,
           height: double.infinity,
           child: Column(

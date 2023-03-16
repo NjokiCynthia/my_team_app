@@ -193,7 +193,7 @@ class _SendToMobileState extends State<SendToMobile> {
         leadingIcon: LineAwesomeIcons.times,
         title: "Send to Mobile",
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: SingleChildScrollView(
         child: Column(
           children: [

@@ -40,7 +40,7 @@ class _NumberKeyBoardState extends State<NumberKeyBoard> {
         /*  trailingIcon: LineAwesomeIcons.user_plus,
           trailingAction: () => _numberPrompt() */
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Container(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.center,

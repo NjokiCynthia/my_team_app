@@ -98,7 +98,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
         leadingIcon: LineAwesomeIcons.arrow_left,
         title: "Loan Terms & Amortization",
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         children: [
           Padding(

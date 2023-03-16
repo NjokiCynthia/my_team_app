@@ -371,7 +371,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
       context: context,
       builder: (_) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).backgroundColor,
           title: new Text("Update Name"),
           content: Form(
             key: _userNameFormKey,
@@ -438,7 +438,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
       context: context,
       builder: (_) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).backgroundColor,
           title: new Text("Update Email Address"),
           content: Form(
             key: _emailFormKey,
@@ -508,7 +508,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
         leadingIcon: LineAwesomeIcons.times,
         title: "",
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(
         builder: (BuildContext context) {
           return SingleChildScrollView(

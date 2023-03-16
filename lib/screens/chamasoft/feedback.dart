@@ -148,7 +148,7 @@ class _FeedBackFormState extends State<FeedBackForm> {
               Navigator.of(context).popUntil((_) => count++ >= 2),
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(
         builder: (BuildContext context) {
           return GestureDetector(

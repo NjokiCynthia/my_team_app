@@ -193,7 +193,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
         child: Builder(
           builder: (BuildContext context) {
             return Scaffold(
-              backgroundColor: Theme.of(context).colorScheme.background,
+              backgroundColor: Theme.of(context).backgroundColor,
               body: Builder(
                 builder: (BuildContext context) {
                   return SingleChildScrollView(

@@ -212,7 +212,7 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
         leadingIcon: LineAwesomeIcons.times,
         title: "Record Loan Repayment",
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(
         builder: (BuildContext context) {
           return GestureDetector(

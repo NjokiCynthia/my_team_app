@@ -134,7 +134,7 @@ class _AccountBalancesState extends State<AccountBalances> {
           title: "Account Balances",
           //  trailingIcon: LineAwesomeIcons.download,
             trailingAction: () =>_downloadAccounBalancesPdf(context,groupObject)),
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
           backgroundColor: (themeChangeProvider.darkTheme)
               ? Colors.blueGrey[800]

@@ -154,7 +154,7 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
                 : Navigator.of(context).pop(),
             elevation: 1,
             leadingIcon: LineAwesomeIcons.arrow_left),
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
             backgroundColor: (themeChangeProvider.darkTheme)
                 ? Colors.blueGrey[800]
@@ -187,7 +187,7 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
                                                 .bottomAppBarTheme.color,
                                             width: 1.0))),
                                 child: Material(
-                                  color: Theme.of(context).colorScheme.background,
+                                  color: Theme.of(context).backgroundColor,
                                   child: InkWell(
                                     onTap: () => showSortBottomSheet(),
                                     splashColor:
@@ -226,7 +226,7 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
                                                 .bottomAppBarTheme.color,
                                             width: 1.0))),
                                 child: Material(
-                                  color: Theme.of(context).colorScheme.background,
+                                  color: Theme.of(context).backgroundColor,
                                   child: InkWell(
                                     splashColor:
                                         Colors.blueGrey.withOpacity(0.2),

@@ -151,7 +151,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
         trailingAction: () =>
             _downloadGroupTransactionStatement(context, groupObject),
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: RefreshIndicator(
         backgroundColor: (themeChangeProvider.darkTheme)
             ? Colors.blueGrey[800]

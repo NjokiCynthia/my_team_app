@@ -80,7 +80,7 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
         leadingIcon: LineAwesomeIcons.times,
         title: "Member Details",
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(
         builder: (BuildContext context) {
           return SingleChildScrollView(

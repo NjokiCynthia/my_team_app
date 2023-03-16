@@ -50,7 +50,7 @@ class _GroupSettingsState extends State<GroupSettings> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).backgroundColor,
           title: new Text("Delete Group"),
           content: new Text(
               "Are you sure you want to delete the group? You will lose all information regarding this group."),
@@ -362,7 +362,7 @@ class _GroupSettingsState extends State<GroupSettings> {
     final currentGroup = group.getCurrentGroup();
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),

@@ -135,7 +135,7 @@ class _MemberContributionStatementState
             action: () => Navigator.of(context).pop(),
             elevation: _appBarElevation,
             leadingIcon: LineAwesomeIcons.arrow_left),
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
             backgroundColor: (themeChangeProvider.darkTheme)
                 ? Colors.blueGrey[800]

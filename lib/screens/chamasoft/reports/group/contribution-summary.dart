@@ -194,7 +194,7 @@ class _ContributionSummaryState extends State<ContributionSummary> {
         title: appbarTitle,
         //trailingAction: () => _showFilter(context),
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: RefreshIndicator(
         backgroundColor: (themeChangeProvider.darkTheme)
             ? Colors.blueGrey[800]
