@@ -172,9 +172,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
           final String versionCode =
               await CustomHelper.getApplicationBuildNumber();
           final String userAccessTokenKey = await Auth.getAccessToken();
-          final String userAccessToken = userAccessTokenKey.isNotEmpty
-              ? userAccessTokenKey
-              : _defaultAuthenticationToken;
+          final String userAccessToken = userAccessTokenKey ??  _defaultAuthenticationToken;
           final Map<String, String> headers = {
             "Secret": secretKey,
             "Versioncode": versionCode,
