@@ -371,7 +371,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
       context: context,
       builder: (_) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).colorScheme.background,
           title: new Text("Update Name"),
           content: Form(
             key: _userNameFormKey,

@@ -14,11 +14,21 @@ final dbHelper = DatabaseHelper.instance;
 double appBarElevation = 2.5;
 
 //launch any url through default browser
-launchURL(String url) async {
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
+// launchURL(String url) async {
+//   if (await canLaunch(url)) {
+//     await launch(url);
+//   } else {
+//     throw 'Could not launch $url';
+//   }
+// }
+
+Future<void> launchURL(String url) async {
+  Uri toLaunch = Uri(scheme: 'https', host: url, path: 'headers/');
+  if (!await launchUrl(
+    toLaunch,
+    mode: LaunchMode.externalApplication,
+  )) {
+    throw Exception('Could not launch $toLaunch');
   }
 }
 
