@@ -353,6 +353,7 @@ class _LoginState extends State<Login> {
                                 Expanded(
                                   child: TextFormField(
                                     controller: _phoneController,
+                                    cursorColor: primaryColor,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       focusedBorder: InputBorder.none,
