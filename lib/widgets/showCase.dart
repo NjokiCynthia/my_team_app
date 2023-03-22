@@ -15,8 +15,9 @@ Widget customShowCase(
     title: title,
     targetShapeBorder: CircleBorder(),
     description: description,
-    overlayColor: primaryColor,
-    //backgroundColor: primaryColor,
+    // overlayColor: primaryColor,
+    tooltipBackgroundColor: primaryColor,
+    // backgroundColor: primaryColor,
     targetBorderRadius: BorderRadius.all(Radius.circular(40)),
     //radius: BorderRadius.all(Radius.circular(40)),
     titleTextStyle: TextStyle(
