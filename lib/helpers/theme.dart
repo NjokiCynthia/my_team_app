@@ -58,7 +58,7 @@ class Styles {
                 isDarkTheme ? Colors.blueGrey[800] : Colors.blue[100],
             // ignore: deprecated_member_use
             textSelectionTheme: TextSelectionThemeData(
-              cursorColor: Colors.yellow,
+              cursorColor: primaryColor,
               selectionColor: isDarkTheme ? Colors.white : Colors.blueGrey[800],
               selectionHandleColor: isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey,
             ),
@@ -124,7 +124,7 @@ class Styles {
                 isDarkTheme ? Colors.blueGrey[800] : Colors.orange[50],
             // ignore: deprecated_member_use
             textSelectionTheme: TextSelectionThemeData(
-              cursorColor: Colors.yellow,
+              cursorColor: primaryColor,
               selectionColor: isDarkTheme ? Colors.white : Colors.blueGrey[800],
               selectionHandleColor: isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey,
             ),

@@ -270,6 +270,9 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                                         textStyle: TextStyle(
                                           fontFamily:
                                               'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/
+                                            color: Theme.of(context)
+                                                .textSelectionTheme
+                                                .selectionHandleColor
                                         ),
                                         searchStyle: TextStyle(
                                             fontFamily: 'SegoeUI',
