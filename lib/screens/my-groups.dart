@@ -344,7 +344,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                                         itemBuilder: (ctx2, index) {
                                           return groupInfoButton(
                                             context: context,
-                                            leadingIcon: LineAwesomeIcons.crop,
+                                            leadingIcon: LineAwesomeIcons.user_friends,
                                             trailingIcon:
                                                 LineAwesomeIcons.angle_right,
                                             backgroundColor:
