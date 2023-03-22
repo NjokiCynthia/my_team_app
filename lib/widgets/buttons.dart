@@ -75,6 +75,7 @@ Widget groupInfoButton(
     // ignore: deprecated_member_use
     child: OutlinedButton(
       style: OutlinedButton.styleFrom(
+        shape: StadiumBorder(),
         padding: EdgeInsets.all(0.0),
         side:
             BorderSide(color: borderColor, style: BorderStyle.solid, width: 2),
