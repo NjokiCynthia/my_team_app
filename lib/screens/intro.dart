@@ -253,7 +253,8 @@ class IntroScreenState extends State<IntroScreen> {
             onDone: () => _onIntroEnd(context),
             //onSkip: () => _onIntroEnd(context),
             showSkipButton: true,
-            dotsFlex: 0,
+            skipOrBackFlex: 0,
+            dotsFlex: 1,
             nextFlex: 0,
             skip: Text("Skip",
                 style: TextStyle(
