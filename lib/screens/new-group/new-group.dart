@@ -993,11 +993,13 @@ class _NewGroupState extends State<NewGroup> {
                   onStepCancel: cancel,
                   controlsBuilder: (
                     BuildContext context,
-                    ControlsDetails controlDetails, {
-                    // BuildContext context, {
-                    VoidCallback onStepContinue,
-                    VoidCallback onStepCancel,
-                  }) {
+                    ControlsDetails controlDetails
+                  //   ControlsDetails controlDetails, {
+                  //   // BuildContext context, {
+                  //   VoidCallback onStepContinue,
+                  //   VoidCallback onStepCancel,
+                  // }
+                  ) {
                     return Padding(
                       padding: EdgeInsets.only(
                         top: 12.0,
@@ -1046,7 +1048,7 @@ class _NewGroupState extends State<NewGroup> {
                               ),
                             ),
                             // textColor: Colors.white,
-                            onPressed: (!_saving) ? onStepContinue : null,
+                            onPressed: (!_saving) ? controlDetails.onStepContinue : null,
                           ),
                           SizedBox(
                             width: 20.0,
@@ -1084,7 +1086,7 @@ class _NewGroupState extends State<NewGroup> {
                                   //     // ignore: deprecated_member_use
                                   //     .textSelectionTheme.selectionHandleColor
                                   //     .withOpacity(0.6),
-                                  onPressed: (!_saving) ? onStepCancel : null,
+                                  onPressed: (!_saving) ? controlDetails.onStepCancel : null,
                                 )
                               : SizedBox(),
                         ],
