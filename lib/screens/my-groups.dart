@@ -422,7 +422,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                                 text: "Logout",
                                 backgroundColor: Colors.red.withOpacity(0.2),
                                 textColor: Colors.red,
-                                buttonHeight: 36.0,
+                                buttonHeight: 30.0,
                                 textSize: 15.0,
                                 action: () => _logoutDialog(),
                               ),

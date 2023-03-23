@@ -149,7 +149,7 @@ Widget smallBadgeButton(
     // ignore: deprecated_member_use
     child: TextButton(
       style: TextButton.styleFrom(
-        padding: EdgeInsets.symmetric(horizontal: 6.0),
+        padding: EdgeInsets.symmetric(horizontal: 20.0),
         shape: new RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(30.0)),
         backgroundColor: backgroundColor,
