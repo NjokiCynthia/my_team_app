@@ -761,26 +761,26 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
           SizedBox(
             width: 16.0,
           ),
-          customShowCase(
-            key: sendToMobileKey,
-            description: 'Transfer Chama Money TO Your Phone Number ',
-            child: Container(
-                width: 132.0,
-                child: svgGridButton(
-                    context: context,
-                    icon: customIcons['bank-cards'],
-                    title: 'SEND',
-                    subtitle: 'TO MOBILE',
-                    color: Config.appName.toLowerCase() == "chamasoft"
-                        ? Colors.blue[400]
-                        : Theme.of(context).primaryColor,
-                    isHighlighted: false,
-                    action: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => SendToMobile(),
-                        settings: RouteSettings(arguments: 0))),
-                    margin: 0,
-                    imageHeight: 100.0)),
-          ),
+          // customShowCase(
+          //   key: sendToMobileKey,
+          //   description: 'Transfer Chama Money TO Your Phone Number ',
+          //   child: Container(
+          //       width: 132.0,
+          //       child: svgGridButton(
+          //           context: context,
+          //           icon: customIcons['bank-cards'],
+          //           title: 'SEND',
+          //           subtitle: 'TO MOBILE',
+          //           color: Config.appName.toLowerCase() == "chamasoft"
+          //               ? Colors.blue[400]
+          //               : Theme.of(context).primaryColor,
+          //           isHighlighted: false,
+          //           action: () => Navigator.of(context).push(MaterialPageRoute(
+          //               builder: (BuildContext context) => SendToMobile(),
+          //               settings: RouteSettings(arguments: 0))),
+          //           margin: 0,
+          //           imageHeight: 100.0)),
+          // ),
         ];
 
         return new WillPopScope(
