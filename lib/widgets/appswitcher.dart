@@ -326,6 +326,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
     return TextButton(
       style: TextButton.styleFrom(
         padding: EdgeInsets.fromLTRB(20.0, 0.0, 2.0, 0.0),
+        backgroundColor: Colors.white
         //backgroundColor: Theme.of(context).buttonColor.withOpacity(0.9),
       ),
 
