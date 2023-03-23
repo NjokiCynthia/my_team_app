@@ -126,7 +126,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).colorScheme.background,
           title: heading2(
             text: "Logout",
             textAlign: TextAlign.start,
