@@ -419,7 +419,7 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                             children: [
                               IconButton(
                                 icon: Icon(
-                                  LineAwesomeIcons.phone,
+                                  LineAwesomeIcons.mobile_phone,
                                 ),
                                 iconSize: 20.0,
                                 onPressed: () async {

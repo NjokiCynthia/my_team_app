@@ -441,11 +441,11 @@ Widget paymentActionButton(
       // ignore: deprecated_member_use
       ? OutlinedButton(
           style: OutlinedButton.styleFrom(
-            backgroundColor: Colors.white,
-            //  borderSide: BorderSide(
-            //   width: 3.0,
-            //   color: color,
-            // ),
+            // backgroundColor: Colors.white,
+             side: BorderSide(
+              width: 3.0,
+              color: color,
+            ),
             // highlightColor: color.withOpacity(0.1),
             // highlightedBorderColor: color,
           ),

@@ -317,7 +317,7 @@ class _DetailRecieptState extends State<DetailReciept> {
                             children: [
                               IconButton(
                                 icon: Icon(
-                                  LineAwesomeIcons.phone,
+                                  LineAwesomeIcons.mobile_phone,
                                 ),
                                 iconSize: 20.0,
                                 onPressed: () {},
