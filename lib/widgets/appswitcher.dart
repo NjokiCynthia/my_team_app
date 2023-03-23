@@ -323,126 +323,135 @@ class _AppSwitcherState extends State<AppSwitcher> {
   Widget groupSwitcherButton(
       {BuildContext context, String title, String role}) {
     // ignore: deprecated_member_use
-    return TextButton(
-      style: TextButton.styleFrom(
-        padding: EdgeInsets.fromLTRB(20.0, 0.0, 2.0, 0.0),
-        backgroundColor: Colors.white
-        //backgroundColor: Theme.of(context).buttonColor.withOpacity(0.9),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: new BorderRadius.only(
+          topRight: Radius.circular(31.0),
+          topLeft: Radius.circular(31.0),
+        ),
+        color: Colors.white,
       ),
+      child: TextButton(
 
-      child: Column(
-        children: <Widget>[
-          Container(
-            constraints: BoxConstraints(maxWidth: 320),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Text(
-                        title.toUpperCase(),
-                        style: TextStyle(
-                          color: Config.appName.toLowerCase() == 'chamasoft'
-                              ? Colors.blueGrey[400]
-                              : primaryColor,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16.0,
-                          fontFamily: 'SegoeUI',
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.fromLTRB(20.0, 0.0, 2.0, 0.0),
+          //backgroundColor: Theme.of(context).buttonColor.withOpacity(0.9),
+        ),
+
+        child: Column(
+          children: <Widget>[
+            Container(
+              constraints: BoxConstraints(maxWidth: 320),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                          title.toUpperCase(),
+                          style: TextStyle(
+                            color: Config.appName.toLowerCase() == 'chamasoft'
+                                ? Colors.blueGrey[400]
+                                : primaryColor,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16.0,
+                            fontFamily: 'SegoeUI',
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          textAlign: TextAlign.center,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: false,
-                        textAlign: TextAlign.center,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          // Icon(
-                          //   Icons.beenhere,
-                          //   size: 12.0,
-                          // ),
-                          // SizedBox(width: 4.0),
-                          Flexible(
-                            fit: FlexFit.loose,
-                            child: Padding(
-                              padding: EdgeInsets.only(bottom: 2),
-                              child: Text(
-                                role, //.toUpperCase(),
-                                style: TextStyle(
-                                  color: Config.appName.toLowerCase() ==
-                                          'chamasoft'
-                                      ? Colors.blueGrey[300]
-                                      : primaryColor.withOpacity(0.8),
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 11.0,
-                                  fontFamily: 'SegoeUI',
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            // Icon(
+                            //   Icons.beenhere,
+                            //   size: 12.0,
+                            // ),
+                            // SizedBox(width: 4.0),
+                            Flexible(
+                              fit: FlexFit.loose,
+                              child: Padding(
+                                padding: EdgeInsets.only(bottom: 2),
+                                child: Text(
+                                  role, //.toUpperCase(),
+                                  style: TextStyle(
+                                    color: Config.appName.toLowerCase() ==
+                                            'chamasoft'
+                                        ? Colors.blueGrey[300]
+                                        : primaryColor.withOpacity(0.8),
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 11.0,
+                                    fontFamily: 'SegoeUI',
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.fade,
+                                  softWrap: false,
+                                  textAlign: TextAlign.end,
                                 ),
-                                maxLines: 1,
-                                overflow: TextOverflow.fade,
-                                softWrap: false,
-                                textAlign: TextAlign.end,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  height: 32.0,
-                  width: 32.0,
-                  margin: EdgeInsets.only(left: 5.0),
-                  decoration: BoxDecoration(
-                    borderRadius: _entryIsVisible
-                        ? BorderRadius.only(
-                            topRight: Radius.circular(20.0),
-                            topLeft: Radius.circular(20.0),
-                            bottomLeft: Radius.circular(20.0))
-                        : BorderRadius.circular(40.0),
-                    color: Config.appName.toLowerCase() == 'chamasoft'
-                        ? Theme.of(context).hintColor.withOpacity(0.6)
-                        : primaryColor.withOpacity(0.6),
+                  Container(
+                    height: 32.0,
+                    width: 32.0,
+                    margin: EdgeInsets.only(left: 5.0),
+                    decoration: BoxDecoration(
+                      borderRadius: _entryIsVisible
+                          ? BorderRadius.only(
+                              topRight: Radius.circular(20.0),
+                              topLeft: Radius.circular(20.0),
+                              bottomLeft: Radius.circular(20.0))
+                          : BorderRadius.circular(40.0),
+                      color: Config.appName.toLowerCase() == 'chamasoft'
+                          ? Theme.of(context).hintColor.withOpacity(0.6)
+                          : primaryColor.withOpacity(0.6),
+                    ),
+                    child: Icon(
+                      Feather.users,
+                      color: Colors.white70,
+                      size: 18.0,
+                    ),
+                    // ** If group image is available, replace above child with this: **
+                    // =================================================================
+                    // child: Image(
+                    //   image:  AssetImage('assets/no-user.png'),
+                    //   height: 32.0,
+                    // ),
                   ),
-                  child: Icon(
-                    Feather.users,
-                    color: Colors.white70,
-                    size: 18.0,
-                  ),
-                  // ** If group image is available, replace above child with this: **
-                  // =================================================================
-                  // child: Image(
-                  //   image:  AssetImage('assets/no-user.png'),
-                  //   height: 32.0,
-                  // ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
+        onPressed: () {
+          setState(() {
+            width = this.context.size.width;
+          });
+          _entryIsVisible ? _exitSwitcher() : _handleSwitch();
+          // groupSwitcherDialog(widget.currentGroup["id"]);
+        },
+        // shape: _entryIsVisible
+        //     ? new RoundedRectangleBorder(
+        //         borderRadius: new BorderRadius.only(
+        //           topRight: Radius.circular(19.0),
+        //           topLeft: Radius.circular(20.0),
+        //         ),
+        //       )
+        //     : new RoundedRectangleBorder(
+        //         borderRadius: new BorderRadius.all(
+        //           Radius.circular(30.0),
+        //         ),
+        //       ),
+        // textColor: primaryColor,
       ),
-      onPressed: () {
-        setState(() {
-          width = this.context.size.width;
-        });
-        _entryIsVisible ? _exitSwitcher() : _handleSwitch();
-        // groupSwitcherDialog(widget.currentGroup["id"]);
-      },
-      // shape: _entryIsVisible
-      //     ? new RoundedRectangleBorder(
-      //         borderRadius: new BorderRadius.only(
-      //           topRight: Radius.circular(19.0),
-      //           topLeft: Radius.circular(20.0),
-      //         ),
-      //       )
-      //     : new RoundedRectangleBorder(
-      //         borderRadius: new BorderRadius.all(
-      //           Radius.circular(30.0),
-      //         ),
-      //       ),
-      // textColor: primaryColor,
     );
   }
 
