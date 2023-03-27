@@ -338,6 +338,8 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
+                      elevation: 0.0,
+                      backgroundColor: Colors.white,
                       padding: EdgeInsets.only(left: 4, right: 4),
                       shape: RoundedRectangleBorder(
                           side: BorderSide(

@@ -252,12 +252,12 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
                                     Container(
-                                      height: 34,
+                                      height: 54,
                                       padding: EdgeInsets.fromLTRB(
                                         0.0,
                                         0.0,
                                         0.0,
-                                        8.0,
+                                        4.0,
                                       ),
                                       child: CountryCodePicker(
                                         // key: _countryKey,
@@ -270,9 +270,8 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                                         textStyle: TextStyle(
                                           fontFamily:
                                               'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/
-                                            color: Theme.of(context)
-                                                .textSelectionTheme
-                                                .selectionHandleColor
+                                            fontSize: 16,
+                                          color: Colors.black
                                         ),
                                         searchStyle: TextStyle(
                                             fontFamily: 'SegoeUI',
@@ -286,9 +285,34 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                                           });
                                         },
                                       ),
+                                      // child:CountryCodePicker(
+                                      //   // key: _countryKey,
+                                      //   initialSelection: 'KE',
+                                      //   favorite: ['KE', 'UG', 'TZ', 'RW'],
+                                      //   showCountryOnly: false,
+                                      //
+                                      //   showOnlyCountryWhenClosed: false,
+                                      //   alignLeft: false,
+                                      //   flagWidth: 28.0,
+                                      //   textStyle: TextStyle(
+                                      //     fontFamily:
+                                      //     'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/
+                                      //   ),
+                                      //   searchStyle: TextStyle(
+                                      //       fontFamily: 'SegoeUI',
+                                      //       fontSize: 16,
+                                      //       color: Theme.of(context)
+                                      //           .textSelectionTheme
+                                      //           .selectionHandleColor),
+                                      //   onChanged: (countryCode) {
+                                      //     setState(() {
+                                      //       _countryCode = countryCode;
+                                      //     });
+                                      //   },
+                                      // ),
                                     ),
                                     SizedBox(
-                                      width: 10,
+                                      width: 0,
                                     ),
                                   ],
                                 ),
@@ -296,7 +320,7 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                                   child: Container(
                                     height: 34,
                                     padding:
-                                        EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 3.0),
+                                        EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                                     child: TextFormField(
                                       controller: _phoneController,
                                       keyboardType: TextInputType.phone,
