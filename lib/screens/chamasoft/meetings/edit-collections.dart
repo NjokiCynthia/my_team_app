@@ -842,38 +842,38 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
     if (widget.type == 'contributions') {
       title = "Group Contribution";
       _selected = {
-        'member_id': '',
-        'contribution_id': '',
-        'account_id': '',
-        'amount': '',
+        'member_id': null,
+        'contribution_id': null,
+        'account_id': null,
+        'amount': null,
         'type': widget.type,
       };
     } else if (widget.type == 'repayments') {
       title = "Loan Repayment";
       _selected = {
-        'member_id': '',
-        'loan_id': '',
-        'account_id': '',
-        'amount': '',
+        'member_id': null,
+        'loan_id': null,
+        'account_id': null,
+        'amount': null,
         'type': widget.type,
       };
     } else if (widget.type == 'disbursements') {
       title = "Loan Disbursement";
       _selected = {
-        'member_id': '',
-        'loan_type_id': '',
-        'account_id': '',
-        'amount': '',
+        'member_id': null,
+        'loan_type_id': null,
+        'account_id': null,
+        'amount': null,
         'type': widget.type,
       };
     } else if (widget.type == 'fines') {
       title = "Fine Payment";
       _selected = {
-        'member_id': '',
-        'fine_id': '',
-        'account_id': '',
-        'description': '',
-        'amount': '',
+        'member_id': null,
+        'fine_id': null,
+        'account_id': null,
+        'description': null,
+        'amount': null,
         'type': widget.type,
       };
     }
@@ -961,6 +961,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                   //     },
                   //   )
                   ? FormBuilderDropdown(
+                      key: UniqueKey(),
                       name: 'member_id',
                       decoration: InputDecoration(
                         labelText: 'Group Member',
@@ -1020,6 +1021,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                   //           ),
 
                   : FormBuilderDropdown(
+                      key: UniqueKey(),
                       name: 'member_id',
                       decoration: InputDecoration(
                         labelText: 'Group Member',
@@ -1077,6 +1079,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                   //     },
                   //   )
                   ? FormBuilderDropdown(
+                      key:UniqueKey(),
                       name: 'group_contribution',
                       decoration: InputDecoration(
                         labelText: 'Group Contribution',
@@ -1140,6 +1143,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                   //     },
                   //   )
                   ? FormBuilderDropdown(
+                      key: UniqueKey(),
                       name: 'loan_type_id',
                       decoration: InputDecoration(
                         labelText: 'Loan Type',
@@ -1203,6 +1207,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                   //     },
                   //   )
                   ? FormBuilderDropdown(
+                      key: UniqueKey(),
                       name: 'loan_id',
                       decoration: InputDecoration(
                         labelText: 'Member Loan',
@@ -1267,6 +1272,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                   //     },
                   //   )
                   ? FormBuilderDropdown(
+                      key: UniqueKey(),
                       name: 'fine_id',
                       decoration: InputDecoration(
                         labelText: 'Fine Category',
@@ -1357,6 +1363,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
               //   },
               // ),
               FormBuilderDropdown(
+                key: UniqueKey() ,
                 name: 'account_id',
                 decoration: InputDecoration(
                   labelText: 'Group Account',

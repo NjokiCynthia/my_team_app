@@ -880,7 +880,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                     children: <Widget>[
                       Visibility(
                         // visible: _showMeetingsBanner,
-                        visible: true,
+                        visible: _currentGroup.isGroupAdmin,
                         child: customShowCase(
                           key: meetingsBannarKey,
                           title: "Chamasoft Meetings Banner",
