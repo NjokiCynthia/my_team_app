@@ -50,6 +50,9 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:pie_chart/pie_chart.dart' as chart;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'meetings/meetings.dart';
 
 class ChamasoftHome extends StatefulWidget {
   static const PREFERENCES_IS_FIRST_LAUNCH_STRING_HOME =
@@ -86,7 +89,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   List<SummaryRow> _expenseRows = [];
 
   int _currentIndex = 0;
-
+  bool _showMeetingsBanner = false;
   // List cardList = [
   //   Contrubutions(),
   //   Fines(),
@@ -875,6 +878,135 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      Visibility(
+                        // visible: _showMeetingsBanner,
+                        visible: true,
+                        child: customShowCase(
+                          key: meetingsBannarKey,
+                          title: "Chamasoft Meetings Banner",
+                          description:
+                          "Schedule,View and Manage Chama Meetings",
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(
+                              16.0,
+                              16.0,
+                              16.0,
+                              16.0,
+                            ),
+                            child: Container(
+                              width: double.infinity,
+                              decoration: cardDecoration(
+                                gradient: plainCardGradient(context),
+                                context: context,
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(16.0),
+                                child: Stack(
+                                  children: <Widget>[
+                                    Image(
+                                      image: AssetImage(
+                                        'assets/meeting-minutes.jpg',
+                                      ),
+                                      width: double.infinity,
+                                    ),
+                                    Positioned(
+                                      top: 0,
+                                      bottom: 0,
+                                      right: 0,
+                                      left: 0,
+                                      child: Container(
+                                        height: double.infinity,
+                                        width: double.infinity,
+                                        color: Colors.black.withOpacity(0.3),
+                                        padding: EdgeInsets.only(
+                                          right: 16.0,
+                                          top: 6.0,
+                                          bottom: 16.0,
+                                        ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                          children: [
+                                            Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                              children: [
+                                                Text(
+                                                  "${Config.appName} Meetings",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'SegoeUI',
+                                                    fontWeight:
+                                                    FontWeight.bold,
+                                                    fontSize: 22.0,
+                                                  ),
+                                                  textAlign: TextAlign.right,
+                                                ),
+                                                subtitle2(
+                                                  color: Colors.white
+                                                      .withOpacity(0.9),
+                                                  text:
+                                                  "Manage group meetings, easily.",
+                                                  textAlign: TextAlign.right,
+                                                ),
+                                              ],
+                                            ),
+                                            InkWell(
+                                              onTap: () =>
+                                                  Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                      context) =>
+                                                          Meetings(),
+                                                    ),
+                                                  ),
+                                              child: Text(
+                                                // "Get Started",
+                                                "Our meetings",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: 'SegoeUI',
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16.0,
+                                                  decoration: TextDecoration
+                                                      .underline,
+                                                ),
+                                                textAlign: TextAlign.right,
+                                              ),
+                                            ),
+
+                                        //     InkWell(
+                                        //       onTap: () {
+                                        //         print("dont show");
+                                        //         hideBanner();
+                                        // },
+                                        //       child: Text(
+                                        //         "Don't show this again",
+                                        //         style: TextStyle(
+                                        //           color: Colors.white
+                                        //               .withOpacity(0.8),
+                                        //           fontFamily: 'SegoeUI',
+                                        //           fontWeight: FontWeight.w300,
+                                        //           fontSize: 11.0,
+                                        //         ),
+                                        //         textAlign: TextAlign.right,
+                                        //       ),
+                                        //     ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                         child: Row(
@@ -1391,6 +1523,47 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             //     height: MediaQuery.of(context).size.height),
           )),
         ));
+  }
+
+  void hideBanner() async {
+    List<dynamic> _bannerDbStatus = [
+      {
+        'group_id': _currentGroup.groupId,
+        'show_banner': false,
+      },
+    ];
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("meetings-banner")) {
+      String bannerStatusObject = prefs.getString("meetings-banner");
+      _bannerDbStatus = jsonDecode(bannerStatusObject);
+      List<dynamic> _filtered = _bannerDbStatus
+          .where((s) => s['group_id'] == _currentGroup.groupId)
+          .toList();
+      if (_bannerDbStatus.length > 0) {
+        if (_filtered.length == 0) {
+          _bannerDbStatus.add(
+            {
+              'group_id': _currentGroup.groupId,
+              'show_banner': false,
+            },
+          );
+        } else {
+          int _idx = _bannerDbStatus
+              .indexWhere((b) => b['group_id'] == _currentGroup.groupId);
+          _bannerDbStatus.removeAt(_idx);
+          _bannerDbStatus.add(
+            {
+              'group_id': _currentGroup.groupId,
+              'show_banner': false,
+            },
+          );
+        }
+      }
+    }
+    await prefs.setString("meetings-banner", jsonEncode(_bannerDbStatus));
+    setState(() {
+      _showMeetingsBanner = false;
+    });
   }
 
 // customSlider({BuildContext context, count, index}) {}

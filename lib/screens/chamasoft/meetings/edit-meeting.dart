@@ -1005,10 +1005,7 @@ class _EditMeetingState extends State<EditMeeting> {
                   onStepTapped: (step) => goTo(step),
                   onStepCancel: cancel,
                   controlsBuilder:
-                      (BuildContext context, ControlsDetails controlDetails,{
-                        VoidCallback onStepContinue,
-                        VoidCallback onStepCancel,
-                      }) {
+                      (BuildContext context, ControlsDetails controlDetails) {
                     return Padding(
                       padding: EdgeInsets.only(
                         top: 12.0,
@@ -1092,7 +1089,7 @@ class _EditMeetingState extends State<EditMeeting> {
                                 ],
                               ),
                             ),
-                            onPressed: !_saving ? onStepContinue : null,
+                            onPressed: !_saving ? controlDetails.onStepContinue : null,
                           ),
 
                           SizedBox(
@@ -1148,7 +1145,7 @@ class _EditMeetingState extends State<EditMeeting> {
                                           .textSelectionTheme.selectionHandleColor,
                                     ),
                                   ),
-                                  onPressed: !_saving ? onStepCancel : null,
+                                  onPressed: !_saving ? controlDetails.onStepCancel : null,
                                 )
                               : SizedBox(),
                         ],

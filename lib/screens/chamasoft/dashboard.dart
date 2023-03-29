@@ -23,6 +23,8 @@ import 'package:rate_my_app/rate_my_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 
+import 'meetings/meetings.dart';
+
 // ignore: must_be_immutable
 class ChamasoftDashboard extends StatefulWidget {
   static const namedRoute = "/dashboard";
@@ -296,7 +298,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             automaticallyImplyLeading: false,
             actions: <Widget>[
               Visibility(
-                visible: /*_group.isGroupAdmin*/ false,
+                // visible: /*_group.isGroupAdmin*/ false
+                visible: true,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -322,12 +325,12 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                               : primaryColor,
                         ),
                         onPressed: () /*=>*/ {
-                          // _eventDispatcher.add('TAP'), //Closes the AppSwitcher
-                          // Navigator.of(context).push(
-                          //   MaterialPageRoute(
-                          //     builder: (BuildContext context) => Meetings(),
-                          //   ),
-                          // ),
+                          _eventDispatcher.add('TAP'); //Closes the AppSwitcher
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => Meetings(),
+                            ),
+                          );
                         },
                       ),
                     )
