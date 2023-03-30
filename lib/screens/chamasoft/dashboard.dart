@@ -301,8 +301,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             automaticallyImplyLeading: false,
             actions: <Widget>[
               Visibility(
-                // visible: /*_group.isGroupAdmin*/ false
-                visible: _currentGroup.isGroupAdmin,
+                visible: /*_group.isGroupAdmin*/ false,
+                // visible: _currentGroup.isGroupAdmin,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -466,6 +466,12 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             ],
           ),
           bottomNavigationBar: BottomNavigationBar(
+            unselectedItemColor: Colors.blueGrey[300],
+            unselectedLabelStyle: TextStyle(
+              color: Colors.blueGrey[500],
+              fontFamily: 'SegoeUI',
+              fontWeight: FontWeight.w700,
+            ),
             selectedLabelStyle: TextStyle(
                 color: _currentPage == /*2*/ 1
                     ? primaryColor
@@ -507,7 +513,6 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 //   fontFamily: 'SegoeUI',
                 //   fontWeight: FontWeight.w700,
                 // ),
-                //),
               ),
               // BottomNavigationBarItem(
               //   icon: customShowCase(
@@ -549,15 +554,15 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                       "Manually Record chama Transactions, Create withdrawals form E-Walet and Invoice Transfers",
 
                   // ignore: deprecated_member_use
-                  textColor:
-                      Theme.of(context).textSelectionTheme.selectionHandleColor,
+                  textColor: Colors.black,
+                      // Theme.of(context).textSelectionTheme.selectionHandleColor,
                   child: Icon(
                     Feather.credit_card,
                     color: _currentPage == /*2*/ 1
                         ? primaryColor
                         : Config.appName.toLowerCase() == 'chamasoft'
                             ? Colors.blueGrey[300]
-                            : Colors.blueGrey[300].withOpacity(0.5),
+                            : Colors.blueGrey[300].withOpacity(1.0),
                   ),
                 ),
                 // ignore: deprecated_member_use
