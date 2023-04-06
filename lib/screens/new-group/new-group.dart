@@ -124,8 +124,7 @@ class _NewGroupState extends State<NewGroup> {
           } else if (_data['name'] == '') {
             _showSnackbar("You need to fill group info to continue.", 4);
           } else {
-            // goTo(1);
-            _createGroup();
+            goTo(1);
           }
         } else {
           _showSnackbar("Fill in the required fields to continue.", 4);
@@ -167,6 +166,7 @@ class _NewGroupState extends State<NewGroup> {
             setState(() {
               _saving = true;
             });
+            _createGroup();
             completeGroupSetup();
           }
         }

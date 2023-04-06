@@ -41,6 +41,15 @@ class Styles {
             primaryColor: isDarkTheme ? Colors.blueGrey[100] : primaryColor,
             indicatorColor:
                 isDarkTheme ? Colors.blueGrey[100] : Colors.blue[600],
+
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                backgroundColor: isDarkTheme
+                    ? Colors.blueGrey[800]?.withOpacity(0.9)
+                    : Colors.white,
+
+              ),
+            ),
             buttonTheme: ButtonThemeData(
               buttonColor: isDarkTheme
                   ? Colors.blueGrey[800]?.withOpacity(0.7)

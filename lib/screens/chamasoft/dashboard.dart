@@ -301,7 +301,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             automaticallyImplyLeading: false,
             actions: <Widget>[
               Visibility(
-                visible: /*_group.isGroupAdmin*/ false,
+                visible: /*_group.isGroupAdmin*/ true,
                 // visible: _currentGroup.isGroupAdmin,
                 child: Stack(
                   alignment: Alignment.center,

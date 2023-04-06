@@ -124,7 +124,9 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     icon: customIcons['transaction'],
                     title: 'CONTRIBUTION',
                     subtitle: 'STATEMENT',
-                    color: Colors.white,
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
                     //Colors.blue[400],
                     isHighlighted: true,
                     action: () => Navigator.of(context).push(MaterialPageRoute(

@@ -89,7 +89,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   List<SummaryRow> _expenseRows = [];
 
   int _currentIndex = 0;
-  bool _showMeetingsBanner = false;
+  bool _showMeetingsBanner = true;
   // List cardList = [
   //   Contrubutions(),
   //   Fines(),
@@ -151,7 +151,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     // _getGroupDashboardData();
     //}
     _groupCurrency = _currentGroup.groupCurrency;
-    // _meetingsBannerStatus();
+    _meetingsBannerStatus();
     super.didChangeDependencies();
   }
 
@@ -879,8 +879,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Visibility(
-                        // visible: _showMeetingsBanner,
-                        visible: _currentGroup.isGroupAdmin,
+                        visible: _showMeetingsBanner,
+                        // visible: _currentGroup.isGroupAdmin,
                         child: customShowCase(
                           key: meetingsBannarKey,
                           title: "Chamasoft Meetings Banner",
@@ -965,8 +965,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                                     ),
                                                   ),
                                               child: Text(
-                                                // "Get Started",
-                                                "Our meetings",
+                                                "Get Started",
+                                                // "Our meetings",
                                                 style: TextStyle(
                                                   color: Colors.white,
                                                   fontFamily: 'SegoeUI',
@@ -979,23 +979,25 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                               ),
                                             ),
 
-                                        //     InkWell(
-                                        //       onTap: () {
-                                        //         print("dont show");
-                                        //         hideBanner();
-                                        // },
-                                        //       child: Text(
-                                        //         "Don't show this again",
-                                        //         style: TextStyle(
-                                        //           color: Colors.white
-                                        //               .withOpacity(0.8),
-                                        //           fontFamily: 'SegoeUI',
-                                        //           fontWeight: FontWeight.w300,
-                                        //           fontSize: 11.0,
-                                        //         ),
-                                        //         textAlign: TextAlign.right,
-                                        //       ),
-                                        //     ),
+                                            InkWell(
+                                              onTap: () {
+                                                print("dont show 1");
+                                                hideBanner();
+                                                print("dont show 2");
+
+                                        },
+                                              child: Text(
+                                                "Don't show this again",
+                                                style: TextStyle(
+                                                  color: Colors.white
+                                                      .withOpacity(0.8),
+                                                  fontFamily: 'SegoeUI',
+                                                  fontWeight: FontWeight.w300,
+                                                  fontSize: 11.0,
+                                                ),
+                                                textAlign: TextAlign.right,
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -1523,6 +1525,30 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             //     height: MediaQuery.of(context).size.height),
           )),
         ));
+  }
+  void _meetingsBannerStatus() async {
+    dynamic _bannerDbStatus = [
+      {
+        'group_id': _currentGroup.groupId,
+        'show_banner': true,
+      },
+    ];
+    Map<String, dynamic> _banner = _bannerDbStatus[0];
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("meetings-banner")) {
+      String bannerStatusObject = prefs.getString("meetings-banner");
+      _bannerDbStatus = jsonDecode(bannerStatusObject);
+    }
+    List<dynamic> _filtered = _bannerDbStatus
+        .where((s) => s['group_id'] == _currentGroup.groupId)
+        .toList();
+    if (_filtered.length == 1) _banner = _filtered[0];
+    setState(() {
+      if ((_currentGroup.isGroupAdmin) && (_banner['show_banner']))
+        _showMeetingsBanner = true;
+      else
+        _showMeetingsBanner = false;
+    });
   }
 
   void hideBanner() async {

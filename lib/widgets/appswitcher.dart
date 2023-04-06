@@ -325,17 +325,27 @@ class _AppSwitcherState extends State<AppSwitcher> {
     // ignore: deprecated_member_use
     return Container(
       decoration: BoxDecoration(
-        borderRadius: new BorderRadius.only(
-          topRight: Radius.circular(31.0),
-          topLeft: Radius.circular(31.0),
-        ),
-        color: Colors.white,
+        // borderRadius: new BorderRadius.only(
+        //   topRight: Radius.circular(31.0),
+        //   topLeft: Radius.circular(31.0),
+        // ),
+
       ),
       child: TextButton(
 
         style: TextButton.styleFrom(
           padding: EdgeInsets.fromLTRB(20.0, 0.0, 2.0, 0.0),
-          //backgroundColor: Theme.of(context).buttonColor.withOpacity(0.9),
+          splashFactory: NoSplash.splashFactory,
+          shape: RoundedRectangleBorder(
+            borderRadius: _entryIsVisible
+                ? BorderRadius.only(
+              topRight: Radius.circular(20.0),
+              topLeft: Radius.circular(20.0),)
+                : BorderRadius.circular(40.0),
+          ),
+
+
+          // backgroundColor: Theme.of(context).textButtonTheme.style.backgroundColor ,
         ),
 
         child: Column(
