@@ -1002,6 +1002,7 @@ class Groups with ChangeNotifier {
             [int.parse(_currentGroupId)], DatabaseHelper.contributionsTable);
         await dbHelper.batchInsert(
             _contributionsList, DatabaseHelper.contributionsTable);
+
       }
     }
     notifyListeners();

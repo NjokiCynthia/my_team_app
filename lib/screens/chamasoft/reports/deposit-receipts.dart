@@ -45,7 +45,7 @@ class _DepositReceiptsState extends State<DepositReceipts> {
   List<int> _filterList = [];
   List<String> _memberList = [];
   bool _hasMoreData = false;
-  bool _forceFetch = false;
+  bool _forceFetch = true;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
