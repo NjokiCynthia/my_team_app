@@ -26,6 +26,7 @@ class _MeetingsState extends State<Meetings> {
   ScrollController _scrollController;
   List<dynamic> meetings = [];
   String _groupCurrency = "KES";
+  bool _isGroupAdmin = false;
   var formatter = NumberFormat('#,##,##0', "en_US");
   var dateFormatter = DateFormat('EEE, d MMM, yyy HH:mm a', "en_US");
   bool _isLoading = true;
@@ -64,6 +65,7 @@ class _MeetingsState extends State<Meetings> {
     await group.fetchMeetings();
     setState(() {
       _syncing = false;
+      _isGroupAdmin = currentGroup.isGroupAdmin;
       meetings = [];
       _groupCurrency = currentGroup.groupCurrency;
       int c = 0;
@@ -156,17 +158,17 @@ class _MeetingsState extends State<Meetings> {
         leadingIcon:LineAwesomeIcons.arrow_left,
         title: "Meetings",
         actions: [
-          Padding(
+          _isGroupAdmin ? Padding(
             padding: EdgeInsets.only(right: 20.0),
             child: IconButton(
               icon: Icon(
                 Icons.add,
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                color : Theme.of(context).textSelectionTheme.selectionHandleColor,
               ),
               onPressed: _isLoading
                   ? null
-                  : () => Navigator.of(context)
+                  :  () => Navigator.of(context)
                           .push(
                         MaterialPageRoute(
                           builder: (BuildContext context) => EditMeeting(),
@@ -176,7 +178,7 @@ class _MeetingsState extends State<Meetings> {
                         fetchData();
                       }),
             ),
-          ),
+          ) : Container(),
         ],
       ),
       body: _isLoading
