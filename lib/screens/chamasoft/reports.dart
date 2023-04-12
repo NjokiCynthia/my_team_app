@@ -124,7 +124,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     icon: customIcons['transaction'],
                     title: 'CONTRIBUTION',
                     subtitle: 'STATEMENT',
-                    color: Colors.blue[400],
+                    color: Colors.white,
 
                     isHighlighted: true,
                     action: () => Navigator.of(context).push(MaterialPageRoute(

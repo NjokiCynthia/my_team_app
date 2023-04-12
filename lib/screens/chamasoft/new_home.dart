@@ -609,6 +609,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             width: 16.0,
           ),
           InkWell(
+            splashFactory: NoSplash.splashFactory,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
             onTap:
                 () {} /* => Navigator.of(context).push(
               MaterialPageRoute(

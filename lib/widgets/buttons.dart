@@ -609,12 +609,16 @@ Widget svgGridButton(
   return Container(
     margin: EdgeInsets.all(margin),
     height: 150,
+
     decoration: cardDecoration(
+
         gradient: isHighlighted ? csCardGradient() : plainCardGradient(context),
+        // gradient: csCardGradient(),
         context: context),
     // ignore: deprecated_member_use
     child: TextButton(
       style: TextButton.styleFrom(
+        backgroundColor: Colors.transparent,
         padding: EdgeInsets.all(0),
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
