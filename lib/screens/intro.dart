@@ -272,6 +272,15 @@ class IntroScreenState extends State<IntroScreen> {
                     fontFamily: 'SegoeUI',
                     fontWeight: FontWeight.w800,
                     color: Colors.white)),
+            skipStyle: const ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll<Color>(Colors.transparent),
+            ),
+        doneStyle: const ButtonStyle(
+          backgroundColor: MaterialStatePropertyAll<Color>(Colors.transparent),
+        ),
+        nextStyle: const ButtonStyle(
+          backgroundColor: MaterialStatePropertyAll<Color>(Colors.transparent),
+        ),
             dotsDecorator: DotsDecorator(
                 size: Size(10.0, 10.0),
                 color: Colors.white54,
