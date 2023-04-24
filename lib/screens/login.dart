@@ -1,4 +1,5 @@
-import 'package:chamasoft/config.dart';
+// ignore_for_file: unused_import, unnecessary_import, deprecated_member_use, unused_field
+
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/screens/chamasoft/settings/configure-preferences.dart';
@@ -12,8 +13,7 @@ import 'package:chamasoft/screens/webView-launcher.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
-import 'package:chamasoft/widgets/dialogs.dart';
-import 'package:chamasoft/widgets/dialogs.dart';
+//import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,7 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
-import '../config.dart';
+//import '../config.dart';
 import '../helpers/custom-helper.dart';
 
 class Login extends StatefulWidget {
@@ -274,9 +274,10 @@ class _LoginState extends State<Login> {
                     ),
                     heading1(
                         text: Config.appName,
-                        // ignore: deprecated_member_use
                         color: Config.appName.toLowerCase() == "chamasoft"
-                            ? Theme.of(context).textSelectionHandleColor
+                            ? Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor
                             : Theme.of(context).primaryColor),
                     SizedBox(
                       height: 10,
@@ -285,14 +286,16 @@ class _LoginState extends State<Login> {
                         text: Config.appName.toLowerCase() == "chamasoft"
                             ? "Let's verify your identity first"
                             : "Let's get started",
-                        // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                     subtitle2(
                         text: Config.appName.toLowerCase() == "chamasoft"
                             ? "Enter your phone number or email address below"
                             : "",
-                        // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
 
                     Row(
                       children: <Widget>[
@@ -329,8 +332,8 @@ class _LoginState extends State<Login> {
                                             fontFamily: 'SegoeUI',
                                             fontSize: 16,
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
-                                                .textSelectionHandleColor),
+                                                .textSelectionTheme
+                                                .selectionHandleColor),
                                         onChanged: (countryCode) {
                                           setState(() {
                                             _countryCode = countryCode;
@@ -350,6 +353,7 @@ class _LoginState extends State<Login> {
                                 Expanded(
                                   child: TextFormField(
                                     controller: _phoneController,
+                                    cursorColor: primaryColor,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       focusedBorder: InputBorder.none,

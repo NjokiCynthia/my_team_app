@@ -5,7 +5,8 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class ManageEWallet extends StatefulWidget {
@@ -25,7 +26,7 @@ class _ManageEWalletState extends State<ManageEWallet> {
     return Scaffold(
       appBar: secondaryPageAppbar(
           title: "Manage E-Wallet Account",
-          leadingIcon: LineAwesomeIcons.close,
+          leadingIcon: LineAwesomeIcons.times,
           elevation: 2,
           action: () => Navigator.of(context).pop(),
           context: context),
@@ -64,14 +65,14 @@ class _ManageEWalletState extends State<ManageEWallet> {
                               text:
                                   "With the Chamasoft E-Wallet, your group can enjoy the power of automatic reconciliations by transacting with M-Pesa",
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               fontWeight: FontWeight.w600,
                               maxLines: null,
                               textAlign: TextAlign.start),
                           // subtitle1(
                           //     text:
                           //         "This comes with the added advantage of automatic reconciliations for any payments made via M-Pesa.",
-                          //     color: Theme.of(context).textSelectionHandleColor,
+                          //     color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                           //     textAlign: TextAlign.start),
                         ],
                       ),
@@ -81,13 +82,13 @@ class _ManageEWalletState extends State<ManageEWallet> {
                     title: customTitle(
                         text: "Chamasoft E-Wallet Account",
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor,
+                        color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                         textAlign: TextAlign.start,
                         fontWeight: FontWeight.w500),
                     subtitle: subtitle2(
                         text: _walletEnabled ? "Enabled" : "Disabled",
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor,
+                        color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                         textAlign: TextAlign.start),
                     value: _walletEnabled,
                     onChanged: (bool value) {

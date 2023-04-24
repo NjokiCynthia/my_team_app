@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'dart:async';
 
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
@@ -9,7 +11,7 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class SelectFromContacts extends StatefulWidget {
@@ -27,9 +29,11 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
   PermissionStatus _permissionStatus = PermissionStatus.denied;
   // initially permissionstatus was undetermined
   // ignore: deprecated_member_use
-  List<CustomContact> _contacts = new List<CustomContact>();
+  //List<CustomContact> _contacts = new List<CustomContact>();
+  List<CustomContact> _contacts = <CustomContact>[];
   // ignore: deprecated_member_use
-  List<CustomContact> _selectedContacts = List<CustomContact>();
+  // List<CustomContact> _selectedContacts = List<CustomContact>();
+  List<CustomContact> _selectedContacts = <CustomContact>[];
   bool _isLoading = false;
   String floatingButtonLabel;
   Color floatingButtonColor;
@@ -86,7 +90,7 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: 0,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times_circle,
         title:
             "Select Members${_selectedContacts.length == 0 ? '' : ' (${_selectedContacts.length})'}",
         trailingIcon: LineAwesomeIcons.check,
@@ -175,13 +179,15 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
                     text: "Retrieving contact list",
                     color: Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme
+                        .selectionHandleColor,
                   ),
                   subtitle2(
                     text: "Please be patient",
                     color: Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme
+                        .selectionHandleColor,
                   ),
                 ],
               ),
@@ -230,7 +236,8 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
             ? primaryColor
             : Theme.of(context)
                 // ignore: deprecated_member_use
-                .textSelectionHandleColor,
+                .textSelectionTheme
+                .selectionHandleColor,
       ),
       subtitle: list.length >= 1 && list[0]?.value != null
           ? subtitle1(
@@ -240,7 +247,8 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
                   ? primaryColor
                   : Theme.of(context)
                       // ignore: deprecated_member_use
-                      .textSelectionHandleColor,
+                      .textSelectionTheme
+                      .selectionHandleColor,
             )
           : Text(''),
     );

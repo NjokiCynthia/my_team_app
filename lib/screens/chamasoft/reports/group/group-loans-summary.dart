@@ -11,7 +11,8 @@ import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class GroupLoansSummary extends StatefulWidget {
@@ -186,7 +187,7 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                 text: "Total Loaned Out",
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.start),
                           ),
                           Row(
@@ -197,13 +198,13 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                 fontSize: 18.0,
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                               ),
                               heading2(
                                 text: currencyFormat.format(_totalLoanedOut),
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.end,
                               ),
                             ],
@@ -231,14 +232,14 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                                 "Payable: ${groupObject.groupCurrency} ",
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
+                                                .textSelectionTheme.selectionHandleColor,
                                             textAlign: TextAlign.start),
                                         customTitle(
                                             text:
                                                 currencyFormat.format(_payable),
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
+                                                .textSelectionTheme.selectionHandleColor,
                                             fontSize: 12,
                                             textAlign: TextAlign.start),
                                       ],
@@ -252,13 +253,13 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                                 "Paid: ${groupObject.groupCurrency} ",
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
+                                                .textSelectionTheme.selectionHandleColor,
                                             textAlign: TextAlign.start),
                                         customTitle(
                                             text: currencyFormat.format(_paid),
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
+                                                .textSelectionTheme.selectionHandleColor,
                                             fontSize: 12,
                                             textAlign: TextAlign.start),
                                       ],
@@ -272,14 +273,14 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                                 "Balance: ${groupObject.groupCurrency} ",
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
+                                                .textSelectionTheme.selectionHandleColor,
                                             textAlign: TextAlign.start),
                                         customTitle(
                                             text:
                                                 currencyFormat.format(_balance),
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
+                                                .textSelectionTheme.selectionHandleColor,
                                             fontSize: 12,
                                             textAlign: TextAlign.start),
                                       ],
@@ -300,13 +301,13 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                             text: "Active Loans: ",
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
+                                                .textSelectionTheme.selectionHandleColor,
                                             textAlign: TextAlign.start),
                                         customTitle(
                                             text: "-",
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
+                                                .textSelectionTheme.selectionHandleColor,
                                             fontSize: 12,
                                             textAlign: TextAlign.start),
                                       ],
@@ -320,13 +321,13 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                             text: "Fully Paid: ",
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
+                                                .textSelectionTheme.selectionHandleColor,
                                             textAlign: TextAlign.start),
                                         customTitle(
                                             text: "-",
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
+                                                .textSelectionTheme.selectionHandleColor,
                                             fontSize: 12,
                                             textAlign: TextAlign.start),
                                       ],
@@ -340,13 +341,13 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                             text: "Bad Loans: ",
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
+                                                .textSelectionTheme.selectionHandleColor,
                                             textAlign: TextAlign.start),
                                         customTitle(
                                             text: "-",
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
+                                                .textSelectionTheme.selectionHandleColor,
                                             fontSize: 12,
                                             textAlign: TextAlign.start),
                                       ],

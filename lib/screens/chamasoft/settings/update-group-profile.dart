@@ -11,11 +11,11 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/country-dropdown.dart';
 import 'package:chamasoft/widgets/currency-dropdown.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class UpdateGroupProfile extends StatefulWidget {
@@ -53,6 +53,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
 
   void _onImagePickerClicked(ImageSource source, BuildContext context) async {
     try {
+      // ignore: deprecated_member_use
       final pickedFile = await _picker.getImage(
           source: source,
           maxHeight: 300,
@@ -69,6 +70,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   }
 
   Future<void> retrieveLostData() async {
+    // ignore: deprecated_member_use
     final LostData lostData = await _picker.getLostData();
     if (lostData.isEmpty) return;
 
@@ -103,14 +105,14 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
       Navigator.of(context).pop(); //pop progress view
       if (response['status'] == 1) {
         // ignore: deprecated_member_use
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated Group Name",
         )));
       } else {
         errorText = response['message'];
         // ignore: deprecated_member_use
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "Error updating Group Name",
         )));
@@ -132,14 +134,14 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
       Navigator.of(context).pop();
       if (response['status'] == 1) {
         // ignore: deprecated_member_use
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated Group email",
         )));
       } else {
         errorText = response['message'];
         // ignore: deprecated_member_use
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "Error updating Group Email",
         )));
@@ -160,14 +162,14 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
       if (response['status'] == 1) {
         //Navigator.of(context).push(new MaterialPageRoute(builder: (context) => Verification()));
         // ignore: deprecated_member_use
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated group phone number",
         )));
       } else {
         errorText = response['message'];
         // ignore: deprecated_member_use
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "Error updating group phone number",
         )));
@@ -187,14 +189,14 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
       Navigator.of(context).pop();
       if (response['status'] == 1) {
         // ignore: deprecated_member_use
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated Group Currency",
         )));
       } else {
         errorText = response['message'];
         // ignore: deprecated_member_use
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "Error updating group currency",
         )));
@@ -214,14 +216,14 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
       Navigator.of(context).pop();
       if (response['status'] == 1) {
         // ignore: deprecated_member_use
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated Group Country",
         )));
       } else {
         errorText = response['message'];
         // ignore: deprecated_member_use
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "Error updating group country",
         )));
@@ -243,7 +245,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
               text: "Update Phone Number",
               textAlign: TextAlign.start,
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor),
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor),
           content: Form(
             key: _formKey,
             child: Column(
@@ -293,7 +295,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
             negativeActionDialogButton(
                 text: "Cancel",
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
                 }),
@@ -329,7 +332,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
               text: "Update Group Name",
               textAlign: TextAlign.start,
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor),
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -375,7 +378,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
             negativeActionDialogButton(
                 text: "Cancel",
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
                 }),
@@ -411,7 +415,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
               text: "Update Group Email Address",
               textAlign: TextAlign.start,
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor),
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor),
           content: Form(
             key: _formKey,
             child: TextFormField(
@@ -456,7 +460,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
             negativeActionDialogButton(
                 text: "Cancel",
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
                 }),
@@ -493,7 +498,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 text: "Update Group Currency",
                 textAlign: TextAlign.start,
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor),
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -517,7 +523,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
               negativeActionDialogButton(
                   text: "Cancel",
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   action: () {
                     Navigator.of(context).pop();
                   }),
@@ -574,7 +581,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
               negativeActionDialogButton(
                   text: "Cancel",
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   action: () {
                     Navigator.of(context).pop();
                   }),
@@ -611,7 +619,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
           _groupAvatar = null;
         });
         // ignore: deprecated_member_use
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated Group profile picture",
         )));
@@ -640,7 +648,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: "",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
@@ -658,11 +666,15 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 heading1(
                     text: "Update Group Profile",
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor),
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor),
                 subtitle2(
                     text: "Update the profile info for your Group",
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor),
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor),
                 SizedBox(
                   height: 20.0,
                 ),
@@ -844,13 +856,13 @@ class InfoUpdateTile extends StatelessWidget {
         text: "$labelText",
         textAlign: TextAlign.start,
         fontSize: 14.0,
-        color: Theme.of(context).bottomAppBarColor,
+        color: Theme.of(context).bottomAppBarTheme.color,
       ),
       subtitle: customTitle(
         text: "$updateText",
         textAlign: TextAlign.start,
         // ignore: deprecated_member_use
-        color: Theme.of(context).textSelectionHandleColor,
+        color: Theme.of(context).textSelectionTheme.selectionHandleColor,
         fontSize: 20.0,
       ),
       trailing: Container(

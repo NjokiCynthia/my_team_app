@@ -10,7 +10,7 @@ import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/dataTable.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class GroupLoanAmortization extends StatefulWidget {
@@ -140,7 +140,9 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                           text: widget.groupLoanName,
                           /*widget.typeLoan.loanName*/
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                           textAlign: TextAlign.start),
                       Spacer(),
                       subtitle2(
@@ -148,7 +150,9 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                               "${groupObject.groupCurrency} ${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}",
 
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                           textAlign: TextAlign.start)
                     ],
                   ),
@@ -164,13 +168,17 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                           subtitle1(
                             text: "Interest Rate: ",
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           ),
                           subtitle2(
                             textAlign: TextAlign.start,
                             text: widget.loanInterestRate.toString() + " %",
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           ),
                         ],
                       ),
@@ -180,13 +188,17 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                           subtitle1(
                             text: "Repayment Period: ",
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           ),
                           subtitle2(
                             textAlign: TextAlign.start,
                             text: "${widget.repayementPeriod}  Month(s)",
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           ),
                         ],
                       ),
@@ -196,13 +208,17 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                           subtitle1(
                             text: "Application Date: ",
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           ),
                           subtitle2(
                             textAlign: TextAlign.start,
                             text: formate2,
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           ),
                         ],
                       ),

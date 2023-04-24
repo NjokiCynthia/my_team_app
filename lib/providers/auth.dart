@@ -117,22 +117,22 @@ class Auth with ChangeNotifier {
         final extractedUserData =
             json.decode(userObject) as Map<String, Object>;
         if (_phoneNumber == "") {
-          _phoneNumber = extractedUserData[phone]..toString();
+          _phoneNumber = extractedUserData[phone].toString();
         }
         if (_firstName == "") {
-          _firstName = extractedUserData[firstName]..toString();
+          _firstName = extractedUserData[firstName].toString();
         }
         if (_lastName == "") {
-          _lastName = extractedUserData[lastName]..toString();
+          _lastName = extractedUserData[lastName].toString();
         }
         if (_emailAddress == "") {
-          _emailAddress = extractedUserData[email]..toString();
+          _emailAddress = extractedUserData[email].toString();
         }
         if (_avatar == "") {
-          _avatar = extractedUserData[userAvatar]..toString();
+          _avatar = extractedUserData[userAvatar].toString();
         }
         if (_userId == "") {
-          _userId = extractedUserData[userId]..toString();
+          _userId = extractedUserData[userId].toString();
         }
       } catch (error) {}
     }
@@ -201,14 +201,14 @@ class Auth with ChangeNotifier {
           final data = json.encode(extractedUserData);
           setUserObject(data);
         } else {
-          return "";
+          return;
         }
       } catch (error) {
         throw CustomException(
             message: "JSON Passing error " + error.toString());
       }
     } else {
-      return "";
+      return;
     }
   }
 

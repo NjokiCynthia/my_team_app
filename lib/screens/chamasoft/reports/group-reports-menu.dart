@@ -9,7 +9,8 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 import 'group/account-balances.dart';
 
@@ -45,7 +46,7 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: 1,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: "Group Reports",
       ),
       backgroundColor: Colors.transparent,
@@ -78,7 +79,8 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
   void navigate(int index) {
     switch (index) {
       case 0:
-        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext context) {
           return AccountBalances();
         }));
         break;
@@ -97,7 +99,8 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
             settings: RouteSettings(arguments: FINE_STATEMENT)));
         break;
       case 3:
-        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext context) {
           return GroupLoansSummary();
         }));
         break;
@@ -107,12 +110,14 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
 //        }));
 //        break;
       case 4:
-        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext context) {
           return ExpenseSummary();
         }));
         break;
       case 5:
-        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext context) {
           return TransactionStatement();
         }));
     }

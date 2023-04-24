@@ -11,7 +11,8 @@ import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class AccountBalances extends StatefulWidget {
@@ -158,7 +159,7 @@ class _AccountBalancesState extends State<AccountBalances> {
                           heading2(
                               text: "Total ",
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               textAlign: TextAlign.start),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -167,7 +168,7 @@ class _AccountBalancesState extends State<AccountBalances> {
                                   text: "Account balances",
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme.selectionHandleColor,
                                   textAlign: TextAlign.start),
                             ],
                           ),
@@ -178,7 +179,7 @@ class _AccountBalancesState extends State<AccountBalances> {
                         text: "${groupObject.groupCurrency} " +
                             currencyFormat.format(_totalBalance),
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor,
+                        color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                         textAlign: TextAlign.start)
                   ],
                 ),

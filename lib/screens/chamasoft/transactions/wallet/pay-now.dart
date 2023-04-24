@@ -6,7 +6,7 @@ import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import "package:provider/provider.dart";
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -301,7 +301,8 @@ class _PayNowState extends State<PayNow> {
               heading2(
                   text: "Confirm Payment Number",
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   textAlign: TextAlign.start),
               SizedBox(
                 height: 10,
@@ -325,7 +326,7 @@ class _PayNowState extends State<PayNow> {
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               // ignore: deprecated_member_use
-              WhitelistingTextInputFormatter.digitsOnly
+              FilteringTextInputFormatter.digitsOnly
             ],
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -345,7 +346,8 @@ class _PayNowState extends State<PayNow> {
             negativeActionDialogButton(
                 text: "Cancel",
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
                 }),
@@ -445,14 +447,19 @@ class _PayNowState extends State<PayNow> {
                                           child: CircularProgressIndicator()),
                                     )
                                   // ignore: deprecated_member_use
-                                  : RaisedButton(
-                                      color: primaryColor,
+                                  : ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: primaryColor),
+                                      // color: primaryColor,
                                       child: Padding(
                                         padding: EdgeInsets.fromLTRB(
                                             20.0, 0.0, 20.0, 0.0),
-                                        child: Text("Pay Now"),
+                                        child: Text(
+                                          "Pay Now",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
                                       ),
-                                      textColor: Colors.white,
+                                      //textColor: Colors.white,
                                       onPressed: () => _numberToPrompt(context),
                                     )
                             ],

@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_import
+
 import 'dart:developer';
 
 import 'package:chamasoft/providers/groups.dart';
@@ -15,12 +17,13 @@ import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class CreateMemberLoan extends StatefulWidget {
   @override
-  _RecordContributionPaymentState createState() => _RecordContributionPaymentState();
+  _RecordContributionPaymentState createState() =>
+      _RecordContributionPaymentState();
 }
 
 class _RecordContributionPaymentState extends State<CreateMemberLoan> {
@@ -69,8 +72,8 @@ class _RecordContributionPaymentState extends State<CreateMemberLoan> {
             );
           });
     });
-    formLoadData =
-        await Provider.of<Groups>(context, listen: false).loadInitialFormData(acc: true, member: true, loanTypes: true);
+    formLoadData = await Provider.of<Groups>(context, listen: false)
+        .loadInitialFormData(acc: true, member: true, loanTypes: true);
     setState(() {
       _isInit = false;
     });
@@ -99,12 +102,13 @@ class _RecordContributionPaymentState extends State<CreateMemberLoan> {
 
     log(_formData.toString());
     try {
-      String message = await Provider.of<Groups>(context, listen: false).recordMemberLoan(_formData);
+      String message = await Provider.of<Groups>(context, listen: false)
+          .recordMemberLoan(_formData);
       StatusHandler().showSuccessSnackBar(context, message);
 
       Future.delayed(const Duration(milliseconds: 2500), () {
-        Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(builder: (BuildContext context) => WithdrawalReceipts()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => WithdrawalReceipts()));
       });
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -139,7 +143,9 @@ class _RecordContributionPaymentState extends State<CreateMemberLoan> {
   Iterable<Widget> get memberWidgets sync* {
     for (MembersFilterEntry member in selectedMembersList) {
       yield ListTile(
-        title: Container(width: 200, child: Text(member.name, style: TextStyle(fontSize: 17))),
+        title: Container(
+            width: 200,
+            child: Text(member.name, style: TextStyle(fontSize: 17))),
         contentPadding: EdgeInsets.all(4.0),
         subtitle: Container(
             width: 200,
@@ -174,7 +180,8 @@ class _RecordContributionPaymentState extends State<CreateMemberLoan> {
                     iconSize: 18,
                     onPressed: () {
                       setState(() {
-                        selectedMembersList.removeWhere((MembersFilterEntry entry) {
+                        selectedMembersList
+                            .removeWhere((MembersFilterEntry entry) {
                           return entry.name == member.name;
                         });
                       });
@@ -217,7 +224,11 @@ class _RecordContributionPaymentState extends State<CreateMemberLoan> {
                 controller: _scrollController,
                 child: Column(
                   children: <Widget>[
-                    toolTip(context: context, title: "Manually record member loans", message: "", showTitle: true),
+                    toolTip(
+                        context: context,
+                        title: "Manually record member loans",
+                        message: "",
+                        showTitle: true),
                     Padding(
                       padding: inputPagePadding,
                       child: Form(
@@ -230,7 +241,8 @@ class _RecordContributionPaymentState extends State<CreateMemberLoan> {
                                 labelText: 'Select Disbursement Date',
                                 lastDate: DateTime.now(),
                                 selectedDate: disbursementDate == null
-                                    ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                    ? new DateTime(
+                                        now.year, now.month, now.day - 1, 6, 30)
                                     : disbursementDate,
                                 selectDate: (selectedDate) {
                                   setState(() {
@@ -242,7 +254,9 @@ class _RecordContributionPaymentState extends State<CreateMemberLoan> {
                                 labelText: "Select Loan Type",
                                 enabled: _isFormInputEnabled,
                                 listItems:
-                                    formLoadData.containsKey("loanTypeOptions") ? formLoadData["loanTypeOptions"] : [],
+                                    formLoadData.containsKey("loanTypeOptions")
+                                        ? formLoadData["loanTypeOptions"]
+                                        : [],
                                 selectedItem: loanTypeId,
                                 validator: (value) {
                                   if (value == null) {
@@ -260,10 +274,13 @@ class _RecordContributionPaymentState extends State<CreateMemberLoan> {
                                 labelText: 'Select Member Taking the Loan',
                                 enabled: _isFormInputEnabled,
                                 listItems:
-                                    formLoadData.containsKey("memberOptions") ? formLoadData["memberOptions"] : [],
+                                    formLoadData.containsKey("memberOptions")
+                                        ? formLoadData["memberOptions"]
+                                        : [],
                                 selectedItem: groupMemberId,
                                 validator: (value) {
-                                  if (value.toString().isEmpty || value == null) {
+                                  if (value.toString().isEmpty ||
+                                      value == null) {
                                     return "Field is required";
                                   }
                                   return null;
@@ -291,7 +308,9 @@ class _RecordContributionPaymentState extends State<CreateMemberLoan> {
                                 labelText: "Select Disbursing Account",
                                 enabled: _isFormInputEnabled,
                                 listItems:
-                                    formLoadData.containsKey("accountOptions") ? formLoadData["accountOptions"] : [],
+                                    formLoadData.containsKey("accountOptions")
+                                        ? formLoadData["accountOptions"]
+                                        : [],
                                 selectedItem: accountId,
                                 onChanged: (value) {
                                   setState(() {
@@ -341,7 +360,8 @@ class _RecordContributionPaymentState extends State<CreateMemberLoan> {
                               _isLoading
                                   ? Padding(
                                       padding: EdgeInsets.all(10),
-                                      child: Center(child: CircularProgressIndicator()),
+                                      child: Center(
+                                          child: CircularProgressIndicator()),
                                     )
                                   : defaultButton(
                                       context: context,

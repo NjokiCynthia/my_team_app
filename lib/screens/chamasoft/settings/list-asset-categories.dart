@@ -12,7 +12,7 @@ import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class ListAssetCategories extends StatefulWidget {
@@ -64,7 +64,7 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
       }
 
       // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         message,
       )));
@@ -141,7 +141,7 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
                 ),
@@ -168,7 +168,7 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
                 ),
@@ -270,7 +270,7 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                                                 textAlign: TextAlign.start,
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                               ),
                                               Visibility(
                                                 visible: incomeCategory
@@ -280,7 +280,7 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                                                       '${incomeCategory.description}',
                                                   color: Theme.of(context)
                                                       // ignore: deprecated_member_use
-                                                      .textSelectionHandleColor,
+                                                      .textSelectionTheme.selectionHandleColor,
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: 12.0,
                                                   textAlign: TextAlign.start,
@@ -291,7 +291,7 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                                                     '${incomeCategory.isHidden ? "Hidden" : "Active"}',
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,

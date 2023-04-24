@@ -30,7 +30,7 @@ class StatusHandler {
         break;
       case ErrorStatusCode.statusNoInternet:
         if (scaffoldState != null) {
-          showSpecialRetrySnackBar(scaffoldState, error.message, callback);
+          showSpecialRetrySnackBar(context,scaffoldState, error.message, callback);
         } else
           showRetrySnackBar(context, error.message, callback);
         break;
@@ -71,11 +71,11 @@ class StatusHandler {
     );
 
     // ignore: deprecated_member_use
-    Scaffold.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   void showSpecialRetrySnackBar(
-      ScaffoldState scaffoldState, String message, VoidCallback voidCallback) {
+      BuildContext context, ScaffoldState scaffoldState, String message, VoidCallback voidCallback) {
     final snackBar = SnackBar(
       duration: Duration(seconds: 10),
       content: customTitleWithWrap(text: message, textAlign: TextAlign.start),
@@ -86,7 +86,7 @@ class StatusHandler {
     );
 
     // ignore: deprecated_member_use
-    scaffoldState.showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   void restartApp(BuildContext context) {
@@ -109,6 +109,6 @@ class StatusHandler {
       content: customTitleWithWrap(text: message, textAlign: TextAlign.start),
     );
     // ignore: deprecated_member_use
-    Scaffold.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

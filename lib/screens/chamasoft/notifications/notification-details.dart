@@ -6,7 +6,8 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class NotificationDetails extends StatefulWidget {
   final Groups.Notification notification;
@@ -27,7 +28,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
           title: heading2(
               text: "Confirm Mpesa Number",
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               textAlign: TextAlign.start),
           content: TextFormField(
             //controller: controller,
@@ -36,7 +37,8 @@ class _NotificationDetailsState extends State<NotificationDetails> {
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               // ignore: deprecated_member_use
-              WhitelistingTextInputFormatter.digitsOnly
+              // WhitelistingTextInputFormatter.digitsOnly
+              FilteringTextInputFormatter.digitsOnly
             ],
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -51,29 +53,33 @@ class _NotificationDetailsState extends State<NotificationDetails> {
           ),
           actions: <Widget>[
             // ignore: deprecated_member_use
-            new FlatButton(
-              child: new Text(
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
                 "Cancel",
                 style: TextStyle(
-                    // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
-                    fontFamily: 'SegoeUI'),
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
+                  fontFamily: 'SegoeUI',
+                ),
               ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
             ),
+
             // ignore: deprecated_member_use
-            new FlatButton(
-              child: new Text(
-                "Pay Now",
-                style:
-                    new TextStyle(color: primaryColor, fontFamily: 'SegoeUI'),
-              ),
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-            ),
+              child: Text(
+                "Pay Now",
+                style: TextStyle(
+                  color: primaryColor,
+                  fontFamily: 'SegoeUI',
+                ),
+              ),
+            )
           ],
         );
       },
@@ -86,9 +92,9 @@ class _NotificationDetailsState extends State<NotificationDetails> {
       appBar: secondaryPageAppbar(
           context: context,
           title: widget.notification.subject,
-          action: () => Navigator.pop(context,true),
+          action: () => Navigator.pop(context, true),
           elevation: 2.5,
-          leadingIcon: LineAwesomeIcons.close),
+          leadingIcon: LineAwesomeIcons.times),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         children: <Widget>[
@@ -112,7 +118,9 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                       child: heading2(
                         text: widget.notification.message,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor,
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor,
                         textAlign: TextAlign.start,
                       ),
                     ),
@@ -122,13 +130,17 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                           text: "Ksh ",
                           fontSize: 18.0,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                           fontWeight: FontWeight.w400,
                         ),
                         heading2(
                           text: "2,000",
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                           textAlign: TextAlign.end,
                         ),
                       ],
@@ -144,13 +156,17 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                     subtitle1(
                       text: "Group: ",
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                     ),
                     customTitle(
                       textAlign: TextAlign.start,
                       text: "Freedom Welfare Caucus",
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                       fontWeight: FontWeight.w600,
                     ),
                   ],
@@ -161,13 +177,17 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                     subtitle1(
                       text: "Invoice Date: ",
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                     ),
                     customTitle(
                       textAlign: TextAlign.start,
                       text: "12 May 2020",
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                       fontWeight: FontWeight.w600,
                     ),
                   ],
@@ -178,13 +198,17 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                     subtitle1(
                       text: "Due Date: ",
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                     ),
                     customTitle(
                       textAlign: TextAlign.start,
                       text: "20 May 2020",
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                       fontWeight: FontWeight.w600,
                     ),
                   ],

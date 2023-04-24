@@ -1,12 +1,17 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:io';
 import 'dart:math';
 
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/helpers/common.dart';
-import 'package:country_code_picker/country_code.dart';
+// import 'package:country_code_picker/country_code.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:image/image.dart';
 import 'package:libphonenumber/libphonenumber.dart';
-import 'package:package_info/package_info.dart';
+// import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+
 import 'package:path_provider/path_provider.dart' as syspaths;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -44,8 +49,7 @@ class CustomHelper {
   }
 
   static bool validPhone(String phone) {
-    Pattern pattern = r'(^(?:[+0]9)?[0-9]{9,12}$)';
-    RegExp regex = new RegExp(pattern);
+    RegExp regex = new RegExp(r'(^(?:[+0]9)?[0-9]{9,12}$)');
     if (regex.hasMatch(phone))
       return true;
     else
@@ -62,9 +66,8 @@ class CustomHelper {
       : '';
 
   static bool validEmail(String email) {
-    Pattern pattern =
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-    RegExp regex = new RegExp(pattern);
+    RegExp regex = RegExp(
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
     if (regex.hasMatch(email))
       return true;
     else
@@ -166,8 +169,13 @@ class CustomHelper {
     return double.tryParse(s) != null;
   }
 
-  static void callNumber(String number) {
-    launch("tel://$number");
+  static Future<void> callNumber(String number) async {
+    // launch("tel://$number");
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: number,
+    );
+    await launchUrl(launchUri);
   }
 }
 

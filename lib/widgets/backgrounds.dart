@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:chamasoft/config.dart';
 import 'package:flutter/material.dart';
 

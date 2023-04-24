@@ -3,10 +3,10 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:flutter/foundation.dart';
+//import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class ViewMemberProfile extends StatefulWidget {
@@ -77,7 +77,7 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: "Member Details",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
@@ -93,11 +93,15 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                   heading1(
                       text: "${widget.member.name}'s Profile",
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor),
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor),
                   subtitle2(
                       text: "${groupObject.groupName} Member Profile",
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor),
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor),
                   SizedBox(
                     height: 20.0,
                   ),
@@ -150,13 +154,17 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                     subtitle: customTitle(
                         text: widget.member.name,
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                   ),
                   ListTile(
                     title: customTitle(
@@ -164,13 +172,17 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                     subtitle: customTitle(
                         text: widget.member.phone,
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                   ),
                   ListTile(
                     title: customTitle(
@@ -178,13 +190,17 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                     subtitle: customTitle(
                         text: widget.member.email,
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                   ),
                   ListTile(
                     title: customTitle(
@@ -192,13 +208,17 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                     subtitle: customTitle(
                         text: widget.member.lastSeen,
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                   ),
                   ListTile(
                     title: customTitle(
@@ -206,14 +226,18 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                     subtitle: customTitle(
                         text:
                             '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.contributions)}',
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                   ),
                   ListTile(
                     title: customTitle(
@@ -221,14 +245,18 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                     subtitle: customTitle(
                         text:
                             '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.contributionArrears)}',
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                   ),
                   ListTile(
                     title: customTitle(
@@ -236,14 +264,18 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                     subtitle: customTitle(
                         text:
                             '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.fines)}',
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                   ),
                   ListTile(
                     title: customTitle(
@@ -251,14 +283,18 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                     subtitle: customTitle(
                         text:
                             '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.fineArrears)}',
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                   ),
                   ListTile(
                     title: customTitle(
@@ -266,14 +302,18 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                     subtitle: customTitle(
                         text:
                             '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.loanBalance)}',
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                   ),
                 ],
               ),

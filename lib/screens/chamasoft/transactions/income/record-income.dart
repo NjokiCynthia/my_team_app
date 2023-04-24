@@ -10,7 +10,7 @@ import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
@@ -122,12 +122,13 @@ class _RecordIncomeState extends State<RecordIncome> {
     _formData["description"] = description;
     _formData["request_id"] = requestId;
     try {
-     String message =  await Provider.of<Groups>(context, listen: false)
+      String message = await Provider.of<Groups>(context, listen: false)
           .recordIncomePayment(_formData);
       StatusHandler().showSuccessSnackBar(context, message);
 
       Future.delayed(const Duration(milliseconds: 2500), () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => DepositReceipts()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => DepositReceipts()));
       });
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -151,13 +152,13 @@ class _RecordIncomeState extends State<RecordIncome> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times_circle,
         title: "Record Income",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(
-        builder: (BuildContext context){
-          return  GestureDetector(
+        builder: (BuildContext context) {
+          return GestureDetector(
             onTap: () {
               FocusScope.of(context).unfocus();
             },
@@ -191,8 +192,8 @@ class _RecordIncomeState extends State<RecordIncome> {
                                   labelText: 'Select Deposit Date',
                                   lastDate: DateTime.now(),
                                   selectedDate: incomeDate == null
-                                      ? new DateTime(
-                                      now.year, now.month, now.day - 1, 6, 30)
+                                      ? new DateTime(now.year, now.month,
+                                          now.day - 1, 6, 30)
                                       : incomeDate,
                                   selectDate: (selectedDate) {
                                     setState(() {
@@ -229,9 +230,10 @@ class _RecordIncomeState extends State<RecordIncome> {
                           CustomDropDownButton(
                             labelText: 'Select Depositor',
                             enabled: _isFormInputEnabled,
-                            listItems: formLoadData.containsKey("depositorOptions")
-                                ? formLoadData["depositorOptions"]
-                                : [],
+                            listItems:
+                                formLoadData.containsKey("depositorOptions")
+                                    ? formLoadData["depositorOptions"]
+                                    : [],
                             selectedItem: depositorId,
                             validator: (value) {
                               if (value == null || value == "") {
@@ -248,7 +250,8 @@ class _RecordIncomeState extends State<RecordIncome> {
                           CustomDropDownButton(
                             labelText: 'Select Income Category',
                             enabled: _isFormInputEnabled,
-                            listItems:formLoadData.containsKey("incomeCategoryOptions")
+                            listItems: formLoadData
+                                    .containsKey("incomeCategoryOptions")
                                 ? formLoadData["incomeCategoryOptions"]
                                 : [],
                             selectedItem: incomeCategoryId,
@@ -267,9 +270,10 @@ class _RecordIncomeState extends State<RecordIncome> {
                           CustomDropDownButton(
                             labelText: 'Select Account',
                             enabled: _isFormInputEnabled,
-                            listItems: formLoadData.containsKey("accountOptions")
-                                ? formLoadData["accountOptions"]
-                                : [],
+                            listItems:
+                                formLoadData.containsKey("accountOptions")
+                                    ? formLoadData["accountOptions"]
+                                    : [],
                             selectedItem: accountId,
                             validator: (value) {
                               if (value == null || value == "") {
@@ -313,16 +317,17 @@ class _RecordIncomeState extends State<RecordIncome> {
                           ),
                           _isLoading
                               ? Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Center(child: CircularProgressIndicator()),
-                          )
+                                  padding: EdgeInsets.all(10),
+                                  child: Center(
+                                      child: CircularProgressIndicator()),
+                                )
                               : defaultButton(
-                            context: context,
-                            text: "SAVE",
-                            onPressed: () {
-                              _submit(context);
-                            },
-                          ),
+                                  context: context,
+                                  text: "SAVE",
+                                  onPressed: () {
+                                    _submit(context);
+                                  },
+                                ),
                         ],
                       ),
                     ),

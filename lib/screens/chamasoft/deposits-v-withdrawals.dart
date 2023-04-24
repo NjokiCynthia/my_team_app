@@ -43,8 +43,8 @@ class DepositsVWithdrawalsState extends State<DepositsVWithdrawals> {
                           getTooltipItem: (group, groupIndex, rod, rodIndex) {
                             double value =
                                 dashboardData.chartYAxisParameters[1] > 1
-                                    ? rod.y * 1000
-                                    : rod.y;
+                                    ? rod.toY * 1000
+                                    : rod.toY;
                             return BarTooltipItem(
                                 "${groupObject.groupCurrency} ${currencyFormat.format(value)}",
                                 TextStyle(
@@ -53,63 +53,106 @@ class DepositsVWithdrawalsState extends State<DepositsVWithdrawals> {
                           })),
                   titlesData: FlTitlesData(
                       show: true,
-                      bottomTitles: SideTitles(
+                      bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
                         showTitles: true,
-                        getTextStyles: (value) => TextStyle(
-                            // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
-                            fontFamily: 'SegoeUI',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14),
-                        margin: 10,
-                        getTitles: (double value) {
+                        getTitlesWidget: (double value, titleMeta) {
                           if (dashboardData.getTransactionMonths.length > 0) {
                             List<String> months =
                                 dashboardData.getTransactionMonths;
-                            return months[value.toInt()];
+                            return Text(
+                              months[value.toInt()],
+                              style: TextStyle(
+                                  // ignore: deprecated_member_use
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
+                                  fontFamily: 'SegoeUI',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14),
+                            );
                           } else {
-                            return '';
+                            return Text("");
                           }
                         },
-                      ),
-                      leftTitles: SideTitles(
+                      )),
+                      leftTitles: AxisTitles(
+                          sideTitles: SideTitles(
                         showTitles: true,
-                        getTextStyles: (val) => TextStyle(
-                            // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
-                            fontFamily: 'SegoeUI',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14),
-                        margin: 10,
                         interval: (dashboardData.chartYAxisParameters[0] /
                                 dashboardData.chartYAxisParameters[1]) /
                             5,
-                        getTitles: (value) {
+                        getTitlesWidget: (value, titleMeta) {
                           return dashboardData.chartYAxisParameters[1] > 1
                               ? value.toInt() > 0
-                                  ? value.toInt().toString() + "k"
-                                  : value.toInt().toString()
-                              : value.toInt().toString();
+                                  ? Text(
+                                      value.toInt().toString() + "k",
+                                      style: TextStyle(
+                                          // ignore: deprecated_member_use
+                                          color: Theme.of(context)
+                                              .textSelectionTheme
+                                              .selectionHandleColor,
+                                          fontFamily: 'SegoeUI',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14),
+                                    )
+                                  : Text(
+                                      value.toInt().toString(),
+                                      style: TextStyle(
+                                          // ignore: deprecated_member_use
+                                          color: Theme.of(context)
+                                              .textSelectionTheme
+                                              .selectionHandleColor,
+                                          fontFamily: 'SegoeUI',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14),
+                                    )
+                              : Text(
+                                  value.toInt().toString(),
+                                  style: TextStyle(
+                                      // ignore: deprecated_member_use
+                                      color: Theme.of(context)
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
+                                      fontFamily: 'SegoeUI',
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14),
+                                );
                         },
-                      ),
-                      rightTitles: SideTitles(
-                          showTitles: true,
-                          getTextStyles: (val) => TextStyle(
-                              color:
-                                  // ignore: deprecated_member_use
-                                  Theme.of(context).textSelectionHandleColor,
-                              fontFamily: 'SegoeUI',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14),
-                          margin: 10,
-                          interval: (dashboardData.chartYAxisParameters[0] /
-                                  dashboardData.chartYAxisParameters[1]) /
-                              5,
-                          getTitles: (value) {
-                            return dashboardData.chartYAxisParameters[1] > 1
-                                ? value.toInt().toString() + "k"
-                                : value.toInt().toString();
-                          })),
+                      )),
+                      rightTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                              showTitles: true,
+                              interval: (dashboardData.chartYAxisParameters[0] /
+                                      dashboardData.chartYAxisParameters[1]) /
+                                  5,
+                              getTitlesWidget: (value, titleMeta) {
+                                return dashboardData.chartYAxisParameters[1] > 1
+                                    ? Text(
+                                        value.toInt().toString() + "k",
+                                        style: TextStyle(
+                                            color:
+                                                // ignore: deprecated_member_use
+                                                Theme.of(context)
+                                                    .textSelectionTheme
+                                                    .selectionHandleColor,
+                                            fontFamily: 'SegoeUI',
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14),
+                                      )
+                                    : Text(
+                                        value.toInt().toString(),
+                                        style: TextStyle(
+                                            color:
+                                                // ignore: deprecated_member_use
+                                                Theme.of(context)
+                                                    .textSelectionTheme
+                                                    .selectionHandleColor,
+                                            fontFamily: 'SegoeUI',
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14),
+                                      );
+                              }))),
                   borderData: FlBorderData(
                     show: false,
                   ),

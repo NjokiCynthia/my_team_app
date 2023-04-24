@@ -6,9 +6,10 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class EditMobileMoneyAccount extends StatefulWidget {
@@ -129,7 +130,7 @@ class _EditMobileMoneyAccountState extends State<EditMobileMoneyAccount> {
 
       Navigator.pop(context);
       // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully updated the Mobile Money Account",
       )));
@@ -142,7 +143,7 @@ class _EditMobileMoneyAccountState extends State<EditMobileMoneyAccount> {
       Navigator.pop(context);
 
       // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error updating the Mobile Money Account. ${error.message} ",
       )));
@@ -159,7 +160,7 @@ class _EditMobileMoneyAccountState extends State<EditMobileMoneyAccount> {
             title: heading2(
                 text: "Select Mobile Money Provider",
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start),
             content: Container(
               //height: MediaQuery.of(context).size.height,
@@ -209,7 +210,7 @@ class _EditMobileMoneyAccountState extends State<EditMobileMoneyAccount> {
                                       style: TextStyle(
                                           color: Theme.of(context)
                                               // ignore: deprecated_member_use
-                                              .textSelectionHandleColor,
+                                              .textSelectionTheme.selectionHandleColor,
                                           fontWeight: FontWeight.w500),
                                     ),
                                     onChanged: (value) {
@@ -235,7 +236,7 @@ class _EditMobileMoneyAccountState extends State<EditMobileMoneyAccount> {
                                           style: TextStyle(
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme.selectionHandleColor,
                                               fontWeight: FontWeight.w500),
                                         ),
                                         onChanged: (value) {
@@ -261,29 +262,33 @@ class _EditMobileMoneyAccountState extends State<EditMobileMoneyAccount> {
             ),
             actions: <Widget>[
               // ignore: deprecated_member_use
-              new FlatButton(
-                child: new Text(
+              ElevatedButton(
+                child: Text(
                   "Cancel",
                   style: TextStyle(
-                      // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
-                      fontFamily: 'SegoeUI'),
+                    color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                    fontFamily: 'SegoeUI',
+                  ),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
+
               // ignore: deprecated_member_use
-              new FlatButton(
-                child: new Text(
+              ElevatedButton(
+                child: Text(
                   "Continue",
-                  style:
-                      new TextStyle(color: primaryColor, fontFamily: 'SegoeUI'),
+                  style: TextStyle(
+                    color: primaryColor,
+                    fontFamily: 'SegoeUI',
+                  ),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-              ),
+              )
+
             ],
           );
         });

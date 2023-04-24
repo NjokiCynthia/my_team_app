@@ -5,7 +5,7 @@ import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'create-expense-category.dart';
@@ -88,7 +88,7 @@ class _ListExpenseCategoriesState extends State<ListExpenseCategories> {
                                             style: TextStyle(
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme.selectionHandleColor,
                                               fontWeight: FontWeight.w800,
                                               fontSize: 18.0,
                                             ),

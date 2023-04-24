@@ -15,7 +15,8 @@ import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 import 'filter_container.dart';
@@ -179,11 +180,11 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
                                     border: Border(
                                         right: BorderSide(
                                             color: Theme.of(context)
-                                                .bottomAppBarColor,
+                                                .bottomAppBarTheme.color,
                                             width: 0.5),
                                         bottom: BorderSide(
                                             color: Theme.of(context)
-                                                .bottomAppBarColor,
+                                                .bottomAppBarTheme.color,
                                             width: 1.0))),
                                 child: Material(
                                   color: Theme.of(context).backgroundColor,
@@ -198,12 +199,12 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
                                         Icon(LineAwesomeIcons.sort,
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor),
+                                                .textSelectionTheme.selectionHandleColor),
                                         subtitle1(
                                             text: "Sort",
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor)
+                                                .textSelectionTheme.selectionHandleColor)
                                       ],
                                     ),
                                   ),
@@ -218,11 +219,11 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
                                     border: Border(
                                         left: BorderSide(
                                             color: Theme.of(context)
-                                                .bottomAppBarColor,
+                                                .bottomAppBarTheme.color,
                                             width: 0.5),
                                         bottom: BorderSide(
                                             color: Theme.of(context)
-                                                .bottomAppBarColor,
+                                                .bottomAppBarTheme.color,
                                             width: 1.0))),
                                 child: Material(
                                   color: Theme.of(context).backgroundColor,
@@ -237,12 +238,12 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
                                         Icon(LineAwesomeIcons.filter,
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor),
+                                                .textSelectionTheme.selectionHandleColor),
                                         subtitle1(
                                             text: "Filter",
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor)
+                                                .textSelectionTheme.selectionHandleColor)
                                       ],
                                     ),
                                   ),
@@ -373,7 +374,7 @@ class WithdrawalCard extends StatelessWidget {
                                 // ignore: deprecated_member_use
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.start,
                               ),
                               subtitle2(
@@ -382,7 +383,7 @@ class WithdrawalCard extends StatelessWidget {
                                 // ignore: deprecated_member_use
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                               )
                             ],
                           ),
@@ -398,13 +399,13 @@ class WithdrawalCard extends StatelessWidget {
                               text: "${groupObject.groupCurrency} ",
                               fontSize: 18.0,
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               fontWeight: FontWeight.w400,
                             ),
                             heading2(
                               text: currencyFormat.format(withdrawal.amount),
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               textAlign: TextAlign.end,
                             ),
                           ],
@@ -430,7 +431,7 @@ class WithdrawalCard extends StatelessWidget {
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                          .textSelectionTheme.selectionHandleColor,
                                   textAlign: TextAlign.start),
                               customTitle1(
                                   text: withdrawal.recipient,
@@ -440,7 +441,7 @@ class WithdrawalCard extends StatelessWidget {
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                          .textSelectionTheme.selectionHandleColor,
                                   textAlign: TextAlign.start),
                             ],
                           ),
@@ -453,7 +454,7 @@ class WithdrawalCard extends StatelessWidget {
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                          .textSelectionTheme.selectionHandleColor,
                                   textAlign: TextAlign.end),
                               customTitle1(
                                   text: withdrawal.recordedOn,
@@ -462,7 +463,7 @@ class WithdrawalCard extends StatelessWidget {
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                          .textSelectionTheme.selectionHandleColor,
                                   textAlign: TextAlign.end)
                             ],
                           ),
@@ -483,7 +484,7 @@ class WithdrawalCard extends StatelessWidget {
                                 // ignore: deprecated_member_use
                                 Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
+                                    .textSelectionTheme.selectionHandleColor,
                             textAlign: TextAlign.start),
                         subtitle2(
                             text:
@@ -493,7 +494,7 @@ class WithdrawalCard extends StatelessWidget {
                                 // ignore: deprecated_member_use
                                 Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
+                                    .textSelectionTheme.selectionHandleColor,
                             textAlign: TextAlign.start),
                       ],
                     ),

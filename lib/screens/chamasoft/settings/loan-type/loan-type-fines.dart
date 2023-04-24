@@ -222,7 +222,7 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
                 customTitle(
                     text: "Fines Details",
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
+                    color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                     fontWeight: FontWeight.w400,
                     textAlign: TextAlign.start),
               ],
@@ -233,7 +233,7 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
                 subtitle2(
                     text: "Configure the fine settings",
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
+                    color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                     textAlign: TextAlign.start),
               ],
             ),
@@ -249,7 +249,7 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
                           customTitle(
                               text: "Enable late loan repayment fines",
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               fontWeight: FontWeight.w600,
                               textAlign: TextAlign.start),
                           Switch(
@@ -497,7 +497,7 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
                           customTitle(
                               text: "Enable fines for outstanding balances",
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               fontWeight: FontWeight.w600,
                               textAlign: TextAlign.start),
                           Switch(

@@ -6,7 +6,7 @@ import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class SelectMember extends StatefulWidget {
@@ -14,7 +14,8 @@ class SelectMember extends StatefulWidget {
   final String pageTitle;
   final List<MembersFilterEntry> hideFromList;
 
-  SelectMember({@required this.initialMembersList,this.pageTitle,this.hideFromList});
+  SelectMember(
+      {@required this.initialMembersList, this.pageTitle, this.hideFromList});
 
   @override
   State<StatefulWidget> createState() => new SelectMemberState();
@@ -27,14 +28,15 @@ class SelectMemberState extends State<SelectMember> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   List<MembersFilterEntry> _membersList = <MembersFilterEntry>[];
-  List<MembersFilterEntry> selectedMembersList,hideFromList = [];
+  List<MembersFilterEntry> selectedMembersList, hideFromList = [];
   String pageTitle = "";
 
   @override
   void initState() {
-    selectedMembersList = widget.initialMembersList==null?[]:widget.initialMembersList;
-    hideFromList = widget.hideFromList==null?[]:widget.hideFromList;
-    pageTitle = widget.pageTitle==null?"Select members":widget.pageTitle;
+    selectedMembersList =
+        widget.initialMembersList == null ? [] : widget.initialMembersList;
+    hideFromList = widget.hideFromList == null ? [] : widget.hideFromList;
+    pageTitle = widget.pageTitle == null ? "Select members" : widget.pageTitle;
     controller.addListener(() {
       setState(() {
         filter = controller.text;
@@ -87,7 +89,9 @@ class SelectMemberState extends State<SelectMember> {
 
   Widget _memberListDisplay(
       MembersFilterEntry entry, bool isSelected, int index) {
-     if(hideFromList.indexWhere((element) => element.memberId == entry.memberId)>=0) return Container();
+    if (hideFromList
+            .indexWhere((element) => element.memberId == entry.memberId) >=
+        0) return Container();
     return Container(
       padding: EdgeInsets.only(top: 1.0, bottom: 1.0),
       child: Column(
@@ -105,7 +109,8 @@ class SelectMemberState extends State<SelectMember> {
                     ? primaryColor
                     : Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme
+                        .selectionHandleColor,
               ),
             ),
             subtitle: Text(
@@ -116,7 +121,8 @@ class SelectMemberState extends State<SelectMember> {
                     ? primaryColor
                     : Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme
+                        .selectionHandleColor,
               ),
             ),
             value: isSelected,
@@ -133,7 +139,8 @@ class SelectMemberState extends State<SelectMember> {
                     ? primaryColor
                     : Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme
+                        .selectionHandleColor,
                 child: Text(
                   CustomHelper.getInitials(
                     entry.name,
@@ -168,7 +175,7 @@ class SelectMemberState extends State<SelectMember> {
         context: context,
         action: () => Navigator.pop(context, selectedMembersList),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: pageTitle,
         trailingIcon: LineAwesomeIcons.check,
         trailingAction: () async {
@@ -183,7 +190,7 @@ class SelectMemberState extends State<SelectMember> {
                   title: new Text("Please select a member"),
                   actions: <Widget>[
                     // ignore: deprecated_member_use
-                    new FlatButton(
+                    new TextButton(
                       child: new Text(
                         "OK",
                         style: TextStyle(color: Colors.blue),

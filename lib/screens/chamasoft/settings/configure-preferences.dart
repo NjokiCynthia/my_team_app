@@ -5,9 +5,9 @@ import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/custom-dropdown-strings-only.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 List<StringNamesListItem> orderByFields = [
@@ -136,14 +136,14 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
         refreshSettings();
       });
       // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully updated Group Settings",
       )));
     } on CustomException catch (error) {
       Navigator.of(context).pop();
       // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error updating Group Settings. ${error.message}",
       )));
@@ -236,13 +236,15 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                             style: TextStyle(
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context)
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                 fontWeight: FontWeight.w500),
                           ),
                           subtitle: Text(
                             "If enabled, members will not view other members data",
                             style: TextStyle(
-                                color: Theme.of(context).bottomAppBarColor),
+                                color: Theme.of(context).bottomAppBarTheme.color),
                           ),
                           value: memberPrivacyEnabled,
                           onChanged: (bool value) async {
@@ -265,13 +267,13 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                             style: TextStyle(
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 fontWeight: FontWeight.w500),
                           ),
                           subtitle: Text(
                             "Show or hide unpaid balances",
                             style: TextStyle(
-                                color: Theme.of(context).bottomAppBarColor),
+                                color: Theme.of(context).bottomAppBarTheme.color),
                           ),
                           value: showContributionArrears,
                           onChanged: (bool value) async {
@@ -294,13 +296,13 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                             style: TextStyle(
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 fontWeight: FontWeight.w500),
                           ),
                           subtitle: Text(
                             "If enabled, the contribution  transfers will be ignored",
                             style: TextStyle(
-                                color: Theme.of(context).bottomAppBarColor),
+                                color: Theme.of(context).bottomAppBarTheme.color),
                           ),
                           value: ignoringContributionTransfersEnabled,
                           onChanged: (bool value) async {
@@ -323,13 +325,13 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                             style: TextStyle(
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 fontWeight: FontWeight.w500),
                           ),
                           subtitle: Text(
                             "If enabled, members will not view other members data",
                             style: TextStyle(
-                                color: Theme.of(context).bottomAppBarColor),
+                                color: Theme.of(context).bottomAppBarTheme.color),
                           ),
                           value: monthlyStatementsSendingEnabled,
                           onChanged: (bool value) async {
@@ -352,13 +354,13 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                             style: TextStyle(
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 fontWeight: FontWeight.w500),
                           ),
                           subtitle: Text(
                             "If enabled, members will not view other members data",
                             style: TextStyle(
-                                color: Theme.of(context).bottomAppBarColor),
+                                color: Theme.of(context).bottomAppBarTheme.color),
                           ),
                           value: reducingBalanceRecalculationEnabled,
                           onChanged: (bool value) async {
@@ -381,13 +383,13 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                             style: TextStyle(
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 fontWeight: FontWeight.w500),
                           ),
                           subtitle: Text(
                             "If enabled, members will not update their profile",
                             style: TextStyle(
-                                color: Theme.of(context).bottomAppBarColor),
+                                color: Theme.of(context).bottomAppBarTheme.color),
                           ),
                           value: disableMemberEditProfile,
                           onChanged: (bool value) async {

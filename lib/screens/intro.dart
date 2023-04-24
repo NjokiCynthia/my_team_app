@@ -167,7 +167,7 @@ class IntroScreenState extends State<IntroScreen> {
           color: Colors.white,
         ),
         bodyTextStyle: TextStyle(fontSize: 16.0, color: Colors.white),
-        descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+        //descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
         titlePadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 10.0),
         pageColor: pageColor,
         imagePadding: EdgeInsets.zero,
@@ -188,14 +188,18 @@ class IntroScreenState extends State<IntroScreen> {
               subtitle2(
                 text: "Fetching data",
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.center,
               ),
               subtitle2(
                 text: "This won't take long",
                 color:
                     // ignore: deprecated_member_use
-                    Theme.of(context).textSelectionHandleColor.withOpacity(0.6),
+                    Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor
+                        .withOpacity(0.6),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -249,7 +253,8 @@ class IntroScreenState extends State<IntroScreen> {
             onDone: () => _onIntroEnd(context),
             //onSkip: () => _onIntroEnd(context),
             showSkipButton: true,
-            skipFlex: 0,
+            skipOrBackFlex: 0,
+            dotsFlex: 1,
             nextFlex: 0,
             skip: Text("Skip",
                 style: TextStyle(

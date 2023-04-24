@@ -11,7 +11,7 @@ import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class ReconcileWithdrawalList extends StatefulWidget {
@@ -259,14 +259,18 @@ class _UnreconciledWithdrawalCardState
                               text: "${widget.groupObject.groupCurrency} ",
                               fontSize: 18.0,
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               fontWeight: FontWeight.w400,
                             ),
                             heading2(
                               text: currencyFormat
                                   .format(widget.withdrawal.amount),
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               textAlign: TextAlign.end,
                             ),
                           ],
@@ -321,7 +325,7 @@ class _UnreconciledWithdrawalCardState
                 child: Row(
                   children: [
                     // ignore: deprecated_member_use
-                    FlatButton(
+                    TextButton(
                       onPressed: () {
                         setState(() {
                           _isExpanded = !_isExpanded;
@@ -341,7 +345,7 @@ class _UnreconciledWithdrawalCardState
                     ),
                     Spacer(),
                     // ignore: deprecated_member_use
-                    FlatButton(
+                    TextButton(
                       onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute(
                               builder:

@@ -10,7 +10,7 @@ import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class RecordBankLoan extends StatefulWidget {
@@ -77,7 +77,8 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
             );
           });
     });
-    formLoadData = await Provider.of<Groups>(context, listen: false).loadInitialFormData(acc: true);
+    formLoadData = await Provider.of<Groups>(context, listen: false)
+        .loadInitialFormData(acc: true);
     setState(() {
       _isInit = false;
     });
@@ -102,11 +103,13 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
     _formData["loan_end_date"] = loanToDate.toString();
     _formData["account_id"] = accountId;
     try {
-      String message = await Provider.of<Groups>(context, listen: false).recordBankLoanIncome(_formData);
+      String message = await Provider.of<Groups>(context, listen: false)
+          .recordBankLoanIncome(_formData);
       StatusHandler().showSuccessSnackBar(context, message);
 
       Future.delayed(const Duration(milliseconds: 2500), () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => DepositReceipts()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => DepositReceipts()));
       });
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -131,7 +134,7 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
         title: "Record Bank Loan",
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times_circle,
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(
@@ -146,7 +149,8 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
                 children: <Widget>[
                   toolTip(
                     context: context,
-                    title: "Manually record loans received from financial institutions",
+                    title:
+                        "Manually record loans received from financial institutions",
                     showTitle: true,
                     message: "",
                   ),
@@ -230,7 +234,8 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
                                     labelText: 'Select Deposit Date',
                                     lastDate: DateTime.now(),
                                     selectedDate: loanFromDate == null
-                                        ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                        ? new DateTime(now.year, now.month,
+                                            now.day - 1, 6, 30)
                                         : loanFromDate,
                                     selectDate: (selectedDate) {
                                       setState(() {
@@ -246,11 +251,13 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
                                 child: DatePicker(
                                   labelText: 'Loan To',
                                   firstDate: loanFromDate == null
-                                      ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                      ? new DateTime(now.year, now.month,
+                                          now.day - 1, 6, 30)
                                       : loanFromDate,
                                   lastDate: DateTime(2037),
                                   selectedDate: loanToDate == null
-                                      ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                      ? new DateTime(now.year, now.month,
+                                          now.day - 1, 6, 30)
                                       : loanToDate,
                                   selectDate: (selectedDate) {
                                     setState(() {
@@ -264,7 +271,10 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
                           CustomDropDownButton(
                             enabled: _isFormInputEnabled,
                             labelText: "Account loan deposited to",
-                            listItems: formLoadData.containsKey("accountOptions") ? formLoadData["accountOptions"] : [],
+                            listItems:
+                                formLoadData.containsKey("accountOptions")
+                                    ? formLoadData["accountOptions"]
+                                    : [],
                             selectedItem: accountId,
                             onChanged: (value) {
                               setState(() {
@@ -284,7 +294,8 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
                           _isLoading
                               ? Padding(
                                   padding: EdgeInsets.all(10),
-                                  child: Center(child: CircularProgressIndicator()),
+                                  child: Center(
+                                      child: CircularProgressIndicator()),
                                 )
                               : defaultButton(
                                   context: context,

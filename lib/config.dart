@@ -9,6 +9,8 @@ class Config {
 
   static String get appName {
     String _name = 'Chamasoft';
+
+    print("flavor ${APP_FLAVOR.length ?? "not defined"}");
     String _flavor =
         APP_FLAVOR.substring(0, APP_FLAVOR.length - 3).toLowerCase();
     switch (_flavor) {

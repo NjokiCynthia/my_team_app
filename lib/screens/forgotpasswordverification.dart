@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'dart:async';
 
 import 'package:chamasoft/helpers/common.dart';
@@ -12,7 +14,7 @@ import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
@@ -167,7 +169,7 @@ class _ForgotPasswordVerificationState
         content: subtitle2(
             text: "Resending verification code", textAlign: TextAlign.start));
     // ignore: deprecated_member_use
-    Scaffold.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
     try {
       await Provider.of<Auth>(context, listen: false)
           .resendPin(_identity, appSignature);
@@ -176,7 +178,7 @@ class _ForgotPasswordVerificationState
               text: "Verification code has been sent",
               textAlign: TextAlign.start));
       // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
       _start = 60;
       _countDownTimer();
     } on CustomException catch (error) {
@@ -236,12 +238,16 @@ class _ForgotPasswordVerificationState
                               text: "A verification code has been sent to",
                               color:
                                   // ignore: deprecated_member_use
-                                  Theme.of(context).textSelectionHandleColor),
+                                  Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor),
                           customTitle(
                               text: _identity,
                               color:
                                   // ignore: deprecated_member_use
-                                  Theme.of(context).textSelectionHandleColor),
+                                  Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor),
                           SizedBox(
                             height: 12,
                           ),
@@ -249,7 +255,9 @@ class _ForgotPasswordVerificationState
                               text: "Enter your code here",
                               color:
                                   // ignore: deprecated_member_use
-                                  Theme.of(context).textSelectionHandleColor),
+                                  Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor),
                           Padding(
                             padding: EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 0.0),
                             child: PinInputTextFormField(
@@ -258,7 +266,9 @@ class _ForgotPasswordVerificationState
                                 colorBuilder: PinListenColorBuilder(
                                     primaryColor,
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor),
+                                    Theme.of(context)
+                                        .textSelectionTheme
+                                        .selectionHandleColor),
                                 lineHeight: 2.0,
                                 textStyle: TextStyle(
                                   color: primaryColor,
@@ -305,16 +315,18 @@ class _ForgotPasswordVerificationState
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Icon(LineAwesomeIcons.clock_o,
+                              Icon(LineAwesomeIcons.clock_1,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor),
+                                      .textSelectionTheme
+                                      .selectionHandleColor),
                               subtitle1(
                                   text:
                                       _start > 9 ? "00:$_start" : "00:0$_start",
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor),
+                                      .textSelectionTheme
+                                      .selectionHandleColor),
                               SizedBox(width: 20),
                               InkWell(
                                 child: Text(
@@ -325,7 +337,8 @@ class _ForgotPasswordVerificationState
                                         ? primaryColor
                                         : Theme.of(context)
                                             // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
+                                            .textSelectionTheme
+                                            .selectionHandleColor,
                                     fontWeight: FontWeight.w700,
                                     decoration: TextDecoration.underline,
                                   ),

@@ -284,7 +284,8 @@ class _PayNowSheetState extends State<PayNowSheet> {
               heading2(
                   text: "Confirm Payment Number",
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   textAlign: TextAlign.start),
               SizedBox(
                 height: 10,
@@ -308,7 +309,7 @@ class _PayNowSheetState extends State<PayNowSheet> {
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               // ignore: deprecated_member_use
-              WhitelistingTextInputFormatter.digitsOnly
+              FilteringTextInputFormatter.digitsOnly
             ],
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -328,7 +329,8 @@ class _PayNowSheetState extends State<PayNowSheet> {
             negativeActionDialogButton(
                 text: "Cancel",
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
                 }),
@@ -381,7 +383,8 @@ class _PayNowSheetState extends State<PayNowSheet> {
               heading2(
                   text: "Wallet Payment",
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   textAlign: TextAlign.start),
               SizedBox(
                 height: 10,
@@ -441,14 +444,18 @@ class _PayNowSheetState extends State<PayNowSheet> {
                                       child: CircularProgressIndicator()),
                                 )
                               // ignore: deprecated_member_use
-                              : RaisedButton(
-                                  color: primaryColor,
+                              : ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: primaryColor),
                                   child: Padding(
                                     padding: EdgeInsets.fromLTRB(
                                         20.0, 0.0, 20.0, 0.0),
-                                    child: Text("Pay Now"),
+                                    child: Text(
+                                      "Pay Now",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                   ),
-                                  textColor: Colors.white,
+                                  //textColor: Colors.white,
                                   onPressed: () => _validatePayNowForm(),
                                 )
                         ],

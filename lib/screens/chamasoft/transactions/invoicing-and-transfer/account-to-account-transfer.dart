@@ -9,7 +9,7 @@ import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class AccountToAccountTransfer extends StatefulWidget {
@@ -128,7 +128,7 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times_circle,
         title: "Account to Account Transfer",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
@@ -169,13 +169,15 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
                       CustomDropDownButton(
                         labelText: 'Select account to transfer from',
                         enabled: _isFormInputEnabled,
-                        listItems: _formLoadData.containsKey("accountOptions")?_formLoadData["accountOptions"]:[],
+                        listItems: _formLoadData.containsKey("accountOptions")
+                            ? _formLoadData["accountOptions"]
+                            : [],
                         selectedItem: fromAccountId,
-                        validator: (value){
-                          if(value==""||value==null){
+                        validator: (value) {
+                          if (value == "" || value == null) {
                             return "This field is required";
                           }
-                          if(value==toAccountId){
+                          if (value == toAccountId) {
                             return "Select different account";
                           }
                           return null;
@@ -188,14 +190,16 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select account to transfer to',
-                        listItems: _formLoadData.containsKey("accountOptions")?_formLoadData["accountOptions"]:[],
+                        listItems: _formLoadData.containsKey("accountOptions")
+                            ? _formLoadData["accountOptions"]
+                            : [],
                         selectedItem: toAccountId,
                         enabled: _isFormInputEnabled,
-                        validator: (value){
-                          if(value==""||value==null){
+                        validator: (value) {
+                          if (value == "" || value == null) {
                             return "This field is required";
                           }
-                          if(value==fromAccountId){
+                          if (value == fromAccountId) {
                             return "Select different account";
                           }
                           return null;

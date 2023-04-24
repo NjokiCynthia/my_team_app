@@ -8,7 +8,8 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class FilterContainer extends StatefulWidget {
@@ -194,7 +195,7 @@ class _FilterContainerState extends State<FilterContainer> {
           title: "Filter By",
           action: () => Navigator.of(context).pop(),
           elevation: 1,
-          leadingIcon: LineAwesomeIcons.close,
+          leadingIcon: LineAwesomeIcons.times,
           trailingIcon: LineAwesomeIcons.check,
           trailingAction: () =>
               Navigator.pop(context, [_selectedItems, _selectedMembers])),
@@ -234,14 +235,17 @@ class _FilterContainerState extends State<FilterContainer> {
                                 fontWeight: FontWeight.w600,
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor),
+                                    Theme.of(context)
+                                        .textSelectionTheme
+                                        .selectionHandleColor),
                             Visibility(
                                 visible: _showStatusFilter,
                                 child: Icon(LineAwesomeIcons.chevron_right,
                                     size: 12,
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor))
+                                        .textSelectionTheme
+                                        .selectionHandleColor))
                           ],
                         ),
                       ),
@@ -270,14 +274,17 @@ class _FilterContainerState extends State<FilterContainer> {
                                 fontWeight: FontWeight.w600,
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor),
+                                    Theme.of(context)
+                                        .textSelectionTheme
+                                        .selectionHandleColor),
                             Visibility(
                                 visible: _showMemberFilter,
                                 child: Icon(LineAwesomeIcons.chevron_right,
                                     size: 12,
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor))
+                                        .textSelectionTheme
+                                        .selectionHandleColor))
                           ],
                         ),
                       ),
@@ -299,7 +306,9 @@ class _FilterContainerState extends State<FilterContainer> {
                           textAlign: TextAlign.center,
                           fontWeight: FontWeight.w600,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor),
                       Visibility(
                         visible:
                             widget.filterType == 1 || widget.filterType == 2,
@@ -310,7 +319,9 @@ class _FilterContainerState extends State<FilterContainer> {
                               textAlign: TextAlign.start,
                               color:
                                   // ignore: deprecated_member_use
-                                  Theme.of(context).textSelectionHandleColor),
+                                  Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor),
                           value: _selectAll,
                           onChanged: (value) {
                             _selectedItems.clear();
@@ -338,7 +349,8 @@ class _FilterContainerState extends State<FilterContainer> {
                                     fontWeight: FontWeight.w600,
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor);
+                                        .textSelectionTheme
+                                        .selectionHandleColor);
                               } else
                                 return CheckboxListTile(
                                   dense: true,
@@ -374,7 +386,8 @@ class _FilterContainerState extends State<FilterContainer> {
                                       textAlign: TextAlign.start,
                                       color: Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor),
+                                          .textSelectionTheme
+                                          .selectionHandleColor),
                                   activeColor: primaryColor,
                                 );
                             } else
@@ -395,7 +408,8 @@ class _FilterContainerState extends State<FilterContainer> {
                                     textAlign: TextAlign.start,
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor),
+                                        .textSelectionTheme
+                                        .selectionHandleColor),
                                 activeColor: primaryColor,
                               );
                           },
@@ -426,7 +440,9 @@ class _FilterContainerState extends State<FilterContainer> {
                             text: "Select All",
                             textAlign: TextAlign.start,
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor),
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor),
                         value: _selectAllMembers,
                         onChanged: (value) {
                           _selectedMembers.clear();
@@ -461,13 +477,15 @@ class _FilterContainerState extends State<FilterContainer> {
                                   text: member.name,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.start),
                               subtitle: subtitle2(
                                   text: member.identity,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.start),
                             );
                           },

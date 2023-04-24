@@ -14,7 +14,7 @@ import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 List<NamesListItem> loans = [
@@ -40,7 +40,9 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
   int depositMethod, memberId, loanId, accountId;
   double amount;
   String description;
-  String requestId = ((DateTime.now().toUtc().millisecondsSinceEpoch.toDouble() / 1000).toStringAsFixed(0));
+  String requestId =
+      ((DateTime.now().toUtc().millisecondsSinceEpoch.toDouble() / 1000)
+          .toStringAsFixed(0));
 
   final _formKey = new GlobalKey<FormState>();
   bool _isFormInputEnabled = true;
@@ -71,7 +73,8 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
     formLoadData = await Provider.of<Groups>(context, listen: false)
         .loadInitialFormData(member: true, acc: true, memberOngoingLoans: true);
     setState(() {
-      ongoingGroupMemberLoans = Provider.of<Groups>(context, listen: false).getMemberOngoingLoans;
+      ongoingGroupMemberLoans =
+          Provider.of<Groups>(context, listen: false).getMemberOngoingLoans;
       _isInit = false;
     });
     Navigator.of(context, rootNavigator: true).pop();
@@ -131,11 +134,13 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
     log(data.toString());
 
     try {
-      String message = await Provider.of<Groups>(context, listen: false).recordLoanRepayment(data);
+      String message = await Provider.of<Groups>(context, listen: false)
+          .recordLoanRepayment(data);
       StatusHandler().showSuccessSnackBar(context, message);
 
       Future.delayed(const Duration(milliseconds: 2500), () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => DepositReceipts()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => DepositReceipts()));
       });
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -152,10 +157,9 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
     }
   }
 
-
   // ignore: missing_return
   String _getAccountFormId(int position) {
-    final accounts = Provider.of<Groups>(context,listen: false).allAccounts;
+    final accounts = Provider.of<Groups>(context, listen: false).allAccounts;
     for (var accountOption in accounts) {
       for (var account in accountOption) {
         if (position == account.uniqueId) {
@@ -172,6 +176,7 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
       }
     }
   }
+
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -196,13 +201,15 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
 
   @override
   Widget build(BuildContext context) {
-    final currency = Provider.of<Groups>(context, listen: false).getCurrentGroup().groupCurrency;
+    final currency = Provider.of<Groups>(context, listen: false)
+        .getCurrentGroup()
+        .groupCurrency;
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: "Record Loan Repayment",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
@@ -218,7 +225,10 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
-                    toolTip(context: context, title: "Manually record loan repayments", message: ""),
+                    toolTip(
+                        context: context,
+                        title: "Manually record loan repayments",
+                        message: ""),
                     Container(
                       padding: EdgeInsets.all(16.0),
                       height: MediaQuery.of(context).size.height,
@@ -235,7 +245,8 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                                   labelText: 'Select Deposit Date',
                                   lastDate: DateTime.now(),
                                   selectedDate: depositDate == null
-                                      ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                      ? new DateTime(now.year, now.month,
+                                          now.day - 1, 6, 30)
                                       : depositDate,
                                   selectDate: (selectedDate) {
                                     setState(() {
@@ -270,7 +281,9 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                           ),
                           CustomDropDownButton(
                             labelText: 'Select Member',
-                            listItems: formLoadData.containsKey("memberOptions") ? formLoadData["memberOptions"] : [],
+                            listItems: formLoadData.containsKey("memberOptions")
+                                ? formLoadData["memberOptions"]
+                                : [],
                             selectedItem: memberId,
                             onChanged: (value) {
                               setState(() {
@@ -287,7 +300,9 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                             },
                           ),
                           CustomDropDownButton(
-                            labelText: memberLoans.length < 1 ? 'No ongoing loans' : 'Select Loan',
+                            labelText: memberLoans.length < 1
+                                ? 'No ongoing loans'
+                                : 'Select Loan',
                             listItems: memberLoans,
                             selectedItem: loanId,
                             onChanged: (value) {
@@ -306,7 +321,9 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                             labelText: "Select Account",
                             enabled: _isFormInputEnabled,
                             listItems:
-                            formLoadData.containsKey("accountOptions") ? formLoadData["accountOptions"] : [],
+                                formLoadData.containsKey("accountOptions")
+                                    ? formLoadData["accountOptions"]
+                                    : [],
                             selectedItem: accountId,
                             onChanged: (value) {
                               setState(() {
@@ -350,7 +367,8 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                           _isLoading
                               ? Padding(
                                   padding: EdgeInsets.all(10),
-                                  child: Center(child: CircularProgressIndicator()),
+                                  child: Center(
+                                      child: CircularProgressIndicator()),
                                 )
                               : defaultButton(
                                   context: context,

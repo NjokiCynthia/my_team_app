@@ -12,7 +12,7 @@ import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:chamasoft/helpers/common.dart';
 
@@ -138,7 +138,7 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
           context: context,
           action: () => Navigator.of(context).pop(),
           elevation: 1,
-          leadingIcon: LineAwesomeIcons.close,
+          leadingIcon: LineAwesomeIcons.times_circle,
           title: "Set Amount To Withdraw",
         ),
         backgroundColor: Theme.of(context).backgroundColor,
@@ -167,7 +167,9 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                           heading2(
                             text: title,
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             textAlign: TextAlign.start,
                           ),
                           SizedBox(
@@ -182,7 +184,8 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                                       color:
                                           // ignore: deprecated_member_use
                                           Theme.of(context)
-                                              .textSelectionHandleColor,
+                                              .textSelectionTheme
+                                              .selectionHandleColor,
                                     )
                                   : SizedBox(),
                               Expanded(
@@ -193,7 +196,8 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                                   fontWeight: FontWeight.w600,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.start,
                                 ),
                               ),
@@ -208,7 +212,8 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                                   text: "$typePlaceholder: ",
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 Expanded(
                                   flex: 1,
@@ -219,7 +224,8 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                                     fontWeight: FontWeight.w600,
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor,
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                     textAlign: TextAlign.start,
                                   ),
                                 ),
@@ -235,7 +241,8 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                                   text: "Bank: ",
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 Expanded(
                                     child: customTitle(
@@ -245,7 +252,8 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                                       : '',
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   fontWeight: FontWeight.w600,
                                 )),
                               ],
@@ -260,7 +268,9 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                                     : "Recipient Account: ",
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context)
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                               ),
                               Expanded(
                                   child: customTitleWithWrap(
@@ -272,7 +282,9 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                                     : widget.formData['account_number'],
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context)
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                 fontWeight: FontWeight.w600,
                               )),
                             ],
@@ -286,7 +298,8 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                                   text: "Description: ",
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 Expanded(
                                   child: customTitle(
@@ -296,7 +309,8 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                                         : '',
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor,
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),

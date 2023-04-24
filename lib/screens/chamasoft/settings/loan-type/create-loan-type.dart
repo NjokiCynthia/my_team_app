@@ -3,10 +3,10 @@ import 'package:chamasoft/screens/chamasoft/settings/loan-type/loan-type-fines.d
 import 'package:chamasoft/screens/chamasoft/settings/loan-type/loan-type-settings.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
-import 'package:flutter/cupertino.dart';
+//import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+//import 'package:flutter/rendering.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class CreateLoanType extends StatefulWidget {
   final bool isEditMode;
@@ -48,7 +48,8 @@ class _CreateLoanTypeState extends State<CreateLoanType>
       child: Scaffold(
         appBar: secondaryPageTabbedAppbar(
           context: context,
-          title: widget.isEditMode == null ? "Create Loan Type" : "Edit Loan Type",
+          title:
+              widget.isEditMode == null ? "Create Loan Type" : "Edit Loan Type",
           action: () => Navigator.of(context).pop(_formEdited),
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
@@ -72,7 +73,9 @@ class _CreateLoanTypeState extends State<CreateLoanType>
                               thickness: 5.0,
                               indent: 10,
                               endIndent: 10,
-                              color: currentPage == 0 ? primaryColor : Color(0xFFAEAEAE),
+                              color: currentPage == 0
+                                  ? primaryColor
+                                  : Color(0xFFAEAEAE),
                             ),
                           ),
                         ),
@@ -83,7 +86,9 @@ class _CreateLoanTypeState extends State<CreateLoanType>
                               thickness: 5.0,
                               indent: 10,
                               endIndent: 10,
-                              color: currentPage == 1 ? primaryColor : Color(0xFFAEAEAE),
+                              color: currentPage == 1
+                                  ? primaryColor
+                                  : Color(0xFFAEAEAE),
                             ),
                           ),
                         ),
@@ -94,7 +99,9 @@ class _CreateLoanTypeState extends State<CreateLoanType>
                               thickness: 5.0,
                               indent: 10,
                               endIndent: 10,
-                              color: currentPage == 2 ? primaryColor : Color(0xFFAEAEAE),
+                              color: currentPage == 2
+                                  ? primaryColor
+                                  : Color(0xFFAEAEAE),
                             ),
                           ),
                         ),
@@ -126,7 +133,8 @@ class _CreateLoanTypeState extends State<CreateLoanType>
                         ),
                         new LoanTypeFines(
                             responseData: responseData,
-                            isEditMode: widget.isEditMode == null ? false : true,
+                            isEditMode:
+                                widget.isEditMode == null ? false : true,
                             loanDetails: widget.loanDetails,
                             onButtonPressed: (response) {
                               if (_pageController.hasClients) {
@@ -145,7 +153,8 @@ class _CreateLoanTypeState extends State<CreateLoanType>
                             }),
                         new LoanFeesAndGuarantors(
                             responseData: responseData,
-                            isEditMode: widget.isEditMode == null ? false : true,
+                            isEditMode:
+                                widget.isEditMode == null ? false : true,
                             loanDetails: widget.loanDetails,
                             onButtonPressed: (response) {
                               Navigator.of(context).pop(_formEdited);

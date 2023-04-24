@@ -12,7 +12,8 @@ import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class ContributionStatement extends StatefulWidget {
@@ -238,7 +239,8 @@ class _ContributionStatementState extends State<ContributionStatement> {
                                     text: "Total " + defaultTitle,
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor,
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                     textAlign: TextAlign.start),
                                 SizedBox(
                                   height: 10,
@@ -250,7 +252,8 @@ class _ContributionStatementState extends State<ContributionStatement> {
                                         text: "Total amount due ",
                                         color: Theme.of(context)
                                             // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
+                                            .textSelectionTheme
+                                            .selectionHandleColor,
                                         textAlign: TextAlign.start),
                                     customTitle(
                                         text: groupObject.groupCurrency +
@@ -258,7 +261,8 @@ class _ContributionStatementState extends State<ContributionStatement> {
                                             currencyFormat.format(_totalDue),
                                         color: Theme.of(context)
                                             // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
+                                            .textSelectionTheme
+                                            .selectionHandleColor,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
                                         textAlign: TextAlign.start)
@@ -274,7 +278,8 @@ class _ContributionStatementState extends State<ContributionStatement> {
                                         text: "Balance ",
                                         color: Theme.of(context)
                                             // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
+                                            .textSelectionTheme
+                                            .selectionHandleColor,
                                         textAlign: TextAlign.start),
                                     customTitle(
                                       text: groupObject.groupCurrency +
@@ -284,7 +289,8 @@ class _ContributionStatementState extends State<ContributionStatement> {
                                       fontWeight: FontWeight.w500,
                                       color: Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                       textAlign: TextAlign.start,
                                     ),
                                   ],
@@ -297,7 +303,9 @@ class _ContributionStatementState extends State<ContributionStatement> {
                                   " " +
                                   currencyFormat.format(_totalContributions),
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               textAlign: TextAlign.start)
                         ],
                       ),
@@ -327,7 +335,9 @@ class _ContributionStatementState extends State<ContributionStatement> {
                             text: "Statement as At",
                             color:
                                 // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionHandleColor,
+                                Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                             textAlign: TextAlign.start,
                           ),
                           customTitle(
@@ -336,7 +346,9 @@ class _ContributionStatementState extends State<ContributionStatement> {
                             fontWeight: FontWeight.w500,
                             color:
                                 // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionHandleColor,
+                                Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                             textAlign: TextAlign.start,
                           ),
                         ],
@@ -349,7 +361,8 @@ class _ContributionStatementState extends State<ContributionStatement> {
                               text: "Statement Period",
                               color: Theme.of(context)
                                   // ignore: deprecated_member_use
-                                  .textSelectionHandleColor,
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               textAlign: TextAlign.end,
                             ),
                             customTitle(
@@ -360,7 +373,8 @@ class _ContributionStatementState extends State<ContributionStatement> {
                                   : "",
                               color: Theme.of(context)
                                   // ignore: deprecated_member_use
-                                  .textSelectionHandleColor,
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               textAlign: TextAlign.end,
                             ),
                           ],
@@ -444,7 +458,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                           )
                         : emptyList(
                             color: Colors.blue[400],
-                            iconData: LineAwesomeIcons.file_text,
+                            iconData: LineAwesomeIcons.file,
                             text: "There are no statements for the period")),
                 Container(
                   padding: EdgeInsets.only(
@@ -484,7 +498,8 @@ class _ContributionStatementState extends State<ContributionStatement> {
                                     // ignore: deprecated_member_use
                                     : Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor),
+                                        .textSelectionTheme
+                                        .selectionHandleColor),
                             textAlign: TextAlign.end),
                       ),
                     ],
@@ -503,7 +518,9 @@ class _ContributionStatementState extends State<ContributionStatement> {
                           // ignore: deprecated_member_use
                           color:
                               // ignore: deprecated_member_use
-                              Theme.of(context).textSelectionHandleColor,
+                              Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                         ),
                       )
                     ],

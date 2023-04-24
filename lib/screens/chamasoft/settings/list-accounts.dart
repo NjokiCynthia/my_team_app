@@ -12,7 +12,7 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'accounts/create-bank-account.dart';
@@ -112,12 +112,9 @@ class _ListAccountsState extends State<ListAccounts> {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 // ignore: deprecated_member_use
-                FlatButton(
-                  child: Text(
-                    'Add Bank Account',
-                    style: TextStyle(
-                      // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+                TextButton(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Theme.of(context).textSelectionTheme.selectionHandleColor, textStyle: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 16.0,
                     ),
@@ -129,13 +126,13 @@ class _ListAccountsState extends State<ListAccounts> {
                           return Center(
                             child: CircularProgressIndicator(),
                           );
-                        });
+                        }
+                    );
                     await fetchBankOptions(context);
                     Navigator.pop(context);
                     Navigator.pop(context); //pop bottom sheet
 
-                    final result =
-                        await Navigator.of(context).push(MaterialPageRoute(
+                    final result = await Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CreateBankAccount(),
                     ));
                     if (result != null) {
@@ -146,14 +143,12 @@ class _ListAccountsState extends State<ListAccounts> {
                       }
                     }
                   },
+                  child: Text('Add Bank Account'),
                 ),
-                // ignore: deprecated_member_use
-                FlatButton(
-                  child: Text(
-                    'Add Sacco Account',
-                    style: TextStyle(
-                      // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+
+                TextButton(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Theme.of(context).textSelectionTheme.selectionHandleColor, textStyle: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 16.0,
                     ),
@@ -165,13 +160,13 @@ class _ListAccountsState extends State<ListAccounts> {
                           return Center(
                             child: CircularProgressIndicator(),
                           );
-                        });
+                        }
+                    );
                     await fetchSaccoOptions(context);
                     Navigator.pop(context);
                     Navigator.pop(context); //pop bottom sheet
 
-                    final result =
-                        await Navigator.of(context).push(MaterialPageRoute(
+                    final result = await Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CreateSaccoAccount(),
                     ));
 
@@ -183,14 +178,12 @@ class _ListAccountsState extends State<ListAccounts> {
                       }
                     }
                   },
+                  child: Text('Add Sacco Account'),
                 ),
-                // ignore: deprecated_member_use
-                FlatButton(
-                  child: Text(
-                    'Add Mobile Money Account',
-                    style: TextStyle(
-                      // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+
+                TextButton(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Theme.of(context).textSelectionTheme.selectionHandleColor, textStyle: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 16.0,
                     ),
@@ -202,13 +195,13 @@ class _ListAccountsState extends State<ListAccounts> {
                           return Center(
                             child: CircularProgressIndicator(),
                           );
-                        });
+                        }
+                    );
                     await fetchMobileMoneyProviderOptions(context);
                     Navigator.pop(context);
                     Navigator.pop(context); //pop bottom sheet
 
-                    final result =
-                        await Navigator.of(context).push(MaterialPageRoute(
+                    final result = await Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CreateMobileMoneyAccount(),
                     ));
 
@@ -220,14 +213,12 @@ class _ListAccountsState extends State<ListAccounts> {
                       }
                     }
                   },
+                  child: Text('Add Mobile Money Account'),
                 ),
-                // ignore: deprecated_member_use
-                FlatButton(
-                  child: Text(
-                    'Add Petty Cash Account',
-                    style: TextStyle(
-                      // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+
+                TextButton(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Theme.of(context).textSelectionTheme.selectionHandleColor, textStyle: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 16.0,
                     ),
@@ -235,8 +226,7 @@ class _ListAccountsState extends State<ListAccounts> {
                   onPressed: () async {
                     Navigator.pop(context); //pop bottom sheet
 
-                    final result =
-                        await Navigator.of(context).push(MaterialPageRoute(
+                    final result = await Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CreatePettyCashAccount(),
                     ));
 
@@ -248,7 +238,9 @@ class _ListAccountsState extends State<ListAccounts> {
                       }
                     }
                   },
+                  child: Text('Add Petty Cash Account'),
                 ),
+
               ],
             ),
           ),
@@ -311,7 +303,7 @@ class _ListAccountsState extends State<ListAccounts> {
                                 textAlign: TextAlign.start,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor
+                                    .textSelectionTheme.selectionHandleColor
                                     .withOpacity(0.6),
                                 fontSize: 13.0,
                               ),
@@ -335,7 +327,7 @@ class _ListAccountsState extends State<ListAccounts> {
                                           text: account.name,
                                           color: Theme.of(context)
                                               // ignore: deprecated_member_use
-                                              .textSelectionHandleColor,
+                                              .textSelectionTheme.selectionHandleColor,
                                           textAlign: TextAlign.start,
                                           fontWeight: FontWeight.w700,
                                           fontSize: 15.0,
@@ -347,7 +339,7 @@ class _ListAccountsState extends State<ListAccounts> {
                                                 textAlign: TextAlign.start,
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor
+                                                    .textSelectionTheme.selectionHandleColor
                                                     .withOpacity(0.5),
                                                 fontSize: 12.0,
                                               )

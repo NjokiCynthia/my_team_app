@@ -11,7 +11,8 @@ import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 import 'loan-statement.dart';
@@ -201,7 +202,7 @@ class ActiveLoanCard extends StatelessWidget {
                               fontWeight: FontWeight.w500,
                               fontSize: 16.0,
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               fontFamily: 'SegoeUI'),
                           textAlign: TextAlign.start,
                           maxLines: 2,
@@ -228,13 +229,13 @@ class ActiveLoanCard extends StatelessWidget {
                                 text: "Disbursed On",
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.start),
                             subtitle1(
                                 text: loan.disbursementDate,
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.start)
                           ],
                         ),
@@ -246,13 +247,13 @@ class ActiveLoanCard extends StatelessWidget {
                               text: "${groupObject.groupCurrency} ",
                               fontSize: 18.0,
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               fontWeight: FontWeight.w400,
                             ),
                             heading2(
                               text: currencyFormat.format(loan.amount),
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               textAlign: TextAlign.end,
                             ),
                           ],
@@ -296,7 +297,7 @@ class ActiveLoanCard extends StatelessWidget {
                         decoration: BoxDecoration(
                             border: Border(
                                 top: BorderSide(
-                                    color: Theme.of(context).bottomAppBarColor,
+                                    color: Theme.of(context).bottomAppBarTheme.color,
                                     width: 1.0),
                                 left: BorderSide.none/* (
                                     color: Theme.of(context).bottomAppBarColor,

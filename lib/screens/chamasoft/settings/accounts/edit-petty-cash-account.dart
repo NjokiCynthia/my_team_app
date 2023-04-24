@@ -4,9 +4,10 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class EditPettyCashAccount extends StatefulWidget {
@@ -88,7 +89,7 @@ class _EditPettyCashAccountState extends State<EditPettyCashAccount> {
 
       Navigator.pop(context);
       // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully updated the Petty Cash Account",
       )));
@@ -100,7 +101,7 @@ class _EditPettyCashAccountState extends State<EditPettyCashAccount> {
       Navigator.pop(context);
 
       // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error updating the Petty Cash Account. ${error.message} ",
       )));

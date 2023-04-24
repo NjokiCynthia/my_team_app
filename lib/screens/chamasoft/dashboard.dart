@@ -23,6 +23,9 @@ import 'package:rate_my_app/rate_my_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 
+import 'meetings/meetings.dart';
+import 'models/group-model.dart';
+
 // ignore: must_be_immutable
 class ChamasoftDashboard extends StatefulWidget {
   static const namedRoute = "/dashboard";
@@ -42,7 +45,7 @@ class ChamasoftDashboard extends StatefulWidget {
 class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   StreamController _eventDispatcher = new StreamController.broadcast();
   List<dynamic> _overlayItems = [];
-
+  Group _currentGroup;
   Stream get _stream => _eventDispatcher.stream;
 
   final GlobalKey<ScaffoldState> dashboardScaffoldKey =
@@ -205,6 +208,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   void didChangeDependencies() {
     // ignore: todo
     // TODO: implement didChangeDependencies
+    _currentGroup =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     _getUserGroupsOverlay(context).then((_) async {
       final group = Provider.of<Groups>(context, listen: false);
       await group.getCurrentGroupId().then((groupId) async {
@@ -280,7 +285,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               description: "Click here to switch in between Chamas",
 
               // ignore: deprecated_member_use
-              textColor: Theme.of(context).textSelectionHandleColor,
+              textColor:
+                  Theme.of(context).textSelectionTheme.selectionHandleColor,
               child: AppSwitcher(
                 key: ObjectKey('$_overlayItems'),
                 listItems: _overlayItems,
@@ -295,7 +301,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             automaticallyImplyLeading: false,
             actions: <Widget>[
               Visibility(
-                visible: /*_group.isGroupAdmin*/ false,
+                visible: /*_group.isGroupAdmin*/ true,
+                // visible: _currentGroup.isGroupAdmin,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -306,23 +313,27 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                           "Schedule,View and Manage your Chama Meetings",
 
                       // ignore: deprecated_member_use
-                      textColor: Theme.of(context).textSelectionHandleColor,
+                      textColor: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                       child: IconButton(
                         icon: Icon(
                           Icons.people_alt,
                           color: Config.appName.toLowerCase() == 'chamasoft'
                               ?
                               // ignore: deprecated_member_use
-                              Theme.of(context).textSelectionHandleColor
+                              Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor
                               : primaryColor,
                         ),
                         onPressed: () /*=>*/ {
-                          // _eventDispatcher.add('TAP'), //Closes the AppSwitcher
-                          // Navigator.of(context).push(
-                          //   MaterialPageRoute(
-                          //     builder: (BuildContext context) => Meetings(),
-                          //   ),
-                          // ),
+                          _eventDispatcher.add('TAP'); //Closes the AppSwitcher
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => Meetings(),
+                            ),
+                          );
                         },
                       ),
                     )
@@ -377,14 +388,18 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                           "View all your Transactions Notification from Here",
 
                       // ignore: deprecated_member_use
-                      textColor: Theme.of(context).textSelectionHandleColor,
+                      textColor: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                       child: IconButton(
                         icon: Icon(
                           Icons.notifications,
                           color: Config.appName.toLowerCase() == 'chamasoft'
                               ?
                               // ignore: deprecated_member_use
-                              Theme.of(context).textSelectionHandleColor
+                              Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor
                               : primaryColor,
                         ),
                         onPressed: null, // Disable notifications for now
@@ -425,14 +440,17 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                     "Personalize your Chama Settings, Personal Settings,Help and Assistance , Preferences and Terms and Conditions",
 
                 // ignore: deprecated_member_use
-                textColor: Theme.of(context).textSelectionHandleColor,
+                textColor:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 child: IconButton(
                   icon: Icon(
                     Icons.settings,
                     color: Config.appName.toLowerCase() == 'chamasoft'
                         ?
                         // ignore: deprecated_member_use
-                        Theme.of(context).textSelectionHandleColor
+                        Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor
                         : primaryColor,
                   ),
                   onPressed: () => {
@@ -448,6 +466,20 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             ],
           ),
           bottomNavigationBar: BottomNavigationBar(
+            unselectedItemColor: Colors.blueGrey[300],
+            unselectedLabelStyle: TextStyle(
+              color: Colors.blueGrey[500],
+              fontFamily: 'SegoeUI',
+              fontWeight: FontWeight.w700,
+            ),
+            selectedLabelStyle: TextStyle(
+                color: _currentPage == /*2*/ 1
+                    ? primaryColor
+                    : Config.appName.toLowerCase() == 'chamasoft'
+                        ? Colors.blueGrey[300]
+                        : Colors.blueGrey[300].withOpacity(0.5),
+                fontFamily: 'SegoeUI',
+                fontWeight: FontWeight.w700),
             backgroundColor: (themeChangeProvider.darkTheme)
                 ? Colors.blueGrey[900] //.withOpacity(0.95)
                 : Config.appName.toLowerCase() == 'chamasoft'
@@ -465,23 +497,22 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   description: "View all your Summarized Transactions",
 
                   // ignore: deprecated_member_use
-                  textColor: Theme.of(context).textSelectionHandleColor,
+                  textColor:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   child: Icon(
                     Feather.user,
                     color:
                         _currentPage == 0 ? primaryColor : Colors.blueGrey[300],
                   ),
                 ),
-                // ignore: deprecated_member_use
-                title: Text(
-                  toBeginningOfSentenceCase(getUserName(auth.userName)),
-                  style: TextStyle(
-                    color:
-                        _currentPage == 0 ? primaryColor : Colors.blueGrey[300],
-                    fontFamily: 'SegoeUI',
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+                label: toBeginningOfSentenceCase(getUserName(auth.userName)),
+
+                // style: TextStyle(
+                //   color:
+                //       _currentPage == 0 ? primaryColor : Colors.blueGrey[300],
+                //   fontFamily: 'SegoeUI',
+                //   fontWeight: FontWeight.w700,
+                // ),
               ),
               // BottomNavigationBarItem(
               //   icon: customShowCase(
@@ -523,29 +554,21 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                       "Manually Record chama Transactions, Create withdrawals form E-Walet and Invoice Transfers",
 
                   // ignore: deprecated_member_use
-                  textColor: Theme.of(context).textSelectionHandleColor,
+                  textColor: Colors.black,
+                      // Theme.of(context).textSelectionTheme.selectionHandleColor,
                   child: Icon(
                     Feather.credit_card,
                     color: _currentPage == /*2*/ 1
                         ? primaryColor
                         : Config.appName.toLowerCase() == 'chamasoft'
                             ? Colors.blueGrey[300]
-                            : Colors.blueGrey[300].withOpacity(0.5),
+                            : Colors.blueGrey[300].withOpacity(1.0),
                   ),
                 ),
                 // ignore: deprecated_member_use
-                title: Text(
-                  "Transactions",
-                  style: TextStyle(
-                      color: _currentPage == /*2*/ 1
-                          ? primaryColor
-                          : Config.appName.toLowerCase() == 'chamasoft'
-                              ? Colors.blueGrey[300]
-                              : Colors.blueGrey[300].withOpacity(0.5),
-                      fontFamily: 'SegoeUI',
-                      fontWeight: FontWeight.w700),
-                ),
+                label: "Transactions",
               ),
+              //),
               BottomNavigationBarItem(
                 icon: customShowCase(
                   key: reportKey,
@@ -553,7 +576,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   description:
                       "View well summarized Transactions reports and Reciepts, You can down load and share.",
                   // ignore: deprecated_member_use
-                  textColor: Theme.of(context).textSelectionHandleColor,
+                  textColor:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   child: Icon(
                     Feather.copy,
                     color: _currentPage == /*3*/ 2
@@ -564,19 +588,18 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   ),
                 ),
                 // ignore: deprecated_member_use
-                title: Text(
-                  "Reports",
-                  style: TextStyle(
-                    color: _currentPage == /*3*/ 2
-                        ? primaryColor
-                        : Config.appName.toLowerCase() == 'chamasoft'
-                            ? Colors.blueGrey[300]
-                            : Colors.blueGrey[300].withOpacity(0.5),
-                    fontFamily: 'SegoeUI',
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+                label: 'Reports',
+                // style: TextStyle(
+                //   color: _currentPage == /*3*/ 2
+                //       ? primaryColor
+                //       : Config.appName.toLowerCase() == 'chamasoft'
+                //           ? Colors.blueGrey[300]
+                //           : Colors.blueGrey[300].withOpacity(0.5),
+                //   fontFamily: 'SegoeUI',
+                //   fontWeight: FontWeight.w700,
+                // ),
               ),
+              //),
               // BottomNavigationBarItem(
               //   icon: customShowCase(
               //     key: marketplaceKey,

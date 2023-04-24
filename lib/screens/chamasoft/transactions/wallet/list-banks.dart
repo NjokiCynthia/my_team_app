@@ -7,7 +7,7 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class ListBanks extends StatefulWidget {
@@ -46,7 +46,7 @@ class _ListBanksState extends State<ListBanks> {
           title: heading2(
               text: "Set Bank Account",
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               textAlign: TextAlign.start),
           content: TextFormField(
             controller: _accountController,
@@ -54,7 +54,7 @@ class _ListBanksState extends State<ListBanks> {
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               // ignore: deprecated_member_use
-              WhitelistingTextInputFormatter.digitsOnly
+              FilteringTextInputFormatter.digitsOnly
             ],
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -71,7 +71,8 @@ class _ListBanksState extends State<ListBanks> {
             negativeActionDialogButton(
                 text: "Cancel",
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
                 }),
@@ -113,7 +114,7 @@ class _ListBanksState extends State<ListBanks> {
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: title,
       ),
       backgroundColor: Theme.of(context).backgroundColor,

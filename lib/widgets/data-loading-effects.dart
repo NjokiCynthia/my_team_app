@@ -76,7 +76,8 @@ Widget groupPlaceholder({BuildContext context}) {
                     fontWeight: FontWeight.w500,
                     color: Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme
+                        .selectionHandleColor,
                   ),
                   SizedBox(
                     height: 22,
@@ -86,7 +87,8 @@ Widget groupPlaceholder({BuildContext context}) {
                       size: 16.0,
                       color: Theme.of(context)
                           // ignore: deprecated_member_use
-                          .textSelectionHandleColor,
+                          .textSelectionTheme
+                          .selectionHandleColor,
                       action: () {},
                     ),
                   ),
@@ -105,7 +107,8 @@ Widget groupPlaceholder({BuildContext context}) {
                     fontWeight: FontWeight.w500,
                     color: Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme
+                        .selectionHandleColor,
                   ),
                   SizedBox(
                     height: 22,
@@ -115,7 +118,8 @@ Widget groupPlaceholder({BuildContext context}) {
                         size: 16.0,
                         color: Theme.of(context)
                             // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
+                            .textSelectionTheme
+                            .selectionHandleColor,
                         action: () => {}),
                   ),
                 ],
@@ -132,7 +136,8 @@ Widget groupPlaceholder({BuildContext context}) {
                     fontWeight: FontWeight.w400,
                     color: Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme
+                        .selectionHandleColor,
                   ),
                   SizedBox(
                     height: 22,
@@ -274,7 +279,8 @@ Widget groupPlaceholder({BuildContext context}) {
                     fontWeight: FontWeight.w500,
                     color: Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme
+                        .selectionHandleColor,
                   ),
                   SizedBox(
                     height: 22,
@@ -284,7 +290,8 @@ Widget groupPlaceholder({BuildContext context}) {
                         size: 16.0,
                         color: Theme.of(context)
                             // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
+                            .textSelectionTheme
+                            .selectionHandleColor,
                         action: () {}),
                   ),
                 ],
@@ -301,7 +308,8 @@ Widget groupPlaceholder({BuildContext context}) {
                     fontWeight: FontWeight.w400,
                     color: Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme
+                        .selectionHandleColor,
                   ),
                   SizedBox(
                     height: 22,
@@ -311,7 +319,8 @@ Widget groupPlaceholder({BuildContext context}) {
                         size: 14.0,
                         color: Theme.of(context)
                             // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
+                            .textSelectionTheme
+                            .selectionHandleColor,
                         action: () {}),
                   ),
                 ],
@@ -328,7 +337,8 @@ Widget groupPlaceholder({BuildContext context}) {
                     fontWeight: FontWeight.w400,
                     color: Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme
+                        .selectionHandleColor,
                   ),
                   SizedBox(
                     height: 22,
@@ -338,7 +348,8 @@ Widget groupPlaceholder({BuildContext context}) {
                         size: 14.0,
                         color: Theme.of(context)
                             // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
+                            .textSelectionTheme
+                            .selectionHandleColor,
                         action: () {}),
                   ),
                 ],
@@ -630,9 +641,9 @@ Widget newHomePlaceHolder({BuildContext context}) {
         Container(
           padding: EdgeInsets.all(16),
           height: 80.0,
-                  ),
+        ),
         Visibility(
-          visible:false,
+          visible: false,
           child: Padding(
             padding: const EdgeInsets.all(24.0),
             child: Row(
@@ -1126,7 +1137,8 @@ Widget homePlaceholder({BuildContext context}) {
                     fontWeight: FontWeight.w400,
                     color: Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme
+                        .selectionHandleColor,
                   ),
                   SizedBox(
                     height: 22,
@@ -1140,7 +1152,8 @@ Widget homePlaceholder({BuildContext context}) {
                           ? Colors.red[400]
                           : Theme.of(context)
                               // ignore: deprecated_member_use
-                              .textSelectionHandleColor,
+                              .textSelectionTheme
+                              .selectionHandleColor,
                       action: () {},
                     ),
                   ),
@@ -1158,7 +1171,8 @@ Widget homePlaceholder({BuildContext context}) {
                     fontWeight: FontWeight.w400,
                     color: Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme
+                        .selectionHandleColor,
                   ),
                   SizedBox(
                     height: 22,
@@ -1172,7 +1186,8 @@ Widget homePlaceholder({BuildContext context}) {
                             ? Colors.red[400]
                             : Theme.of(context)
                                 // ignore: deprecated_member_use
-                                .textSelectionHandleColor,
+                                .textSelectionTheme
+                                .selectionHandleColor,
                         action: () {}),
                   ),
                 ],
@@ -1189,7 +1204,8 @@ Widget homePlaceholder({BuildContext context}) {
                     fontWeight: FontWeight.w400,
                     color: Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme
+                        .selectionHandleColor,
                   ),
                   SizedBox(
                     height: 22,
@@ -1201,7 +1217,8 @@ Widget homePlaceholder({BuildContext context}) {
                             ? Colors.red[400]
                             : Theme.of(context)
                                 // ignore: deprecated_member_use
-                                .textSelectionHandleColor,
+                                .textSelectionTheme
+                                .selectionHandleColor,
                         action: () {}),
                   ),
                 ],
@@ -1218,7 +1235,8 @@ Widget homePlaceholder({BuildContext context}) {
                     fontWeight: FontWeight.w400,
                     color: Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
+                        .textSelectionTheme
+                        .selectionHandleColor,
                   ),
                   SizedBox(
                     height: 22,
@@ -1230,7 +1248,8 @@ Widget homePlaceholder({BuildContext context}) {
                             ? Colors.red[400]
                             : Theme.of(context)
                                 // ignore: deprecated_member_use
-                                .textSelectionHandleColor,
+                                .textSelectionTheme
+                                .selectionHandleColor,
                         action: () {}),
                   ),
                 ],

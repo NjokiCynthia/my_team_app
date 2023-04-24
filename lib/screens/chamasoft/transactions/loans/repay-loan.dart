@@ -7,7 +7,7 @@ import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class RepayLoan extends StatefulWidget {
   final ActiveLoan loan;
@@ -60,7 +60,7 @@ class _RepayLoanState extends State<RepayLoan> {
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               // ignore: deprecated_member_use
-              WhitelistingTextInputFormatter.digitsOnly
+              FilteringTextInputFormatter.digitsOnly
             ],
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -75,19 +75,21 @@ class _RepayLoanState extends State<RepayLoan> {
           ),
           actions: <Widget>[
             // ignore: deprecated_member_use
-            new FlatButton(
+            new TextButton(
               child: new Text(
                 "Cancel",
                 style: TextStyle(
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor),
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             // ignore: deprecated_member_use
-            new FlatButton(
+            new TextButton(
               child: new Text(
                 "Pay Now",
                 style: new TextStyle(color: primaryColor),
@@ -109,7 +111,7 @@ class _RepayLoanState extends State<RepayLoan> {
           context: context,
           action: () => Navigator.of(context).pop(),
           elevation: _appBarElevation,
-          leadingIcon: LineAwesomeIcons.close,
+          leadingIcon: LineAwesomeIcons.times,
           title: "Repay Loan",
         ),
         backgroundColor: Theme.of(context).backgroundColor,
@@ -146,7 +148,8 @@ class _RepayLoanState extends State<RepayLoan> {
                                 style: TextStyle(
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor
+                                      .textSelectionTheme
+                                      .selectionHandleColor
                                       .withOpacity(0.8),
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.w800,
@@ -161,7 +164,8 @@ class _RepayLoanState extends State<RepayLoan> {
                                     fontSize: 18.0,
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor,
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
@@ -170,7 +174,8 @@ class _RepayLoanState extends State<RepayLoan> {
                                   style: TextStyle(
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor,
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                     fontSize: 18.0,
                                     fontWeight: FontWeight.w800,
                                   ),
@@ -191,7 +196,8 @@ class _RepayLoanState extends State<RepayLoan> {
                               style: TextStyle(
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor
+                                    .textSelectionTheme
+                                    .selectionHandleColor
                                     .withOpacity(0.8),
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w400,
@@ -202,7 +208,8 @@ class _RepayLoanState extends State<RepayLoan> {
                               style: TextStyle(
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor
+                                    .textSelectionTheme
+                                    .selectionHandleColor
                                     .withOpacity(0.8),
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w800,
@@ -218,7 +225,8 @@ class _RepayLoanState extends State<RepayLoan> {
                               style: TextStyle(
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor
+                                    .textSelectionTheme
+                                    .selectionHandleColor
                                     .withOpacity(0.8),
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w400,
@@ -229,7 +237,8 @@ class _RepayLoanState extends State<RepayLoan> {
                               style: TextStyle(
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor
+                                    .textSelectionTheme
+                                    .selectionHandleColor
                                     .withOpacity(0.8),
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w800,
@@ -245,7 +254,8 @@ class _RepayLoanState extends State<RepayLoan> {
                               style: TextStyle(
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor
+                                    .textSelectionTheme
+                                    .selectionHandleColor
                                     .withOpacity(0.8),
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w400,
@@ -256,7 +266,8 @@ class _RepayLoanState extends State<RepayLoan> {
                               style: TextStyle(
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor
+                                    .textSelectionTheme
+                                    .selectionHandleColor
                                     .withOpacity(0.8),
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w800,

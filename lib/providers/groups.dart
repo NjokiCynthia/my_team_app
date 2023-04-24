@@ -1,4 +1,4 @@
-// ignore_for_file: unused_element
+// ignore_for_file: unused_element, missing_required_param
 
 import 'dart:convert';
 import 'dart:developer';
@@ -310,9 +310,9 @@ class Borrower {
   final bool ishidden;
 
   Borrower({
-    this.id,
-    this.name,
-    this.description,
+    @required this.id,
+    @required this.name,
+    @required this.description,
     this.ishidden,
   });
 }
@@ -1002,6 +1002,7 @@ class Groups with ChangeNotifier {
             [int.parse(_currentGroupId)], DatabaseHelper.contributionsTable);
         await dbHelper.batchInsert(
             _contributionsList, DatabaseHelper.contributionsTable);
+
       }
     }
     notifyListeners();

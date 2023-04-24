@@ -13,7 +13,7 @@ class AccountBalancesDashboardSummary {
   final double balance;
 
   AccountBalancesDashboardSummary(
-      {@required this.accountName, @required this.balance});
+      {this.accountName, this.balance});
 }
 
 class BalancesDashboardSummary with ChangeNotifier {
@@ -79,7 +79,7 @@ class BalancesDashboardSummary with ChangeNotifier {
  
   bool accountBalanceSummaryExists(String groupId) {
     if (_accountData.containsKey(groupId)) {
-      if (_accountData[groupId].length <= 0) {
+      if (_accountData[groupId].length <= 0 ) {
         return false;
       }
       {

@@ -14,7 +14,7 @@ import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'group-setup/add-members-manually.dart';
@@ -71,7 +71,7 @@ class _ListMembersState extends State<ListMembers> {
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
                 ),
@@ -98,7 +98,7 @@ class _ListMembersState extends State<ListMembers> {
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
                 ),
@@ -144,7 +144,7 @@ class _ListMembersState extends State<ListMembers> {
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
                 ),
@@ -155,7 +155,7 @@ class _ListMembersState extends State<ListMembers> {
                     onTap: () async {
                       Navigator.of(context).pop();
                       // ignore: deprecated_member_use
-                      Scaffold.of(context).showSnackBar(SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           duration: Duration(milliseconds: 4000),
                           content: Text(
                             "You can not edit an active member. Kindly communicate to the member to update their profile",
@@ -171,7 +171,7 @@ class _ListMembersState extends State<ListMembers> {
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
                 ),
@@ -199,7 +199,7 @@ class _ListMembersState extends State<ListMembers> {
                 //           fontWeight: FontWeight.w600,
                 //           textAlign: TextAlign.start,
                 //           // ignore: deprecated_member_use
-                //           color: Theme.of(context).textSelectionHandleColor),
+                //           color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                 //     ),
                 //   ),
                 // ),
@@ -222,7 +222,7 @@ class _ListMembersState extends State<ListMembers> {
                 //           fontWeight: FontWeight.w600,
                 //           textAlign: TextAlign.start,
                 //           // ignore: deprecated_member_use
-                //           color: Theme.of(context).textSelectionHandleColor),
+                //           color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                 //     ),
                 //   ),
                 // ),
@@ -455,7 +455,7 @@ class _ListMembersState extends State<ListMembers> {
                                                 text: '${member.name}',
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 fontWeight: FontWeight.w800,
                                                 fontSize: 18.0,
                                               ),
@@ -471,7 +471,7 @@ class _ListMembersState extends State<ListMembers> {
                                                             FontWeight.w700,
                                                         color: Theme.of(context)
                                                             // ignore: deprecated_member_use
-                                                            .textSelectionHandleColor
+                                                            .textSelectionTheme.selectionHandleColor
                                                             .withOpacity(0.7),
                                                         fontSize: 12.0,
                                                       ),

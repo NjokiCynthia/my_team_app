@@ -13,7 +13,7 @@ import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:chamasoft/widgets/appbars.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class ReconcileDepositList extends StatefulWidget {
@@ -268,14 +268,18 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                               text: "${widget.groupObject.groupCurrency} ",
                               fontSize: 18.0,
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               fontWeight: FontWeight.w400,
                             ),
                             heading2(
                               text:
                                   currencyFormat.format(widget.deposit.amount),
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               textAlign: TextAlign.end,
                             ),
                           ],
@@ -325,7 +329,7 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                 child: Row(
                   children: [
                     // ignore: deprecated_member_use
-                    FlatButton(
+                    TextButton(
                       onPressed: () {
                         setState(() {
                           _isExpanded = !_isExpanded;
@@ -345,7 +349,7 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                     ),
                     Spacer(),
                     // ignore: deprecated_member_use
-                    FlatButton(
+                    TextButton(
                       onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute(
                               builder:

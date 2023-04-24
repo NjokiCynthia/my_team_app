@@ -9,7 +9,8 @@ import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class DetailRecieptWithdrawl extends StatefulWidget {
@@ -67,7 +68,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                               text: widget.withdrawal.name.toUpperCase(),
                               color:
                                   // ignore: deprecated_member_use
-                                  Theme.of(context).textSelectionHandleColor),
+                                  Theme.of(context).textSelectionTheme.selectionHandleColor),
                           Image.asset(
                             'assets/icon/main.png',
                             width: 80.0,
@@ -80,7 +81,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context)
                                 // ignore: deprecated_member_use
-                                .textSelectionHandleColor,
+                                .textSelectionTheme.selectionHandleColor,
                           ),
                           SizedBox(
                             height: 15.0,
@@ -105,7 +106,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
+                                    .textSelectionTheme.selectionHandleColor,
                               ),
                               customTitleWithWrap(
                                 text: group.groupPhone != "null"
@@ -115,7 +116,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
+                                    .textSelectionTheme.selectionHandleColor,
                               ),
                               customTitleWithWrap(
                                 text: group.groupEmail != "null"
@@ -125,7 +126,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
+                                    .textSelectionTheme.selectionHandleColor,
                               ),
                             ],
                           ),
@@ -157,7 +158,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                 fontWeight: FontWeight.w600,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
+                                    .textSelectionTheme.selectionHandleColor,
                               ),
                               SizedBox(
                                 height: 5.0,
@@ -168,7 +169,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
+                                    .textSelectionTheme.selectionHandleColor,
                               ),
                               SizedBox(
                                 height: 5.0,
@@ -181,7 +182,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
+                                    .textSelectionTheme.selectionHandleColor,
                               ),
                             ],
                           ),
@@ -196,7 +197,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                     // ignore: deprecated_member_use
                                     Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor,
+                                        .textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.center),
                           ),
                         ],
@@ -299,7 +300,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
     //                             fontWeight: FontWeight.w400,
     //                             color: Theme.of(context)
     //                                 // ignore: deprecated_member_use
-    //                                 .textSelectionHandleColor,
+    //                                 .textSelectionTheme.selectionHandleColor,
     //                           ),
     //                           customTitle(
     //                             text: group.groupPhone,
@@ -307,7 +308,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
     //                             fontWeight: FontWeight.w400,
     //                             color: Theme.of(context)
     //                                 // ignore: deprecated_member_use
-    //                                 .textSelectionHandleColor,
+    //                                 .textSelectionTheme.selectionHandleColor,
     //                           ),
     //                           customTitle(
     //                             text: group.groupEmail,
@@ -315,7 +316,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
     //                             fontWeight: FontWeight.w400,
     //                             color: Theme.of(context)
     //                                 // ignore: deprecated_member_use
-    //                                 .textSelectionHandleColor,
+    //                                 .textSelectionTheme.selectionHandleColor,
     //                           ),
     //                           customTitle(
     //                             text: "Date: " + widget.date,
@@ -323,7 +324,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
     //                             fontWeight: FontWeight.w400,
     //                             color: Theme.of(context)
     //                                 // ignore: deprecated_member_use
-    //                                 .textSelectionHandleColor,
+    //                                 .textSelectionTheme.selectionHandleColor,
     //                           ),
     //                         ],
     //                       )
@@ -345,7 +346,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
     //                         fontWeight: FontWeight.normal,
     //                         color: Theme.of(context)
     //                             // ignore: deprecated_member_use
-    //                             .textSelectionHandleColor,
+    //                             .textSelectionTheme.selectionHandleColor,
     //                         textAlign: TextAlign.center,
     //                       ),
     //                       SizedBox(
@@ -357,7 +358,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
     //                         fontWeight: FontWeight.normal,
     //                         color: Theme.of(context)
     //                             // ignore: deprecated_member_use
-    //                             .textSelectionHandleColor,
+    //                             .textSelectionTheme.selectionHandleColor,
     //                         textAlign: TextAlign.left,
     //                       ),
     //                       SizedBox(
@@ -369,7 +370,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
     //                         fontWeight: FontWeight.normal,
     //                         color: Theme.of(context)
     //                             // ignore: deprecated_member_use
-    //                             .textSelectionHandleColor,
+    //                             .textSelectionTheme.selectionHandleColor,
     //                         textAlign: TextAlign.left,
     //                       ),
     //                       SizedBox(
@@ -384,7 +385,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
     //                         fontWeight: FontWeight.normal,
     //                         color: Theme.of(context)
     //                             // ignore: deprecated_member_use
-    //                             .textSelectionHandleColor,
+    //                             .textSelectionTheme.selectionHandleColor,
     //                         textAlign: TextAlign.left,
     //                       ),
     //                       SizedBox(
@@ -396,7 +397,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
     //                         fontWeight: FontWeight.normal,
     //                         color: Theme.of(context)
     //                             // ignore: deprecated_member_use
-    //                             .textSelectionHandleColor,
+    //                             .textSelectionTheme.selectionHandleColor,
     //                         textAlign: TextAlign.left,
     //                       ),
     //                     ],

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:io';
 
 import 'package:chamasoft/providers/auth.dart';
@@ -12,7 +14,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class SignUp extends StatefulWidget {
@@ -91,7 +93,7 @@ class _SignUpState extends State<SignUp> {
       _authData['firstName'] = _firstName;
       _authData['lastName'] = _lastName;
       _authData['identity'] = _identity;
-      _authData['avatar'] = ((avatar!=null)?File(avatar.path):null);
+      _authData['avatar'] = ((avatar != null) ? File(avatar.path) : null);
       _authData['uniqueCode'] = _uniqueCode;
       await Provider.of<Auth>(context, listen: false).registerUser(_authData);
       Navigator.of(context).pushNamedAndRemoveUntil(
@@ -136,12 +138,14 @@ class _SignUpState extends State<SignUp> {
                   children: [
                     heading1(
                         text: "Profile",
-                        // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                     subtitle1(
                         text: "Fill details to complete\naccount setup",
-                        // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor),
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                     Padding(
                       padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
                       child: Stack(

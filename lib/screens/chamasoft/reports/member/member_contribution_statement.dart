@@ -13,7 +13,8 @@ import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class MemberContributionStatement extends StatefulWidget {
@@ -255,7 +256,7 @@ class _MemberContributionStatementState
                             // ignore: deprecated_member_use
                             color:
                                 // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionHandleColor,
+                                Theme.of(context).textSelectionTheme.selectionHandleColor,
                             textAlign: TextAlign.start,
                           ),
                           SizedBox(
@@ -268,7 +269,7 @@ class _MemberContributionStatementState
                             // ignore: deprecated_member_use
                             color:
                                 // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionHandleColor,
+                                Theme.of(context).textSelectionTheme.selectionHandleColor,
                           ),
                           SizedBox(
                             height: 10.0,
@@ -279,7 +280,7 @@ class _MemberContributionStatementState
                             // ignore: deprecated_member_use
                             color:
                                 // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionHandleColor,
+                                Theme.of(context).textSelectionTheme.selectionHandleColor,
                           ),
                           SizedBox(
                             height: 3.0,
@@ -290,7 +291,7 @@ class _MemberContributionStatementState
                             // ignore: deprecated_member_use
                             color:
                                 // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionHandleColor,
+                                Theme.of(context).textSelectionTheme.selectionHandleColor,
                           )
                         ],
                       ),
@@ -324,7 +325,7 @@ class _MemberContributionStatementState
                         fontSize: 14,
                         color:
                             // ignore: deprecated_member_use
-                            Theme.of(context).textSelectionHandleColor,
+                            Theme.of(context).textSelectionTheme.selectionHandleColor,
                         textAlign: TextAlign.start,
                       ),
                       subtitle2(
@@ -333,7 +334,7 @@ class _MemberContributionStatementState
                         // fontWeight: FontWeight.w500,
                         color:
                             // ignore: deprecated_member_use
-                            Theme.of(context).textSelectionHandleColor,
+                            Theme.of(context).textSelectionTheme.selectionHandleColor,
                         textAlign: TextAlign.start,
                       ),
                     ],
@@ -348,7 +349,7 @@ class _MemberContributionStatementState
                           fontSize: 14,
                           color: Theme.of(context)
                               // ignore: deprecated_member_use
-                              .textSelectionHandleColor,
+                              .textSelectionTheme.selectionHandleColor,
                           textAlign: TextAlign.end,
                         ),
                         subtitle2(
@@ -359,7 +360,7 @@ class _MemberContributionStatementState
                               : "",
                           color: Theme.of(context)
                               // ignore: deprecated_member_use
-                              .textSelectionHandleColor,
+                              .textSelectionTheme.selectionHandleColor,
                           textAlign: TextAlign.end,
                         ),
                       ],
@@ -468,7 +469,7 @@ class _MemberContributionStatementState
                       )
                     : emptyList(
                         color: Colors.blue[400],
-                        iconData: LineAwesomeIcons.file_text,
+                        iconData: LineAwesomeIcons.file,
                         text:
                             "There are no statements for ${widget.memberName}")),
             Container(
@@ -507,7 +508,7 @@ class _MemberContributionStatementState
                             : (_balance < 0
                                 ? Colors.green
                                 // ignore: deprecated_member_use
-                                : Theme.of(context).textSelectionHandleColor),
+                                : Theme.of(context).textSelectionTheme.selectionHandleColor),
                         textAlign: TextAlign.end),
                   ),
                 ],
@@ -526,7 +527,7 @@ class _MemberContributionStatementState
             //           // ignore: deprecated_member_use
             //           color:
             //               // ignore: deprecated_member_use
-            //               Theme.of(context).textSelectionHandleColor,
+            //               Theme.of(context).textSelectionTheme.selectionHandleColor,
             //         ),
             //       )
             //     ],

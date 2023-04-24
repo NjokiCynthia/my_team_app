@@ -13,7 +13,8 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 import 'add_member_dialog.dart';
@@ -169,7 +170,7 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                                 textAlign: TextAlign.center,
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor),
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor),
                             onPressed: () {
                               print(groupRole.roleName + " tapped");
                               setState(() {
@@ -191,7 +192,7 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                   text: "Set Role",
                   textAlign: TextAlign.center,
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor),
+                  color: Theme.of(context).textSelectionTheme.selectionHandleColor),
               actions: <Widget>[
                 CupertinoDialogAction(
                   child: subtitle1(text: "Close", color: primaryColor),
@@ -276,14 +277,57 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                   margin:
                       const EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
                   // ignore: deprecated_member_use
-                  child: FlatButton(
+                  // child: FlatButton(
+                  //   onPressed: () async {
+                  //     //addMember(context);
+                  //     CustomContact contact = await Navigator.of(context).push(
+                  //         new MaterialPageRoute<CustomContact>(
+                  //             builder: (BuildContext context) {
+                  //       return AddMemberDialog();
+                  //     }));
+                  //
+                  //     if (contact != null) {
+                  //       setState(() {
+                  //         selectedContacts.add(contact);
+                  //       });
+                  //     } else {
+                  //       print("Contact is null");
+                  //     }
+                  //   },
+                  //   padding: EdgeInsets.only(left: 4, right: 4),
+                  //   shape: RoundedRectangleBorder(
+                  //       side: BorderSide(
+                  //           color: Theme.of(context).hintColor,
+                  //           width: 1.0,
+                  //           style: BorderStyle.solid),
+                  //       borderRadius: BorderRadius.circular(4)),
+                  //   child: Row(
+                  //     children: <Widget>[
+                  //       Icon(
+                  //         LineAwesomeIcons.plus,
+                  //         color: Theme.of(context).hintColor,
+                  //         size: 16,
+                  //       ),
+                  //       SizedBox(
+                  //         width: 4,
+                  //       ),
+                  //       customTitle(
+                  //           text: "ADD MEMBER",
+                  //           fontSize: 12,
+                  //           // ignore: deprecated_member_use
+                  //           color: Theme.of(context).textSelectionTheme.selectionHandleColor),
+                  //     ],
+                  //   ),
+                  // ),
+                  child: ElevatedButton(
                     onPressed: () async {
-                      //addMember(context);
                       CustomContact contact = await Navigator.of(context).push(
-                          new MaterialPageRoute<CustomContact>(
-                              builder: (BuildContext context) {
-                        return AddMemberDialog();
-                      }));
+                        MaterialPageRoute<CustomContact>(
+                            builder: (BuildContext context) {
+                              return AddMemberDialog();
+                            }
+                        ),
+                      );
 
                       if (contact != null) {
                         setState(() {
@@ -293,13 +337,19 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                         print("Contact is null");
                       }
                     },
-                    padding: EdgeInsets.only(left: 4, right: 4),
-                    shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                            color: Theme.of(context).hintColor,
-                            width: 1.0,
-                            style: BorderStyle.solid),
-                        borderRadius: BorderRadius.circular(4)),
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0.0,
+                      backgroundColor: Colors.white,
+                      padding: EdgeInsets.only(left: 4, right: 4),
+                      shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                              color: Theme.of(context).hintColor,
+                              width: 1.0,
+                              style: BorderStyle.solid
+                          ),
+                          borderRadius: BorderRadius.circular(4)
+                      ),
+                    ),
                     child: Row(
                       children: <Widget>[
                         Icon(
@@ -310,11 +360,13 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                         SizedBox(
                           width: 4,
                         ),
-                        customTitle(
-                            text: "ADD MEMBER",
+                        Text(
+                          "ADD MEMBER",
+                          style: TextStyle(
                             fontSize: 12,
-                            // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor),
+                            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -382,7 +434,7 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                                           visible:
                                               !(addedCurrentUser && index == 0),
                                           child: screenActionButton(
-                                            icon: LineAwesomeIcons.close,
+                                            icon: LineAwesomeIcons.times,
                                             backgroundColor:
                                                 Colors.red.withOpacity(0.1),
                                             textColor: Colors.red,
@@ -416,7 +468,7 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                                   "Start adding members by clicking on the button above", // ignore: deprecated_member_use
                               color:
                                   // ignore: deprecated_member_use
-                                  Theme.of(context).textSelectionHandleColor),
+                                  Theme.of(context).textSelectionTheme.selectionHandleColor),
                         ),
                       )),
             SizedBox(

@@ -4,7 +4,7 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class BankList extends StatefulWidget {
   @override
@@ -13,10 +13,10 @@ class BankList extends StatefulWidget {
 
 class _BankListState extends State<BankList> {
   final List<Bank> list = [
-    Bank("1", "NCBA Bank", LineAwesomeIcons.bank),
-    Bank("1", "KCB Bank", LineAwesomeIcons.bank),
-    Bank("1", "Cooperative Bank", LineAwesomeIcons.bank),
-    Bank("1", "ABSA Bank", LineAwesomeIcons.bank),
+    Bank("1", "NCBA Bank", LineAwesomeIcons.piggy_bank),
+    Bank("1", "KCB Bank", LineAwesomeIcons.piggy_bank),
+    Bank("1", "Cooperative Bank", LineAwesomeIcons.piggy_bank),
+    Bank("1", "ABSA Bank", LineAwesomeIcons.piggy_bank),
   ];
 
   void bankAccount() {
@@ -42,19 +42,21 @@ class _BankListState extends State<BankList> {
           ),
           actions: <Widget>[
             // ignore: deprecated_member_use
-            new FlatButton(
+            new TextButton(
               child: new Text(
                 "Cancel",
                 style: TextStyle(
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor),
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             // ignore: deprecated_member_use
-            new FlatButton(
+            new TextButton(
               child: new Text(
                 "Proceed",
                 style: new TextStyle(color: primaryColor),
@@ -74,7 +76,7 @@ class _BankListState extends State<BankList> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: 1,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: "Select Your Bank",
       ),
       backgroundColor: Colors.transparent,
@@ -118,7 +120,7 @@ class _BankListState extends State<BankList> {
                         child: Row(
                           children: <Widget>[
                             Icon(
-                              LineAwesomeIcons.bank,
+                              LineAwesomeIcons.piggy_bank,
                               color: Colors.blueGrey,
                               size: 32,
                             ),
@@ -129,7 +131,9 @@ class _BankListState extends State<BankList> {
                                 text: bank.name,
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context)
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                 textAlign: TextAlign.start),
                           ],
                         ),

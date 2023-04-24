@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'dart:async';
 
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
@@ -8,7 +10,8 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class ListContacts extends StatefulWidget {
@@ -27,9 +30,9 @@ class _ListContactsState extends State<ListContacts> {
   PermissionStatus _permissionStatus = PermissionStatus.denied;
   // initially permissionstatus was undetermined
   // ignore: deprecated_member_use
-  List<CustomContact> _contacts = new List<CustomContact>();
+  List<CustomContact> _contacts = [];
   // ignore: deprecated_member_use
-  List<CustomContact> _selectedContacts = List<CustomContact>();
+  List<CustomContact> _selectedContacts = [];
   bool _isLoading = false;
   String floatingButtonLabel;
   Color floatingButtonColor;
@@ -86,7 +89,7 @@ class _ListContactsState extends State<ListContacts> {
           context: context,
           action: () => Navigator.of(context).pop(),
           elevation: 2.5,
-          leadingIcon: LineAwesomeIcons.close,
+          leadingIcon: LineAwesomeIcons.times,
           title:
               "Add Members${_selectedContacts.length == 0 ? '' : '(${_selectedContacts.length})'}",
           trailingIcon: LineAwesomeIcons.check,

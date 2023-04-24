@@ -376,19 +376,20 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
             FlSpot(8, 3),
           ],
           isCurved: false,
-          colors: [primaryColor],
+          color: primaryColor,
           barWidth: 1,
           isStrokeCapRound: false,
           dotData: FlDotData(show: false),
           belowBarData: BarAreaData(
             show: true,
-            colors: [
-              primaryColor.withOpacity(0.07),
-              primaryColor.withOpacity(0.0),
-            ],
-            gradientColorStops: [0.5, 1.0],
-            gradientFrom: const Offset(0, 0),
-            gradientTo: const Offset(0, 1),
+            color:
+                //[
+                primaryColor.withOpacity(0.07),
+            //primaryColor.withOpacity(0.0),
+            //],
+            // gradientColorStops: [0.5, 1.0],
+            // gradientFrom: const Offset(0, 0),
+            // gradientTo: const Offset(0, 1),
           ),
         ),
       ],
@@ -424,7 +425,7 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                   ? Column(
                       children: <Widget>[
                         Visibility(
-                          visible: _showMeetingsBanner,
+                          visible: _currentGroup.isGroupAdmin,
                           child: customShowCase(
                             key: meetingsBannarKey,
                             title: "Chamasoft Meetings Banner",
@@ -560,7 +561,9 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                 'View a summary of Your Contribution Balance, Fines, Loans and Pending Instalments',
                             textColor:
                                 // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionHandleColor,
+                                Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                             child: Container(
                               padding: EdgeInsets.all(16.0),
                               decoration: cardDecoration(
@@ -600,7 +603,8 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
                                             // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
+                                            .textSelectionTheme
+                                            .selectionHandleColor,
                                       ),
                                       // SizedBox(
                                       //   height: 22,
@@ -647,7 +651,8 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
                                             // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
+                                            .textSelectionTheme
+                                            .selectionHandleColor,
                                       ),
                                       SizedBox(
                                         height: 22,
@@ -666,7 +671,8 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                                 ? Colors.red[400]
                                                 : Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme
+                                                    .selectionHandleColor,
                                             action: () => Navigator.of(context)
                                                 .push(MaterialPageRoute(
                                                     builder: (BuildContext context) =>
@@ -691,7 +697,8 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
                                             // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
+                                            .textSelectionTheme
+                                            .selectionHandleColor,
                                       ),
                                       SizedBox(
                                         height: 22,
@@ -707,7 +714,8 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                                 ? Colors.red[400]
                                                 : Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme
+                                                    .selectionHandleColor,
                                             action: () => Navigator.of(context)
                                                 .push(MaterialPageRoute(
                                                     builder: (BuildContext
@@ -731,7 +739,8 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
                                             // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
+                                            .textSelectionTheme
+                                            .selectionHandleColor,
                                       ),
                                       SizedBox(
                                         height: 22,
@@ -747,7 +756,8 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                                 ? Colors.red[400]
                                                 : Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme
+                                                    .selectionHandleColor,
                                             action: () => Navigator.of(context)
                                                 .push(MaterialPageRoute(
                                                     builder: (BuildContext
@@ -972,7 +982,8 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                   child: Container(
                                     height: 180.0,
                                     child: ListView(
@@ -1080,7 +1091,8 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                   child: Container(
                                       width: double.infinity,
                                       padding: EdgeInsets.all(16.0),
@@ -1119,7 +1131,9 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                   'Click here to Pay your contribution to chama e-wallet using M-PESA',
                               textColor:
                                   // ignore: deprecated_member_use
-                                  Theme.of(context).textSelectionHandleColor,
+                                  Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                               child: Container(
                                 // ignore: todo
                                 // width: 260, //TODO: Remove this when you uncomment the 'APPLY LOAD' button below
@@ -1214,7 +1228,8 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                   child: Container(
                                     height: 180.0,
                                     child: ListView(

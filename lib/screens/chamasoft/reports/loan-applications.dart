@@ -7,7 +7,8 @@ import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class LoanApplications extends StatefulWidget {
@@ -150,7 +151,7 @@ class MyLoansCard extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                             fontSize: 16.0,
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                           ),
                           textAlign: TextAlign.start,
                           maxLines: 2,
@@ -180,14 +181,14 @@ class MyLoansCard extends StatelessWidget {
                                 text: "Applied On",
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.start),
                             subtitle1(
                                 text: defaultDateFormat
                                     .format(application.requestDate),
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.start)
                           ],
                         ),
@@ -201,7 +202,7 @@ class MyLoansCard extends StatelessWidget {
                                 fontSize: 16.0,
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -212,7 +213,7 @@ class MyLoansCard extends StatelessWidget {
                                 fontSize: 20.0,
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
+                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),

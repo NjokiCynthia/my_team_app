@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
@@ -9,10 +11,10 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:dropdown_formfield/dropdown_formfield.dart';
+//import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_connect/http/src/certificates/certificates.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class SendToMobile extends StatefulWidget {
@@ -188,7 +190,7 @@ class _SendToMobileState extends State<SendToMobile> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: "Send to Mobile",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
@@ -260,7 +262,7 @@ class _SendToMobileState extends State<SendToMobile> {
                 _prepareSubmission(context, _groupObject.groupId);
               },
               style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).primaryColor),
+                  backgroundColor: Theme.of(context).primaryColor),
               child: Padding(
                 padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
                 child: Text(

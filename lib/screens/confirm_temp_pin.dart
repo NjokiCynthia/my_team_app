@@ -1,7 +1,7 @@
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:flutter/cupertino.dart';
+//import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -250,7 +250,8 @@ class _TempolaryPinState extends State<TempolaryPin> {
       text: "Please enter the code that you recieved via sms. ",
       color: Theme.of(context)
           // ignore: deprecated_member_use
-          .textSelectionHandleColor
+          .textSelectionTheme
+          .selectionHandleColor
           .withOpacity(0.6),
     );
   }

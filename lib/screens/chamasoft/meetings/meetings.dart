@@ -12,7 +12,8 @@ import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class Meetings extends StatefulWidget {
@@ -25,6 +26,7 @@ class _MeetingsState extends State<Meetings> {
   ScrollController _scrollController;
   List<dynamic> meetings = [];
   String _groupCurrency = "KES";
+  bool _isGroupAdmin = false;
   var formatter = NumberFormat('#,##,##0', "en_US");
   var dateFormatter = DateFormat('EEE, d MMM, yyy HH:mm a', "en_US");
   bool _isLoading = true;
@@ -63,6 +65,7 @@ class _MeetingsState extends State<Meetings> {
     await group.fetchMeetings();
     setState(() {
       _syncing = false;
+      _isGroupAdmin = currentGroup.isGroupAdmin;
       meetings = [];
       _groupCurrency = currentGroup.groupCurrency;
       int c = 0;
@@ -152,20 +155,20 @@ class _MeetingsState extends State<Meetings> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.arrow_left,
+        leadingIcon:LineAwesomeIcons.arrow_left,
         title: "Meetings",
         actions: [
-          Padding(
+          _isGroupAdmin ? Padding(
             padding: EdgeInsets.only(right: 20.0),
             child: IconButton(
               icon: Icon(
                 Icons.add,
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color : Theme.of(context).textSelectionTheme.selectionHandleColor,
               ),
               onPressed: _isLoading
                   ? null
-                  : () => Navigator.of(context)
+                  :  () => Navigator.of(context)
                           .push(
                         MaterialPageRoute(
                           builder: (BuildContext context) => EditMeeting(),
@@ -175,7 +178,7 @@ class _MeetingsState extends State<Meetings> {
                         fetchData();
                       }),
             ),
-          ),
+          ) : Container(),
         ],
       ),
       body: _isLoading
@@ -333,7 +336,7 @@ class _MeetingsState extends State<Meetings> {
                           Icon(
                             Icons.lightbulb_outline,
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                             size: 24.0,
                             semanticLabel: 'You should know...',
                           ),
@@ -349,14 +352,14 @@ class _MeetingsState extends State<Meetings> {
                                   textAlign: TextAlign.start,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme.selectionHandleColor,
                                 ),
                                 subtitle2(
                                   text:
                                       "That everytime you have your regular group meetings, Chamasoft helps you keep minutes for future reference, and also record any transactions.",
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme.selectionHandleColor,
                                   textAlign: TextAlign.start,
                                 ),
                               ],
@@ -374,7 +377,7 @@ class _MeetingsState extends State<Meetings> {
                               separatorBuilder: (context, index) => Divider(
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionHandleColor
+                                    .textSelectionTheme.selectionHandleColor
                                     .withOpacity(0.5),
                                 height: 0.0,
                               ),
@@ -404,7 +407,7 @@ class _MeetingsState extends State<Meetings> {
                                               Icons.group,
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme.selectionHandleColor,
                                             ),
                                           ),
                                           Column(
@@ -419,14 +422,14 @@ class _MeetingsState extends State<Meetings> {
                                                 ),
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 textAlign: TextAlign.start,
                                               ),
                                               subtitle1(
                                                 text: meetings[index]['title'],
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 textAlign: TextAlign.start,
                                               ),
                                               Row(
@@ -439,7 +442,7 @@ class _MeetingsState extends State<Meetings> {
                                                       fontSize: 13.0,
                                                       color: Theme.of(context)
                                                           // ignore: deprecated_member_use
-                                                          .textSelectionHandleColor,
+                                                          .textSelectionTheme.selectionHandleColor,
                                                       fontFamily: 'SegoeUI',
                                                     ),
                                                     textAlign: TextAlign.start,
@@ -455,7 +458,7 @@ class _MeetingsState extends State<Meetings> {
                                                       fontSize: 13.0,
                                                       color: Theme.of(context)
                                                           // ignore: deprecated_member_use
-                                                          .textSelectionHandleColor,
+                                                          .textSelectionTheme.selectionHandleColor,
                                                       fontFamily: 'SegoeUI',
                                                     ),
                                                     textAlign: TextAlign.start,
@@ -589,7 +592,7 @@ class _MeetingsState extends State<Meetings> {
                               // alignment: Alignment.center,
                               child: emptyList(
                                 color: Colors.blue[400],
-                                iconData: LineAwesomeIcons.file_text,
+                                iconData: LineAwesomeIcons.file,
                                 text: "There are no meetings to show",
                               ),
                             ),

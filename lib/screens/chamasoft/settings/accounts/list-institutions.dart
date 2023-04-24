@@ -4,10 +4,16 @@ import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-enum InstitutionFlag { flagBanks, flagBankBranches, flagSaccos, flagSaccoBranches }
+enum InstitutionFlag {
+  flagBanks,
+  flagBankBranches,
+  flagSaccos,
+  flagSaccoBranches
+}
 
 class InstitutionArguments {
   dynamic bank;
@@ -35,7 +41,8 @@ class _ListInstitutionsState extends State<ListInstitutions> {
 
   Future<void> _fetchBankBranchOptions(BuildContext context, String id) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchBankBranchOptions(id);
+      await Provider.of<Groups>(context, listen: false)
+          .fetchBankBranchOptions(id);
       Navigator.of(context).pop();
       Navigator.of(context).pop(_arguments);
     } on CustomException catch (error) {
@@ -51,7 +58,8 @@ class _ListInstitutionsState extends State<ListInstitutions> {
 
   Future<void> _fetchSaccoBranchOptions(BuildContext context, String id) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchSaccoBranchOptions(id);
+      await Provider.of<Groups>(context, listen: false)
+          .fetchSaccoBranchOptions(id);
       Navigator.of(context).pop();
       Navigator.of(context).pop(_arguments);
     } on CustomException catch (error) {
@@ -105,7 +113,7 @@ class _ListInstitutionsState extends State<ListInstitutions> {
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: title,
       ),
       backgroundColor: Theme.of(context).backgroundColor,
@@ -145,7 +153,8 @@ class _ListInstitutionsState extends State<ListInstitutions> {
                             ? buildListTile(index, name, context, flag, id)
                             : name.toLowerCase().contains(filter.toLowerCase())
                                 ? buildListTile(index, name, context, flag, id)
-                                : Visibility(visible: false, child: new Container());
+                                : Visibility(
+                                    visible: false, child: new Container());
                       },
                       itemCount: _list.length),
                 )
@@ -157,7 +166,8 @@ class _ListInstitutionsState extends State<ListInstitutions> {
     );
   }
 
-  ListTile buildListTile(int index, String name, BuildContext context, InstitutionFlag flag, int id) {
+  ListTile buildListTile(int index, String name, BuildContext context,
+      InstitutionFlag flag, int id) {
     return ListTile(
       title: customTitle(text: name, textAlign: TextAlign.start),
       onTap: () async {
@@ -169,10 +179,12 @@ class _ListInstitutionsState extends State<ListInstitutions> {
                   child: CircularProgressIndicator(),
                 );
               });
-          _arguments = InstitutionArguments(_banksList[index], InstitutionFlag.flagBanks);
+          _arguments = InstitutionArguments(
+              _banksList[index], InstitutionFlag.flagBanks);
           await _fetchBankBranchOptions(context, id.toString());
         } else if (flag == InstitutionFlag.flagBankBranches) {
-          _arguments = InstitutionArguments(_branchList[index], InstitutionFlag.flagBankBranches);
+          _arguments = InstitutionArguments(
+              _branchList[index], InstitutionFlag.flagBankBranches);
           Navigator.of(context).pop(_arguments);
         } else if (flag == InstitutionFlag.flagSaccos) {
           showDialog(
@@ -182,12 +194,14 @@ class _ListInstitutionsState extends State<ListInstitutions> {
                   child: CircularProgressIndicator(),
                 );
               });
-          _arguments = InstitutionArguments(_saccoList[index], InstitutionFlag.flagSaccos);
+          _arguments = InstitutionArguments(
+              _saccoList[index], InstitutionFlag.flagSaccos);
           print("Sacco: $name");
           print("Id: $id");
           await _fetchSaccoBranchOptions(context, id.toString());
         } else if (flag == InstitutionFlag.flagSaccoBranches) {
-          _arguments = InstitutionArguments(_saccoBranchList[index], InstitutionFlag.flagSaccoBranches);
+          _arguments = InstitutionArguments(
+              _saccoBranchList[index], InstitutionFlag.flagSaccoBranches);
           Navigator.of(context).pop(_arguments);
         }
       },

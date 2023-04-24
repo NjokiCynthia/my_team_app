@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_import
+
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
@@ -12,8 +14,10 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:md2_tab_indicator/md2_tab_indicator.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+//import 'package:md2_tab_indicator/md2_tab_indicator.dart';
+import 'package:tab_indicator_styler/tab_indicator_styler.dart';
+
 import 'package:provider/provider.dart';
 
 import 'chamasoft/settings/accounts/create-bank-account.dart';
@@ -101,7 +105,8 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                 fontSize: 12,
                 // ignore: deprecated_member_use
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor),
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor),
           ),
           PopupMenuItem(
             value: 2,
@@ -109,22 +114,26 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                 text: "ADD MANUALLY",
                 fontSize: 12,
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor),
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor),
           ),
         ],
         child: ButtonTheme(
           height: 36,
           // ignore: deprecated_member_use, missing_required_param
-          child: FlatButton(
+          child: TextButton(
             ///DON'T ADD 'onPressed', otherwise it will intercept the click event and prevent the
             ///PopupMenu from being triggered. Should have used a different widget, I know :(
-            padding: EdgeInsets.only(left: 4, right: 4),
-            shape: RoundedRectangleBorder(
-                side: BorderSide(
-                    color: Theme.of(context).hintColor,
-                    width: 1.0,
-                    style: BorderStyle.solid),
-                borderRadius: BorderRadius.circular(4)),
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.only(left: 4, right: 4),
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                      color: Theme.of(context).hintColor,
+                      width: 1.0,
+                      style: BorderStyle.solid),
+                  borderRadius: BorderRadius.circular(4)),
+            ),
+
             child: Row(
               children: <Widget>[
                 Icon(
@@ -139,7 +148,9 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                     text: "ADD MEMBERS",
                     fontSize: 12,
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor),
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor),
                 Container(
                   height: 36,
                   child: VerticalDivider(
@@ -437,10 +448,11 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                   : Colors.white54,
                               automaticallyImplyLeading: false,
                               bottom: TabBar(
-                                indicator: MD2Indicator(
-                                  indicatorHeight: 3,
-                                  indicatorColor: primaryColor,
-                                  indicatorSize: MD2IndicatorSize.normal,
+                                indicator: MaterialIndicator(
+                                  height: 3,
+                                  color: primaryColor,
+
+                                  // indicatorSize: MD2IndicatorSize.normal,
                                 ),
                                 labelColor: primaryColor,
                                 unselectedLabelColor: Colors.blueGrey,
@@ -511,7 +523,8 @@ class AccountsTabView extends StatelessWidget {
                     textAlign: TextAlign.start,
                     color: Theme.of(context)
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor
+                        .textSelectionTheme
+                        .selectionHandleColor
                         .withOpacity(0.6),
                     fontSize: 13.0,
                   ),
@@ -541,7 +554,8 @@ class AccountsTabView extends StatelessWidget {
                                     text: account.name,
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionHandleColor,
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                     textAlign: TextAlign.start,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 15.0,
@@ -553,7 +567,8 @@ class AccountsTabView extends StatelessWidget {
                                           textAlign: TextAlign.start,
                                           color: Theme.of(context)
                                               // ignore: deprecated_member_use
-                                              .textSelectionHandleColor
+                                              .textSelectionTheme
+                                              .selectionHandleColor
                                               .withOpacity(0.5),
                                           fontSize: 12.0,
                                         )
@@ -584,7 +599,7 @@ class AccountsTabView extends StatelessWidget {
 //                                                            ),
 //                                                            SizedBox(width: 10.0),
 //                                                            screenActionButton(
-//                                                              icon: LineAwesomeIcons.close,
+//                                                              icon: LineAwesomeIcons.times,
 //                                                              backgroundColor: Colors.red.withOpacity(0.1),
 //                                                              textColor: Colors.red,
 //                                                              action: () {},
@@ -606,7 +621,7 @@ class AccountsTabView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Icon(
-                  LineAwesomeIcons.bank,
+                  LineAwesomeIcons.ban,
                   size: 100,
                   color: Colors.blue[400].withOpacity(0.15),
                 ),
@@ -664,7 +679,8 @@ class ContributionsTabView extends StatelessWidget {
                                   text: '${contribution.name}',
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   fontWeight: FontWeight.w700,
                                   textAlign: TextAlign.start,
                                   fontSize: 15.0,
@@ -680,7 +696,8 @@ class ContributionsTabView extends StatelessWidget {
                                           textAlign: TextAlign.start,
                                           color: Theme.of(context)
                                               // ignore: deprecated_member_use
-                                              .textSelectionHandleColor
+                                              .textSelectionTheme
+                                              .selectionHandleColor
                                               .withOpacity(0.5),
                                           fontSize: 12.0,
                                         ),
@@ -691,7 +708,8 @@ class ContributionsTabView extends StatelessWidget {
                                             textAlign: TextAlign.start,
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor
+                                                .textSelectionTheme
+                                                .selectionHandleColor
                                                 .withOpacity(0.7),
                                             fontSize: 12.0,
                                           ),
@@ -706,7 +724,8 @@ class ContributionsTabView extends StatelessWidget {
                                           textAlign: TextAlign.start,
                                           color: Theme.of(context)
                                               // ignore: deprecated_member_use
-                                              .textSelectionHandleColor
+                                              .textSelectionTheme
+                                              .selectionHandleColor
                                               .withOpacity(0.5),
                                           fontSize: 12.0,
                                         ),
@@ -717,7 +736,8 @@ class ContributionsTabView extends StatelessWidget {
                                             textAlign: TextAlign.start,
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionHandleColor
+                                                .textSelectionTheme
+                                                .selectionHandleColor
                                                 .withOpacity(0.7),
                                             fontSize: 12.0,
                                           ),
@@ -766,7 +786,7 @@ class ContributionsTabView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Icon(
-                  LineAwesomeIcons.file_text,
+                  LineAwesomeIcons.file,
                   size: 100,
                   color: Colors.blue[400].withOpacity(0.15),
                 ),
@@ -823,7 +843,9 @@ class MembersTabView extends StatelessWidget {
                           customTitleWithWrap(
                             text: '${member.name}',
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             fontWeight: FontWeight.w800,
                             textAlign: TextAlign.start,
                             fontSize: 15.0,
@@ -834,7 +856,8 @@ class MembersTabView extends StatelessWidget {
                             textAlign: TextAlign.start,
                             color: Theme.of(context)
                                 // ignore: deprecated_member_use
-                                .textSelectionHandleColor
+                                .textSelectionTheme
+                                .selectionHandleColor
                                 .withOpacity(0.5),
                             fontSize: 12.0,
                           ),
@@ -861,7 +884,7 @@ class MembersTabView extends StatelessWidget {
                     ),
                     SizedBox(width: 10.0),
 //                      screenActionButton(
-//                        icon: LineAwesomeIcons.close,
+//                        icon: LineAwesomeIcons.times,
 //                        backgroundColor: Colors.red.withOpacity(0.1),
 //                        textColor: Colors.red,
 //                        action: () {},

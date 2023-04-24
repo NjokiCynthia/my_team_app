@@ -6,9 +6,9 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class CreateBankAccount extends StatefulWidget {
@@ -100,7 +100,7 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
         Navigator.of(context).pop(true);
       } else {
         // ignore: deprecated_member_use
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully added a Bank Account",
         )));
@@ -114,7 +114,7 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
       Navigator.pop(context);
 
       // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error Adding the Bank Account. ${error.message} ",
       )));

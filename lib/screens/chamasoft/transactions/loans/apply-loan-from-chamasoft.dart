@@ -18,7 +18,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 // ignore: unused_import
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 // ignore: must_be_immutable
 class ApplyLoanFromChamasoft extends StatefulWidget {
@@ -107,13 +107,15 @@ class ChamasoftLoanProductCard extends StatelessWidget {
               title: subtitle1(
                   color: Theme.of(context)
                       // ignore: deprecated_member_use
-                      .textSelectionHandleColor,
+                      .textSelectionTheme
+                      .selectionHandleColor,
                   text: loanProduct.name,
                   textAlign: TextAlign.start),
               subtitle: subtitle2(
                   color: Theme.of(context)
                       // ignore: deprecated_member_use
-                      .textSelectionHandleColor,
+                      .textSelectionTheme
+                      .selectionHandleColor,
                   text: loanProduct.description,
                   textAlign: TextAlign.start),
               trailing: Icon(Icons.arrow_forward_ios),

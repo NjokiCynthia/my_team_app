@@ -54,12 +54,16 @@ class StatementBody extends StatelessWidget {
                         subtitle1(
                             text: row.title,
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             textAlign: TextAlign.start),
                         subtitle2(
                             text: row.description,
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             textAlign: TextAlign.start)
                       ],
                     ),
@@ -75,12 +79,16 @@ class StatementBody extends StatelessWidget {
                         " " +
                         currencyFormat.format(row.amount),
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor,
                     textAlign: TextAlign.start),
                 subtitle2(
                     text: row.date,
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor,
                     textAlign: TextAlign.start),
               ],
             )
@@ -114,13 +122,16 @@ class MemberStatementBody extends StatelessWidget {
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                   text: row.date,
-                  color: Theme.of(context).textSelectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
                 customTitle2(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
                     text: row.title,
-                    color: Theme.of(context).textSelectionHandleColor,
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor,
                     textAlign: TextAlign.start),
               ],
             ),
@@ -130,7 +141,8 @@ class MemberStatementBody extends StatelessWidget {
             child: customTitle(
                 fontSize: 12,
                 text: currencyFormat.format(row.payable),
-                color: Theme.of(context).textSelectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.end),
           ),
           Expanded(
@@ -138,7 +150,8 @@ class MemberStatementBody extends StatelessWidget {
             child: customTitle(
                 fontSize: 12,
                 text: currencyFormat.format(row.amount),
-                color: Theme.of(context).textSelectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.end),
           ),
           Expanded(
@@ -151,7 +164,9 @@ class MemberStatementBody extends StatelessWidget {
                     : (row.balance < 0
                         ? Colors.green
                         // ignore: deprecated_member_use
-                        : Theme.of(context).textSelectionHandleColor),
+                        : Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor),
                 textAlign: TextAlign.end),
           ),
         ],
@@ -178,7 +193,7 @@ class StatementHeader extends StatelessWidget {
         child: subtitle2(
             text: row.month,
             // ignore: deprecated_member_use
-            color: Theme.of(context).textSelectionHandleColor,
+            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
             textAlign: TextAlign.start),
       ),
     );
@@ -211,12 +226,16 @@ class AmortizationBody extends StatelessWidget {
                 subtitle1(
                     text: defaultDateFormat.format(installment.date),
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor,
                     textAlign: TextAlign.start),
                 subtitle2(
                     text: "Installment",
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor,
                     textAlign: TextAlign.start),
               ],
             ),
@@ -226,13 +245,17 @@ class AmortizationBody extends StatelessWidget {
                 subtitle1(
                     text: groupObject.groupCurrency + " " + installment.amount,
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor,
                     textAlign: TextAlign.end),
                 subtitle2(
                     text: "Balance: ${groupObject.groupCurrency} " +
                         installment.balance,
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor,
                     textAlign: TextAlign.end),
               ],
             )
@@ -272,12 +295,16 @@ class LoanStatementBody extends StatelessWidget {
                   subtitle1(
                       text: row.type,
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                       textAlign: TextAlign.start),
                   subtitle2(
                       text: row.date,
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                       textAlign: TextAlign.start),
                 ],
               ),
@@ -289,7 +316,8 @@ class LoanStatementBody extends StatelessWidget {
                       " " +
                       currencyFormat.format(row.paid),
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   textAlign: TextAlign.end),
             ),
             Expanded(
@@ -299,7 +327,8 @@ class LoanStatementBody extends StatelessWidget {
                       " " +
                       currencyFormat.format(row.balance),
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   textAlign: TextAlign.end),
             ),
           ],
@@ -352,7 +381,9 @@ class ContributionSummaryBody extends StatelessWidget {
                           child: subtitle1(
                               text: contributionSummary[index].memberName,
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               textAlign: TextAlign.start),
                         ),
                       ],
@@ -366,7 +397,9 @@ class ContributionSummaryBody extends StatelessWidget {
                             currencyFormat
                                 .format(contributionSummary[index].paidAmount),
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor,
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor,
                         textAlign: TextAlign.end),
                   ),
                   Expanded(
@@ -381,7 +414,9 @@ class ContributionSummaryBody extends StatelessWidget {
                             : (contributionSummary[index].balanceAmount < 0
                                 ? Colors.green
                                 // ignore: deprecated_member_use
-                                : Theme.of(context).textSelectionHandleColor),
+                                : Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor),
                         textAlign: TextAlign.end),
                   ),
                 ],
@@ -413,7 +448,7 @@ class AccountHeader extends StatelessWidget {
         child: subtitle2(
             text: header.header,
             // ignore: deprecated_member_use
-            color: Theme.of(context).textSelectionHandleColor,
+            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
             textAlign: TextAlign.start),
       ),
     );
@@ -462,13 +497,17 @@ class AccountBody extends StatelessWidget {
                             text: account.name,
                             maxLines: 2,
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             textAlign: TextAlign.start),
                         if (account.accountNumber != "0")
                           subtitle2(
                               text: account.accountNumber,
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               textAlign: TextAlign.start)
                       ],
                     ),
@@ -528,13 +567,17 @@ class LoanSummaryBody extends StatelessWidget {
                   customTitleWithWrap(
                       text: row.name,
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                       fontSize: 13,
                       textAlign: TextAlign.start),
                   customTitle(
                       text: defaultDateFormat.format(row.date),
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                       fontSize: 10,
                       fontWeight: FontWeight.w400,
                       textAlign: TextAlign.start)
@@ -548,7 +591,8 @@ class LoanSummaryBody extends StatelessWidget {
                       " " +
                       currencyFormat.format(row.amountDue),
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   fontSize: 13,
                   textAlign: TextAlign.center),
             ),
@@ -559,7 +603,8 @@ class LoanSummaryBody extends StatelessWidget {
                       " " +
                       currencyFormat.format(row.paid),
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   fontSize: 13,
                   textAlign: TextAlign.center),
             ),
@@ -570,7 +615,8 @@ class LoanSummaryBody extends StatelessWidget {
                       " " +
                       currencyFormat.format(row.balance),
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   fontSize: 13,
                   textAlign: TextAlign.center),
             ),
@@ -618,7 +664,9 @@ class ExpenseBody extends StatelessWidget {
                       child: customTitleWithWrap(
                           text: row.name,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                           textAlign: TextAlign.start)),
                 ],
               ),
@@ -628,7 +676,8 @@ class ExpenseBody extends StatelessWidget {
                     " " +
                     currencyFormat.format(row.paid),
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 fontWeight: FontWeight.w400,
                 textAlign: TextAlign.end),
           ],
@@ -668,7 +717,9 @@ class TransactionStatementBody extends StatelessWidget {
                   child: customTitle(
                       text: row.date,
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                       fontSize: 13,
                       textAlign: TextAlign.start),
                 ),
@@ -680,7 +731,9 @@ class TransactionStatementBody extends StatelessWidget {
                           currencyFormat.format(row.deposit),
                       color: row.deposit == 0
                           // ignore: deprecated_member_use
-                          ? Theme.of(context).textSelectionHandleColor
+                          ? Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor
                           : Colors.green,
                       fontSize: 13,
                       textAlign: TextAlign.center),
@@ -693,7 +746,9 @@ class TransactionStatementBody extends StatelessWidget {
                           currencyFormat.format(row.withdrawal),
                       color: row.withdrawal == 0
                           // ignore: deprecated_member_use
-                          ? Theme.of(context).textSelectionHandleColor
+                          ? Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor
                           : Colors.red,
                       fontSize: 13,
                       textAlign: TextAlign.center),
@@ -716,7 +771,7 @@ class TransactionStatementBody extends StatelessWidget {
             subtitle2(
               text: row.description,
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               textAlign: TextAlign.start,
             )
           ],

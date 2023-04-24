@@ -18,10 +18,10 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'amount-to-withdraw.dart';
+//import 'amount-to-withdraw.dart';
 
 class ListMemberContacts extends StatefulWidget {
   final Map<String, String> formData;
@@ -46,7 +46,9 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
   PermissionStatus _permissionStatus = PermissionStatus.denied;
   // undetermined
   // ignore: deprecated_member_use
-  List<CustomContact> _contacts = new List<CustomContact>();
+  //List<CustomContact> _contacts = new List<CustomContact>();
+  List<CustomContact> _contacts = <CustomContact>[];
+
   bool _isLoading = false;
   String floatingButtonLabel;
   Color floatingButtonColor;
@@ -179,7 +181,7 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
           title: heading2(
               text: "Set Recipient Contact",
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               textAlign: TextAlign.start),
           content: TextFormField(
             controller: _phoneController,
@@ -187,7 +189,7 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               // ignore: deprecated_member_use
-              WhitelistingTextInputFormatter.digitsOnly
+              FilteringTextInputFormatter.digitsOnly
             ],
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -204,7 +206,8 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
             negativeActionDialogButton(
                 text: "Cancel",
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
                 }),
@@ -233,7 +236,7 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
           context: context,
           action: () => Navigator.of(context).pop(),
           elevation: 2.5,
-          leadingIcon: LineAwesomeIcons.close,
+          leadingIcon: LineAwesomeIcons.times,
           title: "Select Recipient",
           /*  trailingIcon: LineAwesomeIcons.user_plus,
           trailingAction: () => _numberPrompt() */

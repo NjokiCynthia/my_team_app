@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:io';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
@@ -16,8 +18,9 @@ import 'package:chamasoft/widgets/country-dropdown.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+//import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class NewGroup extends StatefulWidget {
@@ -94,31 +97,34 @@ class _NewGroupState extends State<NewGroup> {
   }
 
   _showSnackbar(String msg, int duration) {
-    // ignore: deprecated_member_use
-    _scaffoldKey.currentState.removeCurrentSnackBar();
+    ScaffoldMessenger.of(_scaffoldKey.currentState.context)
+        .hideCurrentSnackBar();
+    //  // while (
+    //       ScaffoldMessenger.of(_scaffoldKey.currentState.)
+    //    // _scaffoldKey.currentState.snackBars.isNotEmpty) {
+    //     _scaffoldKey.currentState.hideCurrentSnackBar();
+    //   }
+    //_scaffoldKey.currentState.removeCurrentSnackBar();
     final snackBar = SnackBar(
       content: Text(msg),
       duration: Duration(seconds: duration),
     );
-    // ignore: deprecated_member_use
-    _scaffoldKey.currentState.showSnackBar(snackBar);
+
+    ScaffoldMessenger.of(_scaffoldKey.currentState.context)
+        .showSnackBar(snackBar);
   }
 
   next() {
     if (currentStep + 1 != steps.length) {
       if (currentStep == 0) {
         if (_stepOneFormKey.currentState.validate()) {
-           if(widget.groupId != null){
-           
+          if (widget.groupId != null) {
             // ignore: unnecessary_statements
             _data['name'] == widget.groupName;
-
-          } 
-         else if (_data['name'] == '') {
+          } else if (_data['name'] == '') {
             _showSnackbar("You need to fill group info to continue.", 4);
           } else {
-            // goTo(1);
-            _createGroup();
+            goTo(1);
           }
         } else {
           _showSnackbar("Fill in the required fields to continue.", 4);
@@ -160,6 +166,7 @@ class _NewGroupState extends State<NewGroup> {
             setState(() {
               _saving = true;
             });
+            _createGroup();
             completeGroupSetup();
           }
         }
@@ -211,8 +218,8 @@ class _NewGroupState extends State<NewGroup> {
       style: TextStyle(
         color: currentStep >= step
             ? primaryColor
-            // ignore: deprecated_member_use
-            : Theme.of(context).textSelectionHandleColor,
+            
+            : Theme.of(context).textSelectionTheme.selectionHandleColor,
         fontFamily: 'SegoeUI',
         fontWeight: currentStep >= step ? FontWeight.bold : FontWeight.normal,
       ),
@@ -583,8 +590,8 @@ class _NewGroupState extends State<NewGroup> {
             : Text(
                 "Group Info",
                 style: TextStyle(
-                  // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   fontWeight: FontWeight.normal,
                 ),
               ),
@@ -597,14 +604,16 @@ class _NewGroupState extends State<NewGroup> {
             children: <Widget>[
               subtitle1(
                 text: "Select group avatar",
-                // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+               
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start,
               ),
               subtitle2(
                 text: "Could be a logo or an image associated with your group",
-                // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+               
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start,
               ),
               Padding(
@@ -835,15 +844,17 @@ class _NewGroupState extends State<NewGroup> {
             children: <Widget>[
               subtitle1(
                 text: "Do you have a referral code?",
-                // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start,
               ),
               subtitle2(
                 text:
                     "Use it if referred by a Bank, an NGO, a Partner or anyone",
-                // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+              
+                color:
+                    Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start,
               ),
               Container(
@@ -876,8 +887,9 @@ class _NewGroupState extends State<NewGroup> {
                                     color: _hasReferralCode == option['value']
                                         ? primaryColor
                                         : Theme.of(context)
-                                            // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
+                                            
+                                            .textSelectionTheme
+                                            .selectionHandleColor,
                                   ),
                                   textAlign: TextAlign.left,
                                 ),
@@ -938,8 +950,10 @@ class _NewGroupState extends State<NewGroup> {
                     children: <Widget>[
                       Icon(
                         Icons.lightbulb_outline,
-                        // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor,
+                        
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor,
                         size: 24.0,
                         semanticLabel: 'About new group...',
                       ),
@@ -958,8 +972,10 @@ class _NewGroupState extends State<NewGroup> {
                             subtitle2(
                               text:
                                   "Follow all the steps and provide all required data about this group. You'll be able to preview a summary of the group before you submit.",
-                              // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               textAlign: TextAlign.start,
                             ),
                           ],
@@ -976,10 +992,14 @@ class _NewGroupState extends State<NewGroup> {
                   onStepTapped: (step) => goTo(step),
                   onStepCancel: cancel,
                   controlsBuilder: (
-                    BuildContext context, {
-                    VoidCallback onStepContinue,
-                    VoidCallback onStepCancel,
-                  }) {
+                    BuildContext context,
+                    ControlsDetails controlDetails
+                  //   ControlsDetails controlDetails, {
+                  //   // BuildContext context, {
+                  //   VoidCallback onStepContinue,
+                  //   VoidCallback onStepCancel,
+                  // }
+                  ) {
                     return Padding(
                       padding: EdgeInsets.only(
                         top: 12.0,
@@ -988,9 +1008,11 @@ class _NewGroupState extends State<NewGroup> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          // ignore: deprecated_member_use
-                          RaisedButton(
-                            color: primaryColor,
+                         
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: primaryColor),
+                            //color: primaryColor,
                             child: Padding(
                               padding:
                                   EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
@@ -1002,7 +1024,8 @@ class _NewGroupState extends State<NewGroup> {
                                         : "Save & Continue",
                                     style: TextStyle(
                                         fontFamily: 'SegoeUI',
-                                        fontWeight: FontWeight.w700),
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.white),
                                   ),
                                   (_saving)
                                       ? SizedBox(width: 10.0)
@@ -1024,40 +1047,46 @@ class _NewGroupState extends State<NewGroup> {
                                 ],
                               ),
                             ),
-                            textColor: Colors.white,
-                            onPressed: (!_saving) ? onStepContinue : null,
+                            // textColor: Colors.white,
+                            onPressed: (!_saving) ? controlDetails.onStepContinue : null,
                           ),
                           SizedBox(
                             width: 20.0,
                           ),
                           currentStep > 1
-                              // ignore: deprecated_member_use
-                              ? OutlineButton(
-                                  color: Colors.white,
+                             
+                              ? OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    backgroundColor: Colors.white,
+                                    side: BorderSide(
+                                      width: 2.0,
+                                      color: Theme.of(context)
+                                          
+                                          .textSelectionTheme
+                                          .selectionHandleColor
+                                          .withOpacity(0.5),
+                                    ),
+                                  ),
+                                  // color: Colors.white,
                                   child: Text(
                                     "Go Back",
                                     style: TextStyle(
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                        
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                     ),
                                   ),
-                                  borderSide: BorderSide(
-                                    width: 2.0,
-                                    color: Theme.of(context)
-                                        // ignore: deprecated_member_use
-                                        .textSelectionHandleColor
-                                        .withOpacity(0.5),
-                                  ),
-                                  highlightColor: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor
-                                      .withOpacity(0.1),
-                                  highlightedBorderColor: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor
-                                      .withOpacity(0.6),
-                                  onPressed: (!_saving) ? onStepCancel : null,
+
+                                  // highlightColor: Theme.of(context)
+                                  //     // ignore: deprecated_member_use
+                                  //     .textSelectionTheme.selectionHandleColor,
+                                  //     .withOpacity(0.1),
+                                  // highlightedBorderColor: Theme.of(context)
+                                  //     // ignore: deprecated_member_use
+                                  //     .textSelectionTheme.selectionHandleColor
+                                  //     .withOpacity(0.6),
+                                  onPressed: (!_saving) ? controlDetails.onStepCancel : null,
                                 )
                               : SizedBox(),
                         ],

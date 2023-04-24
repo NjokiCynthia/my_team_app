@@ -36,7 +36,7 @@ class DatePicker extends StatelessWidget {
       valueStyle: inputTextStyle(),
       onPressed: () {
         _selectDate(context);
-      },
+      }, child: null,
     );
   }
 }
@@ -44,11 +44,11 @@ class DatePicker extends StatelessWidget {
 class _InputDropdown extends StatelessWidget {
   const _InputDropdown(
       {Key key,
-      this.child,
-      this.labelText,
-      this.valueText,
-      this.valueStyle,
-      this.onPressed})
+        this.child,
+        this.labelText,
+        this.valueText,
+        this.valueStyle,
+        this.onPressed})
       : super(key: key);
 
   final String labelText;

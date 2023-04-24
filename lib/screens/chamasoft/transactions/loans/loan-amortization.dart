@@ -8,7 +8,7 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/dataTable.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class LoanAmortization extends StatefulWidget {
@@ -113,7 +113,9 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                       child: heading2(
                           text: _loanProduct.name /*widget.typeLoan.loanName*/,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                           textAlign: TextAlign.start),
                     ),
                     heading2(
@@ -121,7 +123,9 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                             "${groupObject.groupCurrency}${currencyFormat.format(amountToRefund)}",
                         //generalAmount.toString(),
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor,
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor,
                         textAlign: TextAlign.start)
                   ],
                 ),
@@ -137,13 +141,17 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                         subtitle1(
                           text: "Interest Rate: ",
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                         ),
                         customTitle(
                           textAlign: TextAlign.start,
                           text: _loanProduct.description,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                           fontWeight: FontWeight.w600,
                         ),
                       ],
@@ -154,13 +162,17 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                         subtitle1(
                           text: "Repayment Period: ",
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                         ),
                         customTitle(
                           textAlign: TextAlign.start,
                           text: monthsOfRepayment + " Month(s)",
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                           fontWeight: FontWeight.w600,
                         ),
                       ],
@@ -171,13 +183,17 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                         subtitle1(
                           text: "Application Date: ",
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                         ),
                         customTitle(
                           textAlign: TextAlign.start,
                           text: formate2,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                           fontWeight: FontWeight.w600,
                         ),
                       ],

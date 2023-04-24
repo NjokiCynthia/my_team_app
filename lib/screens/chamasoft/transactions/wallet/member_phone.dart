@@ -9,7 +9,7 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class NumberKeyBoard extends StatefulWidget {
   final Map<String, String> formData;
@@ -35,7 +35,7 @@ class _NumberKeyBoardState extends State<NumberKeyBoard> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: 2.5,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: "Phone Number",
         /*  trailingIcon: LineAwesomeIcons.user_plus,
           trailingAction: () => _numberPrompt() */
@@ -63,7 +63,7 @@ class _NumberKeyBoardState extends State<NumberKeyBoard> {
                   keyboardType: TextInputType.none,
                   inputFormatters: <TextInputFormatter>[
                     // ignore: deprecated_member_use
-                    WhitelistingTextInputFormatter.digitsOnly
+                    FilteringTextInputFormatter.digitsOnly
                   ],
                   decoration: InputDecoration(
                     floatingLabelBehavior: FloatingLabelBehavior.auto,

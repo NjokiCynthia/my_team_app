@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/set-member-roles.dart';
@@ -9,7 +11,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class AddGroupMembersManually extends StatefulWidget {
   @override
@@ -130,7 +132,7 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
         title: "Add Member",
         action: () => Navigator.of(context).pop(),
         elevation: 0,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         actions: [],
       ),
       backgroundColor: Theme.of(context).backgroundColor,
@@ -146,9 +148,8 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
               children: <Widget>[
                 Icon(
                   Icons.lightbulb_outline,
-                  color: Theme.of(context)
-                      // ignore: deprecated_member_use
-                      .textSelectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   size: 24.0,
                   semanticLabel: 'Add member...',
                 ),
@@ -163,15 +164,15 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                         text: "Add member",
                         textAlign: TextAlign.start,
                         color: Theme.of(context)
-                            // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
+                            .textSelectionTheme
+                            .selectionHandleColor,
                       ),
                       subtitle2(
                         text:
                             "Fill in the details below to add a member to the group.",
                         color: Theme.of(context)
-                            // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
+                            .textSelectionTheme
+                            .selectionHandleColor,
                         textAlign: TextAlign.start,
                       ),
                     ],
@@ -229,8 +230,9 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                           text: "Phone Number",
                           textAlign: TextAlign.start,
                           fontSize: 11,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                         ),
                       ],
                     ),
@@ -250,12 +252,12 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
                                     Container(
-                                      height: 34,
+                                      height: 54,
                                       padding: EdgeInsets.fromLTRB(
                                         0.0,
                                         0.0,
                                         0.0,
-                                        8.0,
+                                        4.0,
                                       ),
                                       child: CountryCodePicker(
                                         // key: _countryKey,
@@ -268,22 +270,49 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                                         textStyle: TextStyle(
                                           fontFamily:
                                               'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/
+                                            fontSize: 16,
+                                          color: Colors.black
                                         ),
                                         searchStyle: TextStyle(
                                             fontFamily: 'SegoeUI',
                                             fontSize: 16,
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
-                                                .textSelectionHandleColor),
+                                                .textSelectionTheme
+                                                .selectionHandleColor),
                                         onChanged: (countryCode) {
                                           setState(() {
                                             _countryCode = countryCode;
                                           });
                                         },
                                       ),
+                                      // child:CountryCodePicker(
+                                      //   // key: _countryKey,
+                                      //   initialSelection: 'KE',
+                                      //   favorite: ['KE', 'UG', 'TZ', 'RW'],
+                                      //   showCountryOnly: false,
+                                      //
+                                      //   showOnlyCountryWhenClosed: false,
+                                      //   alignLeft: false,
+                                      //   flagWidth: 28.0,
+                                      //   textStyle: TextStyle(
+                                      //     fontFamily:
+                                      //     'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/
+                                      //   ),
+                                      //   searchStyle: TextStyle(
+                                      //       fontFamily: 'SegoeUI',
+                                      //       fontSize: 16,
+                                      //       color: Theme.of(context)
+                                      //           .textSelectionTheme
+                                      //           .selectionHandleColor),
+                                      //   onChanged: (countryCode) {
+                                      //     setState(() {
+                                      //       _countryCode = countryCode;
+                                      //     });
+                                      //   },
+                                      // ),
                                     ),
                                     SizedBox(
-                                      width: 10,
+                                      width: 0,
                                     ),
                                   ],
                                 ),
@@ -291,7 +320,7 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                                   child: Container(
                                     height: 34,
                                     padding:
-                                        EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 3.0),
+                                        EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                                     child: TextFormField(
                                       controller: _phoneController,
                                       keyboardType: TextInputType.phone,

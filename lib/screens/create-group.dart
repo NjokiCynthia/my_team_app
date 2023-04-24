@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:io';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/configure-group.dart';
@@ -12,7 +14,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class CreateGroup extends StatefulWidget {
@@ -157,15 +159,15 @@ class _CreateGroupState extends State<CreateGroup> {
                         children: [
                           heading1(
                               text: "Create Group",
-                              color:
-                                  // ignore: deprecated_member_use
-                                  Theme.of(context).textSelectionHandleColor),
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor),
                           subtitle1(
                               text:
                                   "Give your group a name, profile photo and country",
-                              color:
-                                  // ignore: deprecated_member_use
-                                  Theme.of(context).textSelectionHandleColor),
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor),
                           SizedBox(
                             height: 24,
                           ),
@@ -297,7 +299,7 @@ class _CreateGroupState extends State<CreateGroup> {
                   top: 50.0,
                   left: 20.0,
                   child: screenActionButton(
-                    icon: LineAwesomeIcons.close,
+                    icon: LineAwesomeIcons.times_circle,
                     backgroundColor: primaryColor.withOpacity(0.2),
                     textColor: primaryColor,
                     action: () => Navigator.of(context).pop(),

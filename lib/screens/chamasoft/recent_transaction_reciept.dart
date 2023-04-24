@@ -1,4 +1,4 @@
-// ignore_for_file: unused_element
+// ignore_for_file: unused_element, deprecated_member_use
 
 import 'dart:io';
 import 'dart:typed_data';
@@ -13,11 +13,11 @@ import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class RecentTransactionReciept extends StatefulWidget {
   final RecentTransactionSummary data;
@@ -94,30 +94,26 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
                             SizedBox(
                               height: 10,
                             ),
-                            // ignore: deprecated_member_use
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: heading2(
                                   text: widget.data.description,
-                                  color:
-                                      // ignore: deprecated_member_use
-                                      Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionHandleColor),
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor),
                             ),
                             Image.asset(
                               'assets/icon/main.png',
                               width: 80.0,
                               height: 90.0,
                             ),
-
                             customTitleWithWrap(
                               text: widget.data.paymentTitle,
                               fontSize: 22,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
-                                  // ignore: deprecated_member_use
-                                  .textSelectionHandleColor,
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                             ),
                             SizedBox(
                               height: 15.0,
@@ -141,8 +137,8 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 customTitleWithWrap(
                                   text: groupObject.groupPhone != "null"
@@ -151,8 +147,8 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 customTitleWithWrap(
                                   text: groupObject.groupEmail != "null"
@@ -161,8 +157,8 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                               ],
                             ),
@@ -193,8 +189,8 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 SizedBox(
                                   height: 5.0,
@@ -207,23 +203,20 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                               ],
                             ),
-
                             SizedBox(height: 5.0),
                             Padding(
                               padding: EdgeInsets.all(10.0),
                               child: subtitle2(
                                   text: "${widget.data.paymentMethod} Payment",
                                   fontSize: 14.0,
-                                  color:
-                                      // ignore: deprecated_member_use
-                                      Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.center),
                             ),
                             SizedBox(
@@ -298,8 +291,8 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
                               fontSize: 18,
                               fontWeight: FontWeight.w300,
                               color: Theme.of(context)
-                                  // ignore: deprecated_member_use
-                                  .textSelectionHandleColor,
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                             ),
                           ],
                         ),
@@ -336,8 +329,8 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                               ),
                             ],
                           ),

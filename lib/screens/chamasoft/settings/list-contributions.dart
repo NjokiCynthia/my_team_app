@@ -8,7 +8,7 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'contribution/create-contribution.dart';
@@ -107,7 +107,7 @@ class _ListContributionsState extends State<ListContributions> {
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
+                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
                 ),
@@ -126,7 +126,7 @@ class _ListContributionsState extends State<ListContributions> {
 //                          fontWeight: FontWeight.w600,
 //                          textAlign: TextAlign.start,
 //                          // ignore: deprecated_member_use
-//  	                      color: Theme.of(context).textSelectionHandleColor),
+//  	                      color: Theme.of(context).textSelectionTheme.selectionHandleColor),
 //                      onTap: () {
 //                        Navigator.pop(context);
 //                      },
@@ -173,7 +173,7 @@ class _ListContributionsState extends State<ListContributions> {
               icon: Icon(
                 Icons.add,
                 // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               ),
               onPressed: () async {
                 Navigator.of(_scaffoldKey.currentContext)
@@ -269,14 +269,14 @@ class _ListContributionsState extends State<ListContributions> {
                                                 fontSize: 16.0,
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                               ),
                                               richTextWithWrap(
                                                 title: 'Contribution Type: ',
                                                 message: contribution.type,
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
                                               ),
@@ -285,7 +285,7 @@ class _ListContributionsState extends State<ListContributions> {
                                                 message: contribution.frequency,
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
                                               ),
@@ -294,7 +294,7 @@ class _ListContributionsState extends State<ListContributions> {
                                                     '$_groupCurrency ${currencyFormat.format(double.tryParse(contribution.amount) ?? 0)}',
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,

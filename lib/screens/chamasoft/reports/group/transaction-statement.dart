@@ -10,7 +10,8 @@ import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 // ignore: unused_import
 import 'package:loading_overlay/loading_overlay.dart';
@@ -144,7 +145,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         title: "Transaction Statement",
         trailingIcon: LineAwesomeIcons.download,
         trailingAction: () =>
@@ -178,7 +179,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                                   text: "Total Balance",
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
+                                      .textSelectionTheme.selectionHandleColor,
                                   textAlign: TextAlign.start),
                               SizedBox(
                                 height: 4,
@@ -190,13 +191,13 @@ class _TransactionStatementState extends State<TransactionStatement> {
                                       text: "Deposits ",
                                       color: Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                          .textSelectionTheme.selectionHandleColor,
                                       textAlign: TextAlign.start),
                                   subtitle1(
                                       text: "-",
                                       color: Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                          .textSelectionTheme.selectionHandleColor,
                                       textAlign: TextAlign.start),
                                 ],
                               ),
@@ -207,13 +208,13 @@ class _TransactionStatementState extends State<TransactionStatement> {
                                       text: "Withdrawals ",
                                       color: Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                          .textSelectionTheme.selectionHandleColor,
                                       textAlign: TextAlign.start),
                                   subtitle1(
                                       text: "-",
                                       color: Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                          .textSelectionTheme.selectionHandleColor,
                                       textAlign: TextAlign.start),
                                 ],
                               ),
@@ -225,7 +226,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                           text: "${groupObject.groupCurrency} " +
                               currencyFormat.format(_totalBalance),
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                           textAlign: TextAlign.start)
                     ],
                   ),
@@ -241,7 +242,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                           subtitle2(
                             text: "Statement as At",
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                             textAlign: TextAlign.start,
                           ),
                           customTitle(
@@ -249,7 +250,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
+                            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                             textAlign: TextAlign.start,
                           ),
                         ],
@@ -261,7 +262,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                             subtitle2(
                               text: "Statement Period",
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               textAlign: TextAlign.end,
                             ),
                             customTitle(
@@ -269,7 +270,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                               fontWeight: FontWeight.w500,
                               text: _statementFrom + " to " + _statementTo,
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               textAlign: TextAlign.end,
                             ),
                           ],
@@ -300,7 +301,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                         text: "Deposits",
                         fontSize: 13.0,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor,
+                        color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                         textAlign: TextAlign.center),
                   ),
                   Expanded(
@@ -309,7 +310,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                         text: "Withdrawals",
                         fontSize: 13.0,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor,
+                        color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                         textAlign: TextAlign.center),
                   ),
                   Expanded(
@@ -318,7 +319,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                         text: "Balance",
                         fontSize: 13.0,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor,
+                        color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                         textAlign: TextAlign.center),
                   ),
                 ],

@@ -1,7 +1,7 @@
-// ignore_for_file: missing_return
+// ignore_for_file: missing_return, await_only_futures, unnecessary_import
 
 import 'dart:io';
-import 'dart:typed_data';
+// import 'dart:typed_data';
 
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/providers/groups.dart';
@@ -12,10 +12,12 @@ import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/transaction-statement-model.dart';
 import 'package:flutter/services.dart';
-import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
+
+//import 'package:open_file/open_file.dart';
 
 class PdfApi {
   static Future<File> generateMemberLoanStatementPdf(
@@ -1137,8 +1139,14 @@ class PdfApi {
 
   static Future openFile(File file) async {
     final url = file.path;
-    // await PDFDocument.fromFile(file);
-    await OpenFile.open(url);
+    //await PDFDocument.fromFile(file);
+    //pdf read
+    await PDFView(
+      onPageChanged: (page, total) {
+        return url.length;
+      },
+    );
+    //open(url);
   }
 
   static depositTitle(String title) => Column(children: [

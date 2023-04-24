@@ -52,7 +52,7 @@ class _ResetPinState extends State<ResetPin> {
                         height: 30.0,
                       ),
                       // ignore: deprecated_member_use
-                      RaisedButton(
+                      ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             showDialog(
@@ -63,17 +63,22 @@ class _ResetPinState extends State<ResetPin> {
                                           "Are you sure you want to Reset your pin?"),
                                       actions: [
                                         // ignore: deprecated_member_use
-                                        FlatButton(
+                                        TextButton(
                                           // FlatButton widget is used to make a text to work like a button
-                                          textColor: Colors.black,
+
+                                          // textColor: Colors.black,
                                           onPressed: () => Navigator.pop(
                                               context,
                                               false), // function used to perform after pressing the button
-                                          child: Text('CANCEL'),
+                                          child: Text(
+                                            'CANCEL',
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
                                         ),
                                         // ignore: deprecated_member_use
-                                        FlatButton(
-                                          textColor: Colors.black,
+                                        TextButton(
+                                          //textColor: Colors.black,
                                           onPressed: () {
                                             Navigator.push(
                                               context,
@@ -82,7 +87,11 @@ class _ResetPinState extends State<ResetPin> {
                                                       TempolaryPin()),
                                             );
                                           },
-                                          child: Text('ACCEPT'),
+                                          child: Text(
+                                            'ACCEPT',
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
                                         ),
                                       ],
                                     ));
@@ -136,7 +145,7 @@ class _ResetPinState extends State<ResetPin> {
             height: 70.0,
             borderRadius: 25.0,
             labels: ["Send Money", "Request Money"],
-            initialIndex: 0,
+            selectedIndex: 0,
             selectedLabelIndex: (index) {
               setState(() {});
             },

@@ -1,7 +1,8 @@
 import 'package:chamasoft/helpers/common.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+//import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import 'buttons.dart';
 
@@ -680,7 +681,7 @@ Widget transactionToolTip(
             Icon(
               Icons.lightbulb_outline,
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               size: 24.0,
               semanticLabel: 'Text to announce in accessibility modes',
             ),
@@ -692,22 +693,31 @@ Widget transactionToolTip(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   subtitle1(
-                      text: title,
-                      textAlign: TextAlign.start,
-                      // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor),
+                    text: title,
+                    textAlign: TextAlign.start,
+                    // ignore: deprecated_member_use
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor,
+                    //Theme.of(context).textSelectionHandleColor
+                  ),
                   (date.length > 0)
                       ? subtitle2(
                           text: date,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
+                        )
                       : Container(),
                   (message.length > 0)
                       ? subtitle2(
                           text: message,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                           textAlign: TextAlign.start)
                       : Container(),
                 ],
@@ -716,9 +726,10 @@ Widget transactionToolTip(
             Visibility(
               visible: false,
               child: screenActionButton(
-                  icon: LineAwesomeIcons.close,
+                  icon: LineAwesomeIcons.times_circle,
                   // ignore: deprecated_member_use
-                  textColor: Theme.of(context).textSelectionHandleColor,
+                  textColor:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   action: toggleToolTip),
             ),
           ],
@@ -746,7 +757,7 @@ Widget toolTip(
             Icon(
               Icons.lightbulb_outline,
               // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               size: 24.0,
               semanticLabel: 'Text to announce in accessibility modes',
             ),
@@ -762,13 +773,18 @@ Widget toolTip(
                           text: title,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
+                        )
                       : Container(),
                   (message.length > 0)
                       ? subtitle2(
                           text: message,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                           textAlign: TextAlign.start)
                       : Container(),
                 ],
@@ -777,9 +793,10 @@ Widget toolTip(
             Visibility(
               visible: false,
               child: screenActionButton(
-                  icon: LineAwesomeIcons.close,
+                  icon: LineAwesomeIcons.times_circle,
                   // ignore: deprecated_member_use
-                  textColor: Theme.of(context).textSelectionHandleColor,
+                  textColor:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   action: toggleToolTip),
             ),
           ],

@@ -14,7 +14,7 @@ import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:chamasoft/widgets/reconcile-deposit-form.dart';
 
 class ReconcileDeposit extends StatefulWidget {
@@ -183,7 +183,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
           context: context,
           title: "Reconcile deposit",
           action: () => reset(context),
-          leadingIcon: LineAwesomeIcons.close,
+          leadingIcon: LineAwesomeIcons.times,
           elevation: _appBBarElevation,
           actions: [
             Padding(
@@ -193,7 +193,8 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
                 icon: Icon(
                   Icons.add,
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
               ),
             ),
@@ -257,7 +258,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
                           trailing: IconButton(
                             onPressed: () => removeReconciledDeposit(index),
                             icon: Icon(Icons.close),
-                            color: Theme.of(context).errorColor,
+                            color: Theme.of(context).colorScheme.error,
                           ),
                         );
                       },
@@ -272,13 +273,17 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
                             textAlign: TextAlign.start,
                             color:
                                 // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionHandleColor),
+                                Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor),
                         subtitle: subtitle2(
                             text:
                                 "${groupObject.groupCurrency} ${currencyFormat.format(totalReconciled)}",
                             textAlign: TextAlign.start,
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor),
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor),
                       ))
                 ],
               ),

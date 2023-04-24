@@ -12,7 +12,8 @@ import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class LoanStatement extends StatefulWidget {
@@ -97,7 +98,7 @@ class _LoanStatementState extends State<LoanStatement> {
           context: context,
           action: () => Navigator.of(context).pop(),
           elevation: _appBarElevation,
-          leadingIcon: LineAwesomeIcons.close,
+          leadingIcon: LineAwesomeIcons.times,
           title: "Loan Statement",
           // trailingIcon: LineAwesomeIcons.download,
           // trailingAction: () =>
@@ -149,7 +150,7 @@ class _LoanStatementState extends State<LoanStatement> {
                                               text: "${widget.loan.name}",
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme.selectionHandleColor,
                                               textAlign: TextAlign.start,
                                             ),
                                           ),
@@ -161,7 +162,7 @@ class _LoanStatementState extends State<LoanStatement> {
                                                 fontSize: 18.0,
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 fontWeight: FontWeight.w400,
                                               ),
                                               heading2(
@@ -169,7 +170,7 @@ class _LoanStatementState extends State<LoanStatement> {
                                                     "${currencyFormat.format(widget.loan.amount)}",
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionHandleColor,
+                                                    .textSelectionTheme.selectionHandleColor,
                                                 textAlign: TextAlign.end,
                                               ),
                                             ],
@@ -183,10 +184,10 @@ class _LoanStatementState extends State<LoanStatement> {
 //                                  mainAxisAlignment: MainAxisAlignment.start,
 //                                  children: <Widget>[
 //                                    subtitle2(
-//                                        text: "Loan + Interest: ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+//                                        text: "Loan + Interest: ", color: Theme.of(context).textSelectionTheme.selectionHandleColor, textAlign: TextAlign.start),
 //                                    customTitle(
 //                                        text: "Ksh ${currencyFormat.format(data.getLoanStatements.lumpSum)}",
-//                                        color: Theme.of(context).textSelectionHandleColor,
+//                                        color: Theme.of(context).textSelectionTheme.selectionHandleColor,
 //                                        fontSize: 12,
 //                                        textAlign: TextAlign.start),
 //                                  ],
@@ -199,14 +200,14 @@ class _LoanStatementState extends State<LoanStatement> {
                                               text: "Amount Repaid ",
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme.selectionHandleColor,
                                               textAlign: TextAlign.start),
                                           subtitle1(
                                               text:
                                                   "${groupObject.groupCurrency} ${currencyFormat.format(data.getLoanStatements.paid)}",
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme.selectionHandleColor,
                                               textAlign: TextAlign.start),
                                         ],
                                       ),
@@ -218,14 +219,14 @@ class _LoanStatementState extends State<LoanStatement> {
                                               text: "Balance ",
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme.selectionHandleColor,
                                               textAlign: TextAlign.start),
                                           subtitle1(
                                               text:
                                                   "${groupObject.groupCurrency} ${currencyFormat.format(data.getLoanStatements.balance)}",
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme.selectionHandleColor,
                                               textAlign: TextAlign.start),
                                         ],
                                       ),
@@ -237,14 +238,14 @@ class _LoanStatementState extends State<LoanStatement> {
                                               text: "Disbursed On ",
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme.selectionHandleColor,
                                               textAlign: TextAlign.start),
                                           subtitle1(
                                               text:
                                                   widget.loan.disbursementDate,
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
+                                                  .textSelectionTheme.selectionHandleColor,
                                               textAlign: TextAlign.start),
                                         ],
                                       ),
@@ -300,7 +301,7 @@ class _LoanStatementState extends State<LoanStatement> {
                                         )
                                       : emptyList(
                                           color: Colors.blue[400],
-                                          iconData: LineAwesomeIcons.file_text,
+                                          iconData: LineAwesomeIcons.file,
                                           text:
                                               "There are no statements to display"),
                                 )

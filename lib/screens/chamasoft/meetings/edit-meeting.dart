@@ -1,21 +1,25 @@
 import 'dart:convert';
 
-import 'package:chamasoft/providers/auth.dart';
-import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/meetings/edit-collections.dart';
-// import 'package:chamasoft/screens/chamasoft/meetings/select-members.dart';
-import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/select-member.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/database-helper.dart';
 import 'package:chamasoft/helpers/theme.dart';
+import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/meetings/edit-collections.dart';
+
+// import 'package:chamasoft/screens/chamasoft/meetings/select-members.dart';
+import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/select-member.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:provider/provider.dart';
 import 'package:date_time_picker/date_time_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 class EditMeeting extends StatefulWidget {
   @override
@@ -26,6 +30,7 @@ class _EditMeetingState extends State<EditMeeting> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   //  List<MembersFilterEntry> selectedMembersList = [];
 
   int currentStep = 0;
@@ -103,13 +108,15 @@ class _EditMeetingState extends State<EditMeeting> {
 
   _showSnackbar(String msg, int duration) {
     // ignore: deprecated_member_use
-    _scaffoldKey.currentState.removeCurrentSnackBar();
+    ScaffoldMessenger.of(_scaffoldKey.currentState.context)
+        .hideCurrentSnackBar();
     final snackBar = SnackBar(
       content: Text(msg),
       duration: Duration(seconds: duration),
     );
     // ignore: deprecated_member_use
-    _scaffoldKey.currentState.showSnackBar(snackBar);
+    ScaffoldMessenger.of(_scaffoldKey.currentState.context)
+        .showSnackBar(snackBar);
   }
 
   next() {
@@ -192,7 +199,7 @@ class _EditMeetingState extends State<EditMeeting> {
         color: currentStep >= step
             ? primaryColor
             // ignore: deprecated_member_use
-            : Theme.of(context).textSelectionHandleColor,
+            : Theme.of(context).textSelectionTheme.selectionHandleColor,
         fontFamily: 'SegoeUI',
         fontWeight: currentStep >= step ? FontWeight.bold : FontWeight.normal,
       ),
@@ -238,7 +245,10 @@ class _EditMeetingState extends State<EditMeeting> {
   Widget agendaItem({String agenda, Function action}) {
     return Container(
       // ignore: deprecated_member_use
-      color: Theme.of(context).textSelectionHandleColor.withOpacity(0.1),
+      color: Theme.of(context)
+          .textSelectionTheme
+          .selectionHandleColor
+          .withOpacity(0.1),
       width: double.infinity,
       padding: EdgeInsets.fromLTRB(10.0, 2.0, 10.0, 2.0),
       margin: EdgeInsets.only(bottom: 10.0),
@@ -253,7 +263,9 @@ class _EditMeetingState extends State<EditMeeting> {
                   agenda,
                   style: TextStyle(
                     // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -281,7 +293,7 @@ class _EditMeetingState extends State<EditMeeting> {
       text,
       style: TextStyle(
         // ignore: deprecated_member_use
-        color: Theme.of(context).textSelectionHandleColor,
+        color: Theme.of(context).textSelectionTheme.selectionHandleColor,
         fontSize: 12.0,
       ),
       overflow: TextOverflow.ellipsis,
@@ -292,7 +304,7 @@ class _EditMeetingState extends State<EditMeeting> {
   TextStyle summaryContentFormat() {
     return TextStyle(
       // ignore: deprecated_member_use
-      color: Theme.of(context).textSelectionHandleColor,
+      color: Theme.of(context).textSelectionTheme.selectionHandleColor,
       fontSize: 16.0,
       fontWeight: FontWeight.bold,
     );
@@ -342,14 +354,20 @@ class _EditMeetingState extends State<EditMeeting> {
               subtitle1(
                 color:
                     // ignore: deprecated_member_use
-                    Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
+                    Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor
+                        .withOpacity(0.7),
                 text: "No agenda added",
                 textAlign: TextAlign.left,
               ),
               subtitle2(
                 color:
                     // ignore: deprecated_member_use
-                    Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
+                    Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor
+                        .withOpacity(0.7),
                 text: "Added agenda items will be displayed here",
                 textAlign: TextAlign.left,
               ),
@@ -380,14 +398,20 @@ class _EditMeetingState extends State<EditMeeting> {
               subtitle1(
                 color:
                     // ignore: deprecated_member_use
-                    Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
+                    Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor
+                        .withOpacity(0.7),
                 text: "No AOB added",
                 textAlign: TextAlign.left,
               ),
               subtitle2(
                 color:
                     // ignore: deprecated_member_use
-                    Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
+                    Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor
+                        .withOpacity(0.7),
                 text: "Added AOB items will be displayed here",
                 textAlign: TextAlign.left,
               ),
@@ -940,7 +964,9 @@ class _EditMeetingState extends State<EditMeeting> {
                       Icon(
                         Icons.lightbulb_outline,
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor,
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor,
                         size: 24.0,
                         semanticLabel: 'About new meeting...',
                       ),
@@ -954,13 +980,15 @@ class _EditMeetingState extends State<EditMeeting> {
                             // subtitle1(
                             //   text: "About new meeting...",
                             //   textAlign: TextAlign.start,
-                            //   color: Theme.of(context).textSelectionHandleColor,
+                            //   color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                             // ),
                             subtitle2(
                               text:
                                   "Follow all the steps and provide all required data about this meeting. You'll be able to preview a summary of the meeting before you submit.",
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               textAlign: TextAlign.start,
                             ),
                           ],
@@ -976,11 +1004,8 @@ class _EditMeetingState extends State<EditMeeting> {
                   onStepContinue: next,
                   onStepTapped: (step) => goTo(step),
                   onStepCancel: cancel,
-                  controlsBuilder: (
-                    BuildContext context, {
-                    VoidCallback onStepContinue,
-                    VoidCallback onStepCancel,
-                  }) {
+                  controlsBuilder:
+                      (BuildContext context, ControlsDetails controlDetails) {
                     return Padding(
                       padding: EdgeInsets.only(
                         top: 12.0,
@@ -990,8 +1015,48 @@ class _EditMeetingState extends State<EditMeeting> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           // ignore: deprecated_member_use
-                          RaisedButton(
-                            color: primaryColor,
+                          // RaisedButton(
+                          //   color: primaryColor,
+                          //   child: Padding(
+                          //     padding:
+                          //     EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+                          //     child: Row(
+                          //       children: [
+                          //         Text(
+                          //           currentStep == 5
+                          //               ? "Confirm & Submit"
+                          //               : "Save & Continue",
+                          //           style: TextStyle(
+                          //               fontFamily: 'SegoeUI',
+                          //               fontWeight: FontWeight.w700),
+                          //         ),
+                          //         (_saving)
+                          //             ? SizedBox(width: 10.0)
+                          //             : SizedBox(),
+                          //         (_saving)
+                          //             ? SizedBox(
+                          //           height: 16.0,
+                          //           width: 16.0,
+                          //           child: CircularProgressIndicator(
+                          //             strokeWidth: 2.5,
+                          //             backgroundColor: Colors.transparent,
+                          //             valueColor:
+                          //             AlwaysStoppedAnimation<Color>(
+                          //               Colors.grey[700],
+                          //             ),
+                          //           ),
+                          //         )
+                          //             : SizedBox(),
+                          //       ],
+                          //     ),
+                          //   ),
+                          //   textColor: Colors.white,
+                          //   onPressed: (!_saving) ? onStepContinue : null,
+                          // ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: primaryColor,
+                            ),
                             child: Padding(
                               padding:
                                   EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
@@ -1002,13 +1067,12 @@ class _EditMeetingState extends State<EditMeeting> {
                                         ? "Confirm & Submit"
                                         : "Save & Continue",
                                     style: TextStyle(
-                                        fontFamily: 'SegoeUI',
-                                        fontWeight: FontWeight.w700),
+                                      fontFamily: 'SegoeUI',
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
-                                  (_saving)
-                                      ? SizedBox(width: 10.0)
-                                      : SizedBox(),
-                                  (_saving)
+                                  _saving ? SizedBox(width: 10.0) : SizedBox(),
+                                  _saving
                                       ? SizedBox(
                                           height: 16.0,
                                           width: 16.0,
@@ -1025,40 +1089,63 @@ class _EditMeetingState extends State<EditMeeting> {
                                 ],
                               ),
                             ),
-                            textColor: Colors.white,
-                            onPressed: (!_saving) ? onStepContinue : null,
+                            onPressed: !_saving ? controlDetails.onStepContinue : null,
                           ),
+
                           SizedBox(
                             width: 20.0,
                           ),
                           currentStep > 0
                               // ignore: deprecated_member_use
-                              ? OutlineButton(
-                                  color: Colors.white,
+                              // ? OutlineButton(
+                              //     color: Colors.white,
+                              //     child: Text(
+                              //       "Go Back",
+                              //       style: TextStyle(
+                              //         color: Theme.of(context)
+                              //             // ignore: deprecated_member_use
+                              //             .textSelectionTheme.selectionHandleColor,
+                              //       ),
+                              //     ),
+                              //     borderSide: BorderSide(
+                              //       width: 2.0,
+                              //       color: Theme.of(context)
+                              //           // ignore: deprecated_member_use
+                              //           .textSelectionTheme.selectionHandleColor
+                              //           .withOpacity(0.5),
+                              //     ),
+                              //     highlightColor: Theme.of(context)
+                              //         // ignore: deprecated_member_use
+                              //         .textSelectionTheme.selectionHandleColor
+                              //         .withOpacity(0.1),
+                              //     highlightedBorderColor: Theme.of(context)
+                              //         // ignore: deprecated_member_use
+                              //         .textSelectionTheme.selectionHandleColor
+                              //         .withOpacity(0.6),
+                              //     onPressed: (!_saving) ? onStepCancel : null,
+                              //   )
+                              ? OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    foregroundColor: Colors.white, side: BorderSide(
+                                      width: 2.0,
+                                      color: Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionTheme.selectionHandleColor
+                                          .withOpacity(0.5),
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                  ),
                                   child: Text(
                                     "Go Back",
                                     style: TextStyle(
                                       color: Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
+                                          .textSelectionTheme.selectionHandleColor,
                                     ),
                                   ),
-                                  borderSide: BorderSide(
-                                    width: 2.0,
-                                    color: Theme.of(context)
-                                        // ignore: deprecated_member_use
-                                        .textSelectionHandleColor
-                                        .withOpacity(0.5),
-                                  ),
-                                  highlightColor: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor
-                                      .withOpacity(0.1),
-                                  highlightedBorderColor: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor
-                                      .withOpacity(0.6),
-                                  onPressed: (!_saving) ? onStepCancel : null,
+                                  onPressed: !_saving ? controlDetails.onStepCancel : null,
                                 )
                               : SizedBox(),
                         ],

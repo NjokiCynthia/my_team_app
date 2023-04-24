@@ -9,7 +9,8 @@ import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class AddContributionDialog extends StatefulWidget {
@@ -25,7 +26,8 @@ class _AddContributionDialogState extends State<AddContributionDialog> {
   bool _isSelectDayEnabled = true;
   var _isLoading = false;
 
-  String requestId = ((DateTime.now().millisecondsSinceEpoch / 1000).truncate()).toString();
+  String requestId =
+      ((DateTime.now().millisecondsSinceEpoch / 1000).truncate()).toString();
 
   int _contributionTypeId;
   int _daysOfTheMonth;
@@ -65,7 +67,8 @@ class _AddContributionDialogState extends State<AddContributionDialog> {
     formData['invoice_days'] = 1;
 
     try {
-      await Provider.of<Groups>(context, listen: false).addContributionStepOne(formData, false);
+      await Provider.of<Groups>(context, listen: false)
+          .addContributionStepOne(formData, false);
       requestId = null;
       Navigator.of(context).pop(true);
     } on CustomException catch (error) {
@@ -93,7 +96,7 @@ class _AddContributionDialogState extends State<AddContributionDialog> {
       appBar: secondaryPageAppbar(
         context: context,
         title: "Add Group Contribution",
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.times,
         elevation: 1.0,
         action: () {
           Navigator.of(context).pop();
@@ -229,7 +232,10 @@ class _AddContributionDialogState extends State<AddContributionDialog> {
                     enabled: _isFormEnabled,
                     decoration: InputDecoration(
                         floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Theme.of(context).hintColor,
+                                width: 1.0)),
                         labelText: "Contribution Name",
                         labelStyle: TextStyle(fontFamily: 'SegoeUI')),
                     onChanged: (value) {
