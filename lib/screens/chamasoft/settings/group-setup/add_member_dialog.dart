@@ -176,7 +176,7 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                           Row(
                             children: <Widget>[
                               Container(
-                                height: 34,
+                                height: 60,
                                 padding:
                                     EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
                                 child: CountryCodePicker(
@@ -185,6 +185,7 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                                   favorite: ['KE', 'UG', 'TZ', 'RW'],
                                   showCountryOnly: false,
                                   showOnlyCountryWhenClosed: false,
+                                  backgroundColor: Colors.transparent,
                                   alignLeft: false,
                                   flagWidth: 28.0,
                                   textStyle: TextStyle(
