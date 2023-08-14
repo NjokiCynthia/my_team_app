@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use, duplicate_ignore
-
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-installment.dart';
@@ -467,7 +465,7 @@ class AccountBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
-    final amount = int.tryParse(account.balance) ?? 0;
+    final amount = double.tryParse(account.balance) ?? 0;
     return Padding(
       padding: EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),
       child: Card(

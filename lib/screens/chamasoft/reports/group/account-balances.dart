@@ -1,3 +1,4 @@
+import 'package:chamasoft/helpers/report_helper.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/helpers/common.dart';
@@ -113,13 +114,13 @@ class _AccountBalancesState extends State<AccountBalances> {
     });
 
     setState(() async {
-    final title = "Account Balance Report";
-    final pdfFile = await PdfApi.generateAccountBalancePdf(title);
-    PdfApi.openFile(pdfFile);
+      final title = "Account Balance Report";
+      final pdfFile = await PdfApi.generateAccountBalancePdf(title);
+      PdfApi.openFile(pdfFile);
       _isLoading = false;
     });
   }
-   
+
   @override
   Widget build(BuildContext context) {
     final groupObject =
@@ -127,13 +128,14 @@ class _AccountBalancesState extends State<AccountBalances> {
     return Scaffold(
         key: _scaffoldKey,
         appBar: tertiaryPageAppbar(
-          context: context,
-          action: () => Navigator.of(context).pop(),
-          elevation: _appBarElevation,
-          leadingIcon: LineAwesomeIcons.arrow_left,
-          title: "Account Balances",
-          //  trailingIcon: LineAwesomeIcons.download,
-            trailingAction: () =>_downloadAccounBalancesPdf(context,groupObject)),
+            context: context,
+            action: () => Navigator.of(context).pop(),
+            elevation: _appBarElevation,
+            leadingIcon: LineAwesomeIcons.arrow_left,
+            title: "Account Balances",
+            //  trailingIcon: LineAwesomeIcons.download,
+            trailingAction: () =>
+                _downloadAccounBalancesPdf(context, groupObject)),
         backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
           backgroundColor: (themeChangeProvider.darkTheme)
@@ -159,7 +161,9 @@ class _AccountBalancesState extends State<AccountBalances> {
                           heading2(
                               text: "Total ",
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               textAlign: TextAlign.start),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -168,7 +172,8 @@ class _AccountBalancesState extends State<AccountBalances> {
                                   text: "Account balances",
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionTheme.selectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.start),
                             ],
                           ),
@@ -179,7 +184,9 @@ class _AccountBalancesState extends State<AccountBalances> {
                         text: "${groupObject.groupCurrency} " +
                             currencyFormat.format(_totalBalance),
                         // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor,
                         textAlign: TextAlign.start)
                   ],
                 ),
@@ -199,6 +206,11 @@ class _AccountBalancesState extends State<AccountBalances> {
                           if (balance.isHeader) {
                             return AccountHeader(header: balance);
                           } else {
+                            print(
+                                'Print account number and balance that are now on the UI');
+                            print("Account Number: ${balance.name}");
+                            print("Account Number: ${balance.accountNumber}");
+                            print("Account Balance: ${balance.balance}");
                             return AccountBody(account: balance);
                           }
                         },

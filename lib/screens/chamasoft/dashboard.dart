@@ -24,7 +24,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 import 'meetings/meetings.dart';
-import 'models/group-model.dart';
 
 // ignore: must_be_immutable
 class ChamasoftDashboard extends StatefulWidget {
@@ -45,7 +44,6 @@ class ChamasoftDashboard extends StatefulWidget {
 class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   StreamController _eventDispatcher = new StreamController.broadcast();
   List<dynamic> _overlayItems = [];
-  Group _currentGroup;
   Stream get _stream => _eventDispatcher.stream;
 
   final GlobalKey<ScaffoldState> dashboardScaffoldKey =
@@ -208,8 +206,6 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   void didChangeDependencies() {
     // ignore: todo
     // TODO: implement didChangeDependencies
-    _currentGroup =
-        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     _getUserGroupsOverlay(context).then((_) async {
       final group = Provider.of<Groups>(context, listen: false);
       await group.getCurrentGroupId().then((groupId) async {

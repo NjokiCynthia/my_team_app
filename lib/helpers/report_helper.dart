@@ -25,9 +25,15 @@ AccountBalanceModel getAccountBalances(dynamic data) {
         final accountBalance = AccountBalance(
             isHeader: false,
             name: account['account_name'].toString(),
-            accountNumber: "0", //account['account_number'].toString(),
+            accountNumber: account['account_number'].toString(),
             balance: account['account_balance'].toString());
         bankAccounts.add(accountBalance);
+
+        print('object the account balance for each specific account');
+        print('Account Name: ${accountBalance.name}');
+        print('Account Number: ${accountBalance.accountNumber}');
+        print('Account Balance: ${accountBalance.balance}');
+        print('-----');
       }
     }
   }
