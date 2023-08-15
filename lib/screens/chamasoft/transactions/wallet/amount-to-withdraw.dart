@@ -6,6 +6,7 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/screens/chamasoft/reports/withdrawal_receipts.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -84,8 +85,8 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
           Navigator.of(context).popUntil((_) => count++ >= 3);
         } else {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  ReviewWithdrawal(requestId: int.parse(requestId))));
+              builder: (BuildContext context) => ReviewWithdrawalRequests()));
+          // ReviewWithdrawal(requestId: int.parse(requestId))));
         }
       }, false);
 

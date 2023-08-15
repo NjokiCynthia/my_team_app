@@ -5,6 +5,8 @@ import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/custom-scroll-behaviour.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/theme.dart';
+import 'package:chamasoft/screens/chamasoft/reports/withdrawal_receipts.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
@@ -249,283 +251,326 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
-    return Scaffold(
-        key: _scaffoldKey,
-        appBar: secondaryPageAppbar(
-          context: context,
-          action: () => Navigator.of(context).pop(_responseSubmitted),
-          elevation: 1,
-          leadingIcon: LineAwesomeIcons.times,
-          title: "Review Withdrawal Request",
-        ),
-        backgroundColor: Theme.of(context).backgroundColor,
-        body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(16.0),
-                width: double.infinity,
-                color: (themeChangeProvider.darkTheme)
-                    ? Colors.blueGrey[800]
-                    : Color(0xffededfe),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: heading2(
-                            text: "${_withdrawalDetails.withdrawalFor}",
-                            // ignore: deprecated_member_use
-                            color: Theme.of(context)
-                                .textSelectionTheme
-                                .selectionHandleColor,
-                            textAlign: TextAlign.start,
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            customTitle(
-                              text: "${groupObject.groupCurrency} ",
-                              fontSize: 18.0,
-                              // ignore: deprecated_member_use
-                              color: Theme.of(context)
-                                  .textSelectionTheme
-                                  .selectionHandleColor,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            heading2(
-                              text:
-                                  "${currencyFormat.format(_withdrawalDetails.amount)}",
-                              // ignore: deprecated_member_use
-                              color: Theme.of(context)
-                                  .textSelectionTheme
-                                  .selectionHandleColor,
-                              textAlign: TextAlign.end,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (BuildContext context) => ReviewWithdrawalRequests(),
+          ),
+        );
+        return false; // Return false to prevent default back button behavior
+      },
+      child: Scaffold(
+          key: _scaffoldKey,
+          appBar: secondaryPageAppbar(
+            context: context,
+            action: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ReviewWithdrawalRequests())),
+            //Navigator.of(context).pop(_responseSubmitted),
+            elevation: 1,
+            leadingIcon: LineAwesomeIcons.times,
+            title: "Review Withdrawal Request",
+          ),
+          backgroundColor: Theme.of(context).backgroundColor,
+          body: Container(
+            width: double.infinity,
+            height: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(16.0),
+                  width: double.infinity,
+                  color: (themeChangeProvider.darkTheme)
+                      ? Colors.blueGrey[800]
+                      : Color(0xffededfe),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Expanded(
                             flex: 1,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                subtitle2(
-                                    text: "Requested On",
-                                    color: Theme.of(context)
-                                        // ignore: deprecated_member_use
-                                        .textSelectionTheme
-                                        .selectionHandleColor,
-                                    textAlign: TextAlign.start),
-                                customTitleWithWrap(
-                                  text: _withdrawalDetails.date,
-                                  fontSize: 12.0,
-                                  color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionTheme
-                                      .selectionHandleColor,
-                                  textAlign: TextAlign.start,
-                                )
-                              ],
+                            child: heading2(
+                              text: "${_withdrawalDetails.withdrawalFor}",
+                              // ignore: deprecated_member_use
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
+                              textAlign: TextAlign.start,
                             ),
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                subtitle2(
-                                    text: "Initiated By",
-                                    color: Theme.of(context)
-                                        // ignore: deprecated_member_use
-                                        .textSelectionTheme
-                                        .selectionHandleColor,
-                                    textAlign: TextAlign.end),
-                                customTitleWithWrap(
-                                  text: _withdrawalDetails.requestBy,
-                                  fontSize: 12.0,
-                                  color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionTheme
-                                      .selectionHandleColor,
-                                  textAlign: TextAlign.start,
-                                )
-                              ],
-                            ),
-                          ),
-                        ]),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    subtitle2(
-                        text: "Recipient",
-                        // ignore: deprecated_member_use
-                        color: Theme.of(context)
-                            .textSelectionTheme
-                            .selectionHandleColor,
-                        textAlign: TextAlign.start),
-                    customTitleWithWrap(
-                      text: _withdrawalDetails.recipient,
-                      fontSize: 12.0,
-                      // ignore: deprecated_member_use
-                      color: Theme.of(context)
-                          .textSelectionTheme
-                          .selectionHandleColor,
-                      textAlign: TextAlign.start,
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    subtitle2(
-                        text: "Description",
-                        // ignore: deprecated_member_use
-                        color: Theme.of(context)
-                            .textSelectionTheme
-                            .selectionHandleColor,
-                        textAlign: TextAlign.start),
-                    customTitleWithWrap(
-                        textAlign: TextAlign.start,
-                        fontSize: 12.0,
-                        text: _withdrawalDetails != null
-                            ? _withdrawalDetails.description
-                            : "--",
-                        // ignore: deprecated_member_use
-                        color: Theme.of(context)
-                            .textSelectionTheme
-                            .selectionHandleColor,
-                        maxLines: null),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    subtitle2(
-                        text: "Status",
-                        // ignore: deprecated_member_use
-                        color: Theme.of(context)
-                            .textSelectionTheme
-                            .selectionHandleColor,
-                        textAlign: TextAlign.start),
-                    customTitleWithWrap(
-                      text: _withdrawalDetails != null
-                          ? _withdrawalDetails.approvalStatus
-                          : "--",
-                      fontSize: 12.0,
-                      color: color,
-                      textAlign: TextAlign.start,
-                    ),
-                  ],
-                ),
-              ),
-              _isLoading
-                  ? showLinearProgressIndicator()
-                  : SizedBox(
-                      height: 0.0,
-                    ),
-              Expanded(
-                flex: 1,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Visibility(
-                        visible: _withdrawalDetails != null,
-                        child: heading2(
-                            text: "Signatories",
-                            // ignore: deprecated_member_use
-                            color: Theme.of(context)
-                                .textSelectionTheme
-                                .selectionHandleColor,
-                            textAlign: TextAlign.start),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Expanded(
-                        child: ScrollConfiguration(
-                          behavior: CustomScrollBehavior(),
-                          child: ListView.separated(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              separatorBuilder:
-                                  (BuildContext context, int index) =>
-                                      const Divider(),
-                              itemCount: _withdrawalDetails != null
-                                  ? _withdrawalDetails.signatories.length
-                                  : 0,
-                              itemBuilder: (context, int index) {
-                                if (_withdrawalDetails != null) {
-                                  StatusModel statusModel =
-                                      _withdrawalDetails.signatories[index];
-                                  return WalletSignatoryCard(
-                                    status: statusModel,
-                                  );
-                                } else
-                                  return Container();
-                              }),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Visibility(
-                        visible: _withdrawalDetails != null &&
-                            _withdrawalDetails.hasResponded != 1 &&
-                            _withdrawalDetails.isOwner != 1 &&
-                            _isLoading != true,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            // ignore: deprecated_member_use
-                            TextButton(
-                              style: TextButton.styleFrom(
-                                backgroundColor:
-                                    Colors.blueAccent.withOpacity(.2),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              customTitle(
+                                text: "${groupObject.groupCurrency} ",
+                                fontSize: 18.0,
+                                // ignore: deprecated_member_use
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
+                                fontWeight: FontWeight.w400,
                               ),
-                              onPressed: () =>
-                                  approvalDialog(groupObject.groupCurrency),
-                              child: Padding(
-                                padding: EdgeInsets.all(12.0),
-                                child: Text(
-                                  'APPROVE',
-                                  style: TextStyle(
-                                      color: primaryColor,
-                                      fontFamily: 'SegoeUI',
-                                      fontWeight: FontWeight.w700),
+                              heading2(
+                                text:
+                                    "${currencyFormat.format(_withdrawalDetails.amount)}",
+                                // ignore: deprecated_member_use
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
+                                textAlign: TextAlign.end,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Expanded(
+                              flex: 1,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  subtitle2(
+                                      text: "Requested On",
+                                      color: Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
+                                      textAlign: TextAlign.start),
+                                  customTitleWithWrap(
+                                    text: _withdrawalDetails.date,
+                                    fontSize: 12.0,
+                                    color: Theme.of(context)
+                                        // ignore: deprecated_member_use
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
+                                    textAlign: TextAlign.start,
+                                  )
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: <Widget>[
+                                  subtitle2(
+                                      text: "Initiated By",
+                                      color: Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
+                                      textAlign: TextAlign.end),
+                                  customTitleWithWrap(
+                                    text: _withdrawalDetails.requestBy,
+                                    fontSize: 12.0,
+                                    color: Theme.of(context)
+                                        // ignore: deprecated_member_use
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
+                                    textAlign: TextAlign.start,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ]),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      subtitle2(
+                          text: "Recipient",
+                          // ignore: deprecated_member_use
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
+                          textAlign: TextAlign.start),
+                      customTitleWithWrap(
+                        text: _withdrawalDetails.recipient,
+                        fontSize: 12.0,
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor,
+                        textAlign: TextAlign.start,
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      subtitle2(
+                          text: "Description",
+                          // ignore: deprecated_member_use
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
+                          textAlign: TextAlign.start),
+                      customTitleWithWrap(
+                          textAlign: TextAlign.start,
+                          fontSize: 12.0,
+                          text: _withdrawalDetails != null
+                              ? _withdrawalDetails.description
+                              : "--",
+                          // ignore: deprecated_member_use
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
+                          maxLines: null),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      subtitle2(
+                          text: "Status",
+                          // ignore: deprecated_member_use
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
+                          textAlign: TextAlign.start),
+                      customTitleWithWrap(
+                        text: _withdrawalDetails != null
+                            ? _withdrawalDetails.approvalStatus
+                            : "--",
+                        fontSize: 12.0,
+                        color: color,
+                        textAlign: TextAlign.start,
+                      ),
+                    ],
+                  ),
+                ),
+                _isLoading
+                    ? showLinearProgressIndicator()
+                    : SizedBox(
+                        height: 0.0,
+                      ),
+                Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Visibility(
+                          visible: _withdrawalDetails != null,
+                          child: heading2(
+                              text: "Signatories",
+                              // ignore: deprecated_member_use
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
+                              textAlign: TextAlign.start),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Expanded(
+                          child: ScrollConfiguration(
+                            behavior: CustomScrollBehavior(),
+                            child: ListView.separated(
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                separatorBuilder:
+                                    (BuildContext context, int index) =>
+                                        const Divider(),
+                                itemCount: _withdrawalDetails != null
+                                    ? _withdrawalDetails.signatories.length
+                                    : 0,
+                                itemBuilder: (context, int index) {
+                                  if (_withdrawalDetails != null) {
+                                    StatusModel statusModel =
+                                        _withdrawalDetails.signatories[index];
+                                    return WalletSignatoryCard(
+                                      status: statusModel,
+                                    );
+                                  } else
+                                    return Container();
+                                }),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Visibility(
+                          visible: _withdrawalDetails != null &&
+                              _withdrawalDetails.hasResponded != 1 &&
+                              _withdrawalDetails.isOwner != 1 &&
+                              _isLoading != true,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              // ignore: deprecated_member_use
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor:
+                                      Colors.blueAccent.withOpacity(.2),
+                                ),
+                                onPressed: () =>
+                                    approvalDialog(groupObject.groupCurrency),
+                                child: Padding(
+                                  padding: EdgeInsets.all(12.0),
+                                  child: Text(
+                                    'APPROVE',
+                                    style: TextStyle(
+                                        color: primaryColor,
+                                        fontFamily: 'SegoeUI',
+                                        fontWeight: FontWeight.w700),
+                                  ),
                                 ),
                               ),
-                            ),
+                              // ignore: deprecated_member_use
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor:
+                                      Colors.redAccent.withOpacity(.2),
+                                ),
+                                onPressed: () {
+                                  rejectDialog(1);
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.all(12.0),
+                                  child: Text(
+                                    'REJECT',
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontFamily: 'SegoeUI',
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Visibility(
+                          visible: _withdrawalDetails != null &&
+                              _withdrawalDetails.isOwner == 1 &&
+                              _withdrawalDetails.responseStatus == 0 &&
+                              !_requestCancelled &&
+                              _isLoading != true,
+                          child: Center(
                             // ignore: deprecated_member_use
-                            TextButton(
+                            child: TextButton(
                               style: TextButton.styleFrom(
                                 backgroundColor:
                                     Colors.redAccent.withOpacity(.2),
                               ),
                               onPressed: () {
-                                rejectDialog(1);
+                                rejectDialog(2);
                               },
                               child: Padding(
                                 padding: EdgeInsets.all(12.0),
                                 child: Text(
-                                  'REJECT',
+                                  'CANCEL WITHDRAWAL REQUEST',
                                   style: TextStyle(
                                       color: Colors.red,
                                       fontFamily: 'SegoeUI',
@@ -533,44 +578,16 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      Visibility(
-                        visible: _withdrawalDetails != null &&
-                            _withdrawalDetails.isOwner == 1 &&
-                            _withdrawalDetails.responseStatus == 0 &&
-                            !_requestCancelled &&
-                            _isLoading != true,
-                        child: Center(
-                          // ignore: deprecated_member_use
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.redAccent.withOpacity(.2),
-                            ),
-                            onPressed: () {
-                              rejectDialog(2);
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.all(12.0),
-                              child: Text(
-                                'CANCEL WITHDRAWAL REQUEST',
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontFamily: 'SegoeUI',
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              )
-            ],
-          ),
-        ));
+                )
+              ],
+            ),
+          )),
+    );
   }
 }
 

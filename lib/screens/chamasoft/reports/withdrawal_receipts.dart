@@ -144,153 +144,170 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        key: _scaffoldKey,
-        appBar: secondaryPageAppbar(
-            context: context,
-            title: "Withdrawals Receipts",
-            action: () => widget.requestId == WITHDRAWAL_REQUEST
-                ? Navigator.of(context).popUntil((_) => count++ >= 4)
-                : Navigator.of(context).pop(),
-            elevation: 1,
-            leadingIcon: LineAwesomeIcons.arrow_left),
-        backgroundColor: Theme.of(context).backgroundColor,
-        body: RefreshIndicator(
-            backgroundColor: (themeChangeProvider.darkTheme)
-                ? Colors.blueGrey[800]
-                : Colors.white,
-            onRefresh: () => _fetchData(),
-            child: Container(
-                decoration: primaryGradient(context),
-                width: double.infinity,
-                height: double.infinity,
-                child: Column(
-                  children: <Widget>[
-                    Visibility(
-                      visible: true,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                                height: 40,
-                                decoration: BoxDecoration(
-                                    border: Border(
-                                        right: BorderSide(
-                                            color: Theme.of(context)
-                                                .bottomAppBarTheme.color,
-                                            width: 0.5),
-                                        bottom: BorderSide(
-                                            color: Theme.of(context)
-                                                .bottomAppBarTheme.color,
-                                            width: 1.0))),
-                                child: Material(
-                                  color: Theme.of(context).backgroundColor,
-                                  child: InkWell(
-                                    onTap: () => showSortBottomSheet(),
-                                    splashColor:
-                                        Colors.blueGrey.withOpacity(0.2),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(LineAwesomeIcons.sort,
-                                            color: Theme.of(context)
-                                                // ignore: deprecated_member_use
-                                                .textSelectionTheme.selectionHandleColor),
-                                        subtitle1(
-                                            text: "Sort",
-                                            color: Theme.of(context)
-                                                // ignore: deprecated_member_use
-                                                .textSelectionTheme.selectionHandleColor)
-                                      ],
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.of(context).pop();
+
+        return false; // Return false to prevent default back button behavior
+      },
+      child: Scaffold(
+          key: _scaffoldKey,
+          appBar: secondaryPageAppbar(
+              context: context,
+              title: "Withdrawals Receipts",
+              action: () => widget.requestId == WITHDRAWAL_REQUEST
+                  ? Navigator.of(context).popUntil((_) => count++ >= 4)
+                  : Navigator.of(context).pop(),
+              elevation: 1,
+              leadingIcon: LineAwesomeIcons.arrow_left),
+          backgroundColor: Theme.of(context).backgroundColor,
+          body: RefreshIndicator(
+              backgroundColor: (themeChangeProvider.darkTheme)
+                  ? Colors.blueGrey[800]
+                  : Colors.white,
+              onRefresh: () => _fetchData(),
+              child: Container(
+                  decoration: primaryGradient(context),
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: Column(
+                    children: <Widget>[
+                      Visibility(
+                        visible: true,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                          right: BorderSide(
+                                              color: Theme.of(context)
+                                                  .bottomAppBarTheme
+                                                  .color,
+                                              width: 0.5),
+                                          bottom: BorderSide(
+                                              color: Theme.of(context)
+                                                  .bottomAppBarTheme
+                                                  .color,
+                                              width: 1.0))),
+                                  child: Material(
+                                    color: Theme.of(context).backgroundColor,
+                                    child: InkWell(
+                                      onTap: () => showSortBottomSheet(),
+                                      splashColor:
+                                          Colors.blueGrey.withOpacity(0.2),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(LineAwesomeIcons.sort,
+                                              color: Theme.of(context)
+                                                  // ignore: deprecated_member_use
+                                                  .textSelectionTheme
+                                                  .selectionHandleColor),
+                                          subtitle1(
+                                              text: "Sort",
+                                              color: Theme.of(context)
+                                                  // ignore: deprecated_member_use
+                                                  .textSelectionTheme
+                                                  .selectionHandleColor)
+                                        ],
+                                      ),
                                     ),
+                                  ) //loan.status == 2 ? null : repay),
                                   ),
-                                ) //loan.status == 2 ? null : repay),
-                                ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                                height: 40,
-                                decoration: BoxDecoration(
-                                    border: Border(
-                                        left: BorderSide(
-                                            color: Theme.of(context)
-                                                .bottomAppBarTheme.color,
-                                            width: 0.5),
-                                        bottom: BorderSide(
-                                            color: Theme.of(context)
-                                                .bottomAppBarTheme.color,
-                                            width: 1.0))),
-                                child: Material(
-                                  color: Theme.of(context).backgroundColor,
-                                  child: InkWell(
-                                    splashColor:
-                                        Colors.blueGrey.withOpacity(0.2),
-                                    onTap: () => showFilterOptions(),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(LineAwesomeIcons.filter,
-                                            color: Theme.of(context)
-                                                // ignore: deprecated_member_use
-                                                .textSelectionTheme.selectionHandleColor),
-                                        subtitle1(
-                                            text: "Filter",
-                                            color: Theme.of(context)
-                                                // ignore: deprecated_member_use
-                                                .textSelectionTheme.selectionHandleColor)
-                                      ],
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                          left: BorderSide(
+                                              color: Theme.of(context)
+                                                  .bottomAppBarTheme
+                                                  .color,
+                                              width: 0.5),
+                                          bottom: BorderSide(
+                                              color: Theme.of(context)
+                                                  .bottomAppBarTheme
+                                                  .color,
+                                              width: 1.0))),
+                                  child: Material(
+                                    color: Theme.of(context).backgroundColor,
+                                    child: InkWell(
+                                      splashColor:
+                                          Colors.blueGrey.withOpacity(0.2),
+                                      onTap: () => showFilterOptions(),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(LineAwesomeIcons.filter,
+                                              color: Theme.of(context)
+                                                  // ignore: deprecated_member_use
+                                                  .textSelectionTheme
+                                                  .selectionHandleColor),
+                                          subtitle1(
+                                              text: "Filter",
+                                              color: Theme.of(context)
+                                                  // ignore: deprecated_member_use
+                                                  .textSelectionTheme
+                                                  .selectionHandleColor)
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                )),
-                          ),
-                        ],
+                                  )),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    _isLoading
-                        ? showLinearProgressIndicator()
-                        : SizedBox(
-                            height: 0.0,
-                          ),
-                    Expanded(
-                      child: _withdrawals.length > 0
-                          ? NotificationListener<ScrollNotification>(
-                              onNotification: (ScrollNotification scrollInfo) {
-                                if (!_isLoading &&
-                                    scrollInfo.metrics.pixels ==
-                                        scrollInfo.metrics.maxScrollExtent &&
-                                    _hasMoreData) {
-                                  // ignore: todo
-                                  //TODO check if has more data before fetching again
-                                  _fetchData();
-                                }
-                                return true;
-                              },
-                              child: ListView.builder(
-                                  itemBuilder: (context, index) {
-                                    Withdrawal withdrawal = _withdrawals[index];
-                                    return WithdrawalCard(
-                                      withdrawal: withdrawal,
-                                      position: index,
-                                      bodyContext: context,
-                                      details: () {},
-                                      voidItem: () {},
-                                    );
-                                  },
-                                  itemCount: _withdrawals.length),
-                            )
-                          : emptyList(
-                              color: Colors.blue[400],
-                              iconData: LineAwesomeIcons.angle_double_up,
-                              text: "There are no withdrawals to display"),
-                    )
-                  ],
-                ))));
+                      _isLoading
+                          ? showLinearProgressIndicator()
+                          : SizedBox(
+                              height: 0.0,
+                            ),
+                      Expanded(
+                        child: _withdrawals.length > 0
+                            ? NotificationListener<ScrollNotification>(
+                                onNotification:
+                                    (ScrollNotification scrollInfo) {
+                                  if (!_isLoading &&
+                                      scrollInfo.metrics.pixels ==
+                                          scrollInfo.metrics.maxScrollExtent &&
+                                      _hasMoreData) {
+                                    // ignore: todo
+                                    //TODO check if has more data before fetching again
+                                    _fetchData();
+                                  }
+                                  return true;
+                                },
+                                child: ListView.builder(
+                                    itemBuilder: (context, index) {
+                                      Withdrawal withdrawal =
+                                          _withdrawals[index];
+                                      return WithdrawalCard(
+                                        withdrawal: withdrawal,
+                                        position: index,
+                                        bodyContext: context,
+                                        details: () {},
+                                        voidItem: () {},
+                                      );
+                                    },
+                                    itemCount: _withdrawals.length),
+                              )
+                            : emptyList(
+                                color: Colors.blue[400],
+                                iconData: LineAwesomeIcons.angle_double_up,
+                                text: "There are no withdrawals to display"),
+                      )
+                    ],
+                  )))),
+    );
   }
 }
 
@@ -374,7 +391,9 @@ class WithdrawalCard extends StatelessWidget {
                                 // ignore: deprecated_member_use
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                    Theme.of(context)
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                 textAlign: TextAlign.start,
                               ),
                               subtitle2(
@@ -383,7 +402,9 @@ class WithdrawalCard extends StatelessWidget {
                                 // ignore: deprecated_member_use
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                    Theme.of(context)
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                               )
                             ],
                           ),
@@ -399,13 +420,17 @@ class WithdrawalCard extends StatelessWidget {
                               text: "${groupObject.groupCurrency} ",
                               fontSize: 18.0,
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               fontWeight: FontWeight.w400,
                             ),
                             heading2(
                               text: currencyFormat.format(withdrawal.amount),
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               textAlign: TextAlign.end,
                             ),
                           ],
@@ -431,7 +456,8 @@ class WithdrawalCard extends StatelessWidget {
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionTheme.selectionHandleColor,
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                   textAlign: TextAlign.start),
                               customTitle1(
                                   text: withdrawal.recipient,
@@ -441,7 +467,8 @@ class WithdrawalCard extends StatelessWidget {
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionTheme.selectionHandleColor,
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                   textAlign: TextAlign.start),
                             ],
                           ),
@@ -454,7 +481,8 @@ class WithdrawalCard extends StatelessWidget {
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionTheme.selectionHandleColor,
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                   textAlign: TextAlign.end),
                               customTitle1(
                                   text: withdrawal.recordedOn,
@@ -463,7 +491,8 @@ class WithdrawalCard extends StatelessWidget {
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionTheme.selectionHandleColor,
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                   textAlign: TextAlign.end)
                             ],
                           ),
@@ -484,7 +513,8 @@ class WithdrawalCard extends StatelessWidget {
                                 // ignore: deprecated_member_use
                                 Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionTheme.selectionHandleColor,
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                             textAlign: TextAlign.start),
                         subtitle2(
                             text:
@@ -494,7 +524,8 @@ class WithdrawalCard extends StatelessWidget {
                                 // ignore: deprecated_member_use
                                 Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionTheme.selectionHandleColor,
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                             textAlign: TextAlign.start),
                       ],
                     ),
