@@ -6,6 +6,7 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/screens/chamasoft/reports/withdrawal_receipts.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
@@ -76,25 +77,32 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
 
       alertDialogWithAction(context, "Withdrawal request has been submitted",
           () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) =>
-                WithdrawalReceipts(requestId: WITHDRAWAL_REQUEST)));
-
-        // Navigator.of(context).pop();
+        // Navigator.of(context).pushReplacement(MaterialPageRoute(
+        //     builder: (BuildContext context) => ReviewWithdrawal()));
         if (requestId == "-1") {
-          //request is duplicate
           int count = 0;
           Navigator.of(context).popUntil((_) => count++ >= 3);
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => WithdrawalReceipts()),
-          // );
-        } else
-          // Navigator.of(context).pop(requestId);
+        } else {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (BuildContext context) =>
-                  WithdrawalReceipts(requestId: WITHDRAWAL_REQUEST)));
+                  ReviewWithdrawal(requestId: int.parse(requestId))));
+        }
       }, false);
+
+      //   // Navigator.of(context).pop();
+      //   if (requestId == "-1") {
+      //     //request is duplicate
+      //     int count = 0;
+      //     Navigator.of(context).popUntil((_) => count++ >= 3);
+      //     // Navigator.push(
+      //     //   context,
+      //     //   MaterialPageRoute(builder: (context) => WithdrawalReceipts()),
+      //     // );
+      //   } else
+      //     // Navigator.of(context).pop(requestId);
+      //     Navigator.of(context).pushReplacement(MaterialPageRoute(
+      //         builder: (BuildContext context) => ReviewWithdrawal(requestId)));
+      // }, false);
       setState(() {
         _isLoading = false;
         _isFormInputEnabled = true;

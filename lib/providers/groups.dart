@@ -1002,7 +1002,6 @@ class Groups with ChangeNotifier {
             [int.parse(_currentGroupId)], DatabaseHelper.contributionsTable);
         await dbHelper.batchInsert(
             _contributionsList, DatabaseHelper.contributionsTable);
-
       }
     }
     notifyListeners();
@@ -4555,8 +4554,11 @@ class Groups with ChangeNotifier {
           .encode({"user_id": _userId, "group_id": _currentGroupId, "id": id});
       try {
         final response = await PostToServer.post(postRequest, url);
-        // log(response.toString());
+
         final data = response as dynamic;
+        print(
+            'This is the response for viewing withdrawals ${response.toString()}');
+
         addWithdrawalRequestDetails(data);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
@@ -4569,6 +4571,26 @@ class Groups with ChangeNotifier {
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
+  //     try {
+  //       final response = await PostToServer.post(postRequest, url);
+
+  //       // log(response.toString());
+  //       final data = response as dynamic;
+  //       print(
+  //           'This is the response for viewing withdrawals ${response.toString()}');
+
+  //       addWithdrawalRequestDetails(data);
+  //     } on CustomException catch (error) {
+  //       throw CustomException(message: error.message, status: error.status);
+  //     } catch (error) {
+  //       throw CustomException(message: ERROR_MESSAGE);
+  //     }
+  //   } on CustomException catch (error) {
+  //     throw CustomException(message: error.message, status: error.status);
+  //   } catch (error) {
+  //     throw CustomException(message: ERROR_MESSAGE);
+  //   }
+  // }
 
   Future<void> respondToWithdrawalRequest(Map<String, String> formData) async {
     final url = EndpointUrl.RESPOND_TO_WITHDRAWAL_REQUEST;
@@ -5225,7 +5247,9 @@ class Groups with ChangeNotifier {
         if (status == 12) {
           return "-1";
         } else {
-          return response["request_id"].toString();
+          String requestId = response["request_id"].toString();
+          return requestId;
+          //return response["request_id"].toString();
         }
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
