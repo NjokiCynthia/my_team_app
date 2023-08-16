@@ -17,16 +17,16 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
-class ReviewWithdrawal extends StatefulWidget {
+class ReviewWithdraw extends StatefulWidget {
   final int requestId;
 
-  ReviewWithdrawal({this.requestId});
+  ReviewWithdraw({this.requestId});
 
   @override
-  _ReviewWithdrawalState createState() => _ReviewWithdrawalState();
+  _ReviewWithdrawState createState() => _ReviewWithdrawState();
 }
 
-class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
+class _ReviewWithdrawState extends State<ReviewWithdraw> {
   // double _appBarElevation = 0;
   // ScrollController _scrollController;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -254,23 +254,21 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return WillPopScope(
       onWillPop: () async {
-        Navigator.of(context).pop();
-        // Navigator.of(context).pushReplacement(
-        //   MaterialPageRoute(
-        //     builder: (BuildContext context) => ReviewWithdrawalRequest(),
-        //   ),
-        // );
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (BuildContext context) => ReviewWithdrawalRequest(),
+          ),
+        );
         return false; // Return false to prevent default back button behavior
       },
       child: Scaffold(
           key: _scaffoldKey,
           appBar: secondaryPageAppbar(
             context: context,
-            action: () => Navigator.of(context).pop(),
-            // Navigator.push(
-            // context,
-            // MaterialPageRoute(
-            //     builder: (context) => ReviewWithdrawalRequest())),
+            action: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ReviewWithdrawalRequest())),
             //Navigator.of(context).pop(_responseSubmitted),
             elevation: 1,
             leadingIcon: LineAwesomeIcons.times,
