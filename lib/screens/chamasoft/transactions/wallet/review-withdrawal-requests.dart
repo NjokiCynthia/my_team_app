@@ -135,155 +135,164 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        key: _scaffoldKey,
-        appBar: secondaryPageAppbar(
-          context: context,
-          action: () {
-            if (requestId == "-1") {
-              int count = 0;
-              Navigator.of(context).pop();
-            } else {
-              int count = 0;
-              Navigator.of(context).popUntil(
-                  (_) => count++ >= 4); // Pop back to the previous screen
-            }
-          },
+    return WillPopScope(
+      onWillPop: () async {
+        int count = 0;
+        Navigator.of(context).popUntil((_) => count++ >= 4);
 
-          //Navigator.of(context).pop(),
-          elevation: 1,
-          leadingIcon: LineAwesomeIcons.arrow_left,
-          title: "Review Withdrawal Request",
-        ),
-        backgroundColor: Colors.transparent,
-        body: RefreshIndicator(
-          backgroundColor: (themeChangeProvider.darkTheme)
-              ? Colors.blueGrey[800]
-              : Colors.white,
-          onRefresh: () => _fetchData(),
-          child: Container(
-            decoration: primaryGradient(context),
-            width: double.infinity,
-            height: double.infinity,
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                          height: 40,
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  right: BorderSide(
-                                      color:
-                                          Theme.of(context).bottomAppBarColor,
-                                      width: 0.5),
-                                  bottom: BorderSide(
-                                      color:
-                                          Theme.of(context).bottomAppBarColor,
-                                      width: 1.0))),
-                          child: Material(
-                            color: Theme.of(context).backgroundColor,
-                            child: InkWell(
-                              onTap: () => showSortBottomSheet(),
-                              splashColor: Colors.blueGrey.withOpacity(0.2),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(LineAwesomeIcons.sort,
-                                      color: Theme.of(context)
-                                          .textSelectionTheme
-                                          .selectionHandleColor),
-                                  subtitle1(
-                                      text: "Sort",
-                                      color: Theme.of(context)
-                                          .textSelectionTheme
-                                          .selectionHandleColor)
-                                ],
-                              ),
-                            ),
-                          ) //loan.status == 2 ? null : repay),
-                          ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                          height: 40,
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  left: BorderSide(
-                                      color:
-                                          Theme.of(context).bottomAppBarColor,
-                                      width: 0.5),
-                                  bottom: BorderSide(
-                                      color:
-                                          Theme.of(context).bottomAppBarColor,
-                                      width: 1.0))),
-                          child: Material(
-                            color: Theme.of(context).backgroundColor,
-                            child: InkWell(
-                              splashColor: Colors.blueGrey.withOpacity(0.2),
-                              onTap: () => showFilterOptions(),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(LineAwesomeIcons.filter,
-                                      color: Theme.of(context)
-                                          .textSelectionTheme
-                                          .selectionHandleColor),
-                                  subtitle1(
-                                      text: "Filter",
-                                      color: Theme.of(context)
-                                          .textSelectionTheme
-                                          .selectionHandleColor)
-                                ],
-                              ),
-                            ),
-                          )),
-                    ),
-                  ],
-                ),
-                _isLoading
-                    ? showLinearProgressIndicator()
-                    : SizedBox(
-                        height: 0.0,
-                      ),
-                Expanded(
-                  child: _withdrawalRequests.length > 0
-                      ? ListView.builder(
-                          itemBuilder: (context, index) {
-                            WithdrawalRequest request =
-                                _withdrawalRequests[index];
-                            return WithdrawalRequestCard(
-                              request: request,
-                              action: () async {
-                                final result = await Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            ReviewWithdrawal(
-                                              requestId: request.requestId,
-                                            )));
+        return false; // Return false to prevent default back button behavior
+      },
+      child: Scaffold(
+          key: _scaffoldKey,
+          appBar: secondaryPageAppbar(
+            context: context,
+            action: () {
+              if (requestId == "-1") {
+                int count = 0;
+                Navigator.of(context).popUntil((_) => count++ >= 4);
+              } else {
+                int count = 0;
+                Navigator.of(context).popUntil(
+                    (_) => count++ >= 4); // Pop back to the previous screen
+              }
+            },
 
-                                if (result != null && result) {
-                                  _fetchData();
-                                }
-                              },
-                            );
-                          },
-                          itemCount: _withdrawalRequests.length,
-                        )
-                      : emptyList(
-                          color: Colors.blue[400],
-                          iconData: LineAwesomeIcons.angle_double_down,
-                          text: "There are no withdrawal requests to display"),
-                ),
-              ],
-            ),
+            //Navigator.of(context).pop(),
+            elevation: 1,
+            leadingIcon: LineAwesomeIcons.arrow_left,
+            title: "Review Withdrawal Requests",
           ),
-        ));
+          backgroundColor: Colors.transparent,
+          body: RefreshIndicator(
+            backgroundColor: (themeChangeProvider.darkTheme)
+                ? Colors.blueGrey[800]
+                : Colors.white,
+            onRefresh: () => _fetchData(),
+            child: Container(
+              decoration: primaryGradient(context),
+              width: double.infinity,
+              height: double.infinity,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                            height: 40,
+                            decoration: BoxDecoration(
+                                border: Border(
+                                    right: BorderSide(
+                                        color:
+                                            Theme.of(context).bottomAppBarColor,
+                                        width: 0.5),
+                                    bottom: BorderSide(
+                                        color:
+                                            Theme.of(context).bottomAppBarColor,
+                                        width: 1.0))),
+                            child: Material(
+                              color: Theme.of(context).backgroundColor,
+                              child: InkWell(
+                                onTap: () => showSortBottomSheet(),
+                                splashColor: Colors.blueGrey.withOpacity(0.2),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(LineAwesomeIcons.sort,
+                                        color: Theme.of(context)
+                                            .textSelectionTheme
+                                            .selectionHandleColor),
+                                    subtitle1(
+                                        text: "Sort",
+                                        color: Theme.of(context)
+                                            .textSelectionTheme
+                                            .selectionHandleColor)
+                                  ],
+                                ),
+                              ),
+                            ) //loan.status == 2 ? null : repay),
+                            ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                            height: 40,
+                            decoration: BoxDecoration(
+                                border: Border(
+                                    left: BorderSide(
+                                        color:
+                                            Theme.of(context).bottomAppBarColor,
+                                        width: 0.5),
+                                    bottom: BorderSide(
+                                        color:
+                                            Theme.of(context).bottomAppBarColor,
+                                        width: 1.0))),
+                            child: Material(
+                              color: Theme.of(context).backgroundColor,
+                              child: InkWell(
+                                splashColor: Colors.blueGrey.withOpacity(0.2),
+                                onTap: () => showFilterOptions(),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(LineAwesomeIcons.filter,
+                                        color: Theme.of(context)
+                                            .textSelectionTheme
+                                            .selectionHandleColor),
+                                    subtitle1(
+                                        text: "Filter",
+                                        color: Theme.of(context)
+                                            .textSelectionTheme
+                                            .selectionHandleColor)
+                                  ],
+                                ),
+                              ),
+                            )),
+                      ),
+                    ],
+                  ),
+                  _isLoading
+                      ? showLinearProgressIndicator()
+                      : SizedBox(
+                          height: 0.0,
+                        ),
+                  Expanded(
+                    child: _withdrawalRequests.length > 0
+                        ? ListView.builder(
+                            itemBuilder: (context, index) {
+                              WithdrawalRequest request =
+                                  _withdrawalRequests[index];
+                              return WithdrawalRequestCard(
+                                request: request,
+                                action: () async {
+                                  final result = await Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              ReviewWithdrawal(
+                                                requestId: request.requestId,
+                                              )));
+
+                                  if (result != null && result) {
+                                    _fetchData();
+                                  }
+                                },
+                              );
+                            },
+                            itemCount: _withdrawalRequests.length,
+                          )
+                        : emptyList(
+                            color: Colors.blue[400],
+                            iconData: LineAwesomeIcons.angle_double_down,
+                            text:
+                                "There are no withdrawal requests to display"),
+                  ),
+                ],
+              ),
+            ),
+          )),
+    );
   }
 }
 

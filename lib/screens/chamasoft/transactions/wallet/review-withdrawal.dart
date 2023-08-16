@@ -7,6 +7,7 @@ import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/screens/chamasoft/reports/withdrawal_receipts.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/wallet/review_withdrawal_request.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
@@ -255,7 +256,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
       onWillPop: () async {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (BuildContext context) => ReviewWithdrawalRequests(),
+            builder: (BuildContext context) => ReviewWithdrawalRequest(),
           ),
         );
         return false; // Return false to prevent default back button behavior
@@ -267,7 +268,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
             action: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ReviewWithdrawalRequests())),
+                    builder: (context) => ReviewWithdrawalRequest())),
             //Navigator.of(context).pop(_responseSubmitted),
             elevation: 1,
             leadingIcon: LineAwesomeIcons.times,
