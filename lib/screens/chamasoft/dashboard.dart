@@ -297,7 +297,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             automaticallyImplyLeading: false,
             actions: <Widget>[
               Visibility(
-                visible: /*_group.isGroupAdmin*/ true,
+                visible: /*_group.isGroupAdmin*/ false,
                 // visible: _currentGroup.isGroupAdmin,
                 child: Stack(
                   alignment: Alignment.center,
@@ -551,7 +551,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
 
                   // ignore: deprecated_member_use
                   textColor: Colors.black,
-                      // Theme.of(context).textSelectionTheme.selectionHandleColor,
+                  // Theme.of(context).textSelectionTheme.selectionHandleColor,
                   child: Icon(
                     Feather.credit_card,
                     color: _currentPage == /*2*/ 1

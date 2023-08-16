@@ -882,13 +882,14 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Visibility(
-                        visible: _showMeetingsBanner,
+                        visible: false,
+                        // _showMeetingsBanner,
                         // visible: _currentGroup.isGroupAdmin,
                         child: customShowCase(
                           key: meetingsBannarKey,
                           title: "Chamasoft Meetings Banner",
                           description:
-                          "Schedule,View and Manage Chama Meetings",
+                              "Schedule,View and Manage Chama Meetings",
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(
                               16.0,
@@ -929,22 +930,21 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                         child: Column(
                                           mainAxisSize: MainAxisSize.max,
                                           mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                              MainAxisAlignment.spaceBetween,
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.end,
+                                              CrossAxisAlignment.end,
                                           children: [
                                             Column(
                                               mainAxisSize: MainAxisSize.max,
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.end,
+                                                  CrossAxisAlignment.end,
                                               children: [
                                                 Text(
                                                   "${Config.appName} Meetings",
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                     fontFamily: 'SegoeUI',
-                                                    fontWeight:
-                                                    FontWeight.bold,
+                                                    fontWeight: FontWeight.bold,
                                                     fontSize: 22.0,
                                                   ),
                                                   textAlign: TextAlign.right,
@@ -953,7 +953,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                                   color: Colors.white
                                                       .withOpacity(0.9),
                                                   text:
-                                                  "Manage group meetings, easily.",
+                                                      "Manage group meetings, easily.",
                                                   textAlign: TextAlign.right,
                                                 ),
                                               ],
@@ -961,12 +961,12 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                             InkWell(
                                               onTap: () =>
                                                   Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                      builder: (BuildContext
-                                                      context) =>
+                                                MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContext context) =>
                                                           Meetings(),
-                                                    ),
-                                                  ),
+                                                ),
+                                              ),
                                               child: Text(
                                                 "Get Started",
                                                 // "Our meetings",
@@ -975,20 +975,18 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                                   fontFamily: 'SegoeUI',
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 16.0,
-                                                  decoration: TextDecoration
-                                                      .underline,
+                                                  decoration:
+                                                      TextDecoration.underline,
                                                 ),
                                                 textAlign: TextAlign.right,
                                               ),
                                             ),
-
                                             InkWell(
                                               onTap: () {
                                                 print("dont show 1");
                                                 hideBanner();
                                                 print("dont show 2");
-
-                                        },
+                                              },
                                               child: Text(
                                                 "Don't show this again",
                                                 style: TextStyle(
@@ -1529,6 +1527,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
           )),
         ));
   }
+
   void _meetingsBannerStatus() async {
     dynamic _bannerDbStatus = [
       {

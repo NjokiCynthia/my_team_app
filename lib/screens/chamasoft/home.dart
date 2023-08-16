@@ -425,7 +425,8 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                   ? Column(
                       children: <Widget>[
                         Visibility(
-                          visible: _currentGroup.isGroupAdmin,
+                          visible: false,
+                          // _currentGroup.isGroupAdmin,
                           child: customShowCase(
                             key: meetingsBannarKey,
                             title: "Chamasoft Meetings Banner",
