@@ -19,13 +19,13 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
-class ReviewWithdrawalRequests extends StatefulWidget {
+class ReviewWithdrawalRequest extends StatefulWidget {
   @override
-  _ReviewWithdrawalRequestsState createState() =>
-      _ReviewWithdrawalRequestsState();
+  _ReviewWithdrawalRequestState createState() =>
+      _ReviewWithdrawalRequestState();
 }
 
-class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
+class _ReviewWithdrawalRequestState extends State<ReviewWithdrawalRequest> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -140,20 +140,13 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
         appBar: secondaryPageAppbar(
           context: context,
           action: () {
-            if (requestId == "-1") {
-              int count = 0;
-              Navigator.of(context).pop();
-            } else {
-              int count = 0;
-              Navigator.of(context).popUntil(
-                  (_) => count++ >= 4); // Pop back to the previous screen
-            }
+            Navigator.of(context).pop();
           },
 
           //Navigator.of(context).pop(),
           elevation: 1,
           leadingIcon: LineAwesomeIcons.arrow_left,
-          title: "Review Withdrawal Request",
+          title: "Review Withdrawal Requests",
         ),
         backgroundColor: Colors.transparent,
         body: RefreshIndicator(

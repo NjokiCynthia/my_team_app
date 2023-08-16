@@ -22,6 +22,7 @@ import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/
 import 'package:chamasoft/screens/chamasoft/transactions/loans/create-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/record-loan-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/wallet/review_withdrawal_request.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-purpose.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/svg-icons.dart';
@@ -244,7 +245,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) =>
-                            ReviewWithdrawalRequests(),
+                            ReviewWithdrawalRequest(),
                         settings: RouteSettings(arguments: 0))),
                     margin: 0,
                     imageHeight: 100.0)),
