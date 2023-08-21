@@ -5,6 +5,7 @@ import 'package:chamasoft/providers/groups.dart';
 // import 'package:chamasoft/providers/helpers/notifications.dart';
 import 'package:chamasoft/screens/chamasoft/new_home.dart';
 import 'package:chamasoft/screens/chamasoft/notifications/notification-alert.dart';
+import 'package:chamasoft/screens/chamasoft/notifications/notifications.dart';
 import 'package:chamasoft/screens/chamasoft/reports.dart';
 import 'package:chamasoft/screens/chamasoft/settings.dart';
 import 'package:chamasoft/screens/chamasoft/transactions.dart';
@@ -392,8 +393,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                                   .selectionHandleColor
                               : primaryColor,
                         ),
-                        onPressed: null, // Disable notifications for now
-                        /*onPressed: () => {
+                        //onPressed: null, // Disable notifications for now
+                        onPressed: () => {
                                 _eventDispatcher
                                     .add('TAP'), //Closes the AppSwitcher
                                 Navigator.of(context).push(
@@ -402,7 +403,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                                         ChamasoftNotifications(),
                                   ),
                                 ),
-                              }*/
+                              }
                       ),
                     ),
                   ),

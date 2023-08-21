@@ -40,6 +40,11 @@ import 'package:provider/provider.dart';
 import './providers/auth.dart';
 import './providers/groups.dart';
 
+import 'dart:async';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 void main() async {
   //  Status bar fixes
   SystemChrome.setSystemUIOverlayStyle(
@@ -50,10 +55,31 @@ void main() async {
       statusBarIconBrightness: Brightness.light,
     ),
   );
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await requestNotificationPermissions(); // Step 2: Request notification permissions
+  String token =
+      await registerWithFCM(); // Step 3: Register with FCM and get registration token
+
   NotificationManager.firebaseMessageNotificationHandler();
   runApp(MyApp());
+}
+
+Future<void> requestNotificationPermissions() async {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  await _firebaseMessaging.requestPermission(
+    announcement: true,
+    carPlay: true,
+    criticalAlert: true,
+  );
+}
+
+Future<String> registerWithFCM() async {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  String token = await _firebaseMessaging.getToken();
+  print("FCM Token: $token");
+  return token;
 }
 
 class MyApp extends StatefulWidget {
@@ -65,6 +91,11 @@ class _MyAppState extends State<MyApp> {
 // void logSents(){
 //   facebookAppEvents.
 // }
+  final StreamController<Map<String, dynamic>> _fcmStreamController =
+      StreamController<Map<String, dynamic>>.broadcast();
+
+  Stream<Map<String, dynamic>> get fcmMessageStream =>
+      _fcmStreamController.stream; // Add this line
 
   void getCurrentAppTheme() async {
     themeChangeProvider.darkTheme =
@@ -81,6 +112,10 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     getCurrentAppTheme();
     initDB();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      _fcmStreamController
+          .add(message.data); // Push the FCM message to the stream
+    });
   }
 
   @override
