@@ -1,338 +1,34 @@
 {
   "project_info": {
-    "project_number": "945349049988",
-    "firebase_url": "https://chamasoft-b14da.firebaseio.com",
-    "project_id": "chamasoft-b14da",
-    "storage_bucket": "chamasoft-b14da.appspot.com"
+    "project_number": "719187014990",
+    "project_id": "chamasoft-f4d23",
+    "storage_bucket": "chamasoft-f4d23.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:945349049988:android:52a8cf882c63a4ef",
+        "mobilesdk_app_id": "1:719187014990:android:37239613e3595a8d211a1f",
         "android_client_info": {
           "package_name": "chamasoft.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "945349049988-5uo9jha53ipt45cen06d58l0dql7l6m6.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "chamasoft.app",
-            "certificate_hash": "bf68ea511f6e17fe3f28eb867c819feb262e8366"
-          }
-        },
-        {
-          "client_id": "945349049988-8b2ll20o8b7racefhfle04noaklo67ki.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "chamasoft.app",
-            "certificate_hash": "d02ab7cc6f24a9ca08fb16814df0975001831638"
-          }
-        },
-        {
-          "client_id": "945349049988-d3rag75voc4gpadi70p8j36ric94dtsu.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "chamasoft.app",
-            "certificate_hash": "8985ef2f7d149c7f8afad27f4459318206e0ee55"
-          }
-        },
-        {
-          "client_id": "945349049988-kmu6aobu1i3d99592r7dhifrgnpfl76g.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "chamasoft.app",
-            "certificate_hash": "5b8e431a68e71747298cbb56765348c4a36ac39a"
-          }
-        },
-        {
-          "client_id": "945349049988-p9ig9n1loq680q1odqa5ufgf2g0rp742.apps.googleusercontent.com",
+          "client_id": "719187014990-gsitt350955qvludis8m3f58okufbu7o.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAp74hBEIip7Kwsk7ZQgiCbpXbT8SZBT08"
+          "current_key": "AIzaSyCTmmwy52KsdcKMicx5tklAGxSTlJ1oziw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "945349049988-p9ig9n1loq680q1odqa5ufgf2g0rp742.apps.googleusercontent.com",
+              "client_id": "719187014990-gsitt350955qvludis8m3f58okufbu7o.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "945349049988-60qdkau364lvla6gvdmlfbrtd8s9bt5q.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.chamasoft"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:945349049988:android:b4f36fb733f1aa489a8cd1",
-        "android_client_info": {
-          "package_name": "chamasoft.app.dev"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "945349049988-e59sjc6ivnk4hc0omcqeugu561jg66ad.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "chamasoft.app.dev",
-            "certificate_hash": "797e206efd1ee33b5119b6f8d0e7420c4cbe3966"
-          }
-        },
-        {
-          "client_id": "945349049988-hcg519a88fpgl7bl09oecm1sqntlhnd6.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "chamasoft.app.dev",
-            "certificate_hash": "8985ef2f7d149c7f8afad27f4459318206e0ee55"
-          }
-        },
-        {
-          "client_id": "945349049988-p9ig9n1loq680q1odqa5ufgf2g0rp742.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAp74hBEIip7Kwsk7ZQgiCbpXbT8SZBT08"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "945349049988-p9ig9n1loq680q1odqa5ufgf2g0rp742.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "945349049988-60qdkau364lvla6gvdmlfbrtd8s9bt5q.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.chamasoft"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:945349049988:android:624da6f72a6f7bfc",
-        "android_client_info": {
-          "package_name": "chamasoftbeta.app"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "945349049988-f9ijfm64mgbe5t5i9grm2sl77fharfl7.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "chamasoftbeta.app",
-            "certificate_hash": "8985ef2f7d149c7f8afad27f4459318206e0ee55"
-          }
-        },
-        {
-          "client_id": "945349049988-p9ig9n1loq680q1odqa5ufgf2g0rp742.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAp74hBEIip7Kwsk7ZQgiCbpXbT8SZBT08"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "945349049988-p9ig9n1loq680q1odqa5ufgf2g0rp742.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "945349049988-60qdkau364lvla6gvdmlfbrtd8s9bt5q.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.chamasoft"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:945349049988:android:e5af22f09832d0b39a8cd1",
-        "android_client_info": {
-          "package_name": "com.eazzychama"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "945349049988-p9ig9n1loq680q1odqa5ufgf2g0rp742.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAp74hBEIip7Kwsk7ZQgiCbpXbT8SZBT08"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "945349049988-p9ig9n1loq680q1odqa5ufgf2g0rp742.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "945349049988-60qdkau364lvla6gvdmlfbrtd8s9bt5q.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.chamasoft"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:945349049988:android:afc37afa382f853f",
-        "android_client_info": {
-          "package_name": "eazzychama.app"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "945349049988-ts1acla4tu20qr8v0tjua0g7vbnks4qs.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "eazzychama.app",
-            "certificate_hash": "d02ab7cc6f24a9ca08fb16814df0975001831638"
-          }
-        },
-        {
-          "client_id": "945349049988-p9ig9n1loq680q1odqa5ufgf2g0rp742.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAp74hBEIip7Kwsk7ZQgiCbpXbT8SZBT08"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "945349049988-p9ig9n1loq680q1odqa5ufgf2g0rp742.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "945349049988-60qdkau364lvla6gvdmlfbrtd8s9bt5q.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.chamasoft"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:945349049988:android:5d688a2d94b820d6",
-        "android_client_info": {
-          "package_name": "eazzyclub.app"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "945349049988-1blptj3k82rjote80l5rvang3j7rut7j.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "eazzyclub.app",
-            "certificate_hash": "d02ab7cc6f24a9ca08fb16814df0975001831638"
-          }
-        },
-        {
-          "client_id": "945349049988-p9ig9n1loq680q1odqa5ufgf2g0rp742.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAp74hBEIip7Kwsk7ZQgiCbpXbT8SZBT08"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "945349049988-p9ig9n1loq680q1odqa5ufgf2g0rp742.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "945349049988-60qdkau364lvla6gvdmlfbrtd8s9bt5q.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.chamasoft"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:945349049988:android:c4d1f822c55783c19a8cd1",
-        "android_client_info": {
-          "package_name": "eazzyclub.app.dev"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "945349049988-bhn7sqc32tien8dm9s39ih5pvfemjeh4.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "eazzyclub.app.dev",
-            "certificate_hash": "8985ef2f7d149c7f8afad27f4459318206e0ee55"
-          }
-        },
-        {
-          "client_id": "945349049988-p9ig9n1loq680q1odqa5ufgf2g0rp742.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAp74hBEIip7Kwsk7ZQgiCbpXbT8SZBT08"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "945349049988-p9ig9n1loq680q1odqa5ufgf2g0rp742.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "945349049988-60qdkau364lvla6gvdmlfbrtd8s9bt5q.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.chamasoft"
-              }
             }
           ]
         }

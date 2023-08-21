@@ -279,8 +279,6 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               key: switchGroupKey,
               title: 'Switch Groups',
               description: "Click here to switch in between Chamas",
-
-              // ignore: deprecated_member_use
               textColor:
                   Theme.of(context).textSelectionTheme.selectionHandleColor,
               child: AppSwitcher(
@@ -307,8 +305,6 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                       title: "Chamasoft Meetings",
                       description:
                           "Schedule,View and Manage your Chama Meetings",
-
-                      // ignore: deprecated_member_use
                       textColor: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,
@@ -316,9 +312,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                         icon: Icon(
                           Icons.people_alt,
                           color: Config.appName.toLowerCase() == 'chamasoft'
-                              ?
-                              // ignore: deprecated_member_use
-                              Theme.of(context)
+                              ? Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor
                               : primaryColor,
