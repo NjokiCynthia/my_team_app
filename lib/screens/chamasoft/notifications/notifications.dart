@@ -9,7 +9,9 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/dashed-divider.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 // import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
@@ -23,10 +25,52 @@ class ChamasoftNotifications extends StatefulWidget {
 class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
   bool isFetched = false;
 
+  //bool isFetched = false;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
   @override
   void initState() {
-    fetchGroupNotifications(context);
     super.initState();
+
+    fetchGroupNotifications(context);
+    _requestNotificationPermissions();
+    _configureLocalNotifications();
+    _initializeLocalNotifications();
+    _showStaticNotification();
+  }
+
+  void _initializeLocalNotifications() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+
+    await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  Future<void> _showStaticNotification() async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'static_notification_channel_id', // Channel ID
+      'Static Notification Channel', // Channel name
+      importance: Importance.max,
+      priority: Priority.high,
+      showWhen: false,
+    );
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await _flutterLocalNotificationsPlugin.show(
+      0, // Notification ID
+      'Chamasoft Notification', // Title
+      'Please continue using chamasoft', // Notification message
+      platformChannelSpecifics,
+    );
   }
 
   Future<bool> fetchGroupNotifications(BuildContext context) async {
@@ -46,6 +90,32 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
           });
       return false;
     }
+  }
+
+  Future<void> _requestNotificationPermissions() async {
+    await _firebaseMessaging.requestPermission(
+      announcement: true,
+      carPlay: true,
+      criticalAlert: true,
+    );
+  }
+
+  Future<void> _onSelectNotification(String payload) async {
+    // Handle the notification tap action here
+    print('Notification tapped with payload: $payload');
+  }
+
+  void _configureLocalNotifications() {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+
+    // _flutterLocalNotificationsPlugin.initialize(initializationSettings,
+    //     onSelectNotification: _onSelectNotification);
   }
 
   Future<bool> markAllNotificationsAsRead(BuildContext context) async {
@@ -100,7 +170,9 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
                         subtitle1(
                             text: "Mark as Read",
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             textAlign: TextAlign.start),
                         RichText(
                           text: TextSpan(
@@ -109,7 +181,8 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
                                   fontSize: 13.0,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionTheme.selectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   fontFamily: 'SegoeUI'),
                               children: [
                                 TextSpan(text: "Mark all notifications as "),
@@ -120,7 +193,8 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
                                         fontSize: 13.0,
                                         color: Theme.of(context)
                                             // ignore: deprecated_member_use
-                                            .textSelectionTheme.selectionHandleColor,
+                                            .textSelectionTheme
+                                            .selectionHandleColor,
                                         fontFamily: 'SegoeUI'))
                               ]),
                         ),
@@ -130,7 +204,9 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
                   screenActionButton(
                       icon: LineAwesomeIcons.check,
                       // ignore: deprecated_member_use
-                      textColor: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                      textColor: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
                       action: () async {
                         showDialog(
                             context: context,
@@ -205,7 +281,8 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
                                                           color: Theme.of(
                                                                   context)
                                                               // ignore: deprecated_member_use
-                                                              .textSelectionTheme.selectionHandleColor,
+                                                              .textSelectionTheme
+                                                              .selectionHandleColor,
                                                           fontFamily:
                                                               'SegoeUI'),
                                                       textAlign:
@@ -223,7 +300,8 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
                                                           : FontWeight.w400,
                                                   color: Theme.of(context)
                                                       // ignore: deprecated_member_use
-                                                      .textSelectionTheme.selectionHandleColor,
+                                                      .textSelectionTheme
+                                                      .selectionHandleColor,
                                                   textAlign: TextAlign.end),
                                             ],
                                           ),

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:chamasoft/config.dart';
+import 'package:chamasoft/main.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 // import 'package:chamasoft/providers/helpers/notifications.dart';
@@ -16,7 +17,9 @@ import 'package:chamasoft/helpers/notifications.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appswitcher.dart';
 import 'package:chamasoft/widgets/showCase.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +28,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 import 'meetings/meetings.dart';
+
+import 'package:timezone/timezone.dart' as tz;
+
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 // ignore: must_be_immutable
 class ChamasoftDashboard extends StatefulWidget {
@@ -90,12 +98,24 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     BuildContext context,
     String option,
     _updateSelectedGroup,
-  ) {
+  ) async {
     if (option == '0') {
-      // CREATE NEW Selected, handle it!
-      Navigator.of(context).push(
+      // ... (your existing code)
+    } else if (option == 'notifications') {
+      // Request notification permissions
+      await requestNotificationPermissions();
+
+      // Register with FCM and get registration token
+      String token = await registerWithFCM();
+
+      // Show notification for testing purposes
+      await showNotification('Welcome to Chamasoft');
+
+      // Navigate to ChamasoftNotifications page
+      Navigator.push(
+        context,
         MaterialPageRoute(
-          builder: (BuildContext context) => NewGroup(),
+          builder: (context) => ChamasoftNotifications(),
         ),
       );
     } else {
@@ -154,6 +174,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   @override
   void initState() {
     _currentPage = 0;
+    
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _isFirstLaunch().then((result) {
@@ -247,6 +268,78 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         return SizedBox();
       },
     );
+  }
+
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  Future<void> requestNotificationPermissions() async {
+    await _firebaseMessaging.requestPermission(
+      announcement: true,
+      carPlay: true,
+      criticalAlert: true,
+    );
+  }
+
+  Future<String> registerWithFCM() async {
+    String token = await _firebaseMessaging.getToken();
+    print("FCM Token: $token");
+    return token;
+  }
+
+  Future<void> showNotification(String message) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+            'chamasoft_channel', 'Channel for Chamasoft notifications',
+            importance: Importance.max, priority: Priority.high);
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await _flutterLocalNotificationsPlugin.show(
+      0,
+      'Chamasoft Notification',
+      message,
+      platformChannelSpecifics,
+    );
+  }
+
+  Future<void> scheduleDailyNotification() async {
+    await _flutterLocalNotificationsPlugin.zonedSchedule(
+      0,
+      'Chamasoft Daily Notification',
+      'Welcome to Chamasoft', // Modify the notification message here
+      _nextInstanceOfDay(),
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'chamasoft_channel',
+          'Channel for Chamasoft notifications',
+          importance: Importance.max,
+          priority: Priority.high,
+        ),
+      ),
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    );
+  }
+
+  tz.TZDateTime _nextInstanceOfDay() {
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduledDate = tz.TZDateTime(
+      tz.local,
+      now.year,
+      now.month,
+      now.day,
+      6, // Adjust to 9:30 AM East African Time (UTC+3)
+      30,
+    );
+
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+
+    return scheduledDate;
   }
 
   @override
@@ -393,17 +486,32 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                                   .selectionHandleColor
                               : primaryColor,
                         ),
+                        onPressed: () async {
+                          // Request notification permissions
+                          await requestNotificationPermissions();
+
+                          // Register with FCM and get registration token
+                          String token = await registerWithFCM();
+
+                          // Navigate to ChamasoftNotifications and pass data
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChamasoftNotifications(),
+                            ),
+                          );
+                        },
                         //onPressed: null, // Disable notifications for now
-                        onPressed: () => {
-                                _eventDispatcher
-                                    .add('TAP'), //Closes the AppSwitcher
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        ChamasoftNotifications(),
-                                  ),
-                                ),
-                              }
+                        // onPressed: () => {
+                        //       _eventDispatcher
+                        //           .add('TAP'), //Closes the AppSwitcher
+                        //       Navigator.of(context).push(
+                        //         MaterialPageRoute(
+                        //           builder: (BuildContext context) =>
+                        //               ChamasoftNotifications(),
+                        //         ),
+                        //       ),
+                        //     },
                       ),
                     ),
                   ),
