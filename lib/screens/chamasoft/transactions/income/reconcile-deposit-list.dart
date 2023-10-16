@@ -339,10 +339,11 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                         children: [
                           Text(_isExpanded ? "View less" : "View more",
                               style: TextStyle(
-                                  color: Theme.of(context).accentColor)),
+                                  color:
+                                      Theme.of(context).colorScheme.secondary)),
                           Icon(
                             _isExpanded ? Icons.expand_less : Icons.expand_more,
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                           )
                         ],
                       ),
@@ -363,12 +364,12 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                         children: [
                           Text(
                             "Reconcile",
-                            style:
-                                TextStyle(color: Theme.of(context).accentColor),
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.secondary),
                           ),
                           Icon(
                             Icons.arrow_right_rounded,
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                           )
                         ],
                       ),

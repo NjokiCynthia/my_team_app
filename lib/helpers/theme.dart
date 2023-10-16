@@ -35,7 +35,6 @@ class Styles {
   static ThemeData themeData(bool isDarkTheme, BuildContext context) {
     return Config.appName.toLowerCase() == 'chamasoft'
         ? ThemeData(
-            primarySwatch: Colors.blue,
             backgroundColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             splashColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             primaryColor: isDarkTheme ? Colors.blueGrey[100] : primaryColor,
@@ -47,15 +46,16 @@ class Styles {
                 backgroundColor: isDarkTheme
                     ? Colors.blueGrey[800]?.withOpacity(0.9)
                     : Colors.white,
-
               ),
             ),
             buttonTheme: ButtonThemeData(
               buttonColor: isDarkTheme
                   ? Colors.blueGrey[800]?.withOpacity(0.7)
                   : Colors.white,
-              colorScheme:
-              isDarkTheme ? ColorScheme.dark() : ColorScheme.light(),//  <-- this auto selects the right color
+              colorScheme: isDarkTheme
+                  ? ColorScheme.dark()
+                  : ColorScheme
+                      .light(), //  <-- this auto selects the right color
             ),
 
             hintColor: isDarkTheme ? Colors.blueGrey[400] : Colors.blueGrey,
@@ -69,7 +69,8 @@ class Styles {
             textSelectionTheme: TextSelectionThemeData(
               cursorColor: primaryColor,
               selectionColor: isDarkTheme ? Colors.white : Colors.blueGrey[800],
-              selectionHandleColor: isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey,
+              selectionHandleColor:
+                  isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey,
             ),
             disabledColor: Colors.grey,
             unselectedWidgetColor:
@@ -84,34 +85,58 @@ class Styles {
             ),
             bottomAppBarColor:
                 isDarkTheme ? Colors.blueGrey[300] : Colors.blueGrey[400],
-            accentColor: isDarkTheme ? Colors.blue[700] : primaryColor,
-            dividerColor: isDarkTheme ? Colors.grey[900] : Colors.grey[300], checkboxTheme: CheckboxThemeData(
- fillColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
- if (states.contains(MaterialState.disabled)) { return null; }
- if (states.contains(MaterialState.selected)) { return isDarkTheme ? Colors.blue[700] : primaryColor; }
- return null;
- }),
- ), radioTheme: RadioThemeData(
- fillColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
- if (states.contains(MaterialState.disabled)) { return null; }
- if (states.contains(MaterialState.selected)) { return isDarkTheme ? Colors.blue[700] : primaryColor; }
- return null;
- }),
- ), switchTheme: SwitchThemeData(
- thumbColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
- if (states.contains(MaterialState.disabled)) { return null; }
- if (states.contains(MaterialState.selected)) { return isDarkTheme ? Colors.blue[700] : primaryColor; }
- return null;
- }),
- trackColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
- if (states.contains(MaterialState.disabled)) { return null; }
- if (states.contains(MaterialState.selected)) { return isDarkTheme ? Colors.blue[700] : primaryColor; }
- return null;
- }),
- ),
+            dividerColor: isDarkTheme ? Colors.grey[900] : Colors.grey[300],
+            checkboxTheme: CheckboxThemeData(
+              fillColor: MaterialStateProperty.resolveWith<Color>(
+                  (Set<MaterialState> states) {
+                if (states.contains(MaterialState.disabled)) {
+                  return null;
+                }
+                if (states.contains(MaterialState.selected)) {
+                  return isDarkTheme ? Colors.blue[700] : primaryColor;
+                }
+                return null;
+              }),
+            ),
+            radioTheme: RadioThemeData(
+              fillColor: MaterialStateProperty.resolveWith<Color>(
+                  (Set<MaterialState> states) {
+                if (states.contains(MaterialState.disabled)) {
+                  return null;
+                }
+                if (states.contains(MaterialState.selected)) {
+                  return isDarkTheme ? Colors.blue[700] : primaryColor;
+                }
+                return null;
+              }),
+            ),
+            switchTheme: SwitchThemeData(
+              thumbColor: MaterialStateProperty.resolveWith<Color>(
+                  (Set<MaterialState> states) {
+                if (states.contains(MaterialState.disabled)) {
+                  return null;
+                }
+                if (states.contains(MaterialState.selected)) {
+                  return isDarkTheme ? Colors.blue[700] : primaryColor;
+                }
+                return null;
+              }),
+              trackColor: MaterialStateProperty.resolveWith<Color>(
+                  (Set<MaterialState> states) {
+                if (states.contains(MaterialState.disabled)) {
+                  return null;
+                }
+                if (states.contains(MaterialState.selected)) {
+                  return isDarkTheme ? Colors.blue[700] : primaryColor;
+                }
+                return null;
+              }),
+            ),
+            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
+                .copyWith(
+                    secondary: isDarkTheme ? Colors.blue[700] : primaryColor),
           )
         : ThemeData(
-            primarySwatch: Colors.brown,
             backgroundColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             splashColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             primaryColor: isDarkTheme ? Colors.blueGrey[100] : primaryColor,
@@ -121,8 +146,10 @@ class Styles {
               buttonColor: isDarkTheme
                   ? Colors.blueGrey[800]?.withOpacity(0.7)
                   : Colors.white,
-              colorScheme:
-              isDarkTheme ? ColorScheme.dark() : ColorScheme.light(),//  <-- this auto selects the right color
+              colorScheme: isDarkTheme
+                  ? ColorScheme.dark()
+                  : ColorScheme
+                      .light(), //  <-- this auto selects the right color
             ),
             hintColor: isDarkTheme ? Colors.blueGrey[400] : Colors.blueGrey,
             highlightColor:
@@ -135,7 +162,8 @@ class Styles {
             textSelectionTheme: TextSelectionThemeData(
               cursorColor: primaryColor,
               selectionColor: isDarkTheme ? Colors.white : Colors.blueGrey[800],
-              selectionHandleColor: isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey,
+              selectionHandleColor:
+                  isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey,
             ),
             disabledColor: Colors.grey,
             unselectedWidgetColor:
@@ -152,8 +180,10 @@ class Styles {
                 isDarkTheme ? Colors.blueGrey[300] : Colors.blueGrey[400],
             toggleableActiveColor:
                 isDarkTheme ? Colors.brown[700] : primaryColor,
-            accentColor: isDarkTheme ? Colors.brown[700] : primaryColor,
             dividerColor: isDarkTheme ? Colors.grey[900] : Colors.grey[300],
+            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.brown)
+                .copyWith(
+                    secondary: isDarkTheme ? Colors.brown[700] : primaryColor),
           );
   }
 }
