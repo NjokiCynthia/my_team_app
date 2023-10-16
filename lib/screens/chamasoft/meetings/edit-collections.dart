@@ -928,99 +928,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                     )
                   : SizedBox(),
               widget.type == "disbursements"
-                  // ? DropDownFormField(
-                  //     titleText: 'Group Member',
-                  //     hintText: 'Select group member',
-                  //     dataSource: widget.groupMembers,
-                  //     textField: 'name',
-                  //     valueField: 'id',
-                  //     filled: false,
-                  //     contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                  //     value: _selected['member_id'],
-                  //     onSaved: (value) {
-                  //       setState(() {
-                  //         _selected['member_id'] = value;
-                  //         _prepareMemberLoans(
-                  //             widget.groupCurrency, value.toString());
-                  //       });
-                  //       _getGroupMemberData(value.toString());
-                  //     },
-                  //     onChanged: (value) async {
-                  //       setState(() {
-                  //         _selected['member_id'] = value;
-                  //         _prepareMemberLoans(
-                  //             widget.groupCurrency, value.toString());
-                  //       });
-                  //       _getGroupMemberData(value.toString());
-                  //     },
-                  //     validator: (value) {
-                  //       if (value == null)
-                  //         return "Member is required";
-                  //       else
-                  //         return null;
-                  //     },
-                  //   )
                   ? FormBuilderDropdown(
-                      key: UniqueKey(),
-                      name: 'member_id',
-                      decoration: InputDecoration(
-                        labelText: 'Group Member',
-                        hintText: 'Select group member',
-                      ),
-                      items: widget.groupMembers
-                          .map((member) => DropdownMenuItem(
-                                value: member['id'],
-                                child: Text(member['name']),
-                              ))
-                          .toList(),
-                      onChanged: (value) async {
-                        setState(() {
-                          _selected['member_id'] = value;
-                          _prepareMemberLoans(
-                              widget.groupCurrency, value.toString());
-                        });
-                        _getGroupMemberData(value.toString());
-                      },
-                      validator: (value) {
-                        if (value == null)
-                          return "Member is required";
-                        else
-                          return null;
-                      },
-                    )
-
-                  // : DropDownFormField(
-                  //             titleText: 'Group Member',
-                  //             hintText: 'Select group member',
-                  //             dataSource: widget.groupMembers,
-                  //             textField: 'name',
-                  //             valueField: 'id',
-                  //             filled: false,
-                  //             contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                  //             value: _selected['member_id'],
-                  //             onSaved: (value) {
-                  //               setState(() {
-                  //                 _selected['member_id'] = value;
-                  //                 _prepareMemberLoans(
-                  //                     widget.groupCurrency, value.toString());
-                  //               });
-                  //             },
-                  //             onChanged: (value) {
-                  //               setState(() {
-                  //                 _selected['member_id'] = value;
-                  //                 _prepareMemberLoans(
-                  //                     widget.groupCurrency, value.toString());
-                  //               });
-                  //             },
-                  //             validator: (value) {
-                  //               if (value == null)
-                  //                 return "Member is required";
-                  //               else
-                  //                 return null;
-                  //             },
-                  //           ),
-
-                  : FormBuilderDropdown(
                       key: UniqueKey(),
                       name: 'member_id',
                       decoration: InputDecoration(
@@ -1039,6 +947,36 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                           _prepareMemberLoans(
                               widget.groupCurrency, value.toString());
                         });
+                        _getGroupMemberData(value.toString());
+                      },
+                      validator: (value) {
+                        if (value == null)
+                          return "Member is required";
+                        else
+                          return null;
+                      },
+                      initialValue: _selected['member_id'],
+                    )
+                  : FormBuilderDropdown(
+                      key: UniqueKey(),
+                      name: 'member_id',
+                      decoration: InputDecoration(
+                        labelText: 'Group Member',
+                        hintText: 'Select group member',
+                      ),
+                      items: widget.groupMembers
+                          .map((member) => DropdownMenuItem(
+                                value: member['id'],
+                                child: Text(member['name']),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          print("Selected Value is: $value");
+                          _selected['member_id'] = value;
+                          _prepareMemberLoans(
+                              widget.groupCurrency, value.toString());
+                        });
                       },
                       validator: (value) {
                         if (value == null)
@@ -1052,34 +990,8 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                   ? SizedBox(height: 20.0)
                   : SizedBox(),
               widget.type == "contributions"
-                  // ? DropDownFormField(
-                  //     titleText: 'Group Contribution',
-                  //     hintText: 'Select group contribution',
-                  //     dataSource: widget.groupContributions,
-                  //     textField: 'name',
-                  //     valueField: 'id',
-                  //     filled: false,
-                  //     contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                  //     value: _selected['contribution_id'],
-                  //     onSaved: (value) {
-                  //       setState(() {
-                  //         _selected['contribution_id'] = value;
-                  //       });
-                  //     },
-                  //     onChanged: (value) {
-                  //       setState(() {
-                  //         _selected['contribution_id'] = value;
-                  //       });
-                  //     },
-                  //     validator: (value) {
-                  //       if (value == null)
-                  //         return "Contribution is required";
-                  //       else
-                  //         return null;
-                  //     },
-                  //   )
                   ? FormBuilderDropdown(
-                      key:UniqueKey(),
+                      key: UniqueKey(),
                       name: 'group_contribution',
                       decoration: InputDecoration(
                         labelText: 'Group Contribution',
@@ -1114,34 +1026,6 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                   ? SizedBox(height: 20.0)
                   : SizedBox(),
               (widget.type == "disbursements")
-                  // ? DropDownFormField(
-                  //     titleText: 'Loan Type',
-                  //     hintText: 'Select group loan type',
-                  //     dataSource: widget.groupLoanTypes,
-                  //     textField: 'name',
-                  //     valueField: 'id',
-                  //     filled: false,
-                  //     contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                  //     value: _selected['loan_type_id'],
-                  //     onSaved: (value) {
-                  //       setState(() {
-                  //         _selected['loan_type_id'] = value;
-                  //       });
-                  //       _getGroupLoanTypeData(value.toString());
-                  //     },
-                  //     onChanged: (value) {
-                  //       setState(() {
-                  //         _selected['loan_type_id'] = value;
-                  //       });
-                  //       _getGroupLoanTypeData(value.toString());
-                  //     },
-                  //     validator: (value) {
-                  //       if (value == null)
-                  //         return "Loan type is required";
-                  //       else
-                  //         return null;
-                  //     },
-                  //   )
                   ? FormBuilderDropdown(
                       key: UniqueKey(),
                       name: 'loan_type_id',
@@ -1180,32 +1064,6 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                   ? SizedBox(height: 20.0)
                   : SizedBox(),
               (widget.type == "repayments")
-                  // ? DropDownFormField(
-                  //     titleText: 'Member Loan',
-                  //     hintText: 'Select member ongoing loan',
-                  //     dataSource: memberLoans,
-                  //     textField: 'name',
-                  //     valueField: 'id',
-                  //     filled: false,
-                  //     contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                  //     value: _selected['loan_id'],
-                  //     onSaved: (value) {
-                  //       setState(() {
-                  //         _selected['loan_id'] = value;
-                  //       });
-                  //     },
-                  //     onChanged: (value) {
-                  //       setState(() {
-                  //         _selected['loan_id'] = value;
-                  //       });
-                  //     },
-                  //     validator: (value) {
-                  //       if (value == null)
-                  //         return "Member loan is required";
-                  //       else
-                  //         return null;
-                  //     },
-                  //   )
                   ? FormBuilderDropdown(
                       key: UniqueKey(),
                       name: 'loan_id',
@@ -1240,37 +1098,6 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                   : SizedBox(),
               (widget.type == "fines") ? SizedBox(height: 20.0) : SizedBox(),
               widget.type == "fines"
-                  // ? DropDownFormField(
-                  //     titleText: 'Fine Category',
-                  //     hintText: 'Select group fine category',
-                  //     dataSource: widget.groupFines,
-                  //     textField: 'name',
-                  //     valueField: 'id',
-                  //     filled: false,
-                  //     contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                  //     value: _selected['fine_id'],
-                  //     onSaved: (value) {
-                  //       setState(() {
-                  //         _selected['fine_id'] = value;
-                  //       });
-                  //     },
-                  //     onChanged: (value) {
-                  //       setState(() {
-                  //         if (value == 0) {
-                  //           _showDescription = true;
-                  //         } else {
-                  //           _showDescription = false;
-                  //         }
-                  //         _selected['fine_id'] = value;
-                  //       });
-                  //     },
-                  //     validator: (value) {
-                  //       if (value == null)
-                  //         return "Fine category is required";
-                  //       else
-                  //         return null;
-                  //     },
-                  //   )
                   ? FormBuilderDropdown(
                       key: UniqueKey(),
                       name: 'fine_id',
@@ -1335,35 +1162,8 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                 ),
               ),
               SizedBox(height: 20.0),
-              // DropDownFormField(
-              //   titleText: 'Group Account',
-              //   hintText: 'Select group account',
-              //   dataSource: outputFineResults,
-              //   textField: 'name',
-              //   valueField: 'id',
-              //   filled: false,
-              //   contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-              //   value: _selected['account_id'],
-              //   onSaved: (value) {
-              //     setState(() {
-              //       _selected['account_id'] = value;
-              //     });
-              //   },
-              //   onChanged: (value) {
-              //     setState(() {
-              //       _selected['account_id'] = value;
-              //     });
-              //   },
-              //   validator: (value) {
-              //     if (value == null) {
-              //       return "Account is required";
-              //     } else {
-              //       return null;
-              //     }
-              //   },
-              // ),
               FormBuilderDropdown(
-                key: UniqueKey() ,
+                key: UniqueKey(),
                 name: 'account_id',
                 decoration: InputDecoration(
                   labelText: 'Group Account',
@@ -1371,9 +1171,9 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                 ),
                 items: outputFineResults
                     .map((item) => DropdownMenuItem(
-                  value: item['id'],
-                  child: Text(item['name']),
-                ))
+                          value: item['id'],
+                          child: Text(item['name']),
+                        ))
                     .toList(),
                 valueTransformer: (value) => int.tryParse(value),
                 initialValue: _selected['account_id'],
@@ -1395,7 +1195,6 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                   });
                 },
               ),
-
               SizedBox(height: 20.0),
               widget.type == "disbursements"
                   ? TextFormField(
@@ -1490,6 +1289,8 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
             if (_formKey.currentState.validate()) {
               Navigator.of(context).pop();
               widget.selected(_selected);
+            } else {
+              print('not valid');
             }
           },
           style: ButtonStyle(
