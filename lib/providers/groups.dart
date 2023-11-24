@@ -4413,7 +4413,7 @@ class Groups with ChangeNotifier {
       final postRequest = json.encode({
         "user_id": _userId,
         "group_id": _currentGroupId,
-        "is_member_loans": 1
+        "is_member_loans": 0
       });
       try {
         final response = await PostToServer.post(postRequest, url);
