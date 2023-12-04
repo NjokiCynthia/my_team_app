@@ -100,7 +100,12 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     _updateSelectedGroup,
   ) async {
     if (option == '0') {
-      // ... (your existing code)
+      // CREATE NEW Selected, handle it!
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) => NewGroup(),
+        ),
+      );
     } else if (option == 'notifications') {
       // Request notification permissions
       await requestNotificationPermissions();
@@ -174,7 +179,6 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   @override
   void initState() {
     _currentPage = 0;
-    
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _isFirstLaunch().then((result) {

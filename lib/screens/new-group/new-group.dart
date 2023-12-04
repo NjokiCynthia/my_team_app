@@ -1,12 +1,9 @@
-// ignore_for_file: deprecated_member_use
-
 import 'dart:io';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/settings/list-accounts.dart';
 import 'package:chamasoft/screens/chamasoft/settings/list-contributions.dart';
-import 'package:chamasoft/screens/chamasoft/settings/list-loan-types.dart';
 import 'package:chamasoft/screens/new-group/select-group-members.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
@@ -18,15 +15,11 @@ import 'package:chamasoft/widgets/country-dropdown.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-//import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class NewGroup extends StatefulWidget {
-  final String groupName, groupId;
-  const NewGroup({Key key, this.groupName, this.groupId}) : super(key: key);
-
   @override
   _NewGroupState createState() => _NewGroupState();
 }
@@ -45,7 +38,6 @@ class _NewGroupState extends State<NewGroup> {
     "name": '',
     "members": [],
     "contributions": [],
-    "loan_types": [],
     "accounts": [],
     "referral": '',
   };
@@ -97,34 +89,23 @@ class _NewGroupState extends State<NewGroup> {
   }
 
   _showSnackbar(String msg, int duration) {
-    ScaffoldMessenger.of(_scaffoldKey.currentState.context)
-        .hideCurrentSnackBar();
-    //  // while (
-    //       ScaffoldMessenger.of(_scaffoldKey.currentState.)
-    //    // _scaffoldKey.currentState.snackBars.isNotEmpty) {
-    //     _scaffoldKey.currentState.hideCurrentSnackBar();
-    //   }
-    //_scaffoldKey.currentState.removeCurrentSnackBar();
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
     final snackBar = SnackBar(
       content: Text(msg),
       duration: Duration(seconds: duration),
     );
-
-    ScaffoldMessenger.of(_scaffoldKey.currentState.context)
-        .showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   next() {
     if (currentStep + 1 != steps.length) {
       if (currentStep == 0) {
         if (_stepOneFormKey.currentState.validate()) {
-          if (widget.groupId != null) {
-            // ignore: unnecessary_statements
-            _data['name'] == widget.groupName;
-          } else if (_data['name'] == '') {
+          if (_data['name'] == '') {
             _showSnackbar("You need to fill group info to continue.", 4);
           } else {
-            goTo(1);
+            // goTo(1);
+            _createGroup();
           }
         } else {
           _showSnackbar("Fill in the required fields to continue.", 4);
@@ -141,18 +122,6 @@ class _NewGroupState extends State<NewGroup> {
         } else {
           goTo(3);
         }
-      } else if (currentStep == 3) {
-        // if (_data['accounts'].length < 1) {
-        //   _showSnackbar("You need to setup an account to continue", 6);
-        // } else {
-        goTo(4);
-        // }
-      } else if (currentStep == 4) {
-        //if (_data['loan_types'].length < 0) {
-        //  _showSnackbar("You need to setup a loan type to continue", 6);
-        //} else {
-        goTo(5);
-        //}
       } else {
         goTo(currentStep + 1);
       }
@@ -166,7 +135,6 @@ class _NewGroupState extends State<NewGroup> {
             setState(() {
               _saving = true;
             });
-            _createGroup();
             completeGroupSetup();
           }
         }
@@ -218,7 +186,6 @@ class _NewGroupState extends State<NewGroup> {
       style: TextStyle(
         color: currentStep >= step
             ? primaryColor
-            
             : Theme.of(context).textSelectionTheme.selectionHandleColor,
         fontFamily: 'SegoeUI',
         fontWeight: currentStep >= step ? FontWeight.bold : FontWeight.normal,
@@ -400,7 +367,6 @@ class _NewGroupState extends State<NewGroup> {
   }
 
   Future<void> _fetchContributions(BuildContext context) async {
-    print("in fetch contributions");
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         showDialog<String>(
@@ -419,23 +385,22 @@ class _NewGroupState extends State<NewGroup> {
     );
     try {
       final group = Provider.of<Groups>(context, listen: false);
-      await group.fetchContributions().then((value) {
-        setState(() {
-          List<dynamic> _ctrbs = [];
-          group.contributions.forEach((m) {
-            _ctrbs.add({
-              'id': m.id,
-              'name': m.name,
-              'amount': m.amount,
-              'contributionDate': m.contributionDate,
-              'contributionType': m.contributionType,
-            });
+      await group.fetchContributions();
+      setState(() {
+        List<dynamic> _ctrbs = [];
+        group.contributions.forEach((m) {
+          _ctrbs.add({
+            'id': m.id,
+            'name': m.name,
+            'amount': m.amount,
+            'contributionDate': m.contributionDate,
+            'contributionType': m.contributionType,
           });
-          _data['contributions'] = _ctrbs;
-          _isInit = false;
         });
-        Navigator.of(context).pop();
+        _data['contributions'] = _ctrbs;
+        _isInit = false;
       });
+      Navigator.of(context, rootNavigator: true).pop();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
         context: context,
@@ -490,56 +455,6 @@ class _NewGroupState extends State<NewGroup> {
     }
   }
 
-  Future<void> _fetchLoanTypes(BuildContext context) async {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        showDialog<String>(
-          barrierColor: Theme.of(context).backgroundColor.withOpacity(0.7),
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: primaryColor,
-              ),
-            );
-          },
-        );
-      },
-    );
-    try {
-      final group = Provider.of<Groups>(context, listen: false);
-      await group.fetchLoanTypes();
-      setState(() {
-        List<dynamic> _loanTyps = [];
-
-        group.loanTypes.forEach((m) {
-          _loanTyps.add({
-            'id': m.id,
-            'name': m.name,
-            'amount': m.loanAmount,
-            'repaymentPeriod': m.repaymentPeriod,
-            'loanProcessing': m.loanProcessing,
-            'guarantors': m.guarantors,
-            'latePaymentFines': m.latePaymentFines,
-            'outstandingPaymentFines': m.outstandingPaymentFines,
-          });
-        });
-        _data['loan_types'] = _loanTyps;
-        _isInit = false;
-      });
-      Navigator.of(context, rootNavigator: true).pop();
-    } on CustomException catch (error) {
-      StatusHandler().handleStatus(
-        context: context,
-        error: error,
-        callback: () {
-          _fetchLoanTypes(context);
-        },
-      );
-    }
-  }
-
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -570,7 +485,6 @@ class _NewGroupState extends State<NewGroup> {
     if (_isInit && currentStep == 1) getGroupMembers(context);
     if (_isInit && currentStep == 2) _fetchContributions(context);
     if (_isInit && currentStep == 3) _fetchAccounts(context);
-    if (_isInit && currentStep == 4) _fetchLoanTypes(context);
 
     final List<Map<String, dynamic>> _radOptions = [
       {
@@ -590,6 +504,7 @@ class _NewGroupState extends State<NewGroup> {
             : Text(
                 "Group Info",
                 style: TextStyle(
+                  // ignore: deprecated_member_use
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                   fontWeight: FontWeight.normal,
@@ -604,14 +519,14 @@ class _NewGroupState extends State<NewGroup> {
             children: <Widget>[
               subtitle1(
                 text: "Select group avatar",
-               
+                // ignore: deprecated_member_use
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start,
               ),
               subtitle2(
                 text: "Could be a logo or an image associated with your group",
-               
+                // ignore: deprecated_member_use
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start,
@@ -761,15 +676,13 @@ class _NewGroupState extends State<NewGroup> {
                 context: context,
                 action: () => Navigator.of(context)
                     .push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => ListContributions(),
-                  ),
-                )
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => ListContributions(),
+                      ),
+                    )
                     .then(
-                  (resp) {
-                    _fetchContributions(context);
-                  },
-                ),
+                      (resp) => _fetchContributions(context),
+                    ),
                 title: "Group Contributions",
                 subtitle: "Tap to manage contributions",
                 icon: Icons.edit,
@@ -790,13 +703,11 @@ class _NewGroupState extends State<NewGroup> {
               width: double.infinity,
               child: meetingMegaButton(
                 context: context,
-                action: () => Navigator.of(context)
-                    .push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => ListAccounts(),
-                      ),
-                    )
-                    .then((resp) => _fetchAccounts(context)),
+                action: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => ListAccounts(),
+                  ),
+                ),
                 title: "Group Accounts",
                 subtitle: "Tap to manage accounts",
                 icon: Icons.edit,
@@ -807,36 +718,9 @@ class _NewGroupState extends State<NewGroup> {
         ),
       ),
       Step(
-        title: formatStep(4, "Loan Types"),
+        title: formatStep(4, "Finish"),
         isActive: currentStep >= 4 ? true : false,
         state: currentStep > 4 ? StepState.complete : StepState.disabled,
-        content: Column(
-          children: <Widget>[
-            Container(
-              color: primaryColor.withOpacity(0.1),
-              width: double.infinity,
-              child: meetingMegaButton(
-                context: context,
-                action: () => Navigator.of(context)
-                    .push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => ListLoanTypes(),
-                      ),
-                    )
-                    .then((value) => _fetchLoanTypes(context)),
-                title: "Group Loan types",
-                subtitle: "Tap to manage loan types",
-                icon: Icons.edit,
-                color: primaryColor,
-              ),
-            ),
-          ],
-        ),
-      ),
-      Step(
-        title: formatStep(5, "Finish"),
-        isActive: currentStep >= 5 ? true : false,
-        state: currentStep > 5 ? StepState.complete : StepState.disabled,
         content: Container(
           width: double.infinity,
           child: Column(
@@ -844,7 +728,7 @@ class _NewGroupState extends State<NewGroup> {
             children: <Widget>[
               subtitle1(
                 text: "Do you have a referral code?",
-                
+                // ignore: deprecated_member_use
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start,
@@ -852,7 +736,7 @@ class _NewGroupState extends State<NewGroup> {
               subtitle2(
                 text:
                     "Use it if referred by a Bank, an NGO, a Partner or anyone",
-              
+                // ignore: deprecated_member_use
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start,
@@ -887,7 +771,6 @@ class _NewGroupState extends State<NewGroup> {
                                     color: _hasReferralCode == option['value']
                                         ? primaryColor
                                         : Theme.of(context)
-                                            
                                             .textSelectionTheme
                                             .selectionHandleColor,
                                   ),
@@ -950,7 +833,7 @@ class _NewGroupState extends State<NewGroup> {
                     children: <Widget>[
                       Icon(
                         Icons.lightbulb_outline,
-                        
+                        // ignore: deprecated_member_use
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor,
@@ -972,7 +855,7 @@ class _NewGroupState extends State<NewGroup> {
                             subtitle2(
                               text:
                                   "Follow all the steps and provide all required data about this group. You'll be able to preview a summary of the group before you submit.",
-                              
+                              // ignore: deprecated_member_use
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -991,28 +874,18 @@ class _NewGroupState extends State<NewGroup> {
                   onStepContinue: next,
                   onStepTapped: (step) => goTo(step),
                   onStepCancel: cancel,
-                  controlsBuilder: (
-                    BuildContext context,
-                    ControlsDetails controlDetails
-                  //   ControlsDetails controlDetails, {
-                  //   // BuildContext context, {
-                  //   VoidCallback onStepContinue,
-                  //   VoidCallback onStepCancel,
-                  // }
-                  ) {
+                  controlsBuilder:
+                      (BuildContext context, ControlsDetails controlsDetails) {
                     return Padding(
-                      padding: EdgeInsets.only(
-                        top: 12.0,
-                      ),
+                      padding: EdgeInsets.only(top: 12.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                         
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: primaryColor),
-                            //color: primaryColor,
+
                             child: Padding(
                               padding:
                                   EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
@@ -1023,9 +896,9 @@ class _NewGroupState extends State<NewGroup> {
                                         ? "Confirm & Submit"
                                         : "Save & Continue",
                                     style: TextStyle(
-                                        fontFamily: 'SegoeUI',
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.white),
+                                      fontFamily: 'SegoeUI',
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
                                   (_saving)
                                       ? SizedBox(width: 10.0)
@@ -1047,48 +920,61 @@ class _NewGroupState extends State<NewGroup> {
                                 ],
                               ),
                             ),
-                            // textColor: Colors.white,
-                            onPressed: (!_saving) ? controlDetails.onStepContinue : null,
+                            //textColor: Colors.white,
+                            onPressed: (!_saving)
+                                ? controlsDetails.onStepContinue
+                                : null,
                           ),
                           SizedBox(
                             width: 20.0,
                           ),
-                          currentStep > 1
-                             
+                          (currentStep > 1
                               ? OutlinedButton(
                                   style: OutlinedButton.styleFrom(
                                     backgroundColor: Colors.white,
                                     side: BorderSide(
                                       width: 2.0,
                                       color: Theme.of(context)
-                                          
                                           .textSelectionTheme
                                           .selectionHandleColor
                                           .withOpacity(0.5),
                                     ),
+                                    // color: Colors.white,
+                                  ).copyWith(
+                                    overlayColor: MaterialStateProperty
+                                        .resolveWith<Color>(
+                                      (Set<MaterialState> states) {
+                                        if (states
+                                            .contains(MaterialState.hovered)) {
+                                          return Theme.of(context)
+                                              .textSelectionTheme
+                                              .selectionHandleColor
+                                              .withOpacity(0.1);
+                                        }
+                                        if (states
+                                            .contains(MaterialState.pressed)) {
+                                          return Theme.of(context)
+                                              .textSelectionTheme
+                                              .selectionHandleColor
+                                              .withOpacity(0.6);
+                                        }
+                                        return null;
+                                      },
+                                    ),
                                   ),
-                                  // color: Colors.white,
                                   child: Text(
                                     "Go Back",
                                     style: TextStyle(
                                       color: Theme.of(context)
-                                        
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                     ),
                                   ),
-
-                                  // highlightColor: Theme.of(context)
-                                  //     // ignore: deprecated_member_use
-                                  //     .textSelectionTheme.selectionHandleColor,
-                                  //     .withOpacity(0.1),
-                                  // highlightedBorderColor: Theme.of(context)
-                                  //     // ignore: deprecated_member_use
-                                  //     .textSelectionTheme.selectionHandleColor
-                                  //     .withOpacity(0.6),
-                                  onPressed: (!_saving) ? controlDetails.onStepCancel : null,
+                                  onPressed: (!_saving)
+                                      ? controlsDetails.onStepCancel
+                                      : null,
                                 )
-                              : SizedBox(),
+                              : SizedBox()),
                         ],
                       ),
                     );
