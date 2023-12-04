@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use, duplicate_ignore
-
 import 'package:chamasoft/config.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,29 +33,15 @@ class Styles {
   static ThemeData themeData(bool isDarkTheme, BuildContext context) {
     return Config.appName.toLowerCase() == 'chamasoft'
         ? ThemeData(
+            primarySwatch: Colors.blue,
             backgroundColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             splashColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             primaryColor: isDarkTheme ? Colors.blueGrey[100] : primaryColor,
             indicatorColor:
                 isDarkTheme ? Colors.blueGrey[100] : Colors.blue[600],
-
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                backgroundColor: isDarkTheme
-                    ? Colors.blueGrey[800]?.withOpacity(0.9)
-                    : Colors.white,
-              ),
-            ),
-            buttonTheme: ButtonThemeData(
-              buttonColor: isDarkTheme
-                  ? Colors.blueGrey[800]?.withOpacity(0.7)
-                  : Colors.white,
-              colorScheme: isDarkTheme
-                  ? ColorScheme.dark()
-                  : ColorScheme
-                      .light(), //  <-- this auto selects the right color
-            ),
-
+            // buttonColor: isDarkTheme
+            //     ? Colors.blueGrey[800].withOpacity(0.7)
+            //     : Colors.white,
             hintColor: isDarkTheme ? Colors.blueGrey[400] : Colors.blueGrey,
             highlightColor:
                 isDarkTheme ? Colors.blueGrey[800] : Colors.grey[300],
@@ -65,51 +49,23 @@ class Styles {
             focusColor: isDarkTheme ? Colors.blueGrey[900] : Color(0xFFF8F8FF),
             selectedRowColor:
                 isDarkTheme ? Colors.blueGrey[800] : Colors.blue[100],
-            // ignore: deprecated_member_use
-            textSelectionTheme: TextSelectionThemeData(
-              cursorColor: primaryColor,
-              selectionColor: isDarkTheme ? Colors.white : Colors.blueGrey[800],
-              selectionHandleColor:
-                  isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey,
-            ),
             disabledColor: Colors.grey,
             unselectedWidgetColor:
                 isDarkTheme ? Colors.black38 : Colors.blueGrey[100],
-            // ignore: deprecated_member_use
-
             cardColor: isDarkTheme ? Colors.blueGrey : Colors.white,
             canvasColor: isDarkTheme ? Colors.black : Colors.grey[50],
             brightness: isDarkTheme ? Brightness.dark : Brightness.light,
+            buttonTheme: Theme.of(context).buttonTheme.copyWith(
+                  colorScheme:
+                      isDarkTheme ? ColorScheme.dark() : ColorScheme.light(),
+                ),
             bottomAppBarTheme: BottomAppBarTheme(
               color: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             ),
             bottomAppBarColor:
                 isDarkTheme ? Colors.blueGrey[300] : Colors.blueGrey[400],
+            accentColor: isDarkTheme ? Colors.blue[700] : primaryColor,
             dividerColor: isDarkTheme ? Colors.grey[900] : Colors.grey[300],
-            checkboxTheme: CheckboxThemeData(
-              fillColor: MaterialStateProperty.resolveWith<Color>(
-                  (Set<MaterialState> states) {
-                if (states.contains(MaterialState.disabled)) {
-                  return null;
-                }
-                if (states.contains(MaterialState.selected)) {
-                  return isDarkTheme ? Colors.blue[700] : primaryColor;
-                }
-                return null;
-              }),
-            ),
-            radioTheme: RadioThemeData(
-              fillColor: MaterialStateProperty.resolveWith<Color>(
-                  (Set<MaterialState> states) {
-                if (states.contains(MaterialState.disabled)) {
-                  return null;
-                }
-                if (states.contains(MaterialState.selected)) {
-                  return isDarkTheme ? Colors.blue[700] : primaryColor;
-                }
-                return null;
-              }),
-            ),
             switchTheme: SwitchThemeData(
               thumbColor: MaterialStateProperty.resolveWith<Color>(
                   (Set<MaterialState> states) {
@@ -132,25 +88,46 @@ class Styles {
                 return null;
               }),
             ),
-            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
-                .copyWith(
-                    secondary: isDarkTheme ? Colors.blue[700] : primaryColor),
+            radioTheme: RadioThemeData(
+              fillColor: MaterialStateProperty.resolveWith<Color>(
+                  (Set<MaterialState> states) {
+                if (states.contains(MaterialState.disabled)) {
+                  return null;
+                }
+                if (states.contains(MaterialState.selected)) {
+                  return isDarkTheme ? Colors.blue[700] : primaryColor;
+                }
+                return null;
+              }),
+            ),
+            checkboxTheme: CheckboxThemeData(
+              fillColor: MaterialStateProperty.resolveWith<Color>(
+                  (Set<MaterialState> states) {
+                if (states.contains(MaterialState.disabled)) {
+                  return null;
+                }
+                if (states.contains(MaterialState.selected)) {
+                  return isDarkTheme ? Colors.blue[700] : primaryColor;
+                }
+                return null;
+              }),
+            ),
+            textSelectionTheme: TextSelectionThemeData(
+              selectionColor: isDarkTheme ? Colors.white : Colors.blueGrey[800],
+              selectionHandleColor:
+                  isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey,
+            ),
           )
         : ThemeData(
+            primarySwatch: Colors.brown,
             backgroundColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             splashColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             primaryColor: isDarkTheme ? Colors.blueGrey[100] : primaryColor,
             indicatorColor:
                 isDarkTheme ? Colors.blueGrey[100] : Colors.brown[600],
-            buttonTheme: ButtonThemeData(
-              buttonColor: isDarkTheme
-                  ? Colors.blueGrey[800]?.withOpacity(0.7)
-                  : Colors.white,
-              colorScheme: isDarkTheme
-                  ? ColorScheme.dark()
-                  : ColorScheme
-                      .light(), //  <-- this auto selects the right color
-            ),
+            // buttonColor: isDarkTheme
+            //     ? Colors.blueGrey[800].withOpacity(0.7)
+            //     : Colors.white,
             hintColor: isDarkTheme ? Colors.blueGrey[400] : Colors.blueGrey,
             highlightColor:
                 isDarkTheme ? Colors.blueGrey[800] : Colors.grey[300],
@@ -158,21 +135,16 @@ class Styles {
             focusColor: isDarkTheme ? Colors.blueGrey[900] : Color(0xFFF8F8FF),
             selectedRowColor:
                 isDarkTheme ? Colors.blueGrey[800] : Colors.orange[50],
-            // ignore: deprecated_member_use
-            textSelectionTheme: TextSelectionThemeData(
-              cursorColor: primaryColor,
-              selectionColor: isDarkTheme ? Colors.white : Colors.blueGrey[800],
-              selectionHandleColor:
-                  isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey,
-            ),
             disabledColor: Colors.grey,
             unselectedWidgetColor:
                 isDarkTheme ? Colors.black38 : Colors.blueGrey[100],
-            // ignore: deprecated_member_use
             cardColor: isDarkTheme ? Colors.blueGrey : Colors.white,
             canvasColor: isDarkTheme ? Colors.black : Colors.grey[50],
             brightness: isDarkTheme ? Brightness.dark : Brightness.light,
-
+            buttonTheme: Theme.of(context).buttonTheme.copyWith(
+                  colorScheme:
+                      isDarkTheme ? ColorScheme.dark() : ColorScheme.light(),
+                ),
             bottomAppBarTheme: BottomAppBarTheme(
               color: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             ),
@@ -180,10 +152,13 @@ class Styles {
                 isDarkTheme ? Colors.blueGrey[300] : Colors.blueGrey[400],
             toggleableActiveColor:
                 isDarkTheme ? Colors.brown[700] : primaryColor,
+            accentColor: isDarkTheme ? Colors.brown[700] : primaryColor,
             dividerColor: isDarkTheme ? Colors.grey[900] : Colors.grey[300],
-            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.brown)
-                .copyWith(
-                    secondary: isDarkTheme ? Colors.brown[700] : primaryColor),
+            textSelectionTheme: TextSelectionThemeData(
+              selectionColor: isDarkTheme ? Colors.white : Colors.blueGrey[800],
+              selectionHandleColor:
+                  isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey,
+            ),
           );
   }
 }

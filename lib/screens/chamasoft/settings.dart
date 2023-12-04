@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
@@ -8,15 +6,12 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/theme.dart';
-import 'package:chamasoft/screens/chamasoft/feedback.dart';
-//import 'package:chamasoft/screens/login.dart';
-import 'package:chamasoft/screens/login_password.dart';
-import 'package:chamasoft/screens/webView-launcher.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+
 import 'package:provider/provider.dart';
 // import 'package:flutter_share_me/flutter_share_me.dart';
 import 'settings/group-settings.dart';
@@ -35,57 +30,6 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
   String language = "English";
   bool pushNotifications = true;
 
-  void _rateMyAppDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
-          title: heading2(
-              text: "Post feedback",
-              textAlign: TextAlign.start,
-              color: Theme.of(context).textSelectionTheme.selectionHandleColor),
-          content: customTitleWithWrap(
-              text:
-                  "Let us know how we can improve our service to serve you better.",
-              textAlign: TextAlign.start,
-              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
-              maxLines: null),
-          actions: <Widget>[
-            negativeActionDialogButton(
-              text: "Cancel",
-              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
-              action: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(4.0)),
-                //textColor: Colors.blue,
-                backgroundColor: Colors.blue.withOpacity(0.2),
-              ),
-              child: customTitle(
-                text: "Continue",
-                color: Colors.blue,
-                fontWeight: FontWeight.w600,
-              ),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => FeedBackForm(),
-                  ),
-                );
-              },
-            )
-          ],
-        );
-      },
-    );
-  }
-
   void _logoutDialog() {
     showDialog(
       context: context,
@@ -93,9 +37,11 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
-              text: "Logout",
-              textAlign: TextAlign.start,
-              color: Theme.of(context).textSelectionTheme.selectionHandleColor),
+            text: "Logout",
+            textAlign: TextAlign.start,
+            // ignore: deprecated_member_use
+            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+          ),
           content: customTitleWithWrap(
               text:
                   "Are you sure you want to log out? You'll have to login again to continue.",
@@ -110,33 +56,26 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 Navigator.of(context).pop();
               },
             ),
-            TextButton(
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(4.0)),
-                //textColor: Colors.red,
-                backgroundColor: Colors.red.withOpacity(0.2),
-              ),
-              child: customTitle(
-                text: "Logout",
-                color: Colors.red,
-                fontWeight: FontWeight.w600,
-              ),
-              onPressed: () async {
-                if (Config.appName.toLowerCase() == "chamasoft") {
+            Padding(
+              padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+              child: TextButton(
+                child: customTitle(
+                  text: "Logout",
+                  color: Colors.red,
+                  fontWeight: FontWeight.w600,
+                ),
+                onPressed: () {
                   Navigator.of(context).pop();
                   StatusHandler().logout(context);
-                } else {
-                  print("User is logged out");
-                  final result = await Navigator.of(context)
-                      .pushNamedAndRemoveUntil(
-                          LoginPassword.namedRoute, (route) => false);
-
-                  print("On pressing logout the route is $result");
-                  StatusHandler().logout(context);
-                }
-              },
+                },
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                  backgroundColor: Colors.red.withOpacity(0.2),
+                  primary: Colors.red,
+                ),
+              ),
             )
           ],
         );
@@ -171,9 +110,6 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
     final group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
-    final helpUrl = 'https://help.chamasoft.com/';
-    final aboutUrl = 'https://chamasoft.com/company/about-chamasoft';
-    final termsandConditionsUrl = 'https://chamasoft.com/terms-and-conditions';
 
     setState(() {
       theme = themeChange.darkTheme ? "Dark" : "Light";
@@ -229,15 +165,17 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       heading2(
-                          text: auth.userName,
-                          color: Theme.of(context)
-                              .textSelectionTheme
-                              .selectionHandleColor),
+                        text: auth.userName,
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor,
+                      ),
                       subtitle2(
-                          text: auth.phoneNumber,
-                          color: Theme.of(context)
-                              .textSelectionTheme
-                              .selectionHandleColor),
+                        text: auth.phoneNumber,
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor,
+                      ),
                       Padding(
                         padding: EdgeInsets.only(
                           top: 10.0,
@@ -302,18 +240,6 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
             //     }
             //   },
             // ),
-            Config.appName.toLowerCase() == 'chamasoft'
-                ? Padding(
-                    padding: EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 10.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: heading2(
-                        text: "Group Settings",
-                        color: Colors.blueGrey,
-                      ),
-                    ),
-                  )
-                : SizedBox(),
             Visibility(
               visible: group.isGroupAdmin,
               child: ListTile(
@@ -522,31 +448,25 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ),
               dense: true,
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      WebViewLauncher(helpUrl: helpUrl, type: 'help'),
-                ),
-              ),
-              // onTap: () => launchURL("https://help.chamasoft.com/"),
+              onTap: () => launchURL("https://help.chamasoft.com/"),
             ),
-            // ListTile(
-            //   title: Text("Chat Support",
-            //       style: TextStyle(
-            //         fontWeight: FontWeight.w500,
-            //         fontSize: 16,
-            //         color: Theme.of(context).textSelectionHandleColor,
-            //       )),
-            //   trailing: Padding(
-            //     padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
-            //     child: Icon(
-            //       Icons.chat,
-            //       color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-            //     ),
-            //   ),
-            //   dense: true,
-            //   onTap: () {},
-            // ),
+//            ListTile(
+//              title: Text("Chat Support",
+//                  style: TextStyle(
+//                    fontWeight: FontWeight.w500,
+//                    fontSize: 16,
+//                    color: Theme.of(context).textSelectionHandleColor,
+//                  )),
+//              trailing: Padding(
+//                padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
+//                child: Icon(
+//                  Icons.chat,
+//                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+//                ),
+//              ),
+//              dense: true,
+//              onTap: () {},
+//            ),
             ListTile(
               title: Text("Call Support",
                   style: TextStyle(
@@ -595,13 +515,8 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ),
               dense: true,
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      WebViewLauncher(helpUrl: aboutUrl, type: 'about'),
-                ),
-              ),
-              // launchURL("https://chamasoft.com/company/about-chamasoft"),
+              onTap: () =>
+                  launchURL("https://chamasoft.com/company/about-chamasoft"),
             ),
             ListTile(
               title: Text("Terms & Conditions",
@@ -620,13 +535,8 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ),
               dense: true,
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => WebViewLauncher(
-                      helpUrl: termsandConditionsUrl, type: 'terms'),
-                ),
-              ),
-              //   launchURL("https://chamasoft.com/terms-and-conditions"),
+              onTap: () =>
+                  launchURL("https://chamasoft.com/terms-and-conditions"),
             ),
             // ListTile(
             //   title: Text("E-Wallet Charges",
@@ -645,36 +555,6 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
             //   dense: true,
             //   onTap: () => launchURL("https://chamasoft.com/"),
             // ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 10.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: heading2(
-                  text: "Feedback",
-                  color: Colors.blueGrey,
-                ),
-              ),
-            ),
-            ListTile(
-                title: Text("Post a feedback",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                      color: Theme.of(context)
-                          .textSelectionTheme
-                          .selectionHandleColor,
-                    )),
-                trailing: Padding(
-                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
-                  child: Icon(
-                    LineAwesomeIcons.star,
-                    color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-                  ),
-                ),
-                dense: true,
-                onTap: () => _rateMyAppDialog()
-                // launchURL("https://chamasoft.com/company/about-chamasoft"),
-                ),
             Padding(
               padding: EdgeInsets.only(
                 top: 20.0,
