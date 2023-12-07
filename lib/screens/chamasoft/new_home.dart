@@ -3359,13 +3359,13 @@ class _ExpensesState extends State<Expenses> {
  */
     final sumOfThreeItems = (_expenseSummary.newExpensesSummariesList.length > 2
             ? _expenseSummary.newExpensesSummariesList[2].expenseAmount
-            : 0) +
+            : 0.0) +
         (_expenseSummary.newExpensesSummariesList.length > 1
             ? _expenseSummary.newExpensesSummariesList[1].expenseAmount
-            : 0) +
+            : 0.0) +
         (_expenseSummary.newExpensesSummariesList.length > 0
             ? _expenseSummary.newExpensesSummariesList[0].expenseAmount
-            : 0);
+            : 0.0);
 
     final newOtherExpenses =
         _expenseSummary.totalExpensesSummaries - sumOfThreeItems;

@@ -29,7 +29,7 @@ AccountBalanceModel getAccountBalances(dynamic data) {
             balance: account['account_balance'].toString());
         bankAccounts.add(accountBalance);
 
-        print('object the account balance for each specific account');
+        print(' the account balance for each specific account');
         print('Account Name: ${accountBalance.name}');
         print('Account Number: ${accountBalance.accountNumber}');
         print('Account Balance: ${accountBalance.balance}');
@@ -60,6 +60,8 @@ TransactionStatementModel getTransactionStatement(dynamic data) {
   final double withdrawalsBroughtForward =
       ParseHelper.getDoubleFromJson(data['statement_header'], 'withdrawn');
   final double balanceBroughtForward =
+      //double.parse(data['statement_header']['balance'].toString());
+
       ParseHelper.getDoubleFromJson(data['statement_header'], 'balance');
   final String descriptionBF =
       data['statement_header']['description'].toString();

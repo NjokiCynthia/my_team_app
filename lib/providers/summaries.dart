@@ -54,7 +54,7 @@ class DashboardContributionSummary with ChangeNotifier {
   String _contributionDateDaysleft = "";
 
   //***************Group****************/
-  int _groupContributionAmount = 0;
+  double _groupContributionAmount = 0.0;
 
   Map<String, Map<String, dynamic>> get memberData {
     return _memberData;
@@ -82,10 +82,9 @@ class DashboardContributionSummary with ChangeNotifier {
     return _totalGroupContributionAmount;
   }
 
-  int get groupContributionAmount {
+  double get groupContributionAmount {
     return _groupContributionAmount;
   }
-
 
   bool memberContributionSummaryExists(String groupId) {
     if (_memberData.containsKey(groupId)) {
@@ -100,14 +99,12 @@ class DashboardContributionSummary with ChangeNotifier {
     }
   }
 
-
   void resetMemberContributionSummary(String groupId) {
     if (_memberData.containsKey(groupId)) {
       print(_memberData);
       _memberData.removeWhere((key, value) => key == groupId);
     }
   }
-
 
   bool groupContributionSummaryExists(String groupId) {
     if (_totalGroupContributionAmount.containsKey(groupId)) {
@@ -131,22 +128,22 @@ class DashboardContributionSummary with ChangeNotifier {
 
   void _updateMemberContributionSummaries(String groupId) async {
     // if(_memberData[groupId].containsKey("member_contribution_summary")) {
-      var groupMemberObject = _memberData[groupId];
-      var groupContributionObject = _totalGroupContributionAmount[groupId];
-      var groupContributionDetail =
-      groupContributionObject["total_group_contribution"];
-      var memberDetails = groupMemberObject["member_contribution_summary"]
-      as Map<String, dynamic>;
-      _groupContributionAmount = int.tryParse(groupContributionDetail) ?? 0.0;
-      _memberContributionAmount =
-          double.tryParse(memberDetails["contribution_paid"].toString()) ?? 0.0;
-      _memberContributionArrears =
-          double.tryParse(memberDetails["contribution_arrears"].toString()) ??
-              0.0;
-      _nextcontributionDate =
-          int.tryParse(memberDetails["next_contribution_date"].toString()) ?? 0;
-      _contributionDateDaysleft =
-          memberDetails["days_to_next_contribution"] ?? "--";
+    var groupMemberObject = _memberData[groupId];
+    var groupContributionObject = _totalGroupContributionAmount[groupId];
+    var groupContributionDetail =
+        groupContributionObject["total_group_contribution"];
+    var memberDetails = groupMemberObject["member_contribution_summary"]
+        as Map<String, dynamic>;
+    _groupContributionAmount = double.parse(groupContributionDetail.toString()) ?? 0.0;
+    _memberContributionAmount =
+        double.tryParse(memberDetails["contribution_paid"].toString()) ?? 0.0;
+    _memberContributionArrears =
+        double.tryParse(memberDetails["contribution_arrears"].toString()) ??
+            0.0;
+    _nextcontributionDate =
+        int.tryParse(memberDetails["next_contribution_date"].toString()) ?? 0;
+    _contributionDateDaysleft =
+        memberDetails["days_to_next_contribution"] ?? "--";
     // }notifyListeners();
   }
 

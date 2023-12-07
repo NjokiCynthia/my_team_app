@@ -49,7 +49,7 @@ class _AccountBalancesState extends State<AccountBalances> {
         Provider.of<Groups>(context, listen: false).accountBalances;
 
     if (_accountBalanceModel != null) {
-      _totalBalance = _accountBalanceModel.totalBalance;
+      _totalBalance = _accountBalanceModel.totalBalance as double;
       _accountBalances = _accountBalanceModel.accounts;
     }
 
@@ -59,7 +59,7 @@ class _AccountBalancesState extends State<AccountBalances> {
       setState(() {
         _isLoading = false;
         if (_accountBalanceModel != null) {
-          _totalBalance = _accountBalanceModel.totalBalance;
+          _totalBalance = _accountBalanceModel.totalBalance as double;
           _accountBalances = _accountBalanceModel.accounts;
         }
       });
@@ -206,11 +206,6 @@ class _AccountBalancesState extends State<AccountBalances> {
                           if (balance.isHeader) {
                             return AccountHeader(header: balance);
                           } else {
-                            print(
-                                'Print account number and balance that are now on the UI');
-                            print("Account Number: ${balance.name}");
-                            print("Account Number: ${balance.accountNumber}");
-                            print("Account Balance: ${balance.balance}");
                             return AccountBody(account: balance);
                           }
                         },

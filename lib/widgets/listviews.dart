@@ -728,7 +728,6 @@ class TransactionStatementBody extends StatelessWidget {
                           " " +
                           currencyFormat.format(row.deposit),
                       color: row.deposit == 0
-                          // ignore: deprecated_member_use
                           ? Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor
@@ -751,16 +750,16 @@ class TransactionStatementBody extends StatelessWidget {
                       fontSize: 13,
                       textAlign: TextAlign.center),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: customTitle(
-                      text: groupObject.groupCurrency +
-                          " " +
-                          currencyFormat.format(row.balance),
-                      color: Theme.of(context).primaryColor,
-                      fontSize: 13,
-                      textAlign: TextAlign.center),
-                ),
+                // Expanded(
+                //   flex: 1,
+                //   child: customTitle(
+                //       text: groupObject.groupCurrency +
+                //           " " +
+                //           currencyFormat.format(row.balance),
+                //       color: Theme.of(context).primaryColor,
+                //       fontSize: 13,
+                //       textAlign: TextAlign.center),
+                // ),
               ],
             ),
             SizedBox(
@@ -771,6 +770,19 @@ class TransactionStatementBody extends StatelessWidget {
               // ignore: deprecated_member_use
               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               textAlign: TextAlign.start,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                Text('Balance:      '),
+                Text(
+                  groupObject.groupCurrency +
+                      " " +
+                      currencyFormat.format(row.balance),
+                )
+              ],
             )
           ],
         ),
