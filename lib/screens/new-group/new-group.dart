@@ -814,7 +814,7 @@ class _NewGroupState extends State<NewGroup> {
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
-        title: "New Group",
+        title: "New Groups",
       ),
       body: Builder(
         builder: (BuildContext context) {
