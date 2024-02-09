@@ -44,7 +44,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-
 void main() async {
   //  Status bar fixes
   SystemChrome.setSystemUIOverlayStyle(
@@ -291,9 +290,6 @@ class _MyAppState extends State<MyApp> {
       }),
     );
   }
-}
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message.messageId}");
 }
 
 class BackgroundMessageHandler {

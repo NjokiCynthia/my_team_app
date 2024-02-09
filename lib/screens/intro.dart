@@ -33,8 +33,7 @@ class IntroScreenState extends State<IntroScreen> {
   _dashNav() async {
     String currentGroupId = await getPreference("selectedGroupId");
     dynamic groups = Provider.of<Groups>(context, listen: false);
-    // ignore: unused_local_variable
-    dynamic groupData = Provider.of<Dashboard>(context, listen: false);
+    //dynamic groupData = Provider.of<Dashboard>(context, listen: false);
     await groups.fetchAndSetUserGroups();
     await groups.setSelectedGroupId(currentGroupId);
     // await groups.fetchMembers();
@@ -273,14 +272,17 @@ class IntroScreenState extends State<IntroScreen> {
                     fontWeight: FontWeight.w800,
                     color: Colors.white)),
             skipStyle: const ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll<Color>(Colors.transparent),
+              backgroundColor:
+                  MaterialStatePropertyAll<Color>(Colors.transparent),
             ),
-        doneStyle: const ButtonStyle(
-          backgroundColor: MaterialStatePropertyAll<Color>(Colors.transparent),
-        ),
-        nextStyle: const ButtonStyle(
-          backgroundColor: MaterialStatePropertyAll<Color>(Colors.transparent),
-        ),
+            doneStyle: const ButtonStyle(
+              backgroundColor:
+                  MaterialStatePropertyAll<Color>(Colors.transparent),
+            ),
+            nextStyle: const ButtonStyle(
+              backgroundColor:
+                  MaterialStatePropertyAll<Color>(Colors.transparent),
+            ),
             dotsDecorator: DotsDecorator(
                 size: Size(10.0, 10.0),
                 color: Colors.white54,

@@ -24,34 +24,35 @@ class Group {
   final String groupRole;
   final bool isGroupAdmin;
   final String groupCurrency;
+  dynamic enablehidegroupbalancestoMembers;
 
-  Group({
-    @required this.groupId,
-    @required this.groupName,
-    @required this.groupSize,
-    @required this.groupCountryId,
-    @required this.smsBalance,
-    this.memberListingOrderBy,
-    @required this.accountNumber,
-    this.enableMemberInformationPrivacy,
-    this.enableSendMonthlyEmailStatements,
-    this.disableArrears,
-    this.disableMemberEditProfile,
-    this.enableAbsoluteLoanRecalculation,
-    this.disableIgnoreContributionTransfers,
-    @required this.onlineBankingEnabled,
-    this.orderMembersBy,
-    @required this.groupRoles,
-    @required this.groupRoleId,
-    @required this.groupRole,
-    @required this.isGroupAdmin,
-    @required this.groupCurrency,
-    this.groupCurrencyId,
-    this.groupPhone,
-    this.groupEmail,
-    this.groupCountryName,
-    this.avatar
-  });
+  Group(
+      {@required this.groupId,
+      @required this.groupName,
+      @required this.groupSize,
+      @required this.groupCountryId,
+      @required this.smsBalance,
+      this.memberListingOrderBy,
+      @required this.accountNumber,
+      this.enableMemberInformationPrivacy,
+      this.enableSendMonthlyEmailStatements,
+      this.disableArrears,
+      this.disableMemberEditProfile,
+      this.enableAbsoluteLoanRecalculation,
+      this.disableIgnoreContributionTransfers,
+      @required this.onlineBankingEnabled,
+      this.orderMembersBy,
+      @required this.groupRoles,
+      @required this.groupRoleId,
+      @required this.groupRole,
+      @required this.isGroupAdmin,
+      @required this.groupCurrency,
+      this.groupCurrencyId,
+      this.groupPhone,
+      this.groupEmail,
+      this.groupCountryName,
+      this.avatar,
+      this.enablehidegroupbalancestoMembers});
 }
 
 class GroupRoles {
@@ -68,5 +69,6 @@ class GroupRolesStatusAndCurrentMemberStatus {
   final int currentMemberStatus;
   final Map<String, int> roleStatus;
 
-  GroupRolesStatusAndCurrentMemberStatus({this.currentMemberStatus, this.roleStatus});
+  GroupRolesStatusAndCurrentMemberStatus(
+      {this.currentMemberStatus, this.roleStatus});
 }

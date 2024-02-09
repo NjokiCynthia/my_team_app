@@ -2066,14 +2066,21 @@ class _ContrubutionsState extends State<Contrubutions> {
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  customTitle(
-                                    text: "Group Total Contribution",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: Theme.of(context)
-                                        // ignore: deprecated_member_use
-                                        .textSelectionTheme
-                                        .selectionHandleColor,
+                                  Visibility(
+                                    visible: _currentGroup.isGroupAdmin ||
+                                        _currentGroup.isGroupAdmin != 1 &&
+                                            _currentGroup
+                                                    .enablehidegroupbalancestoMembers !=
+                                                1,
+                                    child: customTitle(
+                                      text: "Group Total Contribution",
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
+                                    ),
                                   ),
                                   dashboardContributionSummary
                                               .groupContributionAmount >
@@ -2597,14 +2604,21 @@ class _FinesState extends State<Fines> {
                               SizedBox(
                                 height: 20,
                               ),
-                              customTitle(
-                                text: "Group Total Fines Paid",
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: Theme.of(context)
-                                    // ignore: deprecated_member_use
-                                    .textSelectionTheme
-                                    .selectionHandleColor,
+                              Visibility(
+                                visible: _currentGroup.isGroupAdmin ||
+                                    _currentGroup.isGroupAdmin != 1 &&
+                                        _currentGroup
+                                                .enablehidegroupbalancestoMembers !=
+                                            1,
+                                child: customTitle(
+                                  text: "Group Total Fines Paid",
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Theme.of(context)
+                                      // ignore: deprecated_member_use
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
+                                ),
                               ),
                               dashboardFineSummary.totalGroupFinePaid > 0
                                   ? Row(
@@ -2661,9 +2675,6 @@ class _FinesState extends State<Fines> {
                         dashGapLength: 2.0,
                         dashGapColor: Colors.transparent,
                         dashGapRadius: 0.0,
-                      ),
-                      SizedBox(
-                        height: 10,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(4.0),
@@ -3008,14 +3019,21 @@ class _BalancesState extends State<Balances> {
                                   SizedBox(
                                     height: 20,
                                   ),
-                                  customTitle(
-                                    text: "Group Loan Balances",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: Theme.of(context)
-                                        // ignore: deprecated_member_use
-                                        .textSelectionTheme
-                                        .selectionHandleColor,
+                                  Visibility(
+                                    visible: _currentGroup.isGroupAdmin ||
+                                        _currentGroup.isGroupAdmin != 1 &&
+                                            _currentGroup
+                                                    .enablehidegroupbalancestoMembers !=
+                                                1,
+                                    child: customTitle(
+                                      text: "Group Loan Balances",
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
+                                    ),
                                   ),
 
                                   /* dashboardData.groupLoanedAmount */
@@ -3084,9 +3102,9 @@ class _BalancesState extends State<Balances> {
                             dashGapColor: Colors.transparent,
                             dashGapRadius: 0.0,
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
+                          // SizedBox(
+                          //   height: 10,
+                          // ),
                           Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: Row(
@@ -3115,9 +3133,9 @@ class _BalancesState extends State<Balances> {
                                               .textSelectionTheme
                                               .selectionHandleColor,
                                         ),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
+                                        // SizedBox(
+                                        //   height: 5,
+                                        // ),
                                         customTitle1(
                                           text: /*  _currentGroup.disableArrears
                                         ?
@@ -3169,9 +3187,9 @@ class _BalancesState extends State<Balances> {
                                             .textSelectionTheme
                                             .selectionHandleColor,
                                       ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
+                                      // SizedBox(
+                                      //   height: 5,
+                                      // ),
                                       Row(
                                         children: [
                                           customTitle1(
@@ -3211,9 +3229,9 @@ class _BalancesState extends State<Balances> {
                                             .textSelectionTheme
                                             .selectionHandleColor,
                                       ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
+                                      // SizedBox(
+                                      //   height: 5,
+                                      // ),
                                       Row(
                                         children: [
                                           customTitle1(
