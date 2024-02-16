@@ -56,7 +56,7 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
   Future<void> _getWithdrawals(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false).fetchWithdrawals(
-          _sortOption, _filterList, _memberList, _withdrawals.length);
+          _sortOption, _filterList, context, _memberList, _withdrawals.length);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -68,7 +68,7 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
     }
   }
 
-  Future<bool> _fetchData() async {
+  Future<bool> _fetchData(BuildContext context) async {
     setState(() {
       _isLoading = true;
     });
@@ -92,6 +92,25 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
     return true;
   }
 
+  //   _withdrawals = Provider.of<Groups>(Buildcontext context, listen: false).getWithdrawals;
+  //   _getWithdrawals(context).then((_) {
+  //     if (context != null) {
+  //       _withdrawals =
+  //           Provider.of<Groups>(context, listen: false).getWithdrawals;
+  //       setState(() {
+  //         if (_withdrawals.length < 20) {
+  //           _hasMoreData = false;
+  //         } else
+  //           _hasMoreData = true;
+  //         _isLoading = false;
+  //       });
+  //     }
+  //   });
+
+  //   _isInit = false;
+  //   return true;
+  // }
+
   void showFilterOptions() async {
     List<dynamic> filters = await Navigator.of(context)
         .push(MaterialPageRoute(builder: (BuildContext context) {
@@ -105,14 +124,14 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
     if (filters != null && filters.length == 2) {
       _filterList = filters[0];
       _memberList = filters[1];
-      _fetchData();
+      _fetchData(context);
     }
   }
 
   @override
   void didChangeDependencies() {
     if (_isInit)
-      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData(context));
     super.didChangeDependencies();
   }
 
@@ -132,7 +151,7 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
 
   void applySort(String sort) {
     _sortOption = sort;
-    _fetchData();
+    _fetchData(context);
   }
 
   void showSortBottomSheet() {
@@ -165,7 +184,7 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
               backgroundColor: (themeChangeProvider.darkTheme)
                   ? Colors.blueGrey[800]
                   : Colors.white,
-              onRefresh: () => _fetchData(),
+              onRefresh: () => _fetchData(context),
               child: Container(
                   decoration: primaryGradient(context),
                   width: double.infinity,
@@ -282,7 +301,7 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
                                       _hasMoreData) {
                                     // ignore: todo
                                     //TODO check if has more data before fetching again
-                                    _fetchData();
+                                    _fetchData(context);
                                   }
                                   return true;
                                 },

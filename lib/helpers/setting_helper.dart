@@ -57,6 +57,7 @@ Group parseSingleGroup(dynamic groupJSON) {
   }
   final newGroup = Group(
     groupId: groupJSON['id'].toString(),
+    memberId: groupJSON['member_id'].toString(),
     groupName: groupJSON['name'].toString(),
     groupSize: groupJSON['size'].toString(),
     groupCountryId: groupJSON['country_id'].toString(),

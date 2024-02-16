@@ -1319,7 +1319,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                           Padding(
                             padding: const EdgeInsets.all(24.0),
                             child: Row(
-                              // mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Expanded(
                                   child: Padding(
@@ -1465,7 +1464,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                         .textSelectionTheme
                                         .selectionHandleColor,
                                 child: Container(
-                                  height: 180.0,
+                                  height: 185.0,
                                   child: ListView(
                                     scrollDirection: Axis.horizontal,
                                     padding:

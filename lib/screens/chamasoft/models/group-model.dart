@@ -24,6 +24,7 @@ class Group {
   final String groupRole;
   final bool isGroupAdmin;
   final String groupCurrency;
+  final String memberId;
   dynamic enablehidegroupbalancestoMembers;
 
   Group(
@@ -46,6 +47,7 @@ class Group {
       @required this.groupRoleId,
       @required this.groupRole,
       @required this.isGroupAdmin,
+      this.memberId,
       @required this.groupCurrency,
       this.groupCurrencyId,
       this.groupPhone,

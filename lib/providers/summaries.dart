@@ -134,7 +134,8 @@ class DashboardContributionSummary with ChangeNotifier {
         groupContributionObject["total_group_contribution"];
     var memberDetails = groupMemberObject["member_contribution_summary"]
         as Map<String, dynamic>;
-    _groupContributionAmount = double.parse(groupContributionDetail.toString()) ?? 0.0;
+    _groupContributionAmount =
+        double.parse(groupContributionDetail.toString()) ?? 0.0;
     _memberContributionAmount =
         double.tryParse(memberDetails["contribution_paid"].toString()) ?? 0.0;
     _memberContributionArrears =
