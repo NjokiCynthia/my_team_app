@@ -19,8 +19,8 @@ class CustomHelper {
   static final String _flavor = Config.APP_FLAVOR.toLowerCase();
 
   static final String baseUrl = _getBaseUrl();
-  static const String chamasoftProdUrl = "https://app.chamasoft.com";
-  //static const String chamasoftProdUrl = "https://uat.chamasoft.com";
+  // static const String chamasoftProdUrl = "https://app.chamasoft.com";
+  static const String chamasoftProdUrl = "https://uat.chamasoft.com";
   static const String chamasoftUatUrl = "https://uat.chamasoft.com";
   static const String EazzychamaUatUrl = "https://app.eazzychamademo.com";
   static const String EazzychamaProdUrl = "https://app.eazzychama.co.ke";
