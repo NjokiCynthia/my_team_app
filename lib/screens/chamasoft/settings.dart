@@ -302,7 +302,10 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
             //   },
             // ),
             //tobe implemented in next phase
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3296d11afb1741be27396c7970731211fdabd6b7
             PopupMenuButton(
               child: ListTile(
                 dense: true,
@@ -328,11 +331,17 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                   ),
                 ),
               ),
+<<<<<<< HEAD
             
               onSelected: (value) {
                 setState(() {
                   language = value;
                   translationProvider.updateLanguage(value);
+=======
+              onSelected: (value) {
+                setState(() {
+                  language = value;
+>>>>>>> 3296d11afb1741be27396c7970731211fdabd6b7
                 });
               },
               tooltip: "Language",

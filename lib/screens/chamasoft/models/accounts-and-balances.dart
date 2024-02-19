@@ -6,7 +6,13 @@ class CategorisedAccount {
 
   CategorisedAccount.header({this.isHeader, this.title});
 
-  CategorisedAccount({this.isHeader, this.id, this.name, this.accountNumber, this.typeId, this.uniqueId});
+  CategorisedAccount(
+      {this.isHeader,
+      this.id,
+      this.name,
+      this.accountNumber,
+      this.typeId,
+      this.uniqueId});
 }
 
 class AccountBalance {

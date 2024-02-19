@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
@@ -186,8 +187,11 @@ class _FilterContainerState extends State<FilterContainer> {
     super.didChangeDependencies();
   }
 
+  Group _currentGroup;
   @override
   Widget build(BuildContext context) {
+    _currentGroup =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
       key: _scaffoldKey,
       appBar: tertiaryPageAppbar(
@@ -251,41 +255,44 @@ class _FilterContainerState extends State<FilterContainer> {
                       ),
                     ),
                   ),
-                  Container(
-                    height: 50,
-                    child: Material(
-                      color: themeChangeProvider.darkTheme
-                          ? Colors.grey[800]
-                          : Colors.grey[100],
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            _showMemberFilter = true;
-                            _showStatusFilter = false;
-                          });
-                        },
-                        splashColor: Colors.blueGrey.withOpacity(0.2),
-                        child: Row(
-                          children: [
-                            customTitle(
-                                text: "Members",
-                                textAlign: TextAlign.start,
-                                fontSize: 12.0,
-                                fontWeight: FontWeight.w600,
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context)
-                                        .textSelectionTheme
-                                        .selectionHandleColor),
-                            Visibility(
-                                visible: _showMemberFilter,
-                                child: Icon(LineAwesomeIcons.chevron_right,
-                                    size: 12,
-                                    color: Theme.of(context)
-                                        // ignore: deprecated_member_use
-                                        .textSelectionTheme
-                                        .selectionHandleColor))
-                          ],
+                  Visibility(
+                    visible: _currentGroup.isGroupAdmin,
+                    child: Container(
+                      height: 50,
+                      child: Material(
+                        color: themeChangeProvider.darkTheme
+                            ? Colors.grey[800]
+                            : Colors.grey[100],
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              _showMemberFilter = true;
+                              _showStatusFilter = false;
+                            });
+                          },
+                          splashColor: Colors.blueGrey.withOpacity(0.2),
+                          child: Row(
+                            children: [
+                              customTitle(
+                                  text: "Members",
+                                  textAlign: TextAlign.start,
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w600,
+                                  color:
+                                      // ignore: deprecated_member_use
+                                      Theme.of(context)
+                                          .textSelectionTheme
+                                          .selectionHandleColor),
+                              Visibility(
+                                  visible: _showMemberFilter,
+                                  child: Icon(LineAwesomeIcons.chevron_right,
+                                      size: 12,
+                                      color: Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionTheme
+                                          .selectionHandleColor))
+                            ],
+                          ),
                         ),
                       ),
                     ),

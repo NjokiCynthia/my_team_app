@@ -24,7 +24,7 @@ class NewExpensesSummaries with ChangeNotifier {
   Map<String, Map<String, dynamic>> _expensesSummariesData;
   Map<String, Map<String, dynamic>> _expensesSummariesTotalData;
 
-  int _totalExpensesSummaries = 0;
+  double _totalExpensesSummaries = 0.0;
 
   NewExpensesSummaries(
       String _userId,
@@ -54,9 +54,9 @@ class NewExpensesSummaries with ChangeNotifier {
   }
 
   List<NewExpensesSummariesList> get newExpensesSummariesList {
-    if(_newExpensesSummariesList == null) {
+    if (_newExpensesSummariesList == null) {
       return [];
-    }else {
+    } else {
       return [..._newExpensesSummariesList];
     }
     // return [..._newExpensesSummariesList];
@@ -106,7 +106,7 @@ class NewExpensesSummaries with ChangeNotifier {
     }
   }
 
-  int get totalExpensesSummaries {
+  double get totalExpensesSummaries {
     return _totalExpensesSummaries;
   }
 
@@ -116,7 +116,10 @@ class NewExpensesSummaries with ChangeNotifier {
     _newExpensesSummariesList = [];
 
     var expensesTotalSummaries = groupObject["total_expenses"];
-    _totalExpensesSummaries = expensesTotalSummaries ?? 0;
+    //_totalExpensesSummaries = (expensesTotalSummaries ?? 0.0).toInt();
+
+    _totalExpensesSummaries =
+        double.tryParse(expensesTotalSummaries.toString()) ?? 0.0;
 
     if (expenseSummaries.length > 0) {
       expenseSummaries.map((expense) {

@@ -38,6 +38,7 @@ class InvestmentGroup {
   String activationStatusColorCode;
   String groupCurrency;
   String role;
+  dynamic enablehidegroupbalancestoMembers;
   List<NamesListItem> groupRoles;
 
   InvestmentGroup(
@@ -76,6 +77,7 @@ class InvestmentGroup {
       this.activationStatusColorCode,
       this.groupCurrency,
       this.role,
+      this.enablehidegroupbalancestoMembers,
       this.groupRoles);
 
   void initGroupRoles(List<NamesListItem> roles) {
@@ -108,7 +110,7 @@ class InvestmentGroup {
         billingPackageId = CustomHelper.parseInt(json['billing_package_id']),
         billingCycle = CustomHelper.parseInt(json['billing_cycle']),
 //        isOnFreePlan = CustomHelper.parseInt(json['is_on_free_plan']),
- //       isAdmin = CustomHelper.parseInt(json['is_admin']),
+        //       isAdmin = CustomHelper.parseInt(json['is_admin']),
         groupRoleId = CustomHelper.parseInt(json['group_role_id']),
         isValidated = CustomHelper.parseInt(json['is_validated']),
         smsBalance = CustomHelper.parseDouble(json['sms_balance']),
@@ -125,6 +127,8 @@ class InvestmentGroup {
         activationStatus = json['activation_status'],
         activationStatusColorCode = json['activation_status_color_code'],
         groupCurrency = json['group_currency'],
+        enablehidegroupbalancestoMembers = CustomHelper.parseInt(
+            json['enable_hide_group_balances_to_members']),
         role = json['role'];
 
   Map<String, dynamic> toJson() => {
@@ -149,6 +153,8 @@ class InvestmentGroup {
         'billing_cycle': billingCycle,
         'is_on_free_plan': isOnFreePlan,
         'is_admin': isAdmin,
+        'enable_hide_group_balances_to_members':
+            enablehidegroupbalancestoMembers,
         'group_role_id': groupRoleId,
         'is_validated': isValidated,
         'sms_balance': smsBalance,

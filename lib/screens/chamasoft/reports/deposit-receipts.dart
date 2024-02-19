@@ -60,8 +60,8 @@ class _DepositReceiptsState extends State<DepositReceipts> {
     try {
       int _length = _deposits.length;
       if (_forceFetch) _length = 0;
-      await Provider.of<Groups>(context, listen: false)
-          .fetchDeposits(_sortOption, _filterList, _memberList, _length);
+      await Provider.of<Groups>(context, listen: false).fetchDeposits(
+          context, _sortOption, _filterList, _memberList, _length);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -185,11 +185,13 @@ class _DepositReceiptsState extends State<DepositReceipts> {
                                     border: Border(
                                         right: BorderSide(
                                             color: Theme.of(context)
-                                                .bottomAppBarTheme.color,
+                                                .bottomAppBarTheme
+                                                .color,
                                             width: 0.5),
                                         bottom: BorderSide(
                                             color: Theme.of(context)
-                                                .bottomAppBarTheme.color,
+                                                .bottomAppBarTheme
+                                                .color,
                                             width: 1.0))),
                                 child: Material(
                                   color: Theme.of(context).backgroundColor,
@@ -204,12 +206,14 @@ class _DepositReceiptsState extends State<DepositReceipts> {
                                         Icon(LineAwesomeIcons.sort,
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionTheme.selectionHandleColor),
+                                                .textSelectionTheme
+                                                .selectionHandleColor),
                                         subtitle1(
                                             text: "Sort",
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionTheme.selectionHandleColor)
+                                                .textSelectionTheme
+                                                .selectionHandleColor)
                                       ],
                                     ),
                                   ),
@@ -224,11 +228,13 @@ class _DepositReceiptsState extends State<DepositReceipts> {
                                     border: Border(
                                         left: BorderSide(
                                             color: Theme.of(context)
-                                                .bottomAppBarTheme.color,
+                                                .bottomAppBarTheme
+                                                .color,
                                             width: 0.5),
                                         bottom: BorderSide(
                                             color: Theme.of(context)
-                                                .bottomAppBarTheme.color,
+                                                .bottomAppBarTheme
+                                                .color,
                                             width: 1.0))),
                                 child: Material(
                                   color: Theme.of(context).backgroundColor,
@@ -243,12 +249,14 @@ class _DepositReceiptsState extends State<DepositReceipts> {
                                         Icon(LineAwesomeIcons.filter,
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionTheme.selectionHandleColor),
+                                                .textSelectionTheme
+                                                .selectionHandleColor),
                                         subtitle1(
                                             text: "Filter",
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
-                                                .textSelectionTheme.selectionHandleColor)
+                                                .textSelectionTheme
+                                                .selectionHandleColor)
                                       ],
                                     ),
                                   ),
@@ -406,7 +414,9 @@ class DepositCard extends StatelessWidget {
                                 // ignore: deprecated_member_use
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                    Theme.of(context)
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                 textAlign: TextAlign.start,
                               ),
                               subtitle2(
@@ -415,7 +425,9 @@ class DepositCard extends StatelessWidget {
                                 // ignore: deprecated_member_use
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                    Theme.of(context)
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                               )
                             ],
                           ),
@@ -431,13 +443,17 @@ class DepositCard extends StatelessWidget {
                               text: "${groupObject.groupCurrency} ",
                               fontSize: 18.0,
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               fontWeight: FontWeight.w400,
                             ),
                             heading2(
                               text: currencyFormat.format(deposit.amount),
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               textAlign: TextAlign.end,
                             ),
                           ],
@@ -463,7 +479,8 @@ class DepositCard extends StatelessWidget {
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionTheme.selectionHandleColor,
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                   textAlign: TextAlign.start),
                               customTitle1(
                                   text: deposit.depositor,
@@ -473,7 +490,8 @@ class DepositCard extends StatelessWidget {
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionTheme.selectionHandleColor,
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                   textAlign: TextAlign.start),
                             ],
                           ),
@@ -486,7 +504,8 @@ class DepositCard extends StatelessWidget {
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionTheme.selectionHandleColor,
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                   textAlign: TextAlign.end),
                               customTitle1(
                                   text: deposit.date,
@@ -495,7 +514,8 @@ class DepositCard extends StatelessWidget {
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionTheme.selectionHandleColor,
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                   textAlign: TextAlign.end)
                             ],
                           ),
@@ -516,7 +536,8 @@ class DepositCard extends StatelessWidget {
                                 // ignore: deprecated_member_use
                                 Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionTheme.selectionHandleColor,
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                             textAlign: TextAlign.start),
                         subtitle2(
                             text:
@@ -526,7 +547,8 @@ class DepositCard extends StatelessWidget {
                                 // ignore: deprecated_member_use
                                 Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionTheme.selectionHandleColor,
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                             textAlign: TextAlign.start),
                       ],
                     ),

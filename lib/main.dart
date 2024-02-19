@@ -1,18 +1,10 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:chamasoft/config.dart';
-import 'package:chamasoft/helpers/common.dart';
-import 'package:chamasoft/helpers/notifications.dart';
-import 'package:chamasoft/helpers/theme.dart';
-import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/bankBalancesSummary.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
 import 'package:chamasoft/providers/chatmessage.dart';
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/expenses-summaries.dart';
 import 'package:chamasoft/providers/fine_summary.dart';
-import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/providers/loan-summaries.dart';
 import 'package:chamasoft/providers/notification_summary.dart';
 import 'package:chamasoft/providers/recent-transactions.dart';
@@ -25,6 +17,7 @@ import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-contributio
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-members-manually.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/list-contacts.dart';
 import 'package:chamasoft/screens/chamasoft/transactions.dart';
+//import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/account-to-account-transfer.dart';
 import 'package:chamasoft/screens/configure-group.dart';
 import 'package:chamasoft/screens/create-group.dart';
 import 'package:chamasoft/screens/intro.dart';
@@ -35,12 +28,18 @@ import 'package:chamasoft/screens/pinlogin.dart';
 import 'package:chamasoft/screens/register.dart';
 import 'package:chamasoft/screens/resetpassword.dart';
 import 'package:chamasoft/screens/signup.dart';
-import 'package:chamasoft/translate/translation_service.dart';
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/notifications.dart';
+import 'package:chamasoft/helpers/theme.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import './providers/auth.dart';
+import './providers/groups.dart';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -56,30 +55,20 @@ void main() async {
     ),
   );
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Load translations
-  TranslationService translationService = TranslationService();
-  await translationService.loadTranslations('assets/json/oromo.json');
-
-  runApp(MyApp(translationService: translationService));
-
   await Firebase.initializeApp();
   tz.initializeTimeZones(); // Initialize timezone package
   runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  final TranslationService translationService;
-
-  const MyApp({Key key, this.translationService}) : super(key: key);
-
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  String language = 'English';
-  TranslationService translationService;
+// void logSents(){
+//   facebookAppEvents.
+// }
 
   void getCurrentAppTheme() async {
     themeChangeProvider.darkTheme =
@@ -94,7 +83,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    translationService = widget.translationService;
     getCurrentAppTheme();
     initDB();
   }
@@ -130,9 +118,6 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider(
           create: (_) => Auth(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => TranslationProvider(),
         ),
         ChangeNotifierProvider(
           create: (_) {
@@ -256,106 +241,59 @@ class _MyAppState extends State<MyApp> {
           create: (BuildContext context) {},
         ),
       ],
-      child: Consumer2<DarkThemeProvider, TranslationProvider>(
-        builder: (BuildContext context, darkTheme, translationProvider,
-            Widget child) {
-          return MaterialApp(
-            builder: (BuildContext context, Widget child) {
-              final data = MediaQuery.of(context);
-              return MediaQuery(
-                data: data.copyWith(
+      child: Consumer<DarkThemeProvider>(
+          builder: (BuildContext context, value, Widget child) {
+        return MaterialApp(
+          builder: (BuildContext context, Widget child) {
+            final data = MediaQuery.of(context);
+            return MediaQuery(
+              data: data.copyWith(
                   textScaleFactor:
-                      data.textScaleFactor > 1.0 ? 1.0 : data.textScaleFactor,
-                ),
-                child: child,
-              );
-            },
-            debugShowCheckedModeBanner: false,
-            color: themeChangeProvider.darkTheme
-                ? Colors.blueGrey[900]
-                : Colors.blue[50],
-            title: 'Chamasoft',
-            theme: Styles.themeData(themeChangeProvider.darkTheme, context),
-            home: IntroScreen(),
-            routes: {
-              IntroScreen.namedRoute: (ctx) => IntroScreen(),
-              Login.namedRoute: (ctx) => Login(),
-              MyGroups.namedRoute: (ctx) => MyGroups(),
-              SignUp.namedRoute: (ctx) => SignUp(),
-              CreateGroup.namedRoute: (ctx) => CreateGroup(),
-              ConfigureGroup.namedRoute: (ctx) => ConfigureGroup(),
-              ListContacts.namedRoute: (ctx) => ListContacts(),
-              CreateBankAccount.namedRoute: (ctx) => CreateBankAccount(),
-              AddContributionDialog.namedRoute: (ctx) =>
-                  AddContributionDialog(),
-              AddMembersManually.namedRoute: (ctx) => AddMembersManually(),
-              ListInstitutions.namedRoute: (ctx) => ListInstitutions(),
-              ChamasoftDashboard.namedRoute: (ctx) => ChamasoftDashboard(),
-              ChamasoftTransactions.namedRoute: (ctx) =>
-                  ChamasoftTransactions(),
-              PinLogin.namedRoute: (ctx) => PinLogin(),
-              RegisterScreen.namedRoute: (ctx) => RegisterScreen(),
-              LoginPassword.namedRoute: (ctx) => LoginPassword(),
-              ResetPassword.namedRoute: (ctx) => ResetPassword(),
-              '/reports': (ctx) => ChamasoftReports(),
-            },
-            onGenerateRoute: (settings) {
-              return MaterialPageRoute(builder: (context) => IntroScreen());
-            },
-            onUnknownRoute: (settings) {
-              return MaterialPageRoute(builder: (context) => IntroScreen());
-            },
-          );
-        },
-      ),
+                      data.textScaleFactor > 1.0 ? 1.0 : data.textScaleFactor),
+              child: child,
+            );
+          },
+          debugShowCheckedModeBanner: false,
+          color: themeChangeProvider.darkTheme
+              ? Colors.blueGrey[900]
+              : Colors.blue[50],
+          title: 'Chamasoft',
+          theme: Styles.themeData(themeChangeProvider.darkTheme, context),
+          home: IntroScreen(),
+          routes: {
+            IntroScreen.namedRoute: (ctx) => IntroScreen(),
+            Login.namedRoute: (ctx) => Login(),
+            MyGroups.namedRoute: (ctx) => MyGroups(),
+            SignUp.namedRoute: (ctx) => SignUp(),
+            CreateGroup.namedRoute: (ctx) => CreateGroup(),
+            ConfigureGroup.namedRoute: (ctx) => ConfigureGroup(),
+            ListContacts.namedRoute: (ctx) => ListContacts(),
+            CreateBankAccount.namedRoute: (ctx) => CreateBankAccount(),
+            AddContributionDialog.namedRoute: (ctx) => AddContributionDialog(),
+            AddMembersManually.namedRoute: (ctx) => AddMembersManually(),
+            ListInstitutions.namedRoute: (ctx) => ListInstitutions(),
+            ChamasoftDashboard.namedRoute: (ctx) => ChamasoftDashboard(),
+            ChamasoftTransactions.namedRoute: (ctx) => ChamasoftTransactions(),
+            PinLogin.namedRoute: (ctx) => PinLogin(),
+            RegisterScreen.namedRoute: (ctx) => RegisterScreen(),
+            LoginPassword.namedRoute: (ctx) => LoginPassword(),
+            ResetPassword.namedRoute: (ctx) => ResetPassword(),
+            '/reports': (ctx) => ChamasoftReports(),
+          },
+          onGenerateRoute: (settings) {
+            return MaterialPageRoute(builder: (context) => IntroScreen());
+          },
+          onUnknownRoute: (settings) {
+            return MaterialPageRoute(builder: (context) => IntroScreen());
+          },
+        );
+      }),
     );
   }
-
-  void translate(String key) {
-    setState(() {
-      language = key;
-    });
-  }
-}
-
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message.messageId}");
 }
 
 class BackgroundMessageHandler {
   static Future<void> handle(RemoteMessage message) async {
     print("Handling a background message: ${message.messageId}");
-  }
-}
-
-class TranslationProvider extends ChangeNotifier {
-  TranslationService _translationService;
-
-  TranslationProvider() {
-    _translationService = TranslationService();
-  }
-
-  String translate(String key) {
-    return _translationService.translate(key);
-  }
-
-  Future<void> updateLanguage(String newLanguage) async {
-    try {
-      String filePath = 'assets/json/oromo.json';
-      print("Loading translations from file: $filePath");
-
-      // Read the file content
-      print("Reading file content...");
-      String content = await rootBundle.loadString(filePath);
-
-      // Parse JSON
-      print("Parsing JSON...");
-      _translationService.loadTranslations(content);
-
-      print("Translations loaded successfully.");
-      notifyListeners();
-    } catch (e) {
-      print("Error loading translations file: $e");
-    }
   }
 }

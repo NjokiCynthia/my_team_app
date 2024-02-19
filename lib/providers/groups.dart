@@ -5,6 +5,7 @@ import 'dart:developer';
 // import 'dart:developer';
 import 'dart:io' as io;
 import 'dart:io';
+
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
 import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
@@ -4455,20 +4456,26 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fetchDeposits(String sortOption, List<int> filterList,
+  Group _currentGroup;
+
+  Future<void> fetchDeposits(context, String sortOption, List<int> filterList,
       List<String> memberList, int lowerLimit) async {
     final url = EndpointUrl.GET_DEPOSITS_LIST;
-
+    _currentGroup =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     try {
       final postRequest = json.encode({
         "user_id": _userId,
         "group_id": _currentGroupId,
         "sort_by": sortOption,
         "status": filterList,
-        "members": memberList,
+        "members":
+            _currentGroup.isGroupAdmin ? memberList : [_currentGroup.memberId],
         "lower_limit": lowerLimit,
         "upper_limit": lowerLimit + 20
       });
+      print('This is my post data');
+      print(postRequest);
       try {
         final response = await PostToServer.post(postRequest, url);
         final data = response['deposits'] as List<dynamic>;
@@ -4486,9 +4493,15 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fetchWithdrawals(String sortOption, List<int> filterList,
-      List<String> memberList, int lowerLimit) async {
+  Future<void> fetchWithdrawals(
+      String sortOption,
+      List<int> filterList,
+      BuildContext context,
+      List<String> memberList,
+      int lowerLimit) async {
     final url = EndpointUrl.GET_GROUP_WITHDRAWAL_LIST;
+    _currentGroup =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
 
     try {
       final postRequest = json.encode({
@@ -4496,10 +4509,12 @@ class Groups with ChangeNotifier {
         "group_id": _currentGroupId,
         "sort_by": sortOption,
         "status": filterList,
-        "members": memberList,
+        "members":  _currentGroup.isGroupAdmin ? memberList : [_currentGroup.memberId],
         "lower_limit": lowerLimit,
         "upper_limit": lowerLimit + 20
       });
+      print('This is teh request i post');
+      print(postRequest);
       try {
         final response = await PostToServer.post(postRequest, url);
         final data = response['withdrawals'] as List<dynamic>;

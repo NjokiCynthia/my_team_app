@@ -2,7 +2,12 @@ class TransactionStatementRow {
   String date, description;
   double deposit, withdrawal, balance;
 
-  TransactionStatementRow({this.date, this.description, this.deposit, this.withdrawal, this.balance});
+  TransactionStatementRow(
+      {this.date,
+      this.description,
+      this.deposit,
+      this.withdrawal,
+      this.balance});
 }
 
 class TransactionStatementModel {

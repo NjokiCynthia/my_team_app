@@ -57,6 +57,7 @@ Group parseSingleGroup(dynamic groupJSON) {
   }
   final newGroup = Group(
     groupId: groupJSON['id'].toString(),
+    memberId: groupJSON['member_id'].toString(),
     groupName: groupJSON['name'].toString(),
     groupSize: groupJSON['size'].toString(),
     groupCountryId: groupJSON['country_id'].toString(),
@@ -73,6 +74,10 @@ Group parseSingleGroup(dynamic groupJSON) {
     groupRoles: groupRoleObject,
     memberListingOrderBy: groupJSON["member_listing_order_by"]..toString(),
     orderMembersBy: groupJSON["order_members_by"]..toString(),
+    enablehidegroupbalancestoMembers:
+        groupJSON["enable_hide_group_balances_to_members"].toString() == "1"
+            ? true
+            : false,
     onlineBankingEnabled:
         groupJSON["online_banking_enabled"].toString() == "1" ? true : false,
     groupRoleId: groupJSON['group_role_id']..toString(),

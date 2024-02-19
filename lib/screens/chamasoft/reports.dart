@@ -78,7 +78,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
   Future<bool> _isFirstLaunch() async {
     final sharedPreferences = await SharedPreferences.getInstance();
     bool isFirstLaunch = sharedPreferences.getBool(
-        ChamasoftReports.PREFERENCES_IS_FIRST_LAUNCH_STRING_REPORTS) ??
+            ChamasoftReports.PREFERENCES_IS_FIRST_LAUNCH_STRING_REPORTS) ??
         true;
 
     if (isFirstLaunch)
@@ -125,7 +125,6 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     title: 'CONTRIBUTION',
                     subtitle: 'STATEMENT',
                     color: Colors.white,
-
                     isHighlighted: true,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) =>
@@ -195,7 +194,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
           customShowCase(
             key: depositRecieptKey,
             description:
-            "View, Download and Share your Deposit Reciept from here",
+                "View, Download and Share your Deposit Reciept from here",
             child: Container(
                 width: 132.0,
                 child: svgGridButton(
@@ -219,7 +218,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
           customShowCase(
             key: withdrawalRecieptKey,
             description:
-            "View, Download and Share your Withdrwal Reciept from here",
+                "View, Download and Share your Withdrwal Reciept from here",
             child: Container(
                 width: 132.0,
                 child: svgGridButton(
@@ -281,7 +280,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                         builder: (BuildContext context) =>
                             ContributionSummary(),
                         settings:
-                        RouteSettings(arguments: CONTRIBUTION_STATEMENT))),
+                            RouteSettings(arguments: CONTRIBUTION_STATEMENT))),
                     margin: 0,
                     imageHeight: 100.0)),
           if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
@@ -378,208 +377,218 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
           ),
           group.isGroupAdmin
               ? customShowCase(
-            key: memberStatementKey,
-            description:
-            "View, Download and Share your members Transaction statements and Fine statements",
-            child: Container(
-                width: 132.0,
-                child: svgGridButton(
-                    context: context,
-                    icon: customIcons['transaction'],
-                    title: 'MEMBER',
-                    subtitle: 'STATEMENTS',
-                    color: Config.appName.toLowerCase() == "chamasoft"
-                        ? Colors.blue[400]
-                        : Theme.of(context).primaryColor,
-                    isHighlighted: false,
-                    action: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                MemeberSatement())),
-                    margin: 0,
-                    imageHeight: 100.0)),
-          )
+                  key: memberStatementKey,
+                  description:
+                      "View, Download and Share your members Transaction statements and Fine statements",
+                  child: Container(
+                      width: 132.0,
+                      child: svgGridButton(
+                          context: context,
+                          icon: customIcons['transaction'],
+                          title: 'MEMBER',
+                          subtitle: 'STATEMENTS',
+                          color: Config.appName.toLowerCase() == "chamasoft"
+                              ? Colors.blue[400]
+                              : Theme.of(context).primaryColor,
+                          isHighlighted: false,
+                          action: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      MemeberSatement())),
+                          margin: 0,
+                          imageHeight: 100.0)),
+                )
               : SizedBox(
-            width: 16.0,
-          ),
+                  width: 16.0,
+                ),
         ];
 
         return new WillPopScope(
             onWillPop: _onWillPop,
             child: SafeArea(
                 child: SingleChildScrollView(
-                  // controller: _scrollController,
+                    // controller: _scrollController,
                     child: Column(children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              "Your Reports",
-                              style: TextStyle(
-                                color: Colors.blueGrey[400],
-                                fontFamily: 'SegoeUI',
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            IconButton(
-                                icon: Icon(
-                                  Feather.more_horizontal,
-                                  color: Colors.blueGrey,
-                                ),
-                                onPressed: () {})
-                          ],
+              Padding(
+                padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Your Reports",
+                      style: TextStyle(
+                        color: Colors.blueGrey[400],
+                        fontFamily: 'SegoeUI',
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    IconButton(
+                        icon: Icon(
+                          Feather.more_horizontal,
+                          color: Colors.blueGrey,
+                        ),
+                        onPressed: () {})
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                child: Container(
+                  height: 160.0,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                    physics: BouncingScrollPhysics(),
+                    children: memberOptions,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Transaction Reports",
+                      style: TextStyle(
+                        color: Colors.blueGrey[400],
+                        fontFamily: 'SegoeUI',
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    IconButton(
+                        icon: Icon(
+                          Feather.more_horizontal,
+                          color: Colors.blueGrey,
+                        ),
+                        onPressed: () {})
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                child: Container(
+                  height: 160.0,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                    physics: BouncingScrollPhysics(),
+                    children: transactionOptions,
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: group.isGroupAdmin ||
+                    group.isGroupAdmin == "0" &&
+                        group.enablehidegroupbalancestoMembers == null,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Group Reports",
+                        style: TextStyle(
+                          color: Colors.blueGrey[400],
+                          fontFamily: 'SegoeUI',
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                        child: Container(
-                          height: 160.0,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
-                            physics: BouncingScrollPhysics(),
-                            children: memberOptions,
+                      IconButton(
+                          icon: Icon(
+                            Feather.more_horizontal,
+                            color: Colors.blueGrey,
                           ),
-                        ),
+                          onPressed: () {})
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                child: Container(
+                  height: 160.0,
+                  child: customShowCase(
+                    key: groupReortKey,
+                    description:
+                        "View, Download and Share group Account Balances, Contribution Summary, fine Summary,Loan Summary, Expenses Summary and Transaction Statements from here",
+                    child: Visibility(
+                      visible: group.isGroupAdmin ||
+                          group.isGroupAdmin == "0" &&
+                              group.enablehidegroupbalancestoMembers == null,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                        physics: BouncingScrollPhysics(),
+                        children: groupOptions,
                       ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              "Transaction Reports",
-                              style: TextStyle(
-                                color: Colors.blueGrey[400],
-                                fontFamily: 'SegoeUI',
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            IconButton(
-                                icon: Icon(
-                                  Feather.more_horizontal,
-                                  color: Colors.blueGrey,
-                                ),
-                                onPressed: () {})
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                        child: Container(
-                          height: 160.0,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
-                            physics: BouncingScrollPhysics(),
-                            children: transactionOptions,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              "Group Reports",
-                              style: TextStyle(
-                                color: Colors.blueGrey[400],
-                                fontFamily: 'SegoeUI',
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            IconButton(
-                                icon: Icon(
-                                  Feather.more_horizontal,
-                                  color: Colors.blueGrey,
-                                ),
-                                onPressed: () {})
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-                        child: Container(
-                          height: 160.0,
-                          child: customShowCase(
-                            key: groupReortKey,
-                            description:
-                            "View, Download and Share group Account Balances, Contribution Summary, fine Summary,Loan Summary, Expenses Summary and Transaction Statements from here",
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
-                              physics: BouncingScrollPhysics(),
-                              children: groupOptions,
+                    ),
+                  ),
+                ),
+              ),
+              group.isGroupAdmin
+                  ? Padding(
+                      padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            "Statements",
+                            style: TextStyle(
+                              color: Colors.blueGrey[400],
+                              fontFamily: 'SegoeUI',
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
-                        ),
-                      ),
-                      group.isGroupAdmin
-                          ? Padding(
-                        padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              "Statements",
-                              style: TextStyle(
-                                color: Colors.blueGrey[400],
-                                fontFamily: 'SegoeUI',
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w600,
+                          IconButton(
+                              icon: Icon(
+                                Feather.more_horizontal,
+                                color: Colors.blueGrey,
                               ),
-                            ),
-                            IconButton(
-                                icon: Icon(
-                                  Feather.more_horizontal,
-                                  color: Colors.blueGrey,
-                                ),
-                                onPressed: () {})
-                          ],
-                        ),
-                      )
-                          : Container(),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-                        child: Container(
-                          height: 160.0,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
-                            physics: BouncingScrollPhysics(),
-                            children: statementOptions,
-                          ),
-                        ),
+                              onPressed: () {})
+                        ],
                       ),
-                    ])))
-          // child: OrientationBuilder(
-          //   builder: (context, orientation) {
-          //     return GridView.count(
-          //       controller: _scrollController,
-          //       padding: EdgeInsets.fromLTRB(6, 6, 6, 6),
-          //       crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
-          //       children: List.generate(list.length, (index) {
-          //         ReportMenuSvg menu = list[index];
-          //         return svgGridButton(
-          //             context: context,
-          //             icon: menu.icon,
-          //             title: menu.title,
-          //             subtitle: menu.subtitle,
-          //             color: (index == list.length - 1) ? Colors.white : Colors.blue[400],
-          //             isHighlighted: (index == list.length - 1) ? true : false,
-          //             action: () => navigate(index),
-          //             margin: 12);
-          //       }),
-          //     );
-          //   },
-          // )
-        );
+                    )
+                  : Container(),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                child: Container(
+                  height: 160.0,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                    physics: BouncingScrollPhysics(),
+                    children: statementOptions,
+                  ),
+                ),
+              ),
+            ])))
+            // child: OrientationBuilder(
+            //   builder: (context, orientation) {
+            //     return GridView.count(
+            //       controller: _scrollController,
+            //       padding: EdgeInsets.fromLTRB(6, 6, 6, 6),
+            //       crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
+            //       children: List.generate(list.length, (index) {
+            //         ReportMenuSvg menu = list[index];
+            //         return svgGridButton(
+            //             context: context,
+            //             icon: menu.icon,
+            //             title: menu.title,
+            //             subtitle: menu.subtitle,
+            //             color: (index == list.length - 1) ? Colors.white : Colors.blue[400],
+            //             isHighlighted: (index == list.length - 1) ? true : false,
+            //             action: () => navigate(index),
+            //             margin: 12);
+            //       }),
+            //     );
+            //   },
+            // )
+            );
       },
     ));
   }

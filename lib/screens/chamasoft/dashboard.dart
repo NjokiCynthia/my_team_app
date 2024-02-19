@@ -31,9 +31,6 @@ import 'meetings/meetings.dart';
 
 import 'package:timezone/timezone.dart' as tz;
 
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
 // ignore: must_be_immutable
 class ChamasoftDashboard extends StatefulWidget {
   static const namedRoute = "/dashboard";
@@ -425,42 +422,6 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                         },
                       ),
                     )
-                    // Showcase(
-                    //   key: meetingsKey,
-                    //   title: 'Chamasoft Meetings',
-                    //   description: "Schedule,View and Manage Chama Meetings",
-                    // child: IconButton(
-                    //   icon: Icon(
-                    //     Icons.people_alt,
-                    //     color: Config.appName.toLowerCase() == 'chamasoft'
-                    //         ?
-                    //         // ignore: deprecated_member_use
-                    //         Theme.of(context).textSelectionHandleColor
-                    //         : primaryColor,
-                    //   ),
-                    //   onPressed: () => {
-                    //     _eventDispatcher.add('TAP'), //Closes the AppSwitcher
-                    //     Navigator.of(context).push(
-                    //       MaterialPageRoute(
-                    //         builder: (BuildContext context) => Meetings(),
-                    //       ),
-                    //     ),
-                    //   },
-                    //   ),
-                    // ),
-
-                    // Positioned(
-                    //   top: 12,
-                    //   right: 6,
-                    //   child: Container(
-                    //     width: 12.0,
-                    //     height: 12.0,
-                    //     decoration: new BoxDecoration(
-                    //       color: Colors.blue,
-                    //       shape: BoxShape.circle,
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
               ),

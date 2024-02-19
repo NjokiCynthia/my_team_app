@@ -68,7 +68,9 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                               text: widget.withdrawal.name.toUpperCase(),
                               color:
                                   // ignore: deprecated_member_use
-                                  Theme.of(context).textSelectionTheme.selectionHandleColor),
+                                  Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor),
                           Image.asset(
                             'assets/icon/main.png',
                             width: 80.0,
@@ -81,7 +83,8 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context)
                                 // ignore: deprecated_member_use
-                                .textSelectionTheme.selectionHandleColor,
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           ),
                           SizedBox(
                             height: 15.0,
@@ -106,7 +109,8 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionTheme.selectionHandleColor,
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                               ),
                               customTitleWithWrap(
                                 text: group.groupPhone != "null"
@@ -116,7 +120,8 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionTheme.selectionHandleColor,
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                               ),
                               customTitleWithWrap(
                                 text: group.groupEmail != "null"
@@ -126,7 +131,8 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionTheme.selectionHandleColor,
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                               ),
                             ],
                           ),
@@ -158,7 +164,8 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                 fontWeight: FontWeight.w600,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionTheme.selectionHandleColor,
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                               ),
                               SizedBox(
                                 height: 5.0,
@@ -169,7 +176,8 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionTheme.selectionHandleColor,
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                               ),
                               SizedBox(
                                 height: 5.0,
@@ -182,7 +190,8 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    .textSelectionTheme.selectionHandleColor,
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                               ),
                             ],
                           ),
@@ -197,7 +206,8 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                     // ignore: deprecated_member_use
                                     Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionTheme.selectionHandleColor,
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                 textAlign: TextAlign.center),
                           ),
                         ],
