@@ -3,6 +3,7 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/member-fine-statement.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/member_contribution_statement.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -116,6 +117,9 @@ class _MemeberSatementState extends State<MemeberSatement> {
   Widget build(BuildContext context) {
     // final groupObject =
     //     Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     _member = Provider.of<Groups>(context, listen: true).members;
 
     return Scaffold(
@@ -221,6 +225,9 @@ class MemberCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
       child: RepaintBoundary(
@@ -357,7 +364,17 @@ class MemberCard extends StatelessWidget {
                                             children: <Widget>[
                                               plainButtonWithArrow(
                                                   text:
-                                                      "Contribution Statement",
+                                                      //"Contribution Statement",
+                                                      currentLanguage ==
+                                                              'English'
+                                                          ? 'Contribution Statement'
+                                                          : Provider.of<TranslationProvider>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .translate(
+                                                                      'Contribution statement') ??
+                                                              'Contribution statement',
                                                   size: 12.0,
                                                   spacing: 1.0,
                                                   color: Colors.blue,

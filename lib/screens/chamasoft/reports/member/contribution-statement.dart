@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/reports/filter-statements.dart';
@@ -189,7 +190,15 @@ class _ContributionStatementState extends State<ContributionStatement> {
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
-    String appbarTitle = "Contribution Statement";
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
+    String appbarTitle = currentLanguage == 'English'
+        ? 'Contribution Statement'
+        : Provider.of<TranslationProvider>(context, listen: false)
+                .translate('Contribution statement') ??
+            'Contribution statement';
+    // "Contribution Statement";
     String defaultTitle = "Contributions";
 
     if (widget.statementFlag == FINE_STATEMENT) {

@@ -9,6 +9,7 @@ import 'package:chamasoft/providers/loan-summaries.dart';
 import 'package:chamasoft/providers/notification_summary.dart';
 import 'package:chamasoft/providers/recent-transactions.dart';
 import 'package:chamasoft/providers/summaries.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/reports.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/create-bank-account.dart';
@@ -113,6 +114,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider<TranslationProvider>(
+          create: (context) => TranslationProvider(initialLanguage: 'English'),
+        ),
         ChangeNotifierProvider(
           create: (_) => ChatMessage(),
         ),
