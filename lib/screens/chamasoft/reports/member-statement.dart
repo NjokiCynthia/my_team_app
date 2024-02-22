@@ -126,7 +126,13 @@ class _MemeberSatementState extends State<MemeberSatement> {
       key: _scaffoldKey,
       appBar: secondaryPageAppbar(
           context: context,
-          title: "Member Statements",
+          title: currentLanguage == 'English'
+              ? 'Member Statements'
+              : Provider.of<TranslationProvider>(context, listen: false)
+                      .translate('Member Statements') ??
+                  'Member Statements',
+
+          //"Member Statements",
           action: () => Navigator.of(context).pop(),
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left),
@@ -417,7 +423,17 @@ class MemberCard extends StatelessWidget {
                                         ? Row(
                                             children: <Widget>[
                                               plainButtonWithArrow(
-                                                  text: "Fine Statement",
+                                                  text: currentLanguage ==
+                                                          'English'
+                                                      ? 'Fine Statement'
+                                                      : Provider.of<TranslationProvider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .translate(
+                                                                  'Fine statement') ??
+                                                          'Fine statement',
+
+                                                  // "Fine Statement",
                                                   size: 12.0,
                                                   spacing: 1.0,
                                                   color: Colors.red,

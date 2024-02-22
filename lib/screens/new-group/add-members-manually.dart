@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/set-member-roles.dart';
@@ -12,6 +13,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class AddGroupMembersManually extends StatefulWidget {
   @override
@@ -126,10 +128,18 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
-        title: "Add Member",
+        title: currentLanguage == 'English'
+            ? 'Add member'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Add member') ??
+                'Add member',
+        //"Add Member",
         action: () => Navigator.of(context).pop(),
         elevation: 0,
         leadingIcon: LineAwesomeIcons.times,
@@ -161,7 +171,13 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       subtitle1(
-                        text: "Add member",
+                        text: currentLanguage == 'English'
+                            ? 'Add member'
+                            : Provider.of<TranslationProvider>(context,
+                                        listen: false)
+                                    .translate('Add member') ??
+                                'Add member',
+                        //"Add member",
                         textAlign: TextAlign.start,
                         color: Theme.of(context)
                             .textSelectionTheme
@@ -268,11 +284,10 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                                         alignLeft: false,
                                         flagWidth: 28.0,
                                         textStyle: TextStyle(
-                                          fontFamily:
-                                              'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/
+                                            fontFamily: 'SegoeUI',
+                                            /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/
                                             fontSize: 16,
-                                          color: Colors.black
-                                        ),
+                                            color: Colors.black),
                                         searchStyle: TextStyle(
                                             fontFamily: 'SegoeUI',
                                             fontSize: 16,
@@ -382,7 +397,13 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                     ),
                     defaultButton(
                         context: context,
-                        text: "Add Member",
+                        text: currentLanguage == 'English'
+                            ? 'Add member'
+                            : Provider.of<TranslationProvider>(context,
+                                        listen: false)
+                                    .translate('Add member') ??
+                                'Add member',
+                        //"Add Member",
                         onPressed: () => _submitMember())
                   ],
                 ),

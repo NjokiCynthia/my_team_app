@@ -199,10 +199,20 @@ class _ContributionStatementState extends State<ContributionStatement> {
                 .translate('Contribution statement') ??
             'Contribution statement';
     // "Contribution Statement";
-    String defaultTitle = "Contributions";
+    String defaultTitle = currentLanguage == 'English'
+        ? 'Contributions'
+        : Provider.of<TranslationProvider>(context, listen: false)
+                .translate('Contributions') ??
+            'Contributions';
+    //"Contributions";
 
     if (widget.statementFlag == FINE_STATEMENT) {
-      appbarTitle = "Fine Statement";
+      appbarTitle = currentLanguage == 'English'
+          ? 'Fine Statement'
+          : Provider.of<TranslationProvider>(context, listen: false)
+                  .translate('Fine statement') ??
+              'Fine statement';
+      //"Fine Statement";
       defaultTitle = "Fines Paid";
     }
 
@@ -245,7 +255,17 @@ class _ContributionStatementState extends State<ContributionStatement> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 heading2(
-                                    text: "Total " + defaultTitle,
+                                    text: currentLanguage == 'English'
+                                        ? 'Total'
+                                        : Provider.of<TranslationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .translate('Total') ??
+                                            'Total'
+                                                // "Total "
+
+                                                +
+                                                defaultTitle,
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
                                         .textSelectionTheme

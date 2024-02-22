@@ -1,5 +1,6 @@
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
@@ -170,7 +171,9 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                                 textAlign: TextAlign.center,
                                 color:
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionTheme.selectionHandleColor),
+                                    Theme.of(context)
+                                        .textSelectionTheme
+                                        .selectionHandleColor),
                             onPressed: () {
                               print(groupRole.roleName + " tapped");
                               setState(() {
@@ -192,7 +195,9 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                   text: "Set Role",
                   textAlign: TextAlign.center,
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionTheme.selectionHandleColor),
+                  color: Theme.of(context)
+                      .textSelectionTheme
+                      .selectionHandleColor),
               actions: <Widget>[
                 CupertinoDialogAction(
                   child: subtitle1(text: "Close", color: primaryColor),
@@ -209,6 +214,9 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     final auth = Provider.of<Auth>(context);
     _rolesStatusAndCurrentMemberStatus =
         Provider.of<Groups>(context).getGroupRolesAndCurrentMemberStatus;
@@ -324,9 +332,8 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                       CustomContact contact = await Navigator.of(context).push(
                         MaterialPageRoute<CustomContact>(
                             builder: (BuildContext context) {
-                              return AddMemberDialog();
-                            }
-                        ),
+                          return AddMemberDialog();
+                        }),
                       );
 
                       if (contact != null) {
@@ -345,10 +352,8 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                           side: BorderSide(
                               color: Theme.of(context).hintColor,
                               width: 1.0,
-                              style: BorderStyle.solid
-                          ),
-                          borderRadius: BorderRadius.circular(4)
-                      ),
+                              style: BorderStyle.solid),
+                          borderRadius: BorderRadius.circular(4)),
                     ),
                     child: Row(
                       children: <Widget>[
@@ -361,10 +366,18 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                           width: 4,
                         ),
                         Text(
-                          "ADD MEMBER",
+                          currentLanguage == 'English'
+                              ? 'Add member'
+                              : Provider.of<TranslationProvider>(context,
+                                          listen: false)
+                                      .translate('Add member') ??
+                                  'Add member',
+                          // "ADD MEMBER",
                           style: TextStyle(
                             fontSize: 12,
-                            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           ),
                         ),
                       ],
@@ -468,7 +481,9 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                                   "Start adding members by clicking on the button above", // ignore: deprecated_member_use
                               color:
                                   // ignore: deprecated_member_use
-                                  Theme.of(context).textSelectionTheme.selectionHandleColor),
+                                  Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor),
                         ),
                       )),
             SizedBox(

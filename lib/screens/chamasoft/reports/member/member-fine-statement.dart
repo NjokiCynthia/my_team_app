@@ -3,6 +3,7 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/detail-member-statement.dart';
@@ -166,6 +167,9 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Scaffold(
       key: _scaffoldKey,
       appBar: tertiaryPageAppbar(
@@ -248,7 +252,9 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                             // ignore: deprecated_member_use
                             color:
                                 // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                             textAlign: TextAlign.start,
                           ),
                           SizedBox(
@@ -261,7 +267,9 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                             // ignore: deprecated_member_use
                             color:
                                 // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                           ),
                           SizedBox(
                             height: 10.0,
@@ -272,7 +280,9 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                             // ignore: deprecated_member_use
                             color:
                                 // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                           ),
                           SizedBox(
                             height: 3.0,
@@ -283,7 +293,9 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                             // ignore: deprecated_member_use
                             color:
                                 // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                           )
                         ],
                       ),
@@ -317,7 +329,9 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                         fontSize: 13,
                         color:
                             // ignore: deprecated_member_use
-                            Theme.of(context).textSelectionTheme.selectionHandleColor,
+                            Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                         textAlign: TextAlign.start,
                       ),
                       subtitle2(
@@ -326,7 +340,9 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                         // fontWeight: FontWeight.w500,
                         color:
                             // ignore: deprecated_member_use
-                            Theme.of(context).textSelectionTheme.selectionHandleColor,
+                            Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                         textAlign: TextAlign.start,
                       ),
                     ],
@@ -341,7 +357,8 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                           fontSize: 13,
                           color: Theme.of(context)
                               // ignore: deprecated_member_use
-                              .textSelectionTheme.selectionHandleColor,
+                              .textSelectionTheme
+                              .selectionHandleColor,
                           textAlign: TextAlign.end,
                         ),
                         subtitle2(
@@ -352,7 +369,8 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                               : "",
                           color: Theme.of(context)
                               // ignore: deprecated_member_use
-                              .textSelectionTheme.selectionHandleColor,
+                              .textSelectionTheme
+                              .selectionHandleColor,
                           textAlign: TextAlign.end,
                         ),
                       ],
@@ -448,8 +466,16 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                                                   description: row.description,
                                                   memberName:
                                                       widget.memberNames,
-                                                  recieptTitle:
-                                                      "Fine Statement",
+                                                  recieptTitle: currentLanguage ==
+                                                          'English'
+                                                      ? 'Fine Statement'
+                                                      : Provider.of<TranslationProvider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .translate(
+                                                                  'Fine statement') ??
+                                                          'Fine statement',
+                                                  // "Fine Statement",
                                                   group: groupObject)));
                                 },
                               ),
@@ -502,7 +528,9 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                             : (_balance < 0
                                 ? Colors.green
                                 // ignore: deprecated_member_use
-                                : Theme.of(context).textSelectionTheme.selectionHandleColor),
+                                : Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor),
                         textAlign: TextAlign.end),
                   ),
                 ],
@@ -524,7 +552,9 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                       // ignore: deprecated_member_use
                       color:
                           // ignore: deprecated_member_use
-                          Theme.of(context).textSelectionTheme.selectionHandleColor,
+                          Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor,
                     ),
                   )
                 ],
