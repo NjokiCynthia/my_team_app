@@ -20,6 +20,7 @@ import 'package:chamasoft/providers/loan-summaries.dart';
 import 'package:chamasoft/providers/notification_summary.dart';
 import 'package:chamasoft/providers/recent-transactions.dart';
 import 'package:chamasoft/providers/summaries.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
 import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
@@ -855,7 +856,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         Provider.of<MemberRecentTransaction>(context);
     final balancesDashboardSummary =
         Provider.of<BalancesDashboardSummary>(context);
-
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     setState(() {
       _iteratableRecentTransactionSummary =
           /* dashboardData.recentMemberTransactions; */
@@ -1022,7 +1025,13 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Account Balances",
+                                currentLanguage == 'English'
+                                    ? 'Account balances'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate('Account Balances') ??
+                                        'Account Balances',
+                                // "Account Balances",
                                 style: TextStyle(
                                   color: Colors.blueGrey[400],
                                   fontFamily: 'SegoeUI',
@@ -1157,9 +1166,24 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                           children: <Widget>[
                             Text(
                               _currentIndex == 0
-                                  ? "Contribution Summary"
+                                  ? currentLanguage == 'English'
+                                      ? "Contribution Summary"
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  "Contribution Summary") ??
+                                          "Contribution Summary"
+                                  //"Contribution Summary"
                                   : _currentIndex == 1
-                                      ? "Fine Summary"
+                                      ? currentLanguage == 'English'
+                                          ? "Fine Summary"
+                                          : Provider.of<TranslationProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .translate("Fine Summary") ??
+                                              "Fine Summary"
+                                      //"Fine Summary"
                                       : _currentIndex == 2
                                           ? "Loan Summary"
                                           : "Expenses Summary",
@@ -1654,6 +1678,9 @@ class _ContrubutionsState extends State<Contrubutions> {
   }
 
   void _contributionSummaryAlertDialog() async {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     Group _currentGroup =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     await showDialog(
@@ -1663,7 +1690,13 @@ class _ContrubutionsState extends State<Contrubutions> {
           return AlertDialog(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
-            title: Text("Contribution Summary"),
+            title: Text(
+              currentLanguage == 'English'
+                  ? "Contribution Summary"
+                  : Provider.of<TranslationProvider>(context, listen: false)
+                          .translate("Contribution Summary") ??
+                      "Contribution Summary",
+            ),
             actions: [
               TextButton(
                   onPressed: () {
@@ -1847,6 +1880,9 @@ class _ContrubutionsState extends State<Contrubutions> {
   Widget build(BuildContext context) {
     // Dashboard dashboardData = Provider.of<Dashboard>(context);
     //  Dashboard dashboardData = Provider.of<Dashboard>(context);
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     DashboardContributionSummary dashboardContributionSummary =
         Provider.of<DashboardContributionSummary>(context);
     final currencyFormat = new NumberFormat("#,##0", "en_US");

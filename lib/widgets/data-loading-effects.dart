@@ -4,6 +4,7 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/svg-icons.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/meetings.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/widgets/annimationSlider.dart';
@@ -39,6 +40,8 @@ Widget dataLoadingEffect(
 }
 
 Widget groupPlaceholder({BuildContext context}) {
+  String currentLanguage =
+      Provider.of<TranslationProvider>(context, listen: false).currentLanguage;
   return Column(
     children: <Widget>[
       showLinearProgressIndicator(),
@@ -161,7 +164,12 @@ Widget groupPlaceholder({BuildContext context}) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              "Account Balances",
+              currentLanguage == 'English'
+                  ? 'Account Balances'
+                  : Provider.of<TranslationProvider>(context, listen: false)
+                          .translate('Account Balances') ??
+                      'Account Balances',
+              // "Account Balances",
               style: TextStyle(
                 color: Colors.blueGrey[400],
                 fontFamily: 'SegoeUI',
@@ -808,6 +816,9 @@ Widget newHomePlaceHolder({BuildContext context}) {
 class Contrubution extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Container(
       child: Container(
           width: double.infinity,
@@ -985,6 +996,8 @@ Widget homePlaceholder({BuildContext context}) {
   bool _onlineBankingEnabled = true;
   String _groupCurrency = 'KES';
   _currentGroup = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+  String currentLanguage =
+      Provider.of<TranslationProvider>(context, listen: false).currentLanguage;
   return Column(
     children: <Widget>[
       showLinearProgressIndicator(),
@@ -1436,7 +1449,11 @@ Widget homePlaceholder({BuildContext context}) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              "Contribution Summary",
+              currentLanguage == 'English'
+                  ? "Contribution Summary"
+                  : Provider.of<TranslationProvider>(context, listen: false)
+                          .translate("Contribution Summary") ??
+                      "Contribution Summary",
               style: TextStyle(
                 color: Colors.blueGrey[400],
                 fontFamily: 'SegoeUI',

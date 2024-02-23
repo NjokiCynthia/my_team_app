@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/reports/filter-statements.dart';
 import 'package:chamasoft/helpers/common.dart';
@@ -151,15 +152,15 @@ class _ContributionSummaryState extends State<ContributionSummary> {
     });
 
     setState(() async {
-    final contributionSummary = _statementType == 1
-        ? Provider.of<Groups>(context, listen: false).groupContributionSummary
-        : Provider.of<Groups>(context, listen: false).groupFinesSummary;
+      final contributionSummary = _statementType == 1
+          ? Provider.of<Groups>(context, listen: false).groupContributionSummary
+          : Provider.of<Groups>(context, listen: false).groupFinesSummary;
 
-    final title = "Contribution Summary";
-    final title2 = "Fine Summary";
-    final pdfFile = await PdfApi.generateContributionSammary(_totalAmount, title2,
-        _statementType, title, groupObject, contributionSummary);
-    PdfApi.openFile(pdfFile);
+      final title = "Contribution Summary";
+      final title2 = "Fine Summary";
+      final pdfFile = await PdfApi.generateContributionSammary(_totalAmount,
+          title2, _statementType, title, groupObject, contributionSummary);
+      PdfApi.openFile(pdfFile);
     });
   }
 
@@ -180,6 +181,9 @@ class _ContributionSummaryState extends State<ContributionSummary> {
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Scaffold(
       key: _scaffoldKey,
       appBar: tertiaryPageAppbar(
@@ -225,7 +229,9 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                             heading2(
                               text: "Total " + defaultTitle,
                               // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                             ),
 //                            customTitle(
 //                              text: "Total " + defaultTitle,
@@ -250,12 +256,16 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                             fontWeight: FontWeight.w400,
                             fontSize: 18.0,
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           ),
                           heading2(
                             text: currencyFormat.format(_totalAmount),
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             textAlign: TextAlign.end,
                           ),
                         ],

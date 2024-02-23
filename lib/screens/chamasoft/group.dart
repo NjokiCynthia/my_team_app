@@ -2,6 +2,7 @@
 
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/account_balances.dart';
 import 'package:chamasoft/screens/chamasoft/deposits-v-withdrawals.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
@@ -225,6 +226,9 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
     setState(() {
       _iteratableData = dashboardData.bankAccountDashboardSummary;
     });
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
 
     return ShowCaseWidget(builder: Builder(builder: (context) {
       groupContext = context;
@@ -398,7 +402,14 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
-                                  "Account Balances",
+                                  currentLanguage == 'English'
+                                      ? 'Account balances'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('Account Balances') ??
+                                          'Account Balances',
+                                  // "Account Balances",
                                   style: TextStyle(
                                     color: Colors.blueGrey[400],
                                     fontFamily: 'SegoeUI',

@@ -295,7 +295,12 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                               .translate('ACCOUNT') ??
                           'ACCOUNT',
                   //'ACCOUNT',
-                  subtitle: 'BALANCES',
+                  subtitle: currentLanguage == 'English'
+                      ? 'BALANCES'
+                      : Provider.of<TranslationProvider>(context, listen: false)
+                              .translate('BALANCES') ??
+                          'BALANCES',
+                  //'BALANCES',
                   color: Config.appName.toLowerCase() == "chamasoft"
                       ? Colors.blue[400]
                       : Theme.of(context).primaryColor,
@@ -622,7 +627,12 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            "Statements",
+                            currentLanguage == 'English'
+                      ? 'Statements'
+                      : Provider.of<TranslationProvider>(context, listen: false)
+                              .translate('Statements') ??
+                          'Statements',
+                          //  "Statements",
                             style: TextStyle(
                               color: Colors.blueGrey[400],
                               fontFamily: 'SegoeUI',

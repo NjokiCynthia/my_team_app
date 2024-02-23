@@ -29,7 +29,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
   ScrollController _scrollController;
 
   String theme = "Light";
-  String language = "English";
+  //String language = "English";
   bool pushNotifications = true;
 
   void _logoutDialog() {
@@ -334,7 +334,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                           ),
                         ),
                         subtitle: Text(
-                          language,
+                          _currentLanguage,
                           style: TextStyle(
                               color: Theme.of(context).bottomAppBarColor),
                         ),

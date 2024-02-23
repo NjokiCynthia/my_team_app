@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 //import 'package:flutter/foundation.dart';
@@ -71,6 +72,9 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
 
     return Scaffold(
       appBar: secondaryPageAppbar(
@@ -222,7 +226,13 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                   ),
                   ListTile(
                     title: customTitle(
-                        text: "Total Contributions",
+                        text: currentLanguage == 'English'
+                            ? "Total Contributions"
+                            : Provider.of<TranslationProvider>(context,
+                                        listen: false)
+                                    .translate("Total Contributions") ??
+                                "Total Contributions",
+                        //"Total Contributions",
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                         // ignore: deprecated_member_use
@@ -260,7 +270,13 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                   ),
                   ListTile(
                     title: customTitle(
-                        text: "Total Fines",
+                        text: currentLanguage == 'English'
+                            ? "Total Fines"
+                            : Provider.of<TranslationProvider>(context,
+                                        listen: false)
+                                    .translate("Total Fines") ??
+                                "Total Fines",
+                        //"Total Fines",
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                         // ignore: deprecated_member_use

@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/transaction-statement-model.dart';
 import 'package:chamasoft/helpers/common.dart';
@@ -115,6 +116,9 @@ class _TransactionStatementState extends State<TransactionStatement> {
 
   Future _downloadGroupTransactionStatement(
       BuildContext context, Group groupObject) async {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     Future.delayed(Duration(seconds: 1), () {
       setState(() {
         _isLoading = true;
@@ -122,7 +126,11 @@ class _TransactionStatementState extends State<TransactionStatement> {
     });
 
     setState(() async {
-      final title = "Transaction Statement";
+      final title = currentLanguage == 'English'
+          ? "Transaction Statement"
+          : Provider.of<TranslationProvider>(context, listen: false)
+                  .translate("Transaction Statement") ??
+              "Transaction Statement";
       final pdfFile = await PdfApi.generateGroupTransactionStatementPdf(
           _statementFrom,
           _transactions,
@@ -140,13 +148,20 @@ class _TransactionStatementState extends State<TransactionStatement> {
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Scaffold(
       appBar: tertiaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.times,
-        title: "Transaction Statement",
+        title: currentLanguage == 'English'
+            ? "Transaction Statement"
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate("Transaction Statement") ??
+                "Transaction Statement",
         trailingIcon: LineAwesomeIcons.download,
         trailingAction: () =>
             _downloadGroupTransactionStatement(context, groupObject),
