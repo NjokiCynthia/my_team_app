@@ -133,6 +133,7 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
 
       if (response['userExists'] == 1) {
         if (Config.appName.toLowerCase() == "chamasoft") {
+          print(response);
           if (response.containsKey('userGroups')) {
             Provider.of<Groups>(context, listen: false)
                 .addGroups(response['userGroups']);
