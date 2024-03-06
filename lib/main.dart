@@ -236,8 +236,9 @@ class _MyAppState extends State<MyApp> {
                 ? {}
                 : newExpensesSummaries.expensesSummariesTotalData,
           ),
-          
-          create: (BuildContext context) {return  NewExpensesSummaries('', '', {}, {})},
+          create: (BuildContext context) {
+            return NewExpensesSummaries('', '', {}, {});
+          },
         ),
         ChangeNotifierProxyProvider<Groups, GroupNotifications>(
           update: (ctx, groups, groupNotifications) => GroupNotifications(
@@ -245,8 +246,9 @@ class _MyAppState extends State<MyApp> {
             groups.currentGroupId,
             groupNotifications == null ? {} : groupNotifications.notifications,
           ),
-          
-          create: (BuildContext context) {return GroupNotifications('', '', {});},
+          create: (BuildContext context) {
+            return GroupNotifications('', '', {});
+          },
         ),
       ],
       child: Consumer<DarkThemeProvider>(
