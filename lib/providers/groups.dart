@@ -567,6 +567,7 @@ class Groups with ChangeNotifier {
 
   Groups(List<Group> _groups, String _userId, String _identity,
       String _currentGroupId) {
+    print('the data being set ${_userId}, ${_groups}, ${_identity}');
     this._groups = _groups;
     this._userId = _userId;
     this._identity = _identity;
@@ -4493,12 +4494,8 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fetchWithdrawals(
-      String sortOption,
-      List<int> filterList,
-      BuildContext context,
-      List<String> memberList,
-      int lowerLimit) async {
+  Future<void> fetchWithdrawals(String sortOption, List<int> filterList,
+      BuildContext context, List<String> memberList, int lowerLimit) async {
     final url = EndpointUrl.GET_GROUP_WITHDRAWAL_LIST;
     _currentGroup =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
@@ -4509,7 +4506,8 @@ class Groups with ChangeNotifier {
         "group_id": _currentGroupId,
         "sort_by": sortOption,
         "status": filterList,
-        "members":  _currentGroup.isGroupAdmin ? memberList : [_currentGroup.memberId],
+        "members":
+            _currentGroup.isGroupAdmin ? memberList : [_currentGroup.memberId],
         "lower_limit": lowerLimit,
         "upper_limit": lowerLimit + 20
       });

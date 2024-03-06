@@ -131,16 +131,18 @@ class _MyAppState extends State<MyApp> {
             auth.userIdentity,
             previousGroups == null ? '' : previousGroups.currentGroupId,
           ),
-          // ignore: missing_return
-          create: (BuildContext context) {},
+          create: (BuildContext context) {
+            return Groups([], '', '', '');
+          },
         ),
         ChangeNotifierProxyProvider<Groups, ChamasoftLoans>(
           update: (ctx, groups, previousGroups) => ChamasoftLoans(
             groups.userId,
             groups.currentGroupId,
           ),
-          // ignore: missing_return
-          create: (BuildContext context) {},
+          create: (BuildContext context) {
+            return ChamasoftLoans('', '');
+          },
         ),
         ChangeNotifierProxyProvider<Groups, Dashboard>(
           update: (ctx, groups, dashboardData) => Dashboard(
@@ -148,8 +150,9 @@ class _MyAppState extends State<MyApp> {
               groups.currentGroupId,
               dashboardData == null ? {} : dashboardData.memberDashboardData,
               dashboardData == null ? {} : dashboardData.groupDashboardData),
-          // ignore: missing_return
-          create: (BuildContext context) {},
+          create: (BuildContext context) {
+            return Dashboard('', '', {}, {});
+          },
         ),
         ChangeNotifierProxyProvider<Groups, DashboardContributionSummary>(
           update: (ctx, groups, dashboardContributionSummary) =>
@@ -163,8 +166,9 @@ class _MyAppState extends State<MyApp> {
                 ? {}
                 : dashboardContributionSummary.totalGroupContributionAmount,
           ),
-          // ignore: missing_return
-          create: (BuildContext context) {},
+          create: (BuildContext context) {
+            return DashboardContributionSummary('', '', {}, {});
+          },
         ),
         ChangeNotifierProxyProvider<Groups, DashboardFineSummary>(
           update: (ctx, groups, dashboardFineSummary) => DashboardFineSummary(
@@ -175,8 +179,9 @@ class _MyAppState extends State<MyApp> {
                 ? {}
                 : dashboardFineSummary.totalGroupFineAmount,
           ),
-          // ignore: missing_return
-          create: (BuildContext context) {},
+          create: (BuildContext context) {
+            return DashboardFineSummary('', '', {}, {});
+          },
         ),
         ChangeNotifierProxyProvider<Groups, BalancesDashboardSummary>(
           update: (ctx, groups, balancesDashboardSummary) =>
@@ -190,8 +195,9 @@ class _MyAppState extends State<MyApp> {
                 ? {}
                 : balancesDashboardSummary.totalBankBalance,
           ),
-          // ignore: missing_return
-          create: (BuildContext context) {},
+          create: (BuildContext context) {
+            return BalancesDashboardSummary('', '', {}, {});
+          },
         ),
         ChangeNotifierProxyProvider<Groups, LoanDashboardSummary>(
           update: (ctx, groups, loanDashboardSummary) => LoanDashboardSummary(
@@ -202,8 +208,9 @@ class _MyAppState extends State<MyApp> {
                 ? {}
                 : loanDashboardSummary.totalLoanBankBalance,
           ),
-          // ignore: missing_return
-          create: (BuildContext context) {},
+          create: (BuildContext context) {
+            return LoanDashboardSummary('', '', {}, {});
+          },
         ),
         ChangeNotifierProxyProvider<Groups, MemberRecentTransaction>(
           update: (ctx, groups, memberRecentTransaction) =>
@@ -214,8 +221,9 @@ class _MyAppState extends State<MyApp> {
                 ? {}
                 : memberRecentTransaction.recentTransactionData,
           ),
-          // ignore: missing_return
-          create: (BuildContext context) {},
+          create: (BuildContext context) {
+            return MemberRecentTransaction('', '', {});
+          },
         ),
         ChangeNotifierProxyProvider<Groups, NewExpensesSummaries>(
           update: (ctx, groups, newExpensesSummaries) => NewExpensesSummaries(
@@ -228,8 +236,8 @@ class _MyAppState extends State<MyApp> {
                 ? {}
                 : newExpensesSummaries.expensesSummariesTotalData,
           ),
-          // ignore: missing_return
-          create: (BuildContext context) {},
+          
+          create: (BuildContext context) {return  NewExpensesSummaries('', '', {}, {})},
         ),
         ChangeNotifierProxyProvider<Groups, GroupNotifications>(
           update: (ctx, groups, groupNotifications) => GroupNotifications(
@@ -237,8 +245,8 @@ class _MyAppState extends State<MyApp> {
             groups.currentGroupId,
             groupNotifications == null ? {} : groupNotifications.notifications,
           ),
-          // ignore: missing_return
-          create: (BuildContext context) {},
+          
+          create: (BuildContext context) {return GroupNotifications('', '', {});},
         ),
       ],
       child: Consumer<DarkThemeProvider>(
