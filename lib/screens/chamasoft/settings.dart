@@ -320,79 +320,79 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                     //   },
                     // ),
                     //tobe implemented in next phase
-                    PopupMenuButton(
-                      child: ListTile(
-                        dense: true,
-                        title: Text(
-                          "Language",
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionTheme
-                                .selectionHandleColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16.0,
-                          ),
-                        ),
-                        subtitle: Text(
-                          _currentLanguage,
-                          style: TextStyle(
-                              color: Theme.of(context).bottomAppBarColor),
-                        ),
-                        trailing: Padding(
-                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
-                          child: Icon(
-                            Icons.language,
-                            color: Theme.of(context)
-                                .bottomAppBarColor
-                                .withOpacity(0.6),
-                          ),
-                        ),
-                      ),
-                      onSelected: (value) {
-                        setState(() {
-                          _currentLanguage = value;
-                          _loadTranslations();
-                          final translationProvider =
-                              Provider.of<TranslationProvider>(context,
-                                  listen: false);
-                          translationProvider.changeLanguage(value);
-                        });
-                      },
-                      // onSelected: (value) {
-                      //   setState(() {
-                      //     language = value;
-                      //   });
-                      // },
-                      tooltip: "Language",
-                      offset: Offset.fromDirection(1.0),
-                      itemBuilder: (context) => [
-                        PopupMenuItem(
-                            value: "English",
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Text("English",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color:
-                                            Theme.of(context).indicatorColor)),
-                              ],
-                            )),
-                        PopupMenuItem(
-                            value: "Oromo",
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Text("Oromo",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color:
-                                            Theme.of(context).indicatorColor)),
-                              ],
-                            )),
-                      ],
-                      initialValue: _currentLanguage,
-                    ),
+                    // PopupMenuButton(
+                    //   child: ListTile(
+                    //     dense: true,
+                    //     title: Text(
+                    //       "Language",
+                    //       style: TextStyle(
+                    //         color: Theme.of(context)
+                    //             .textSelectionTheme
+                    //             .selectionHandleColor,
+                    //         fontWeight: FontWeight.w500,
+                    //         fontSize: 16.0,
+                    //       ),
+                    //     ),
+                    //     subtitle: Text(
+                    //       _currentLanguage,
+                    //       style: TextStyle(
+                    //           color: Theme.of(context).bottomAppBarColor),
+                    //     ),
+                    //     trailing: Padding(
+                    //       padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
+                    //       child: Icon(
+                    //         Icons.language,
+                    //         color: Theme.of(context)
+                    //             .bottomAppBarColor
+                    //             .withOpacity(0.6),
+                    //       ),
+                    //     ),
+                    //   ),
+                    //   onSelected: (value) {
+                    //     setState(() {
+                    //       _currentLanguage = value;
+                    //       _loadTranslations();
+                    //       final translationProvider =
+                    //           Provider.of<TranslationProvider>(context,
+                    //               listen: false);
+                    //       translationProvider.changeLanguage(value);
+                    //     });
+                    //   },
+                    //   // onSelected: (value) {
+                    //   //   setState(() {
+                    //   //     language = value;
+                    //   //   });
+                    //   // },
+                    //   tooltip: "Language",
+                    //   offset: Offset.fromDirection(1.0),
+                    //   itemBuilder: (context) => [
+                    //     PopupMenuItem(
+                    //         value: "English",
+                    //         child: Row(
+                    //           mainAxisAlignment: MainAxisAlignment.start,
+                    //           children: <Widget>[
+                    //             Text("English",
+                    //                 style: TextStyle(
+                    //                     fontWeight: FontWeight.w600,
+                    //                     color:
+                    //                         Theme.of(context).indicatorColor)),
+                    //           ],
+                    //         )),
+                    //     PopupMenuItem(
+                    //         value: "Oromo",
+                    //         child: Row(
+                    //           mainAxisAlignment: MainAxisAlignment.start,
+                    //           children: <Widget>[
+                    //             Text("Oromo",
+                    //                 style: TextStyle(
+                    //                     fontWeight: FontWeight.w600,
+                    //                     color:
+                    //                         Theme.of(context).indicatorColor)),
+                    //           ],
+                    //         )),
+                    //   ],
+                    //   initialValue: _currentLanguage,
+                    // ),
                     Config.appName.toLowerCase() == 'chamasoft'
                         ? PopupMenuButton(
                             child: ListTile(

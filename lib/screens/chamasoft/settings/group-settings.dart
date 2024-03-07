@@ -59,7 +59,8 @@ class _GroupSettingsState extends State<GroupSettings> {
               child: Text(
                 "Cancel",
                 style: TextStyle(
-                  color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
               ),
               onPressed: () {
@@ -78,7 +79,6 @@ class _GroupSettingsState extends State<GroupSettings> {
               },
             ),
           ],
-
         );
       },
     );
@@ -414,7 +414,9 @@ class _GroupSettingsState extends State<GroupSettings> {
                         heading2(
                             text: currentGroup.groupName,
                             // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionTheme.selectionHandleColor),
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor),
                         Row(
                           children: [
                             Expanded(
@@ -517,20 +519,24 @@ class _GroupSettingsState extends State<GroupSettings> {
                 leading: Icon(
                   FontAwesome.file_text,
                   size: 32,
-                  color: Theme.of(context).bottomAppBarTheme.color.withOpacity(0.6),
+                  color: Theme.of(context)
+                      .bottomAppBarTheme
+                      .color
+                      .withOpacity(0.6),
                 ),
                 title: customTitle(
                   text: "Accounts",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
-                  // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
                 subtitle: customTitle(
                   text: "Manage group deposit accounts",
                   textAlign: TextAlign.start,
                   fontSize: 13.0,
-                  color: Theme.of(context).bottomAppBarTheme.color,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
                 dense: true,
                 onTap: () async {
@@ -554,20 +560,25 @@ class _GroupSettingsState extends State<GroupSettings> {
                 leading: Icon(
                   FontAwesome.file_text,
                   size: 32,
-                  color: Theme.of(context).bottomAppBarTheme.color.withOpacity(0.6),
+                  color: Theme.of(context)
+                      .bottomAppBarTheme
+                      .color
+                      .withOpacity(0.6),
                 ),
                 title: customTitle(
                   text: "Contributions",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
                 subtitle: customTitle(
                   text: "Manage contributions",
                   textAlign: TextAlign.start,
                   fontSize: 13.0,
-                  color: Theme.of(context).bottomAppBarTheme.color,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
                 dense: true,
                 onTap: () async {
@@ -590,20 +601,25 @@ class _GroupSettingsState extends State<GroupSettings> {
                 leading: Icon(
                   FontAwesome.file_text,
                   size: 32,
-                  color: Theme.of(context).bottomAppBarTheme.color.withOpacity(0.6),
+                  color: Theme.of(context)
+                      .bottomAppBarTheme
+                      .color
+                      .withOpacity(0.6),
                 ),
                 title: customTitle(
                   text: "Members",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
                 subtitle: customTitle(
                   text: "Add or remove members of the group",
                   textAlign: TextAlign.start,
                   fontSize: 13.0,
-                  color: Theme.of(context).bottomAppBarTheme.color,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
                 dense: true,
                 onTap: () async {
@@ -626,20 +642,25 @@ class _GroupSettingsState extends State<GroupSettings> {
                 leading: Icon(
                   FontAwesome.file_text,
                   size: 32,
-                  color: Theme.of(context).bottomAppBarTheme.color.withOpacity(0.6),
+                  color: Theme.of(context)
+                      .bottomAppBarTheme
+                      .color
+                      .withOpacity(0.6),
                 ),
                 title: customTitle(
                   text: "Expense Categories",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
                 subtitle: customTitle(
                   text: "Manage expense categories",
                   textAlign: TextAlign.start,
                   fontSize: 13.0,
-                  color: Theme.of(context).bottomAppBarTheme.color,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
                 dense: true,
                 onTap: () async {
@@ -664,20 +685,25 @@ class _GroupSettingsState extends State<GroupSettings> {
                 leading: Icon(
                   FontAwesome.file_text,
                   size: 32,
-                  color: Theme.of(context).bottomAppBarTheme.color.withOpacity(0.6),
+                  color: Theme.of(context)
+                      .bottomAppBarTheme
+                      .color
+                      .withOpacity(0.6),
                 ),
                 title: customTitle(
                   text: "Fine Types",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
                 subtitle: customTitle(
                   text: "Manage group fine categories",
                   textAlign: TextAlign.start,
                   fontSize: 13.0,
-                  color: Theme.of(context).bottomAppBarTheme.color,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
                 dense: true,
                 onTap: () async {
@@ -700,20 +726,25 @@ class _GroupSettingsState extends State<GroupSettings> {
                 leading: Icon(
                   FontAwesome.file_text,
                   size: 32,
-                  color: Theme.of(context).bottomAppBarTheme.color.withOpacity(0.6),
+                  color: Theme.of(context)
+                      .bottomAppBarTheme
+                      .color
+                      .withOpacity(0.6),
                 ),
                 title: customTitle(
                   text: "Loan Types",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
                 subtitle: customTitle(
                   text: "Manage loan types offered by the group",
                   textAlign: TextAlign.start,
                   fontSize: 13.0,
-                  color: Theme.of(context).bottomAppBarTheme.color,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
                 dense: true,
                 onTap: () async {
@@ -736,20 +767,25 @@ class _GroupSettingsState extends State<GroupSettings> {
                 leading: Icon(
                   FontAwesome.file_text,
                   size: 32,
-                  color: Theme.of(context).bottomAppBarTheme.color.withOpacity(0.6),
+                  color: Theme.of(context)
+                      .bottomAppBarTheme
+                      .color
+                      .withOpacity(0.6),
                 ),
                 title: customTitle(
                   text: "Income Categories",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
                 subtitle: customTitle(
                   text: "Manage group income categories",
                   textAlign: TextAlign.start,
                   fontSize: 13.0,
-                  color: Theme.of(context).bottomAppBarTheme.color,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
                 dense: true,
                 onTap: () async {
@@ -772,20 +808,25 @@ class _GroupSettingsState extends State<GroupSettings> {
                 leading: Icon(
                   FontAwesome.file_text,
                   size: 32,
-                  color: Theme.of(context).bottomAppBarTheme.color.withOpacity(0.6),
+                  color: Theme.of(context)
+                      .bottomAppBarTheme
+                      .color
+                      .withOpacity(0.6),
                 ),
                 title: customTitle(
                   text: "Asset Categories",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
                   // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
                 subtitle: customTitle(
                   text: "Manage group asset categories",
                   textAlign: TextAlign.start,
                   fontSize: 13.0,
-                  color: Theme.of(context).bottomAppBarTheme.color,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
                 dense: true,
                 onTap: () async {

@@ -3,6 +3,7 @@ import 'package:chamasoft/config.dart';
 import 'package:chamasoft/main.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 // import 'package:chamasoft/providers/helpers/notifications.dart';
 import 'package:chamasoft/screens/chamasoft/new_home.dart';
 import 'package:chamasoft/screens/chamasoft/notifications/notification-alert.dart';
@@ -225,10 +226,13 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     return isFirstLaunch;
   }
 
+  Group _currentGroup;
   @override
   void didChangeDependencies() {
     // ignore: todo
     // TODO: implement didChangeDependencies
+    _currentGroup =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     _getUserGroupsOverlay(context).then((_) async {
       final group = Provider.of<Groups>(context, listen: false);
       await group.getCurrentGroupId().then((groupId) async {
@@ -343,6 +347,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     return scheduledDate;
   }
 
+  Groups _group;
+
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context);
@@ -390,8 +396,9 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             automaticallyImplyLeading: false,
             actions: <Widget>[
               Visibility(
-                visible: /*_group.isGroupAdmin*/ true,
-                // visible: _currentGroup.isGroupAdmin,
+                // visible:
+                // true,
+                visible: _currentGroup.isGroupAdmin,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -429,7 +436,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 alignment: Alignment.center,
                 children: [
                   Visibility(
-                    visible: true,
+                    visible: false,
                     child: customShowCase(
                       key: notificationsKey,
                       title: 'Chamasoft Notifications',

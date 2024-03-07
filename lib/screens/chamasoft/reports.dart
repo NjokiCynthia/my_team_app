@@ -572,8 +572,11 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
               ),
               Visibility(
                 visible: group.isGroupAdmin ||
-                    group.isGroupAdmin == "0" &&
-                        group.enablehidegroupbalancestoMembers == null,
+                                    !group.isGroupAdmin &&
+                                        !group
+                                                .enablehidegroupbalancestoMembers,
+                                            
+             
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
                   child: Row(
@@ -607,9 +610,11 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     description:
                         "View, Download and Share group Account Balances, Contribution Summary, fine Summary,Loan Summary, Expenses Summary and Transaction Statements from here",
                     child: Visibility(
-                      visible: group.isGroupAdmin ||
-                          group.isGroupAdmin == "0" &&
-                              group.enablehidegroupbalancestoMembers == null,
+                       visible: group.isGroupAdmin ||
+                                    !group.isGroupAdmin &&
+                                        !group
+                                                .enablehidegroupbalancestoMembers
+                                            ,
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         padding: EdgeInsets.only(top: 5.0, bottom: 10.0),

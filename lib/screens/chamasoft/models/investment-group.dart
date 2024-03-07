@@ -110,7 +110,7 @@ class InvestmentGroup {
         billingPackageId = CustomHelper.parseInt(json['billing_package_id']),
         billingCycle = CustomHelper.parseInt(json['billing_cycle']),
 //        isOnFreePlan = CustomHelper.parseInt(json['is_on_free_plan']),
-        //       isAdmin = CustomHelper.parseInt(json['is_admin']),
+        isAdmin = CustomHelper.parseInt(json['is_admin']),
         groupRoleId = CustomHelper.parseInt(json['group_role_id']),
         isValidated = CustomHelper.parseInt(json['is_validated']),
         smsBalance = CustomHelper.parseDouble(json['sms_balance']),
