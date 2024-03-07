@@ -119,7 +119,6 @@ class Styles {
             ),
           )
         : ThemeData(
-            primarySwatch: Colors.brown,
             backgroundColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             splashColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             primaryColor: isDarkTheme ? Colors.blueGrey[100] : primaryColor,
@@ -152,13 +151,15 @@ class Styles {
                 isDarkTheme ? Colors.blueGrey[300] : Colors.blueGrey[400],
             toggleableActiveColor:
                 isDarkTheme ? Colors.brown[700] : primaryColor,
-            accentColor: isDarkTheme ? Colors.brown[700] : primaryColor,
             dividerColor: isDarkTheme ? Colors.grey[900] : Colors.grey[300],
             textSelectionTheme: TextSelectionThemeData(
               selectionColor: isDarkTheme ? Colors.white : Colors.blueGrey[800],
               selectionHandleColor:
                   isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey,
             ),
+            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.brown)
+                .copyWith(
+                    secondary: isDarkTheme ? Colors.brown[700] : primaryColor),
           );
   }
 }

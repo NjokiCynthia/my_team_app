@@ -141,7 +141,9 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor),
                     ),
                   ),
                 ),
@@ -168,7 +170,9 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionTheme.selectionHandleColor),
+                          color: Theme.of(context)
+                              .textSelectionTheme
+                              .selectionHandleColor),
                     ),
                   ),
                 ),
@@ -270,7 +274,8 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                                                 textAlign: TextAlign.start,
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionTheme.selectionHandleColor,
+                                                    .textSelectionTheme
+                                                    .selectionHandleColor,
                                               ),
                                               Visibility(
                                                 visible: incomeCategory
@@ -280,7 +285,8 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                                                       '${incomeCategory.description}',
                                                   color: Theme.of(context)
                                                       // ignore: deprecated_member_use
-                                                      .textSelectionTheme.selectionHandleColor,
+                                                      .textSelectionTheme
+                                                      .selectionHandleColor,
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: 12.0,
                                                   textAlign: TextAlign.start,
@@ -290,8 +296,8 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                                                 text:
                                                     '${incomeCategory.isHidden ? "Hidden" : "Active"}',
                                                 color: Theme.of(context)
-                                                    // ignore: deprecated_member_use
-                                                    .textSelectionTheme.selectionHandleColor,
+                                                    .textSelectionTheme
+                                                    .selectionHandleColor,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,

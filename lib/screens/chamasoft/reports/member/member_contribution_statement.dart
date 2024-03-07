@@ -3,6 +3,7 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/detail-member-statement.dart';
@@ -173,11 +174,19 @@ class _MemberContributionStatementState
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Scaffold(
       key: _scaffoldKey,
       appBar: tertiaryPageAppbar(
           context: context,
-          title: "Contribution Statements",
+          title: currentLanguage == 'English'
+              ? 'Contribution Statement'
+              : Provider.of<TranslationProvider>(context, listen: false)
+                      .translate('Contribution statement') ??
+                  'Contribution statement',
+          //"Contribution Statements",
           action: () => Navigator.of(context).pop(),
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
@@ -256,7 +265,9 @@ class _MemberContributionStatementState
                             // ignore: deprecated_member_use
                             color:
                                 // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                             textAlign: TextAlign.start,
                           ),
                           SizedBox(
@@ -269,7 +280,9 @@ class _MemberContributionStatementState
                             // ignore: deprecated_member_use
                             color:
                                 // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                           ),
                           SizedBox(
                             height: 10.0,
@@ -280,7 +293,9 @@ class _MemberContributionStatementState
                             // ignore: deprecated_member_use
                             color:
                                 // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                           ),
                           SizedBox(
                             height: 3.0,
@@ -291,7 +306,9 @@ class _MemberContributionStatementState
                             // ignore: deprecated_member_use
                             color:
                                 // ignore: deprecated_member_use
-                                Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                           )
                         ],
                       ),
@@ -325,7 +342,9 @@ class _MemberContributionStatementState
                         fontSize: 14,
                         color:
                             // ignore: deprecated_member_use
-                            Theme.of(context).textSelectionTheme.selectionHandleColor,
+                            Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                         textAlign: TextAlign.start,
                       ),
                       subtitle2(
@@ -334,7 +353,9 @@ class _MemberContributionStatementState
                         // fontWeight: FontWeight.w500,
                         color:
                             // ignore: deprecated_member_use
-                            Theme.of(context).textSelectionTheme.selectionHandleColor,
+                            Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                         textAlign: TextAlign.start,
                       ),
                     ],
@@ -349,7 +370,8 @@ class _MemberContributionStatementState
                           fontSize: 14,
                           color: Theme.of(context)
                               // ignore: deprecated_member_use
-                              .textSelectionTheme.selectionHandleColor,
+                              .textSelectionTheme
+                              .selectionHandleColor,
                           textAlign: TextAlign.end,
                         ),
                         subtitle2(
@@ -360,7 +382,8 @@ class _MemberContributionStatementState
                               : "",
                           color: Theme.of(context)
                               // ignore: deprecated_member_use
-                              .textSelectionTheme.selectionHandleColor,
+                              .textSelectionTheme
+                              .selectionHandleColor,
                           textAlign: TextAlign.end,
                         ),
                       ],
@@ -508,7 +531,9 @@ class _MemberContributionStatementState
                             : (_balance < 0
                                 ? Colors.green
                                 // ignore: deprecated_member_use
-                                : Theme.of(context).textSelectionTheme.selectionHandleColor),
+                                : Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor),
                         textAlign: TextAlign.end),
                   ),
                 ],

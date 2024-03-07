@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/meetings.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/loan-summary.dart';
@@ -398,6 +399,9 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     dashboardData = Provider.of<Dashboard>(context);
     setState(() {
       _iteratableRecentTransactionSummary =
@@ -952,7 +956,14 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(
-                                "Contribution Summary",
+                                currentLanguage == 'English'
+                                    ? "Contribution Summary"
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate(
+                                                "Contribution Summary") ??
+                                        "Contribution Summary",
+                                //"Contribution Summary",
                                 style: TextStyle(
                                   color: Colors.blueGrey[400],
                                   fontFamily: 'SegoeUI',
@@ -976,7 +987,15 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                     _onlineBankingEnabled ? 10.0 : 0.0),
                                 child: customShowCase(
                                   key: contributionSummayKey,
-                                  title: 'Contribution Summary',
+                                  title: currentLanguage == 'English'
+                                      ? "Contribution Summary"
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  "Contribution Summary") ??
+                                          "Contribution Summary",
+                                  //'Contribution Summary',
                                   description:
                                       'View all Your Contribution Summary Here',
                                   textColor:
@@ -1085,7 +1104,15 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                     EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 20.0),
                                 child: customShowCase(
                                   key: contributionSummayKey,
-                                  title: 'Contribution Summary',
+                                  title: currentLanguage == 'English'
+                                      ? "Contribution Summary"
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  "Contribution Summary") ??
+                                          "Contribution Summary",
+                                  // 'Contribution Summary',
                                   description:
                                       'View all Your Contribution Summary Here',
                                   textColor:

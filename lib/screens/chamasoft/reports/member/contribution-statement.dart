@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/reports/filter-statements.dart';
@@ -189,11 +190,29 @@ class _ContributionStatementState extends State<ContributionStatement> {
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
-    String appbarTitle = "Contribution Statement";
-    String defaultTitle = "Contributions";
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
+    String appbarTitle = currentLanguage == 'English'
+        ? 'Contribution Statement'
+        : Provider.of<TranslationProvider>(context, listen: false)
+                .translate('Contribution statement') ??
+            'Contribution statement';
+    // "Contribution Statement";
+    String defaultTitle = currentLanguage == 'English'
+        ? 'Contributions'
+        : Provider.of<TranslationProvider>(context, listen: false)
+                .translate('Contributions') ??
+            'Contributions';
+    //"Contributions";
 
     if (widget.statementFlag == FINE_STATEMENT) {
-      appbarTitle = "Fine Statement";
+      appbarTitle = currentLanguage == 'English'
+          ? 'Fine Statement'
+          : Provider.of<TranslationProvider>(context, listen: false)
+                  .translate('Fine statement') ??
+              'Fine statement';
+      //"Fine Statement";
       defaultTitle = "Fines Paid";
     }
 
@@ -236,7 +255,17 @@ class _ContributionStatementState extends State<ContributionStatement> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 heading2(
-                                    text: "Total " + defaultTitle,
+                                    text: currentLanguage == 'English'
+                                        ? 'Total'
+                                        : Provider.of<TranslationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .translate('Total') ??
+                                            'Total'
+                                                // "Total "
+
+                                                +
+                                                defaultTitle,
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
                                         .textSelectionTheme

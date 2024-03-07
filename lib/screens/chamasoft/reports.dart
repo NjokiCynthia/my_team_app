@@ -1,5 +1,6 @@
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/reports/deposit-receipts.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member-statement.dart';
@@ -106,6 +107,9 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
     final group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     // final groupObject =
     //     Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
 
     return ShowCaseWidget(builder: Builder(
       builder: (context) {
@@ -122,8 +126,20 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                 child: svgGridButton(
                     context: context,
                     icon: customIcons['transaction'],
-                    title: 'CONTRIBUTION',
-                    subtitle: 'STATEMENT',
+                    title: currentLanguage == 'English'
+                        ? 'CONTRIBUTION'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('CONTRIBUTION') ??
+                            'CONTRIBUTION',
+                    // 'CONTRIBUTION',
+                    subtitle: currentLanguage == 'English'
+                        ? 'STATEMENT'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('STATEMENT') ??
+                            'STATEMENT',
+                    //'STATEMENT',
                     color: Colors.white,
                     isHighlighted: true,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
@@ -145,16 +161,27 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                 child: svgGridButton(
                     context: context,
                     icon: customIcons['invoice'],
-                    title: 'FINE',
-                    subtitle: 'STATEMENT',
+                    title: currentLanguage == 'English'
+                        ? 'FINE'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('FINE') ??
+                            'FINE',
+                    //'FINE',
+                    subtitle: currentLanguage == 'English'
+                        ? 'STATEMENT'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('STATEMENT') ??
+                            'STATEMENT',
+                    //'STATEMENT',
                     color: Config.appName.toLowerCase() == "chamasoft"
                         ? Colors.blue[400]
                         : Theme.of(context).primaryColor,
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) =>
-                            ContributionStatement(
-                                statementFlag: FINE_STATEMENT),
+                            ContributionStatement(statementFlag: FINE_STATEMENT),
                         settings: RouteSettings(arguments: 0))),
                     margin: 0,
                     imageHeight: 100.0)),
@@ -170,8 +197,20 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                 child: svgGridButton(
                     context: context,
                     icon: customIcons['expense'],
-                    title: 'LOAN',
-                    subtitle: 'SUMMARY',
+                    title: currentLanguage == 'English'
+                        ? 'LOAN'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('LOAN') ??
+                            'LOAN',
+                    //'LOAN',
+                    subtitle: currentLanguage == 'English'
+                        ? 'SUMMARY'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('SUMMARY') ??
+                            'SUMMARY',
+                    //'SUMMARY',
                     color: Config.appName.toLowerCase() == "chamasoft"
                         ? Colors.blue[400]
                         : Theme.of(context).primaryColor,
@@ -250,8 +289,18 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
               child: svgGridButton(
                   context: context,
                   icon: customIcons['bank-cards'],
-                  title: 'ACCOUNT',
-                  subtitle: 'BALANCES',
+                  title: currentLanguage == 'English'
+                      ? 'ACCOUNT'
+                      : Provider.of<TranslationProvider>(context, listen: false)
+                              .translate('ACCOUNT') ??
+                          'ACCOUNT',
+                  //'ACCOUNT',
+                  subtitle: currentLanguage == 'English'
+                      ? 'BALANCES'
+                      : Provider.of<TranslationProvider>(context, listen: false)
+                              .translate('BALANCES') ??
+                          'BALANCES',
+                  //'BALANCES',
                   color: Config.appName.toLowerCase() == "chamasoft"
                       ? Colors.blue[400]
                       : Theme.of(context).primaryColor,
@@ -270,8 +319,18 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                 child: svgGridButton(
                     context: context,
                     icon: customIcons['money-bag'],
-                    title: 'CONTRIBUTION',
-                    subtitle: 'SUMMARY',
+                    title: currentLanguage == 'English'
+                        ? 'CONTRIBUTION'
+                        : Provider.of<TranslationProvider>(context, listen: false)
+                                .translate('CONTRIBUTION') ??
+                            'CONTRIBUTION',
+                    //'CONTRIBUTION',
+                    subtitle: currentLanguage == 'English'
+                        ? 'SUMMARY'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('SUMMARY') ??
+                            'SUMMARY',
                     color: Config.appName.toLowerCase() == "chamasoft"
                         ? Colors.blue[400]
                         : Theme.of(context).primaryColor,
@@ -293,15 +352,23 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                 child: svgGridButton(
                     context: context,
                     icon: customIcons['expense'],
-                    title: 'FINE',
-                    subtitle: 'SUMMARY',
+                    title: currentLanguage == 'English'
+                        ? 'FINE'
+                        : Provider.of<TranslationProvider>(context, listen: false)
+                                .translate('FINE') ??
+                            'FINE',
+                    subtitle: currentLanguage == 'English'
+                        ? 'SUMMARY'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('SUMMARY') ??
+                            'SUMMARY',
                     color: Config.appName.toLowerCase() == "chamasoft"
                         ? Colors.blue[400]
                         : Theme.of(context).primaryColor,
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            ContributionSummary(),
+                        builder: (BuildContext context) => ContributionSummary(),
                         settings: RouteSettings(arguments: FINE_STATEMENT))),
                     margin: 0,
                     imageHeight: 100.0)),
@@ -315,15 +382,23 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                 child: svgGridButton(
                     context: context,
                     icon: customIcons['transaction'],
-                    title: 'LOAN',
-                    subtitle: 'SUMMARY',
+                    title: currentLanguage == 'English'
+                        ? 'LOAN'
+                        : Provider.of<TranslationProvider>(context, listen: false)
+                                .translate('LOAN') ??
+                            'LOAN',
+                    subtitle: currentLanguage == 'English'
+                        ? 'SUMMARY'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('SUMMARY') ??
+                            'SUMMARY',
                     color: Config.appName.toLowerCase() == "chamasoft"
                         ? Colors.blue[400]
                         : Theme.of(context).primaryColor,
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            GroupLoansSummary())),
+                        builder: (BuildContext context) => GroupLoansSummary())),
                     margin: 0,
                     imageHeight: 100.0)),
           if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
@@ -336,7 +411,11 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                   context: context,
                   icon: customIcons['card-payment'],
                   title: 'EXPENSE',
-                  subtitle: 'SUMMARY',
+                  subtitle: currentLanguage == 'English'
+                      ? 'SUMMARY'
+                      : Provider.of<TranslationProvider>(context, listen: false)
+                              .translate('SUMMARY') ??
+                          'SUMMARY',
                   color: Config.appName.toLowerCase() == "chamasoft"
                       ? Colors.blue[400]
                       : Theme.of(context).primaryColor,
@@ -355,7 +434,13 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     context: context,
                     icon: customIcons['invoice'],
                     title: 'TRANSACTION',
-                    subtitle: 'STATEMENT',
+                    subtitle: currentLanguage == 'English'
+                        ? 'STATEMENT'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('STATEMENT') ??
+                            'STATEMENT',
+                    //'STATEMENT',
                     color: Config.appName.toLowerCase() == "chamasoft"
                         ? Colors.blue[400]
                         : Theme.of(context).primaryColor,
@@ -386,7 +471,13 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                           context: context,
                           icon: customIcons['transaction'],
                           title: 'MEMBER',
-                          subtitle: 'STATEMENTS',
+                          subtitle: currentLanguage == 'English'
+                              ? 'STATETMENTS'
+                              : Provider.of<TranslationProvider>(context,
+                                          listen: false)
+                                      .translate('STATEMENT') ??
+                                  'STATEMENT',
+                          // 'STATEMENTS',
                           color: Config.appName.toLowerCase() == "chamasoft"
                               ? Colors.blue[400]
                               : Theme.of(context).primaryColor,
@@ -481,8 +572,11 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
               ),
               Visibility(
                 visible: group.isGroupAdmin ||
-                    group.isGroupAdmin == "0" &&
-                        group.enablehidegroupbalancestoMembers == null,
+                                    !group.isGroupAdmin &&
+                                        !group
+                                                .enablehidegroupbalancestoMembers,
+                                            
+             
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
                   child: Row(
@@ -516,9 +610,11 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     description:
                         "View, Download and Share group Account Balances, Contribution Summary, fine Summary,Loan Summary, Expenses Summary and Transaction Statements from here",
                     child: Visibility(
-                      visible: group.isGroupAdmin ||
-                          group.isGroupAdmin == "0" &&
-                              group.enablehidegroupbalancestoMembers == null,
+                       visible: group.isGroupAdmin ||
+                                    !group.isGroupAdmin &&
+                                        !group
+                                                .enablehidegroupbalancestoMembers
+                                            ,
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
@@ -536,7 +632,12 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            "Statements",
+                            currentLanguage == 'English'
+                      ? 'Statements'
+                      : Provider.of<TranslationProvider>(context, listen: false)
+                              .translate('Statements') ??
+                          'Statements',
+                          //  "Statements",
                             style: TextStyle(
                               color: Colors.blueGrey[400],
                               fontFamily: 'SegoeUI',

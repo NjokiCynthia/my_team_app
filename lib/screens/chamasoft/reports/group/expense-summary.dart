@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
@@ -114,9 +115,9 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
 
     setState(() async {
       final title = "Expenses Summary";
-    final pdfFile = await PdfApi.generateExpensesPdf(
-        _expenseRows, title, groupObject, _totalExpenses);
-    PdfApi.openFile(pdfFile);
+      final pdfFile = await PdfApi.generateExpensesPdf(
+          _expenseRows, title, groupObject, _totalExpenses);
+      PdfApi.openFile(pdfFile);
       _isLoading = false;
     });
   }
@@ -133,6 +134,9 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Scaffold(
         appBar: tertiaryPageAppbar(
           context: context,
@@ -176,10 +180,17 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   heading2(
-                                    text: "Total Expenses",
+                                    text: currentLanguage == 'English'
+                                        ? "Total Expenses"
+                                        : Provider.of<TranslationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .translate("Total Expenses") ??
+                                            "Total Expenses",
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionTheme.selectionHandleColor,
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                   ),
                                   subtitle2(
                                     text: _expenseRows.length == 1
@@ -187,7 +198,8 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                                         : "${_expenseRows.length} Expenses",
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
-                                        .textSelectionTheme.selectionHandleColor,
+                                        .textSelectionTheme
+                                        .selectionHandleColor,
                                     textAlign: TextAlign.start,
                                   ),
                                 ],
@@ -201,13 +213,15 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                                   fontSize: 18.0,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionTheme.selectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 heading2(
                                   text: currencyFormat.format(_totalExpenses),
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
-                                      .textSelectionTheme.selectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.end,
                                 ),
                               ],

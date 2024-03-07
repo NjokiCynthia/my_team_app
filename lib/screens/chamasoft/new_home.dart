@@ -20,6 +20,7 @@ import 'package:chamasoft/providers/loan-summaries.dart';
 import 'package:chamasoft/providers/notification_summary.dart';
 import 'package:chamasoft/providers/recent-transactions.dart';
 import 'package:chamasoft/providers/summaries.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
 import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
@@ -30,6 +31,7 @@ import 'package:chamasoft/screens/chamasoft/reports/group/contribution-summary.d
 import 'package:chamasoft/screens/chamasoft/reports/group/expense-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/group-loans-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/pay-now-sheet.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/widgets/annimationSlider.dart';
@@ -855,7 +857,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         Provider.of<MemberRecentTransaction>(context);
     final balancesDashboardSummary =
         Provider.of<BalancesDashboardSummary>(context);
-
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     setState(() {
       _iteratableRecentTransactionSummary =
           /* dashboardData.recentMemberTransactions; */
@@ -1012,17 +1016,21 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                       ),
                       Visibility(
                         visible: _currentGroup.isGroupAdmin ||
-                            _currentGroup.isGroupAdmin == "0" &&
-                                _currentGroup
-                                        .enablehidegroupbalancestoMembers ==
-                                    null,
+                            !_currentGroup.isGroupAdmin &&
+                                !_currentGroup.enablehidegroupbalancestoMembers,
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Account Balances",
+                                currentLanguage == 'English'
+                                    ? 'Account balances'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate('Account Balances') ??
+                                        'Account Balances',
+                                // "Account Balances",
                                 style: TextStyle(
                                   color: Colors.blueGrey[400],
                                   fontFamily: 'SegoeUI',
@@ -1047,10 +1055,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                       SizedBox(height: 5),
                       Visibility(
                         visible: _currentGroup.isGroupAdmin ||
-                            _currentGroup.isGroupAdmin == "0" &&
-                                _currentGroup
-                                        .enablehidegroupbalancestoMembers ==
-                                    null,
+                            !_currentGroup.isGroupAdmin &&
+                                !_currentGroup.enablehidegroupbalancestoMembers,
                         child: Container(
                           height: 180.0,
                           child: ListView(
@@ -1099,10 +1105,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                   :  */
                               Visibility(
                                 visible: _currentGroup.isGroupAdmin ||
-                                    _currentGroup.isGroupAdmin == "0" &&
-                                        _currentGroup
-                                                .enablehidegroupbalancestoMembers ==
-                                            null,
+                                    !_currentGroup.isGroupAdmin &&
+                                        !_currentGroup
+                                            .enablehidegroupbalancestoMembers,
                                 child: Row(children: <Widget>[
                                   Container(
                                     width: 160.0,
@@ -1157,9 +1162,24 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                           children: <Widget>[
                             Text(
                               _currentIndex == 0
-                                  ? "Contribution Summary"
+                                  ? currentLanguage == 'English'
+                                      ? "Contribution Summary"
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  "Contribution Summary") ??
+                                          "Contribution Summary"
+                                  //"Contribution Summary"
                                   : _currentIndex == 1
-                                      ? "Fine Summary"
+                                      ? currentLanguage == 'English'
+                                          ? "Fine Summary"
+                                          : Provider.of<TranslationProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .translate("Fine Summary") ??
+                                              "Fine Summary"
+                                      //"Fine Summary"
                                       : _currentIndex == 2
                                           ? "Loan Summary"
                                           : "Expenses Summary",
@@ -1344,20 +1364,22 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                         horizontal: 16.0,
                                       ),
                                       child: paymentActionButton(
-                                          color: primaryColor,
-                                          textColor: Colors.white,
-                                          icon: FontAwesome.chevron_right,
-                                          isFlat: true,
-                                          text: "APPLY LOAN",
-                                          iconSize: 12.0,
-                                          action:
-                                              () {} /* => Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              /* ApplyLoan */(){},
+                                        color: primaryColor,
+                                        textColor: Colors.white,
+                                        icon: FontAwesome.chevron_right,
+                                        isFlat: true,
+                                        text: "APPLY LOAN",
+                                        iconSize: 12.0,
+                                        action: () =>
+                                            // () {} /* =>
+                                            Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  ApplyLoan()
+                                              //(){},
+                                              ),
                                         ),
-                                      ), */
-                                          ),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -1654,6 +1676,9 @@ class _ContrubutionsState extends State<Contrubutions> {
   }
 
   void _contributionSummaryAlertDialog() async {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     Group _currentGroup =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     await showDialog(
@@ -1663,7 +1688,13 @@ class _ContrubutionsState extends State<Contrubutions> {
           return AlertDialog(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
-            title: Text("Contribution Summary"),
+            title: Text(
+              currentLanguage == 'English'
+                  ? "Contribution Summary"
+                  : Provider.of<TranslationProvider>(context, listen: false)
+                          .translate("Contribution Summary") ??
+                      "Contribution Summary",
+            ),
             actions: [
               TextButton(
                   onPressed: () {
@@ -1847,6 +1878,9 @@ class _ContrubutionsState extends State<Contrubutions> {
   Widget build(BuildContext context) {
     // Dashboard dashboardData = Provider.of<Dashboard>(context);
     //  Dashboard dashboardData = Provider.of<Dashboard>(context);
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     DashboardContributionSummary dashboardContributionSummary =
         Provider.of<DashboardContributionSummary>(context);
     final currencyFormat = new NumberFormat("#,##0", "en_US");
@@ -1946,10 +1980,9 @@ class _ContrubutionsState extends State<Contrubutions> {
                             children: [
                               Visibility(
                                 visible: _currentGroup.isGroupAdmin ||
-                                    _currentGroup.isGroupAdmin == "0" &&
-                                        _currentGroup
-                                                .enablehidegroupbalancestoMembers ==
-                                            null,
+                                    !_currentGroup.isGroupAdmin &&
+                                        !_currentGroup
+                                            .enablehidegroupbalancestoMembers,
                                 child: chart.PieChart(
                                   dataMap: dataMap,
                                   animationDuration:
@@ -2093,10 +2126,9 @@ class _ContrubutionsState extends State<Contrubutions> {
                                   ),
                                   Visibility(
                                     visible: _currentGroup.isGroupAdmin ||
-                                        _currentGroup.isGroupAdmin == "0" &&
-                                            _currentGroup
-                                                    .enablehidegroupbalancestoMembers ==
-                                                null,
+                                        !_currentGroup.isGroupAdmin &&
+                                            !_currentGroup
+                                                .enablehidegroupbalancestoMembers,
                                     child: customTitle(
                                       text: "Group Total Contribution",
                                       fontSize: 14,
@@ -2109,10 +2141,9 @@ class _ContrubutionsState extends State<Contrubutions> {
                                   ),
                                   Visibility(
                                     visible: _currentGroup.isGroupAdmin ||
-                                        _currentGroup.isGroupAdmin == "0" &&
-                                            _currentGroup
-                                                    .enablehidegroupbalancestoMembers ==
-                                                null,
+                                        !_currentGroup.isGroupAdmin &&
+                                            !_currentGroup
+                                                .enablehidegroupbalancestoMembers,
                                     child: dashboardContributionSummary
                                                 .groupContributionAmount >
                                             0
@@ -2515,10 +2546,9 @@ class _FinesState extends State<Fines> {
                           children: [
                             Visibility(
                               visible: _currentGroup.isGroupAdmin ||
-                                  _currentGroup.isGroupAdmin == "0" &&
-                                      _currentGroup
-                                              .enablehidegroupbalancestoMembers ==
-                                          null,
+                                  !_currentGroup.isGroupAdmin &&
+                                      !_currentGroup
+                                          .enablehidegroupbalancestoMembers,
                               child: chart.PieChart(
                                 dataMap: dataMap,
                                 animationDuration: Duration(milliseconds: 800),
@@ -2647,10 +2677,9 @@ class _FinesState extends State<Fines> {
                                 ),
                                 Visibility(
                                   visible: _currentGroup.isGroupAdmin ||
-                                      _currentGroup.isGroupAdmin == "0" &&
-                                          _currentGroup
-                                                  .enablehidegroupbalancestoMembers ==
-                                              null,
+                                      !_currentGroup.isGroupAdmin &&
+                                          !_currentGroup
+                                              .enablehidegroupbalancestoMembers,
                                   child: customTitle(
                                     text: "Group Total Fines Paid",
                                     fontSize: 14,
@@ -2663,10 +2692,9 @@ class _FinesState extends State<Fines> {
                                 ),
                                 Visibility(
                                   visible: _currentGroup.isGroupAdmin ||
-                                      _currentGroup.isGroupAdmin == "0" &&
-                                          _currentGroup
-                                                  .enablehidegroupbalancestoMembers ==
-                                              null,
+                                      !_currentGroup.isGroupAdmin &&
+                                          !_currentGroup
+                                              .enablehidegroupbalancestoMembers,
                                   child: dashboardFineSummary
                                               .totalGroupFinePaid >
                                           0
@@ -2948,10 +2976,9 @@ class _BalancesState extends State<Balances> {
                               children: [
                                 Visibility(
                                   visible: _currentGroup.isGroupAdmin ||
-                                      _currentGroup.isGroupAdmin == "0" &&
-                                          _currentGroup
-                                                  .enablehidegroupbalancestoMembers ==
-                                              null,
+                                      !_currentGroup.isGroupAdmin &&
+                                          !_currentGroup
+                                              .enablehidegroupbalancestoMembers,
                                   child: chart.PieChart(
                                     dataMap: dataMap,
                                     animationDuration:
@@ -3083,10 +3110,9 @@ class _BalancesState extends State<Balances> {
                                     ),
                                     Visibility(
                                       visible: _currentGroup.isGroupAdmin ||
-                                          _currentGroup.isGroupAdmin == "0" &&
-                                              _currentGroup
-                                                      .enablehidegroupbalancestoMembers ==
-                                                  null,
+                                          !_currentGroup.isGroupAdmin &&
+                                              !_currentGroup
+                                                  .enablehidegroupbalancestoMembers,
                                       child: customTitle(
                                         text: "Group Loan Balances",
                                         fontSize: 14,
@@ -3101,10 +3127,9 @@ class _BalancesState extends State<Balances> {
                                     /* dashboardData.groupLoanedAmount */
                                     Visibility(
                                       visible: _currentGroup.isGroupAdmin ||
-                                          _currentGroup.isGroupAdmin == "0" &&
-                                              _currentGroup
-                                                      .enablehidegroupbalancestoMembers ==
-                                                  null,
+                                          !_currentGroup.isGroupAdmin &&
+                                              !_currentGroup
+                                                  .enablehidegroupbalancestoMembers,
                                       child: loanDashboardSummary
                                                   .totalGroupLoanBalanceDouble >
                                               0
@@ -3539,10 +3564,8 @@ class _ExpensesState extends State<Expenses> {
                     children: [
                       Visibility(
                         visible: _currentGroup.isGroupAdmin ||
-                            _currentGroup.isGroupAdmin == "0" &&
-                                _currentGroup
-                                        .enablehidegroupbalancestoMembers ==
-                                    null,
+                            !_currentGroup.isGroupAdmin &&
+                                !_currentGroup.enablehidegroupbalancestoMembers,
                         child: chart.PieChart(
                           dataMap: dataMaptest,
                           animationDuration: Duration(milliseconds: 800),

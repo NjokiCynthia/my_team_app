@@ -1,5 +1,6 @@
 import 'package:chamasoft/helpers/report_helper.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
@@ -125,6 +126,9 @@ class _AccountBalancesState extends State<AccountBalances> {
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Scaffold(
         key: _scaffoldKey,
         appBar: tertiaryPageAppbar(
@@ -132,7 +136,12 @@ class _AccountBalancesState extends State<AccountBalances> {
             action: () => Navigator.of(context).pop(),
             elevation: _appBarElevation,
             leadingIcon: LineAwesomeIcons.arrow_left,
-            title: "Account Balances",
+            title: currentLanguage == 'English'
+                ? 'Account balances'
+                : Provider.of<TranslationProvider>(context, listen: false)
+                        .translate('Account Balances') ??
+                    'Account Balances',
+            //"Account Balances",
             //  trailingIcon: LineAwesomeIcons.download,
             trailingAction: () =>
                 _downloadAccounBalancesPdf(context, groupObject)),
@@ -159,7 +168,13 @@ class _AccountBalancesState extends State<AccountBalances> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           heading2(
-                              text: "Total ",
+                              text: currentLanguage == 'English'
+                                  ? 'Total'
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate('Total') ??
+                                      'Total',
+                              //"Total ",
                               // ignore: deprecated_member_use
                               color: Theme.of(context)
                                   .textSelectionTheme
@@ -169,7 +184,14 @@ class _AccountBalancesState extends State<AccountBalances> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               subtitle2(
-                                  text: "Account balances",
+                                  text: currentLanguage == 'English'
+                                      ? 'Account balances'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('Account Balances') ??
+                                          'Account Balances',
+                                  //"Account balances",
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
                                       .textSelectionTheme

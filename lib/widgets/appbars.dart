@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 
 import 'buttons.dart';
 
-Widget secondaryPageAppbar(
-    {BuildContext context,
-    String title,
-    Function action,
+PreferredSizeWidget secondaryPageAppbar(
+    {@required BuildContext context,
+    @required String title,
+    action,
     double elevation,
-    IconData leadingIcon,
+    @required IconData leadingIcon,
     List<Widget> actions}) {
   return AppBar(
     title: Row(
@@ -28,19 +28,20 @@ Widget secondaryPageAppbar(
     ),
     elevation: elevation,
     backgroundColor: Theme.of(context).backgroundColor,
+    //Theme.of(context).colorScheme.background,
     automaticallyImplyLeading: false,
     actions: actions,
   );
 }
 
-Widget secondaryPageTabbedAppbar(
-    {BuildContext context,
-    String title,
-    Function action,
-    double elevation,
-    IconData leadingIcon,
+PreferredSizeWidget secondaryPageTabbedAppbar(
+    {@required BuildContext context,
+    @required String title,
+    action,
+    @required double elevation,
+    @required IconData leadingIcon,
     List<Widget> actions,
-    Widget bottom}) {
+    PreferredSizeWidget bottom}) {
   return AppBar(
     title: Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -57,20 +58,21 @@ Widget secondaryPageTabbedAppbar(
     ),
     elevation: elevation,
     backgroundColor: Theme.of(context).backgroundColor,
+    //Theme.of(context).colorScheme.background,
     automaticallyImplyLeading: false,
     actions: actions,
     bottom: bottom,
   );
 }
 
-Widget tertiaryPageAppbar(
-    {BuildContext context,
-    String title,
-    Function action,
-    double elevation,
-    IconData leadingIcon,
-    IconData trailingIcon,
-    Function trailingAction,
+PreferredSizeWidget tertiaryPageAppbar(
+    {@required BuildContext context,
+    @required String title,
+    action,
+    @required double elevation,
+    @required IconData leadingIcon,
+    @required IconData trailingIcon,
+    trailingAction,
     List<Widget> actions}) {
   return AppBar(
     title: Row(
@@ -102,6 +104,7 @@ Widget tertiaryPageAppbar(
     ),
     elevation: elevation,
     backgroundColor: Theme.of(context).backgroundColor,
+    //Theme.of(context).colorScheme.background,
     automaticallyImplyLeading: false,
     actions: actions,
   );

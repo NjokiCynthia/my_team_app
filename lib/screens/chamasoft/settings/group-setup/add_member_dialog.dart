@@ -1,3 +1,4 @@
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
@@ -8,6 +9,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 // import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class AddMemberDialog extends StatefulWidget {
@@ -105,10 +107,18 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Scaffold(
       appBar: secondaryPageAppbar(
           context: context,
-          title: "Add Member",
+          title: currentLanguage == 'English'
+              ? 'Add member'
+              : Provider.of<TranslationProvider>(context, listen: false)
+                      .translate('Add member') ??
+                  'Add member',
+          // "Add Member",
           action: () => Navigator.of(context).pop(),
           elevation: 1.0,
           leadingIcon: LineAwesomeIcons.times,
@@ -159,7 +169,9 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                       textAlign: TextAlign.start,
                       fontSize: 11,
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionTheme.selectionHandleColor),
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor),
                 ],
               ),
               Row(
@@ -197,7 +209,8 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                                       fontSize: 16,
                                       color: Theme.of(context)
                                           // ignore: deprecated_member_use
-                                          .textSelectionTheme.selectionHandleColor),
+                                          .textSelectionTheme
+                                          .selectionHandleColor),
                                   onChanged: (countryCode) {
                                     setState(() {
                                       _countryCode = countryCode;
@@ -270,7 +283,12 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
               ),
               defaultButton(
                   context: context,
-                  text: "Add Member",
+                  text: currentLanguage == 'English'
+                      ? 'Add member'
+                      : Provider.of<TranslationProvider>(context, listen: false)
+                              .translate('Add member') ??
+                          'Add member',
+                  //"Add Member",
                   onPressed: () => _submitMember())
             ],
           ),

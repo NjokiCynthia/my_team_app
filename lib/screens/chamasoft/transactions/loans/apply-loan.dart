@@ -36,7 +36,7 @@ class ApplyLoan extends StatefulWidget {
 
 class ApplyLoanState extends State<ApplyLoan> {
   double _appBarElevation = 0;
-  ScrollController _scrollController;
+  ScrollController _scrollController = ScrollController();
 
   bool _isFromGroupActive = true;
   bool _isFromChamasoftActive = false;
@@ -75,8 +75,8 @@ class ApplyLoanState extends State<ApplyLoan> {
 
   @override
   void dispose() {
-    _scrollController?.removeListener(_scrollListener);
-    _scrollController?.dispose();
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
     super.dispose();
   }
 
