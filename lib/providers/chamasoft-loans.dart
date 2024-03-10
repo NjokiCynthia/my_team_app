@@ -123,25 +123,25 @@ class ChamasoftLoans with ChangeNotifier {
     }
   }
 
-  Future<List<LoanProduct>> fetchLoanProducts() async {
-    final url = EndpointUrl.GET_CHAMASOFT_LOAN_PRODUCTS;
-    try {
-      try {
-        final postRequest = json.encode({
-          "user_id": _userId,
-          "group_id": _currentGroupId,
-        });
+  // Future<List<LoanProduct>> fetchLoanProducts() async {
+  //   final url = EndpointUrl.GET_CHAMASOFT_LOAN_PRODUCTS;
+  //   try {
+  //     try {
+  //       final postRequest = json.encode({
+  //         "user_id": _userId,
+  //         "group_id": _currentGroupId,
+  //       });
 
-        final response = await PostToServer.post(postRequest, url);
-        addLoanProducts(loanProducts: response['loan_products']);
-        return getLoanProducts;
-      } catch (error) {
-        throw CustomException(message: ERROR_MESSAGE);
-      }
-    } catch (error) {
-      throw CustomException(message: ERROR_MESSAGE);
-    }
-  }
+  //       final response = await PostToServer.post(postRequest, url);
+  //       addLoanProducts(loanProducts: response['loan_products']);
+  //       return getLoanProducts;
+  //     } catch (error) {
+  //       throw CustomException(message: ERROR_MESSAGE);
+  //     }
+  //   } catch (error) {
+  //     throw CustomException(message: ERROR_MESSAGE);
+  //   }
+  // }
 
   Future<String> submitLoanApplication(Map<String, dynamic> formData) async {
     final url = EndpointUrl.CREATE_CHAMASOFT_LOAN_APPLICATION;

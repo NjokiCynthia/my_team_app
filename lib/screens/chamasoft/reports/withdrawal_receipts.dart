@@ -225,13 +225,13 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
                                         children: [
                                           Icon(LineAwesomeIcons.sort,
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor),
                                           subtitle1(
                                               text: "Sort",
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor)
                                         ],
@@ -268,13 +268,13 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
                                         children: [
                                           Icon(LineAwesomeIcons.filter,
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor),
                                           subtitle1(
                                               text: "Filter",
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor)
                                         ],
@@ -407,9 +407,9 @@ class WithdrawalCard extends StatelessWidget {
                               customTitle(
                                 text: withdrawal.type,
                                 fontSize: 16.0,
-                                // ignore: deprecated_member_use
+                               
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context)
                                         .textSelectionTheme
                                         .selectionHandleColor,
@@ -418,9 +418,9 @@ class WithdrawalCard extends StatelessWidget {
                               subtitle2(
                                 text: withdrawal.name,
                                 textAlign: TextAlign.start,
-                                // ignore: deprecated_member_use
+                               
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context)
                                         .textSelectionTheme
                                         .selectionHandleColor,
@@ -438,7 +438,7 @@ class WithdrawalCard extends StatelessWidget {
                             customTitle(
                               text: "${groupObject.groupCurrency} ",
                               fontSize: 18.0,
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -446,7 +446,7 @@ class WithdrawalCard extends StatelessWidget {
                             ),
                             heading2(
                               text: currencyFormat.format(withdrawal.amount),
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -472,9 +472,9 @@ class WithdrawalCard extends StatelessWidget {
                               subtitle2(
                                   text: "Recipient By",
                                   color:
-                                      // ignore: deprecated_member_use
+                                     
                                       Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                   textAlign: TextAlign.start),
@@ -483,9 +483,9 @@ class WithdrawalCard extends StatelessWidget {
                                   fontSize: 15.0,
                                   fontWeight: FontWeight.w600,
                                   color:
-                                      // ignore: deprecated_member_use
+                                     
                                       Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                   textAlign: TextAlign.start),
@@ -497,9 +497,9 @@ class WithdrawalCard extends StatelessWidget {
                               subtitle2(
                                   text: "Withdrawn On",
                                   color:
-                                      // ignore: deprecated_member_use
+                                     
                                       Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                   textAlign: TextAlign.end),
@@ -507,9 +507,9 @@ class WithdrawalCard extends StatelessWidget {
                                   text: withdrawal.recordedOn,
                                   fontSize: 16,
                                   color:
-                                      // ignore: deprecated_member_use
+                                     
                                       Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                   textAlign: TextAlign.end)
@@ -529,9 +529,9 @@ class WithdrawalCard extends StatelessWidget {
                         subtitle2(
                             text: "Narration: ",
                             color:
-                                // ignore: deprecated_member_use
+                               
                                 Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionHandleColor,
                             textAlign: TextAlign.start),
@@ -540,9 +540,9 @@ class WithdrawalCard extends StatelessWidget {
                                 "${withdrawal.type} -- ${withdrawal.reconciliation}",
                             fontSize: 12.0,
                             color:
-                                // ignore: deprecated_member_use
+                               
                                 Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionHandleColor,
                             textAlign: TextAlign.start),

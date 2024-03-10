@@ -443,7 +443,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                       description:
                           "View all your Transactions Notification from Here",
 
-                      // ignore: deprecated_member_use
+                     
                       textColor: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,
@@ -452,7 +452,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                           Icons.notifications,
                           color: Config.appName.toLowerCase() == 'chamasoft'
                               ?
-                              // ignore: deprecated_member_use
+                             
                               Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor
@@ -510,7 +510,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 description:
                     "Personalize your Chama Settings, Personal Settings,Help and Assistance , Preferences and Terms and Conditions",
 
-                // ignore: deprecated_member_use
+               
                 textColor:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                 child: IconButton(
@@ -518,7 +518,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                     Icons.settings,
                     color: Config.appName.toLowerCase() == 'chamasoft'
                         ?
-                        // ignore: deprecated_member_use
+                       
                         Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor
@@ -567,7 +567,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   title: 'Personal Dashboard',
                   description: "View all your Summarized Transactions",
 
-                  // ignore: deprecated_member_use
+                 
                   textColor:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                   child: Icon(
@@ -592,7 +592,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               //     description:
               //         "View your Chamas Transaction Summary, Loan balances and Accounts balances",
 
-              //     // ignore: deprecated_member_use
+              //    
               //     textColor: Theme.of(context).textSelectionHandleColor,
               //     child: Icon(
               //       Feather.users,
@@ -603,7 +603,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               //               : Colors.blueGrey[300].withOpacity(0.5),
               //     ),
               //   ),
-              //   // ignore: deprecated_member_use
+              //  
               //   title: Text(
               //     toBeginningOfSentenceCase(
               //         getUserName((_group.groupName).replaceAll(" ", "-"))),
@@ -624,7 +624,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   description:
                       "Manually Record chama Transactions, Create withdrawals form E-Walet and Invoice Transfers",
 
-                  // ignore: deprecated_member_use
+                 
                   textColor: Colors.black,
                   // Theme.of(context).textSelectionTheme.selectionHandleColor,
                   child: Icon(
@@ -636,7 +636,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                             : Colors.blueGrey[300].withOpacity(1.0),
                   ),
                 ),
-                // ignore: deprecated_member_use
+               
                 label: "Transactions",
               ),
               //),
@@ -646,7 +646,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   title: 'Chamasoft Reports',
                   description:
                       "View well summarized Transactions reports and Reciepts, You can down load and share.",
-                  // ignore: deprecated_member_use
+                 
                   textColor:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                   child: Icon(
@@ -658,7 +658,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                             : Colors.blueGrey[300].withOpacity(0.5),
                   ),
                 ),
-                // ignore: deprecated_member_use
+               
                 label: 'Reports',
                 // style: TextStyle(
                 //   color: _currentPage == /*3*/ 2
@@ -677,7 +677,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               //     title: 'Chamasoft MarketPlace',
               //     description: "View Chamasoft Post Ads",
 
-              //     // ignore: deprecated_member_use
+              //    
               //     textColor: Theme.of(context).textSelectionHandleColor,
               //     child: Icon(
               //       Feather.shopping_cart,
@@ -688,7 +688,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               //               : Colors.blueGrey[300].withOpacity(0.5),
               //     ),
               //   ),
-              //   // ignore: deprecated_member_use
+              //  
               //   title: Text(
               //     "Market",
               //     style: TextStyle(

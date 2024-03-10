@@ -107,14 +107,14 @@ class _EditMeetingState extends State<EditMeeting> {
   }
 
   _showSnackbar(String msg, int duration) {
-    // ignore: deprecated_member_use
+   
     ScaffoldMessenger.of(_scaffoldKey.currentState.context)
         .hideCurrentSnackBar();
     final snackBar = SnackBar(
       content: Text(msg),
       duration: Duration(seconds: duration),
     );
-    // ignore: deprecated_member_use
+   
     ScaffoldMessenger.of(_scaffoldKey.currentState.context)
         .showSnackBar(snackBar);
   }
@@ -198,7 +198,7 @@ class _EditMeetingState extends State<EditMeeting> {
       style: TextStyle(
         color: currentStep >= step
             ? primaryColor
-            // ignore: deprecated_member_use
+           
             : Theme.of(context).textSelectionTheme.selectionHandleColor,
         fontFamily: 'SegoeUI',
         fontWeight: currentStep >= step ? FontWeight.bold : FontWeight.normal,
@@ -244,7 +244,7 @@ class _EditMeetingState extends State<EditMeeting> {
 
   Widget agendaItem({String agenda, Function action}) {
     return Container(
-      // ignore: deprecated_member_use
+     
       color: Theme.of(context)
           .textSelectionTheme
           .selectionHandleColor
@@ -262,7 +262,7 @@ class _EditMeetingState extends State<EditMeeting> {
                 Text(
                   agenda,
                   style: TextStyle(
-                    // ignore: deprecated_member_use
+                   
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor,
@@ -292,7 +292,7 @@ class _EditMeetingState extends State<EditMeeting> {
     return Text(
       text,
       style: TextStyle(
-        // ignore: deprecated_member_use
+       
         color: Theme.of(context).textSelectionTheme.selectionHandleColor,
         fontSize: 12.0,
       ),
@@ -303,7 +303,7 @@ class _EditMeetingState extends State<EditMeeting> {
 
   TextStyle summaryContentFormat() {
     return TextStyle(
-      // ignore: deprecated_member_use
+     
       color: Theme.of(context).textSelectionTheme.selectionHandleColor,
       fontSize: 16.0,
       fontWeight: FontWeight.bold,
@@ -353,7 +353,7 @@ class _EditMeetingState extends State<EditMeeting> {
           : [
               subtitle1(
                 color:
-                    // ignore: deprecated_member_use
+                   
                     Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor
@@ -363,7 +363,7 @@ class _EditMeetingState extends State<EditMeeting> {
               ),
               subtitle2(
                 color:
-                    // ignore: deprecated_member_use
+                   
                     Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor
@@ -397,7 +397,7 @@ class _EditMeetingState extends State<EditMeeting> {
           : [
               subtitle1(
                 color:
-                    // ignore: deprecated_member_use
+                   
                     Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor
@@ -407,7 +407,7 @@ class _EditMeetingState extends State<EditMeeting> {
               ),
               subtitle2(
                 color:
-                    // ignore: deprecated_member_use
+                   
                     Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor
@@ -963,7 +963,7 @@ class _EditMeetingState extends State<EditMeeting> {
                     children: <Widget>[
                       Icon(
                         Icons.lightbulb_outline,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor,
@@ -977,15 +977,16 @@ class _EditMeetingState extends State<EditMeeting> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            // subtitle1(
-                            //   text: "About new meeting...",
-                            //   textAlign: TextAlign.start,
-                            //   color: Theme.of(context).textSelectionTheme.selectionHandleColor,
-                            // ),
+                            subtitle1(
+                              text: "About new meeting...",
+                              textAlign: TextAlign.start,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
+                            ),
                             subtitle2(
                               text:
                                   "Follow all the steps and provide all required data about this meeting. You'll be able to preview a summary of the meeting before you submit.",
-                              // ignore: deprecated_member_use
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -1014,7 +1015,7 @@ class _EditMeetingState extends State<EditMeeting> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          // ignore: deprecated_member_use
+                         
                           // RaisedButton(
                           //   color: primaryColor,
                           //   child: Padding(
@@ -1089,48 +1090,51 @@ class _EditMeetingState extends State<EditMeeting> {
                                 ],
                               ),
                             ),
-                            onPressed: !_saving ? controlDetails.onStepContinue : null,
+                            onPressed:
+                                !_saving ? controlDetails.onStepContinue : null,
                           ),
 
                           SizedBox(
                             width: 20.0,
                           ),
                           currentStep > 0
-                              // ignore: deprecated_member_use
+                             
                               // ? OutlineButton(
                               //     color: Colors.white,
                               //     child: Text(
                               //       "Go Back",
                               //       style: TextStyle(
                               //         color: Theme.of(context)
-                              //             // ignore: deprecated_member_use
+                              //            
                               //             .textSelectionTheme.selectionHandleColor,
                               //       ),
                               //     ),
                               //     borderSide: BorderSide(
                               //       width: 2.0,
                               //       color: Theme.of(context)
-                              //           // ignore: deprecated_member_use
+                              //          
                               //           .textSelectionTheme.selectionHandleColor
                               //           .withOpacity(0.5),
                               //     ),
                               //     highlightColor: Theme.of(context)
-                              //         // ignore: deprecated_member_use
+                              //        
                               //         .textSelectionTheme.selectionHandleColor
                               //         .withOpacity(0.1),
                               //     highlightedBorderColor: Theme.of(context)
-                              //         // ignore: deprecated_member_use
+                              //        
                               //         .textSelectionTheme.selectionHandleColor
                               //         .withOpacity(0.6),
                               //     onPressed: (!_saving) ? onStepCancel : null,
                               //   )
                               ? OutlinedButton(
                                   style: OutlinedButton.styleFrom(
-                                    foregroundColor: Colors.white, side: BorderSide(
+                                    foregroundColor: Colors.white,
+                                    side: BorderSide(
                                       width: 2.0,
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionTheme.selectionHandleColor
+                                         
+                                          .textSelectionTheme
+                                          .selectionHandleColor
                                           .withOpacity(0.5),
                                     ),
                                     shape: RoundedRectangleBorder(
@@ -1141,11 +1145,14 @@ class _EditMeetingState extends State<EditMeeting> {
                                     "Go Back",
                                     style: TextStyle(
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionTheme.selectionHandleColor,
+                                         
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                     ),
                                   ),
-                                  onPressed: !_saving ? controlDetails.onStepCancel : null,
+                                  onPressed: !_saving
+                                      ? controlDetails.onStepCancel
+                                      : null,
                                 )
                               : SizedBox(),
                         ],

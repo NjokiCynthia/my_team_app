@@ -68,7 +68,7 @@ class _SortContainerState extends State<SortContainer> {
                       title: subtitle1(
                           text: "Transaction Date: Newest First",
                           textAlign: TextAlign.start,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor),
@@ -85,7 +85,7 @@ class _SortContainerState extends State<SortContainer> {
                       title: subtitle1(
                           text: "Transaction Date: Oldest First",
                           textAlign: TextAlign.start,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor),
@@ -102,7 +102,7 @@ class _SortContainerState extends State<SortContainer> {
                       title: subtitle1(
                           text: "Amount: Highest to Lowest",
                           textAlign: TextAlign.start,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor),
@@ -119,7 +119,7 @@ class _SortContainerState extends State<SortContainer> {
                       title: subtitle1(
                           text: "Amount: Lowest to Highest",
                           textAlign: TextAlign.start,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor),

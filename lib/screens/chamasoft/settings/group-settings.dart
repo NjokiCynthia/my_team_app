@@ -117,7 +117,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -140,7 +140,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -164,7 +164,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -187,7 +187,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -211,7 +211,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -234,7 +234,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -254,7 +254,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
 
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -277,7 +277,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -300,7 +300,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
-      // ignore: deprecated_member_use
+     
       Scaffold.of(context).showSnackBar(snackBar);
     }
   } */
@@ -323,7 +323,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -346,7 +346,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -413,7 +413,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                       children: <Widget>[
                         heading2(
                             text: currentGroup.groupName,
-                            // ignore: deprecated_member_use
+                           
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor),
@@ -569,7 +569,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Contributions",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
-                  // ignore: deprecated_member_use
+                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
@@ -610,7 +610,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Members",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
-                  // ignore: deprecated_member_use
+                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
@@ -651,7 +651,6 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Expense Categories",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
-                  // ignore: deprecated_member_use
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
@@ -694,7 +693,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Fine Types",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
-                  // ignore: deprecated_member_use
+                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
@@ -735,7 +734,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Loan Types",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
-                  // ignore: deprecated_member_use
+                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
@@ -776,7 +775,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Income Categories",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
-                  // ignore: deprecated_member_use
+                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
@@ -817,7 +816,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Asset Categories",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
-                  // ignore: deprecated_member_use
+                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),

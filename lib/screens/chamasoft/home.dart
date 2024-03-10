@@ -565,7 +565,7 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                             description:
                                 'View a summary of Your Contribution Balance, Fines, Loans and Pending Instalments',
                             textColor:
-                                // ignore: deprecated_member_use
+                                
                                 Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,
@@ -607,7 +607,7 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
-                                            // ignore: deprecated_member_use
+                                            
                                             .textSelectionTheme
                                             .selectionHandleColor,
                                       ),
@@ -628,7 +628,7 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                       //             0
                                       //         ? Colors.red[400]
                                       //         : Theme.of(context)
-                                      //             // ignore: deprecated_member_use
+                                      //             
                                       //             .textSelectionHandleColor,
                                       //     action: () => Navigator.of(context)
                                       //         .push(MaterialPageRoute(
@@ -655,7 +655,7 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
-                                            // ignore: deprecated_member_use
+                                            
                                             .textSelectionTheme
                                             .selectionHandleColor,
                                       ),
@@ -675,7 +675,7 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                                     0
                                                 ? Colors.red[400]
                                                 : Theme.of(context)
-                                                    // ignore: deprecated_member_use
+                                                    
                                                     .textSelectionTheme
                                                     .selectionHandleColor,
                                             action: () => Navigator.of(context)
@@ -701,7 +701,7 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
-                                            // ignore: deprecated_member_use
+                                            
                                             .textSelectionTheme
                                             .selectionHandleColor,
                                       ),
@@ -718,7 +718,7 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                                     0
                                                 ? Colors.red[400]
                                                 : Theme.of(context)
-                                                    // ignore: deprecated_member_use
+                                                    
                                                     .textSelectionTheme
                                                     .selectionHandleColor,
                                             action: () => Navigator.of(context)
@@ -743,7 +743,7 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
-                                            // ignore: deprecated_member_use
+                                            
                                             .textSelectionTheme
                                             .selectionHandleColor,
                                       ),
@@ -760,7 +760,7 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                                     0
                                                 ? Colors.red[400]
                                                 : Theme.of(context)
-                                                    // ignore: deprecated_member_use
+                                                    
                                                     .textSelectionTheme
                                                     .selectionHandleColor,
                                             action: () => Navigator.of(context)
@@ -999,9 +999,9 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                   description:
                                       'View all Your Contribution Summary Here',
                                   textColor:
-                                      // ignore: deprecated_member_use
+                                      
                                       Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                          
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                   child: Container(
@@ -1116,9 +1116,9 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                   description:
                                       'View all Your Contribution Summary Here',
                                   textColor:
-                                      // ignore: deprecated_member_use
+                                      
                                       Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                          
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                   child: Container(
@@ -1158,7 +1158,7 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                               description:
                                   'Click here to Pay your contribution to chama e-wallet using M-PESA',
                               textColor:
-                                  // ignore: deprecated_member_use
+                                  
                                   Theme.of(context)
                                       .textSelectionTheme
                                       .selectionHandleColor,
@@ -1253,9 +1253,9 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                   description:
                                       'Scroll Horizontal to View all your recent Transactions',
                                   textColor:
-                                      // ignore: deprecated_member_use
+                                      
                                       Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                          
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                   child: Container(

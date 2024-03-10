@@ -1,7 +1,4 @@
-// ignore_for_file: unnecessary_import
-
 import 'dart:developer';
-
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
 import 'package:chamasoft/screens/chamasoft/reports/withdrawal_receipts.dart';
@@ -15,7 +12,7 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +27,7 @@ class _RecordContributionPaymentState extends State<CreateMemberLoan> {
   bool _isInit = true;
   bool _isLoading = false;
   double _appBarElevation = 0;
-  ScrollController _scrollController;
+  ScrollController _scrollController = ScrollController();
   List<MembersFilterEntry> selectedMembersList = [], memberOptions = [];
   int memberTypeId;
   final _formKey = new GlobalKey<FormState>();
@@ -196,8 +193,8 @@ class _RecordContributionPaymentState extends State<CreateMemberLoan> {
 
   @override
   void dispose() {
-    _scrollController?.removeListener(_scrollListener);
-    _scrollController?.dispose();
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
     super.dispose();
   }
 

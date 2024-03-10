@@ -175,7 +175,7 @@ class _AccountBalancesState extends State<AccountBalances> {
                                           .translate('Total') ??
                                       'Total',
                               //"Total ",
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -193,7 +193,7 @@ class _AccountBalancesState extends State<AccountBalances> {
                                           'Account Balances',
                                   //"Account balances",
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                      
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                   textAlign: TextAlign.start),
@@ -205,7 +205,7 @@ class _AccountBalancesState extends State<AccountBalances> {
                     heading2(
                         text: "${groupObject.groupCurrency} " +
                             currencyFormat.format(_totalBalance),
-                        // ignore: deprecated_member_use
+                        
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor,

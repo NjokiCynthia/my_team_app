@@ -228,7 +228,7 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                           children: <Widget>[
                             heading2(
                               text: "Total " + defaultTitle,
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -255,14 +255,14 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                             text: groupObject.groupCurrency,
                             fontWeight: FontWeight.w400,
                             fontSize: 18.0,
-                            // ignore: deprecated_member_use
+                           
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
                           ),
                           heading2(
                             text: currencyFormat.format(_totalAmount),
-                            // ignore: deprecated_member_use
+                           
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,

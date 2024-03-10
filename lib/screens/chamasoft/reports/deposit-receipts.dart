@@ -205,13 +205,13 @@ class _DepositReceiptsState extends State<DepositReceipts> {
                                       children: [
                                         Icon(LineAwesomeIcons.sort,
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
+                                               
                                                 .textSelectionTheme
                                                 .selectionHandleColor),
                                         subtitle1(
                                             text: "Sort",
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
+                                               
                                                 .textSelectionTheme
                                                 .selectionHandleColor)
                                       ],
@@ -248,13 +248,13 @@ class _DepositReceiptsState extends State<DepositReceipts> {
                                       children: [
                                         Icon(LineAwesomeIcons.filter,
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
+                                               
                                                 .textSelectionTheme
                                                 .selectionHandleColor),
                                         subtitle1(
                                             text: "Filter",
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
+                                               
                                                 .textSelectionTheme
                                                 .selectionHandleColor)
                                       ],
@@ -411,9 +411,9 @@ class DepositCard extends StatelessWidget {
                               customTitle1(
                                 text: deposit.type,
                                 fontSize: 16.0,
-                                // ignore: deprecated_member_use
+                               
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context)
                                         .textSelectionTheme
                                         .selectionHandleColor,
@@ -422,9 +422,9 @@ class DepositCard extends StatelessWidget {
                               subtitle2(
                                 text: deposit.name,
                                 textAlign: TextAlign.start,
-                                // ignore: deprecated_member_use
+                               
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context)
                                         .textSelectionTheme
                                         .selectionHandleColor,
@@ -442,7 +442,7 @@ class DepositCard extends StatelessWidget {
                             customTitle(
                               text: "${groupObject.groupCurrency} ",
                               fontSize: 18.0,
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -450,7 +450,7 @@ class DepositCard extends StatelessWidget {
                             ),
                             heading2(
                               text: currencyFormat.format(deposit.amount),
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -476,9 +476,9 @@ class DepositCard extends StatelessWidget {
                               subtitle2(
                                   text: "Paid By",
                                   color:
-                                      // ignore: deprecated_member_use
+                                     
                                       Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                   textAlign: TextAlign.start),
@@ -487,9 +487,9 @@ class DepositCard extends StatelessWidget {
                                   fontSize: 15.0,
                                   fontWeight: FontWeight.w600,
                                   color:
-                                      // ignore: deprecated_member_use
+                                     
                                       Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                   textAlign: TextAlign.start),
@@ -501,9 +501,9 @@ class DepositCard extends StatelessWidget {
                               subtitle2(
                                   text: "Paid On",
                                   color:
-                                      // ignore: deprecated_member_use
+                                     
                                       Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                   textAlign: TextAlign.end),
@@ -511,9 +511,9 @@ class DepositCard extends StatelessWidget {
                                   text: deposit.date,
                                   fontSize: 16,
                                   color:
-                                      // ignore: deprecated_member_use
+                                     
                                       Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                   textAlign: TextAlign.end)
@@ -533,9 +533,9 @@ class DepositCard extends StatelessWidget {
                         subtitle2(
                             text: "Narration: ",
                             color:
-                                // ignore: deprecated_member_use
+                               
                                 Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionHandleColor,
                             textAlign: TextAlign.start),
@@ -544,9 +544,9 @@ class DepositCard extends StatelessWidget {
                                 "${deposit.narration} -- ${deposit.reconciliation}",
                             fontSize: 12.0,
                             color:
-                                // ignore: deprecated_member_use
+                               
                                 Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionHandleColor,
                             textAlign: TextAlign.start),

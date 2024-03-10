@@ -5538,6 +5538,7 @@ class Groups with ChangeNotifier {
   Future<Map<String, dynamic>> fetchGroupLoanCalculator(
       Map<String, dynamic> formData) async {
     final url = EndpointUrl.GET_GROUP_LOAN_CALCULATOR;
+    print("Here is the url" + url);
     try {
       formData['user_id'] = _userId;
       formData['group_id'] = _currentGroupId;

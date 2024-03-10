@@ -238,7 +238,7 @@ class _FilterContainerState extends State<FilterContainer> {
                                 fontSize: 12.0,
                                 fontWeight: FontWeight.w600,
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context)
                                         .textSelectionTheme
                                         .selectionHandleColor),
@@ -247,7 +247,7 @@ class _FilterContainerState extends State<FilterContainer> {
                                 child: Icon(LineAwesomeIcons.chevron_right,
                                     size: 12,
                                     color: Theme.of(context)
-                                        // ignore: deprecated_member_use
+                                       
                                         .textSelectionTheme
                                         .selectionHandleColor))
                           ],
@@ -279,7 +279,7 @@ class _FilterContainerState extends State<FilterContainer> {
                                   fontSize: 12.0,
                                   fontWeight: FontWeight.w600,
                                   color:
-                                      // ignore: deprecated_member_use
+                                     
                                       Theme.of(context)
                                           .textSelectionTheme
                                           .selectionHandleColor),
@@ -288,7 +288,7 @@ class _FilterContainerState extends State<FilterContainer> {
                                   child: Icon(LineAwesomeIcons.chevron_right,
                                       size: 12,
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionHandleColor))
                             ],
@@ -312,7 +312,7 @@ class _FilterContainerState extends State<FilterContainer> {
                           text: title,
                           textAlign: TextAlign.center,
                           fontWeight: FontWeight.w600,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor),
@@ -325,7 +325,7 @@ class _FilterContainerState extends State<FilterContainer> {
                               text: "Select All",
                               textAlign: TextAlign.start,
                               color:
-                                  // ignore: deprecated_member_use
+                                 
                                   Theme.of(context)
                                       .textSelectionTheme
                                       .selectionHandleColor),
@@ -355,7 +355,7 @@ class _FilterContainerState extends State<FilterContainer> {
                                     textAlign: TextAlign.center,
                                     fontWeight: FontWeight.w600,
                                     color: Theme.of(context)
-                                        // ignore: deprecated_member_use
+                                       
                                         .textSelectionTheme
                                         .selectionHandleColor);
                               } else
@@ -392,7 +392,7 @@ class _FilterContainerState extends State<FilterContainer> {
                                       text: item.name,
                                       textAlign: TextAlign.start,
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionHandleColor),
                                   activeColor: primaryColor,
@@ -414,7 +414,7 @@ class _FilterContainerState extends State<FilterContainer> {
                                     text: item.name,
                                     textAlign: TextAlign.start,
                                     color: Theme.of(context)
-                                        // ignore: deprecated_member_use
+                                       
                                         .textSelectionTheme
                                         .selectionHandleColor),
                                 activeColor: primaryColor,
@@ -446,7 +446,7 @@ class _FilterContainerState extends State<FilterContainer> {
                         title: subtitle1(
                             text: "Select All",
                             textAlign: TextAlign.start,
-                            // ignore: deprecated_member_use
+                           
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor),
@@ -483,14 +483,14 @@ class _FilterContainerState extends State<FilterContainer> {
                               title: subtitle1(
                                   text: member.name,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                   textAlign: TextAlign.start),
                               subtitle: subtitle2(
                                   text: member.identity,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                   textAlign: TextAlign.start),

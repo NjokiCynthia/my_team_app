@@ -50,7 +50,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
   void _onImagePickerClicked(ImageSource source, BuildContext context) async {
     try {
-      // ignore: deprecated_member_use
+     
       final pickedFile = await _picker.getImage(
           source: source,
           maxHeight: 300,
@@ -67,7 +67,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
   }
 
   Future<void> retrieveLostData() async {
-    // ignore: deprecated_member_use
+   
     final LostData lostData = await _picker.getLostData();
     if (lostData.isEmpty) return;
 
@@ -111,7 +111,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
         setState(() {
           _userAvatar = null;
         });
-        // ignore: deprecated_member_use
+       
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated your profile picture",
@@ -141,7 +141,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
       Navigator.of(context).pop();
       if (name != _oldName) {
         await Provider.of<Auth>(context, listen: false).updateUserName(name);
-        // ignore: deprecated_member_use
+       
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "Name successfully updated",
@@ -193,7 +193,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
       if (emailAddress != _oldEmailAddress) {
         await Provider.of<Auth>(context, listen: false)
             .updateUserEmailAddress(emailAddress);
-        // ignore: deprecated_member_use
+       
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated your email address",
@@ -239,7 +239,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
   //                   mainAxisAlignment: MainAxisAlignment.start,
   //                   children: <Widget>[
   //                     customTitle(
-  //                         text: "New Phone Number", textAlign: TextAlign.start, fontSize: 11, // ignore: deprecated_member_use
+  //                         text: "New Phone Number", textAlign: TextAlign.start, fontSize: 11,
 // color: Theme.of(context).textSelectionTheme.selectionHandleColor),
   //                   ],
   //                 ),
@@ -270,7 +270,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
   //                                     textStyle: TextStyle(
   //                                       fontFamily: 'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionTheme.selectionHandleColor*/
   //                                     ),
-  //                                     searchStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16, // ignore: deprecated_member_use
+  //                                     searchStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16,
 // color: Theme.of(context).textSelectionTheme.selectionHandleColor),
   //                                     onChanged: (countryCode) {
   //                                       setState(() {
@@ -412,7 +412,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
           ),
           actions: <Widget>[
             negativeActionDialogButton(
-                // ignore: deprecated_member_use
+               
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
@@ -476,7 +476,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
           ),
           actions: <Widget>[
             negativeActionDialogButton(
-                // ignore: deprecated_member_use
+               
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
@@ -520,13 +520,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 children: <Widget>[
                   heading1(
                       text: "Update Profile",
-                      // ignore: deprecated_member_use
+                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor),
                   subtitle2(
                       text: "Update your Chamasoft Profile",
-                      // ignore: deprecated_member_use
+                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor),
@@ -639,7 +639,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     updateText: phoneNumber,
                     icon: Icons.edit,
                     onPressed: () {
-                      // ignore: deprecated_member_use
+                     
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
                         "Coming Soon",
@@ -689,7 +689,7 @@ class InfoUpdateTile extends StatelessWidget {
       subtitle: Text(
         "$updateText",
         style: TextStyle(
-          // ignore: deprecated_member_use
+         
           color: Theme.of(context).textSelectionTheme.selectionHandleColor,
           fontSize: 20.0,
         ),
@@ -736,7 +736,7 @@ class ProfileUpdateTile extends StatelessWidget {
       subtitle: Text(
         "$updateText",
         style: TextStyle(
-          // ignore: deprecated_member_use
+         
           color: Theme.of(context).textSelectionTheme.selectionHandleColor,
           fontSize: 20.0,
         ),

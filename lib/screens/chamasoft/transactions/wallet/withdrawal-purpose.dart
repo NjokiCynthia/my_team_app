@@ -329,7 +329,7 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                           children: [
                             subtitle1(
                               text: accountName,
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -345,7 +345,7 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                                 subtitle1(
                                   text: "Account Balance ",
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                   textAlign: TextAlign.center,
@@ -356,9 +356,9 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                                 heading2(
                                   text:
                                       "${groupObject.groupCurrency} ${currencyFormat.format(balance)}",
-                                  // ignore: deprecated_member_use
+                                 
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                   textAlign: TextAlign.center,

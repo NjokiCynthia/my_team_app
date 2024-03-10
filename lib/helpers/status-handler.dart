@@ -70,7 +70,7 @@ class StatusHandler {
       ),
     );
 
-    // ignore: deprecated_member_use
+ 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
@@ -85,7 +85,7 @@ class StatusHandler {
       ),
     );
 
-    // ignore: deprecated_member_use
+
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
@@ -108,7 +108,7 @@ class StatusHandler {
       duration: Duration(milliseconds: 2500),
       content: customTitleWithWrap(text: message, textAlign: TextAlign.start),
     );
-    // ignore: deprecated_member_use
+   
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

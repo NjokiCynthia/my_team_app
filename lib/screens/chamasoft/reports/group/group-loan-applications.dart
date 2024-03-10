@@ -152,14 +152,14 @@ class GroupApplicationCard extends StatelessWidget {
                             customTitle(
                               text: application.loanName,
                               fontWeight: FontWeight.w700,
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               textAlign: TextAlign.start,
                             ),
                             subtitle2(
                                 text: "Applied By Jackie Chan",
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.start),
                           ],
@@ -187,14 +187,14 @@ class GroupApplicationCard extends StatelessWidget {
                             subtitle2(
                                 text: "Applied On",
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.start),
                             subtitle1(
                                 text: defaultDateFormat
                                     .format(application.requestDate),
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.start)
                           ],
@@ -205,14 +205,14 @@ class GroupApplicationCard extends StatelessWidget {
                           children: <Widget>[
                             subtitle1(
                               text: "${groupObject.groupCurrency} ",
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                             ),
                             customTitle(
                               text: currencyFormat.format(application.amount),
                               textAlign: TextAlign.end,
                               fontSize: 20.0,
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               fontWeight: FontWeight.w700,
                             ),

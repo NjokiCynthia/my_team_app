@@ -139,7 +139,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                       subtitle1(
                           text: widget.groupLoanName,
                           /*widget.typeLoan.loanName*/
-                          // ignore: deprecated_member_use
+                      
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -149,7 +149,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                           text:
                               "${groupObject.groupCurrency} ${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}",
 
-                          // ignore: deprecated_member_use
+                      
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -167,7 +167,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                         children: <Widget>[
                           subtitle1(
                             text: "Interest Rate: ",
-                            // ignore: deprecated_member_use
+                        
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -175,7 +175,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                           subtitle2(
                             textAlign: TextAlign.start,
                             text: widget.loanInterestRate.toString() + " %",
-                            // ignore: deprecated_member_use
+                        
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -187,7 +187,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                         children: <Widget>[
                           subtitle1(
                             text: "Repayment Period: ",
-                            // ignore: deprecated_member_use
+                        
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -195,7 +195,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                           subtitle2(
                             textAlign: TextAlign.start,
                             text: "${widget.repayementPeriod}  Month(s)",
-                            // ignore: deprecated_member_use
+                        
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -207,7 +207,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                         children: <Widget>[
                           subtitle1(
                             text: "Application Date: ",
-                            // ignore: deprecated_member_use
+                        
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -215,7 +215,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                           subtitle2(
                             textAlign: TextAlign.start,
                             text: formate2,
-                            // ignore: deprecated_member_use
+                        
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,

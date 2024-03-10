@@ -273,7 +273,7 @@ class _PinLoginState extends State<PinLogin> {
   profileName() {
     return heading2(
       text: auth.userName,
-      // ignore: deprecated_member_use
+     
       color: Theme.of(context).textSelectionTheme.selectionHandleColor,
     );
   }
@@ -319,7 +319,7 @@ class _PinLoginState extends State<PinLogin> {
     return subtitle1(
       text: "Please enter your secure pin to proceed",
       color: Theme.of(context)
-          // ignore: deprecated_member_use
+         
           .textSelectionTheme
           .selectionHandleColor
           .withOpacity(0.6),

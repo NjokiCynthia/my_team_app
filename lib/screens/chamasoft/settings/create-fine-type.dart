@@ -63,7 +63,7 @@ class _CreateFineTypeState extends State<CreateFineType> {
       );
 
       Navigator.pop(context);
-      // ignore: deprecated_member_use
+    
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully added a fine category",
@@ -76,7 +76,7 @@ class _CreateFineTypeState extends State<CreateFineType> {
     } on CustomException catch (error) {
       Navigator.pop(context);
 
-      // ignore: deprecated_member_use
+    
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error Adding the Fine Category. ${error.message} ",

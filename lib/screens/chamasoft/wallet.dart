@@ -301,7 +301,7 @@ class _WalletState extends State<Wallet> {
                         padding: EdgeInsets.symmetric(
                           horizontal: 16.0,
                         ),
-                        // ignore: deprecated_member_use
+                        
                         child: TextButton(
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.symmetric(

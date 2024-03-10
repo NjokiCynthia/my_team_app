@@ -39,7 +39,7 @@ class _TotalAccountBalanceRecieptState
     //final subject = "${widget.title}";
 
     // await Share.share([image.path] );
-    // ignore: deprecated_member_use
+   
     await Share.shareFiles([image.path], text: text);
 
     // Share.share(imageFile);
@@ -97,15 +97,15 @@ class _TotalAccountBalanceRecieptState
                             SizedBox(
                               height: 10,
                             ),
-                            // ignore: deprecated_member_use
+                           
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: heading2(
                                   text: accountName,
                                   color:
-                                      // ignore: deprecated_member_use
+                                     
                                       Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionHandleColor),
                             ),
@@ -120,7 +120,7 @@ class _TotalAccountBalanceRecieptState
                               fontSize: 22,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
-                                  // ignore: deprecated_member_use
+                                 
                                   .textSelectionTheme
                                   .selectionHandleColor,
                             ),
@@ -146,7 +146,7 @@ class _TotalAccountBalanceRecieptState
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -157,7 +157,7 @@ class _TotalAccountBalanceRecieptState
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -168,7 +168,7 @@ class _TotalAccountBalanceRecieptState
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -198,7 +198,7 @@ class _TotalAccountBalanceRecieptState
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -213,7 +213,7 @@ class _TotalAccountBalanceRecieptState
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -294,7 +294,7 @@ class _TotalAccountBalanceRecieptState
                               fontSize: 18,
                               fontWeight: FontWeight.w300,
                               color: Theme.of(context)
-                                  // ignore: deprecated_member_use
+                                 
                                   .textSelectionTheme
                                   .selectionHandleColor,
                             ),
@@ -335,7 +335,7 @@ class _TotalAccountBalanceRecieptState
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -377,7 +377,7 @@ class _TotalAccountBalanceRecieptState
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionColor,
                               ),

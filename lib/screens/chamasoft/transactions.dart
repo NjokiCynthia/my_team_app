@@ -69,6 +69,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
   final recordMemberLoan = GlobalKey();
   final recordRepaymentKey = GlobalKey();
   final bankLoanRepaymentKey = GlobalKey();
+  final loanApprovalKey = GlobalKey();
   final fineMemberKey = GlobalKey();
   final accountTransferKey = GlobalKey();
   final sendToMobileKey = GlobalKey();
@@ -256,6 +257,30 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
         ];
 
         List<Widget> loanOptions = [
+          SizedBox(
+            width: 16.0,
+          ),
+          customShowCase(
+            key: loanApprovalKey,
+            description: "Approve loans applied by members",
+            child: Container(
+                width: 132.0,
+                child: svgGridButton(
+                    context: context,
+                    icon: customIcons['couple'],
+                    title: 'REVIEW',
+                    subtitle: 'LOANS',
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
+                    isHighlighted: false,
+                    action: () {},
+                    //  () => Navigator.of(context).push(MaterialPageRoute(
+                    //     builder: (BuildContext context) => BankLoanRepayment(),
+                    //     settings: RouteSettings(arguments: 0))),
+                    margin: 0,
+                    imageHeight: 100.0)),
+          ),
           SizedBox(
             width: 16.0,
           ),
@@ -1043,7 +1068,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                                                   .paymentTitle,
                                                               color: Theme.of(
                                                                       context)
-                                                                  // ignore: deprecated_member_use
+                                                                 
                                                                   .textSelectionTheme
                                                                   .selectionHandleColor,
                                                               textAlign:
@@ -1054,7 +1079,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                                                   .description,
                                                               color: Theme.of(
                                                                       context)
-                                                                  // ignore: deprecated_member_use
+                                                                 
                                                                   .textSelectionTheme
                                                                   .selectionHandleColor,
                                                               textAlign:
@@ -1066,7 +1091,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                                                   " Payment",
                                                               color: Theme.of(
                                                                       context)
-                                                                  // ignore: deprecated_member_use
+                                                                 
                                                                   .textSelectionTheme
                                                                   .selectionHandleColor,
                                                               textAlign:
@@ -1090,7 +1115,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                                               transaction
                                                                   .paymentAmount),
                                                       color: Theme.of(context)
-                                                          // ignore: deprecated_member_use
+                                                         
                                                           .textSelectionTheme
                                                           .selectionHandleColor,
                                                       textAlign:
@@ -1099,7 +1124,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                                       text: transaction
                                                           .paymentDate,
                                                       color: Theme.of(context)
-                                                          // ignore: deprecated_member_use
+                                                         
                                                           .textSelectionTheme
                                                           .selectionHandleColor,
                                                       textAlign:

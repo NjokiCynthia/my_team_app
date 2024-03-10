@@ -168,7 +168,7 @@ class _ForgotPasswordVerificationState
     final snackBar = SnackBar(
         content: subtitle2(
             text: "Resending verification code", textAlign: TextAlign.start));
-    // ignore: deprecated_member_use
+   
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
     try {
       await Provider.of<Auth>(context, listen: false)
@@ -177,7 +177,7 @@ class _ForgotPasswordVerificationState
           content: subtitle2(
               text: "Verification code has been sent",
               textAlign: TextAlign.start));
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       _start = 60;
       _countDownTimer();
@@ -237,14 +237,14 @@ class _ForgotPasswordVerificationState
                           subtitle2(
                               text: "A verification code has been sent to",
                               color:
-                                  // ignore: deprecated_member_use
+                                 
                                   Theme.of(context)
                                       .textSelectionTheme
                                       .selectionHandleColor),
                           customTitle(
                               text: _identity,
                               color:
-                                  // ignore: deprecated_member_use
+                                 
                                   Theme.of(context)
                                       .textSelectionTheme
                                       .selectionHandleColor),
@@ -254,7 +254,7 @@ class _ForgotPasswordVerificationState
                           subtitle2(
                               text: "Enter your code here",
                               color:
-                                  // ignore: deprecated_member_use
+                                 
                                   Theme.of(context)
                                       .textSelectionTheme
                                       .selectionHandleColor),
@@ -265,7 +265,7 @@ class _ForgotPasswordVerificationState
                               decoration: UnderlineDecoration(
                                 colorBuilder: PinListenColorBuilder(
                                     primaryColor,
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context)
                                         .textSelectionTheme
                                         .selectionHandleColor),
@@ -317,14 +317,14 @@ class _ForgotPasswordVerificationState
                             children: <Widget>[
                               Icon(LineAwesomeIcons.clock_1,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor),
                               subtitle1(
                                   text:
                                       _start > 9 ? "00:$_start" : "00:0$_start",
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor),
                               SizedBox(width: 20),
@@ -336,7 +336,7 @@ class _ForgotPasswordVerificationState
                                     color: _enableResend
                                         ? primaryColor
                                         : Theme.of(context)
-                                            // ignore: deprecated_member_use
+                                           
                                             .textSelectionTheme
                                             .selectionHandleColor,
                                     fontWeight: FontWeight.w700,

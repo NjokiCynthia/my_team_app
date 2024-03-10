@@ -97,7 +97,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   ),
                   heading1(
                       text: Config.appName,
-                      // ignore: deprecated_member_use
+                  
                       color: Theme.of(context).primaryColor),
                   SizedBox(
                     height: 10,

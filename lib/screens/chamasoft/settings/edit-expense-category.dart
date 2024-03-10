@@ -105,7 +105,7 @@ class _EditExpenseCategoryState extends State<EditExpenseCategory> {
     } on CustomException catch (error) {
       Navigator.pop(context);
 
-      // ignore: deprecated_member_use
+      
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error updating the Expense Category. ${error.message} ",

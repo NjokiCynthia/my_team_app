@@ -288,7 +288,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
                                           color: Theme.of(context)
-                                              // ignore: deprecated_member_use
+                                             
                                               .textSelectionTheme
                                               .selectionHandleColor,
                                         ),
@@ -301,7 +301,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                                     .groupContributionAmount),
                                             size: 14.0,
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
+                                               
                                                 .textSelectionTheme
                                                 .selectionHandleColor,
                                             action: () => Navigator.of(context)
@@ -329,7 +329,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
                                           color: Theme.of(context)
-                                              // ignore: deprecated_member_use
+                                             
                                               .textSelectionTheme
                                               .selectionHandleColor,
                                         ),
@@ -342,7 +342,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                                       .groupFinePaymentAmount),
                                               size: 14.0,
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               action: () => Navigator.of(
@@ -369,7 +369,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.w400,
                                           color: Theme.of(context)
-                                              // ignore: deprecated_member_use
+                                             
                                               .textSelectionTheme
                                               .selectionHandleColor,
                                         ),
@@ -571,7 +571,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
                                           color: Theme.of(context)
-                                              // ignore: deprecated_member_use
+                                             
                                               .textSelectionTheme
                                               .selectionHandleColor,
                                         ),
@@ -584,7 +584,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                                       .groupLoanedAmount),
                                               size: 16.0,
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               action: () => Navigator.of(
@@ -608,7 +608,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.w400,
                                           color: Theme.of(context)
-                                              // ignore: deprecated_member_use
+                                             
                                               .textSelectionTheme
                                               .selectionHandleColor,
                                         ),
@@ -620,7 +620,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                                   dashboardData.groupLoanPaid),
                                               size: 16.0,
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               action: () => Navigator.of(
@@ -644,7 +644,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.w400,
                                           color: Theme.of(context)
-                                              // ignore: deprecated_member_use
+                                             
                                               .textSelectionTheme
                                               .selectionHandleColor,
                                         ),
@@ -657,7 +657,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                                       .groupPendingLoanBalance),
                                               size: 16.0,
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               action: () => Navigator.of(

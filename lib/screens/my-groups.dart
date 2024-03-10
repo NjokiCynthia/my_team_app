@@ -130,21 +130,21 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
           title: heading2(
             text: "Logout",
             textAlign: TextAlign.start,
-            // ignore: deprecated_member_use
+           
             color: Theme.of(context).textSelectionTheme.selectionHandleColor,
           ),
           content: customTitleWithWrap(
             text:
                 "Are you sure you want to log out? You'll have to login again to continue.",
             textAlign: TextAlign.start,
-            // ignore: deprecated_member_use
+           
             color: Theme.of(context).textSelectionTheme.selectionHandleColor,
             maxLines: null,
           ),
           actions: <Widget>[
             negativeActionDialogButton(
               text: "Cancel",
-              // ignore: deprecated_member_use
+             
               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               action: () async {
                 if (Config.appName.toLowerCase() == "chamasoft") {
@@ -157,7 +157,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                 }
               },
             ),
-            // ignore: deprecated_member_use
+           
             TextButton(
               style: TextButton.styleFrom(
                 padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
@@ -222,14 +222,14 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                   children: [
                     heading1(
                       text: "My Groups",
-                      // ignore: deprecated_member_use
+                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,
                     ),
                     subtitle1(
                       text: "All groups I belong to",
-                      // ignore: deprecated_member_use
+                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,
@@ -261,7 +261,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                     ),
                     heading2(
                       text: auth.userName,
-                      // ignore: deprecated_member_use
+                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,
@@ -269,7 +269,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                     subtitle1(
                       text: auth.phoneNumber,
                       color: Theme.of(context)
-                          // ignore: deprecated_member_use
+                         
                           .textSelectionTheme
                           .selectionHandleColor
                           .withOpacity(0.6),
@@ -433,7 +433,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                     ),
                     // Align(
                     //   alignment: Alignment.bottomRight,
-                    //   // ignore: deprecated_member_use
+                    //  
                     //   child: RaisedButton(
                     //     onPressed: () => {
                     //       // Navigator.push(

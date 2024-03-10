@@ -150,7 +150,7 @@ class MyLoansCard extends StatelessWidget {
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16.0,
-                            // ignore: deprecated_member_use
+                           
                             color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                           ),
                           textAlign: TextAlign.start,
@@ -180,14 +180,14 @@ class MyLoansCard extends StatelessWidget {
                             subtitle2(
                                 text: "Applied On",
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.start),
                             subtitle1(
                                 text: defaultDateFormat
                                     .format(application.requestDate),
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.start)
                           ],
@@ -201,7 +201,7 @@ class MyLoansCard extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 16.0,
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -212,7 +212,7 @@ class MyLoansCard extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 20.0,
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 fontWeight: FontWeight.w700,
                               ),

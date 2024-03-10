@@ -45,7 +45,7 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
   final Permission _permission = Permission.contacts;
   PermissionStatus _permissionStatus = PermissionStatus.denied;
   // undetermined
-  // ignore: deprecated_member_use
+ 
   //List<CustomContact> _contacts = new List<CustomContact>();
   List<CustomContact> _contacts = <CustomContact>[];
 
@@ -180,7 +180,7 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
           backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
               text: "Set Recipient Contact",
-              // ignore: deprecated_member_use
+             
               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               textAlign: TextAlign.start),
           content: TextFormField(
@@ -188,7 +188,7 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
             style: inputTextStyle(),
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
-              // ignore: deprecated_member_use
+             
               FilteringTextInputFormatter.digitsOnly
             ],
             decoration: InputDecoration(
@@ -205,7 +205,7 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
           actions: <Widget>[
             negativeActionDialogButton(
                 text: "Cancel",
-                // ignore: deprecated_member_use
+               
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {

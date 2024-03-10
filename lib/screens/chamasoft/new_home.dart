@@ -1357,7 +1357,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                   ),
                                 ),
                                 Visibility(
-                                  visible: false,
+                                  visible: true,
                                   child: Expanded(
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(
@@ -1401,7 +1401,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 //     customTitle1(
                                 //       text: 'Make Payment',
                                 //       color: Theme.of(context)
-                                //           // ignore: deprecated_member_use
+                                //          
                                 //           .textSelectionHandleColor,
                                 //       textAlign: TextAlign.start,
                                 //       fontSize: 16,
@@ -1430,7 +1430,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 //       customTitle1(
                                 //         text: 'Apply Loan',
                                 //         color: Theme.of(context)
-                                //             // ignore: deprecated_member_use
+                                //            
                                 //             .textSelectionHandleColor,
                                 //         textAlign: TextAlign.start,
                                 //         fontSize: 16,
@@ -1480,9 +1480,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 description:
                                     'Scroll Horizontal to View all your recent Transactions',
                                 textColor:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context)
-                                        // ignore: deprecated_member_use
+                                       
                                         .textSelectionTheme
                                         .selectionHandleColor,
                                 child: Container(
@@ -2003,7 +2003,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                     showLegends: false,
                                     legendTextStyle: TextStyle(
                                         fontWeight: FontWeight.w500,
-                                        // ignore: deprecated_member_use
+                                       
                                         color: Theme.of(context)
                                             .textSelectionTheme
                                             .selectionHandleColor),
@@ -2018,11 +2018,11 @@ class _ContrubutionsState extends State<Contrubutions> {
                                       fontFamily: 'SegoeUI',
                                       fontSize: 14.0,
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionColor,
                                       fontWeight: FontWeight.w500,
-                                      // ignore: deprecated_member_use
+                                     
                                       /* color: Colors.black */
                                     ),
                                   ),
@@ -2037,7 +2037,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
                                     color: Theme.of(context)
-                                        // ignore: deprecated_member_use
+                                       
                                         .textSelectionTheme
                                         .selectionHandleColor,
                                   ),
@@ -2083,7 +2083,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                                                                   ? Colors.red[400]
                                                                                   : */
                                                   Theme.of(context)
-                                                      // ignore: deprecated_member_use
+                                                     
                                                       .textSelectionTheme
                                                       .selectionHandleColor,
                                               textAlign: TextAlign.start,
@@ -2114,7 +2114,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                           ? Colors.red[400]
                                           : */
                                               Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                           textAlign: TextAlign.start,
@@ -2134,7 +2134,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                     ),
@@ -2162,7 +2162,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                             ),
                                             customTitle1(
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               text: _currentGroup
@@ -2195,7 +2195,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                               //   ),
                                               customTitle1(
                                                 color: Theme.of(context)
-                                                    // ignore: deprecated_member_use
+                                                   
                                                     .textSelectionTheme
                                                     .selectionHandleColor,
                                                 text: _currentGroup
@@ -2271,7 +2271,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                           textAlign: TextAlign.start,
                                           fontWeight: FontWeight.w400,
                                           color: Theme.of(context)
-                                              // ignore: deprecated_member_use
+                                             
                                               .textSelectionTheme
                                               .selectionHandleColor,
                                         ),
@@ -2309,7 +2309,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                                           0
                                                       ? Colors.green
                                                       : Theme.of(context)
-                                                          // ignore: deprecated_member_use
+                                                         
                                                           .textSelectionTheme
                                                           .selectionHandleColor,
                                           textAlign: TextAlign.start,
@@ -2329,7 +2329,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                         textAlign: TextAlign.start,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
-                                            // ignore: deprecated_member_use
+                                           
                                             .textSelectionTheme
                                             .selectionHandleColor,
                                       ),
@@ -2345,7 +2345,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                                                 "${/* defaultDateFormat.format */ (nextContributionDateFormatted)} (${dashboardContributionSummary.contributionDateDaysleft == "0 days" ? "today" : dashboardContributionSummary.contributionDateDaysleft != null ? "${dashboardContributionSummary.contributionDateDaysleft} left" : "--"})",
                                             // "${dashboardData.nextcontributionDate} (${(dashboardData.contributionDateDaysleft == "0 days" ? "today" : dashboardData.contributionDateDaysleft != null ? '${dashboardData.contributionDateDaysleft} left' : "--")})",
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
+                                               
                                                 .textSelectionTheme
                                                 .selectionHandleColor,
                                             textAlign: TextAlign.start,
@@ -2565,7 +2565,7 @@ class _FinesState extends State<Fines> {
                                   showLegends: false,
                                   legendTextStyle: TextStyle(
                                       fontWeight: FontWeight.w500,
-                                      // ignore: deprecated_member_use
+                                     
                                       color: Theme.of(context)
                                           .textSelectionTheme
                                           .selectionHandleColor),
@@ -2580,9 +2580,9 @@ class _FinesState extends State<Fines> {
                                         fontFamily: 'SegoeUI',
                                         fontSize: 14.0,
                                         fontWeight: FontWeight.w500,
-                                        // ignore: deprecated_member_use
+                                       
                                         color: Theme.of(context)
-                                            // ignore: deprecated_member_use
+                                           
                                             .textSelectionTheme
                                             .selectionHandleColor)),
                               ),
@@ -2596,7 +2596,7 @@ class _FinesState extends State<Fines> {
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionColor,
                                 ),
@@ -2638,7 +2638,7 @@ class _FinesState extends State<Fines> {
                                         ? Colors.red[400]
                                         : */
                                                 Theme.of(context)
-                                                    // ignore: deprecated_member_use
+                                                   
                                                     .textSelectionTheme
                                                     .selectionHandleColor,
                                             textAlign: TextAlign.start,
@@ -2665,7 +2665,7 @@ class _FinesState extends State<Fines> {
                                     ? Colors.red[400]
                                     :  */
                                             Theme.of(context)
-                                                // ignore: deprecated_member_use
+                                               
                                                 .textSelectionTheme
                                                 .selectionHandleColor,
                                         textAlign: TextAlign.start,
@@ -2685,7 +2685,7 @@ class _FinesState extends State<Fines> {
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
                                     color: Theme.of(context)
-                                        // ignore: deprecated_member_use
+                                       
                                         .textSelectionTheme
                                         .selectionHandleColor,
                                   ),
@@ -2708,7 +2708,7 @@ class _FinesState extends State<Fines> {
                                             ),
                                             customTitle1(
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               text: _currentGroup
@@ -2726,7 +2726,7 @@ class _FinesState extends State<Fines> {
                                         )
                                       : customTitle1(
                                           color: Theme.of(context)
-                                              // ignore: deprecated_member_use
+                                             
                                               .textSelectionTheme
                                               .selectionHandleColor,
                                           text: _currentGroup.groupCurrency +
@@ -2777,7 +2777,7 @@ class _FinesState extends State<Fines> {
                                         textAlign: TextAlign.start,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
-                                            // ignore: deprecated_member_use
+                                           
                                             .textSelectionTheme
                                             .selectionHandleColor,
                                       ),
@@ -2809,7 +2809,7 @@ class _FinesState extends State<Fines> {
                                                     0
                                                 ? Colors.green
                                                 : Theme.of(context)
-                                                    // ignore: deprecated_member_use
+                                                   
                                                     .textSelectionTheme
                                                     .selectionHandleColor,
                                         textAlign: TextAlign.start,
@@ -2997,7 +2997,7 @@ class _BalancesState extends State<Balances> {
                                       showLegends: false,
                                       legendTextStyle: TextStyle(
                                           fontWeight: FontWeight.w500,
-                                          // ignore: deprecated_member_use
+                                         
                                           color: Theme.of(context)
                                               .textSelectionTheme
                                               .selectionHandleColor),
@@ -3012,9 +3012,9 @@ class _BalancesState extends State<Balances> {
                                             fontFamily: 'SegoeUI',
                                             fontSize: 14.0,
                                             fontWeight: FontWeight.w500,
-                                            // ignore: deprecated_member_use
+                                           
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
+                                               
                                                 .textSelectionTheme
                                                 .selectionColor)),
                                   ),
@@ -3028,7 +3028,7 @@ class _BalancesState extends State<Balances> {
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                     ),
@@ -3074,7 +3074,7 @@ class _BalancesState extends State<Balances> {
                                                             loanDashboardSummary
                                                                 .totalLoanAmount),
                                                 color: Theme.of(context)
-                                                    // ignore: deprecated_member_use
+                                                   
                                                     .textSelectionTheme
                                                     .selectionHandleColor,
                                                 textAlign: TextAlign.start,
@@ -3098,7 +3098,7 @@ class _BalancesState extends State<Balances> {
                                                         loanDashboardSummary
                                                             .totalLoanAmount),
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
+                                               
                                                 .textSelectionTheme
                                                 .selectionHandleColor,
                                             textAlign: TextAlign.start,
@@ -3118,7 +3118,7 @@ class _BalancesState extends State<Balances> {
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
-                                            // ignore: deprecated_member_use
+                                           
                                             .textSelectionTheme
                                             .selectionHandleColor,
                                       ),
@@ -3149,7 +3149,7 @@ class _BalancesState extends State<Balances> {
                                                 ),
                                                 customTitle1(
                                                   color: Theme.of(context)
-                                                      // ignore: deprecated_member_use
+                                                     
                                                       .textSelectionTheme
                                                       .selectionHandleColor,
                                                   text: _currentGroup
@@ -3167,7 +3167,7 @@ class _BalancesState extends State<Balances> {
                                             )
                                           : customTitle1(
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               text: _currentGroup
@@ -3224,7 +3224,7 @@ class _BalancesState extends State<Balances> {
                                             textAlign: TextAlign.start,
                                             fontWeight: FontWeight.w400,
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
+                                               
                                                 .textSelectionTheme
                                                 .selectionHandleColor,
                                           ),
@@ -3258,7 +3258,7 @@ class _BalancesState extends State<Balances> {
                                                         0
                                                     ? Colors.green
                                                     : Theme.of(context)
-                                                        // ignore: deprecated_member_use
+                                                       
                                                         .textSelectionTheme
                                                         .selectionHandleColor,
                                             textAlign: TextAlign.start,
@@ -3278,7 +3278,7 @@ class _BalancesState extends State<Balances> {
                                           textAlign: TextAlign.start,
                                           fontWeight: FontWeight.w400,
                                           color: Theme.of(context)
-                                              // ignore: deprecated_member_use
+                                             
                                               .textSelectionTheme
                                               .selectionHandleColor,
                                         ),
@@ -3300,7 +3300,7 @@ class _BalancesState extends State<Balances> {
                                                               .abs()),
                                               // "${dashboardData.nextcontributionDate} (${(dashboardData.contributionDateDaysleft == "0 days" ? "today" : dashboardData.contributionDateDaysleft != null ? '${dashboardData.contributionDateDaysleft} left' : "--")})",
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               textAlign: TextAlign.start,
@@ -3321,7 +3321,7 @@ class _BalancesState extends State<Balances> {
                                           textAlign: TextAlign.start,
                                           fontWeight: FontWeight.w400,
                                           color: Theme.of(context)
-                                              // ignore: deprecated_member_use
+                                             
                                               .textSelectionTheme
                                               .selectionHandleColor,
                                         ),
@@ -3336,7 +3336,7 @@ class _BalancesState extends State<Balances> {
 
                                               // "${dashboardData.nextcontributionDate} (${(dashboardData.contributionDateDaysleft == "0 days" ? "today" : dashboardData.contributionDateDaysleft != null ? '${dashboardData.contributionDateDaysleft} left' : "--")})",
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               textAlign: TextAlign.start,
@@ -3581,7 +3581,7 @@ class _ExpensesState extends State<Expenses> {
                             showLegends: false,
                             legendTextStyle: TextStyle(
                                 fontWeight: FontWeight.w500,
-                                // ignore: deprecated_member_use
+                               
                                 color: Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor),
@@ -3596,9 +3596,9 @@ class _ExpensesState extends State<Expenses> {
                                   fontFamily: 'SegoeUI',
                                   fontSize: 14.0,
                                   fontWeight: FontWeight.w500,
-                                  // ignore: deprecated_member_use
+                                 
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionColor)),
                         ),
@@ -3623,7 +3623,7 @@ class _ExpensesState extends State<Expenses> {
                             fontSize: 13,
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context)
-                                // ignore: deprecated_member_use
+                               
                                 .textSelectionTheme
                                 .selectionHandleColor,
                           ),
@@ -3663,7 +3663,7 @@ class _ExpensesState extends State<Expenses> {
                                         " " +
                                         ("(${(((_expenseSummary.newExpensesSummariesList.length > 0 ? _expenseSummary.newExpensesSummariesList[0].expenseAmount : 0) / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionHandleColor,
                                 textAlign: TextAlign.start,
@@ -3697,7 +3697,7 @@ class _ExpensesState extends State<Expenses> {
                                   fontSize: 13,
                                   fontWeight: FontWeight.w400,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 )
@@ -3728,7 +3728,7 @@ class _ExpensesState extends State<Expenses> {
                                     ),
                                     customTitle1(
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                       text: _currentGroup.groupCurrency +
@@ -3780,7 +3780,7 @@ class _ExpensesState extends State<Expenses> {
                                   fontSize: 13,
                                   fontWeight: FontWeight.w400,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 )
@@ -3810,7 +3810,7 @@ class _ExpensesState extends State<Expenses> {
                                     ),
                                     customTitle1(
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                       text: _currentGroup.groupCurrency +
@@ -3845,7 +3845,7 @@ class _ExpensesState extends State<Expenses> {
                           //   fontSize: 13,
                           //   fontWeight: FontWeight.w400,
                           //   color: Theme.of(context)
-                          //       // ignore: deprecated_member_use
+                          //      
                           //       .textSelectionHandleColor,
                           // ),
                           // SizedBox(height: 5),
@@ -3866,7 +3866,7 @@ class _ExpensesState extends State<Expenses> {
                           //     ),
                           //     customTitle1(
                           //       color: Theme.of(context)
-                          //           // ignore: deprecated_member_use
+                          //          
                           //           .textSelectionHandleColor,
                           //       text: _currentGroup.groupCurrency +
                           //           " " +
@@ -3888,7 +3888,7 @@ class _ExpensesState extends State<Expenses> {
                                   fontSize: 13,
                                   fontWeight: FontWeight.w400,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 )
@@ -3914,7 +3914,7 @@ class _ExpensesState extends State<Expenses> {
                                     ),
                                     customTitle1(
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                       text: _currentGroup.groupCurrency +

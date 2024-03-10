@@ -108,7 +108,7 @@ class SelectMemberState extends State<SelectMember> {
                 color: isSelected
                     ? primaryColor
                     : Theme.of(context)
-                        // ignore: deprecated_member_use
+                       
                         .textSelectionTheme
                         .selectionHandleColor,
               ),
@@ -120,7 +120,7 @@ class SelectMemberState extends State<SelectMember> {
                 color: isSelected
                     ? primaryColor
                     : Theme.of(context)
-                        // ignore: deprecated_member_use
+                       
                         .textSelectionTheme
                         .selectionHandleColor,
               ),
@@ -138,7 +138,7 @@ class SelectMemberState extends State<SelectMember> {
                 backgroundColor: isSelected
                     ? primaryColor
                     : Theme.of(context)
-                        // ignore: deprecated_member_use
+                       
                         .textSelectionTheme
                         .selectionHandleColor,
                 child: Text(
@@ -189,7 +189,7 @@ class SelectMemberState extends State<SelectMember> {
                   backgroundColor: Theme.of(context).backgroundColor,
                   title: new Text("Please select a member"),
                   actions: <Widget>[
-                    // ignore: deprecated_member_use
+                   
                     new TextButton(
                       child: new Text(
                         "OK",

@@ -64,7 +64,7 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
         message = "${incomeCategory.name} has been deleted";
       }
 
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         message,
@@ -145,7 +145,7 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                           text: "Edit",
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
@@ -172,7 +172,7 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                           text: incomeCategory.isHidden ? "UnHide" : "Hide",
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
@@ -195,7 +195,7 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                           text: "Delete",
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
@@ -300,7 +300,7 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                                                 text: '${incomeCategory.name}',
                                                 textAlign: TextAlign.start,
                                                 color: Theme.of(context)
-                                                    // ignore: deprecated_member_use
+                                                   
                                                     .textSelectionTheme.selectionHandleColor,
                                               ),
                                               Visibility(
@@ -310,7 +310,7 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                                                   text:
                                                       '${incomeCategory.description}',
                                                   color: Theme.of(context)
-                                                      // ignore: deprecated_member_use
+                                                     
                                                       .textSelectionTheme.selectionHandleColor,
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: 12.0,
@@ -321,7 +321,7 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                                                 text:
                                                     '${incomeCategory.isHidden ? "Hidden" : "Active"}',
                                                 color: Theme.of(context)
-                                                    // ignore: deprecated_member_use
+                                                   
                                                     .textSelectionTheme.selectionHandleColor,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 12.0,

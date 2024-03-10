@@ -134,7 +134,7 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                     children: <Widget>[
                       subtitle1(
                           text: _loanProduct.name /*widget.typeLoan.loanName*/,
-                          // ignore: deprecated_member_use
+                          
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -144,7 +144,7 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                           text:
                               "${groupObject.groupCurrency} ${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}",
                           //generalAmount.toString(),
-                          // ignore: deprecated_member_use
+                          
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -162,7 +162,7 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                         children: <Widget>[
                           subtitle1(
                             text: "Interest Rate: ",
-                            // ignore: deprecated_member_use
+                            
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -170,7 +170,7 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                           subtitle2(
                             textAlign: TextAlign.start,
                             text: _loanProduct.description,
-                            // ignore: deprecated_member_use
+                            
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -182,7 +182,7 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                         children: <Widget>[
                           subtitle1(
                             text: "Repayment Period: ",
-                            // ignore: deprecated_member_use
+                            
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -190,7 +190,7 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                           subtitle2(
                             textAlign: TextAlign.start,
                             text: "${widget.repaymentPeriod} Month(s)",
-                            // ignore: deprecated_member_use
+                            
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -202,7 +202,7 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                         children: <Widget>[
                           subtitle1(
                             text: "Application Date: ",
-                            // ignore: deprecated_member_use
+                            
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -210,7 +210,7 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                           subtitle2(
                             textAlign: TextAlign.start,
                             text: formate2,
-                            // ignore: deprecated_member_use
+                            
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,

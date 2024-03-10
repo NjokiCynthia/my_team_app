@@ -70,7 +70,7 @@ class _FilterStatementsState extends State<FilterStatements> {
           ),
           subtitle1(
               text: "Filter " + defaultTitle,
-              // ignore: deprecated_member_use
+             
               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               textAlign: TextAlign.start),
           SizedBox(
@@ -78,7 +78,7 @@ class _FilterStatementsState extends State<FilterStatements> {
           ),
           subtitle2(
               text: "Select " + single,
-              // ignore: deprecated_member_use
+             
               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               textAlign: TextAlign.start),
           FilterButton(
@@ -89,7 +89,7 @@ class _FilterStatementsState extends State<FilterStatements> {
           ),
           subtitle2(
               text: "Statement Period",
-              // ignore: deprecated_member_use
+             
               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               textAlign: TextAlign.start),
           Row(
@@ -103,7 +103,7 @@ class _FilterStatementsState extends State<FilterStatements> {
                 margin: EdgeInsets.only(left: 10.0, right: 10.0),
                 child: subtitle2(
                     text: "to",
-                    // ignore: deprecated_member_use
+                   
                     color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                     textAlign: TextAlign.start),
               ),
@@ -113,7 +113,7 @@ class _FilterStatementsState extends State<FilterStatements> {
               ),
             ],
           ),
-          // ignore: deprecated_member_use
+         
           // RaisedButton(
           //   color: primaryColor,
           //   child: Padding(
@@ -151,7 +151,7 @@ class FilterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: deprecated_member_use
+   
     // return OutlineButton(
     //     child: subtitle1(
     //         text: text, color: primaryColor, textAlign: TextAlign.center),

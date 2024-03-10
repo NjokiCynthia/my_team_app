@@ -96,13 +96,13 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                 children: <Widget>[
                   heading1(
                       text: "${widget.member.name}'s Profile",
-                      // ignore: deprecated_member_use
+                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor),
                   subtitle2(
                       text: "${groupObject.groupName} Member Profile",
-                      // ignore: deprecated_member_use
+                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor),
@@ -157,7 +157,7 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         text: "Name",
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
@@ -165,7 +165,7 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         text: widget.member.name,
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
@@ -175,7 +175,7 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         text: "Phone Number",
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
@@ -183,7 +183,7 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         text: widget.member.phone,
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
@@ -193,7 +193,7 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         text: "Email Address",
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
@@ -201,7 +201,7 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         text: widget.member.email,
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
@@ -211,7 +211,7 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         text: "Last Seen",
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
@@ -219,7 +219,7 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         text: widget.member.lastSeen,
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
@@ -235,7 +235,7 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         //"Total Contributions",
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
@@ -244,7 +244,7 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                             '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.contributions)}',
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
@@ -254,7 +254,7 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         text: "Contribution Arrears",
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
@@ -263,7 +263,7 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                             '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.contributionArrears)}',
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
@@ -279,7 +279,7 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         //"Total Fines",
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
@@ -288,7 +288,7 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                             '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.fines)}',
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
@@ -298,7 +298,7 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         text: "Fines Arrears",
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
@@ -307,7 +307,7 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                             '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.fineArrears)}',
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
@@ -317,7 +317,7 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                         text: "Loan Balance",
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
@@ -326,7 +326,7 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                             '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.loanBalance)}',
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),

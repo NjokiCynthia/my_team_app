@@ -7,6 +7,8 @@ import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-for-individual-amt-loan.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-amt.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-chamasoft.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-group.dart';
 // import 'package:chamasoft/helpers/theme.dart';
@@ -39,7 +41,8 @@ class ApplyLoanState extends State<ApplyLoan> {
   ScrollController _scrollController = ScrollController();
 
   bool _isFromGroupActive = true;
-  bool _isFromChamasoftActive = false;
+  bool _isFromAmt = false;
+  bool _isFromAmtIndividual = false;
   bool _isInit = true;
   bool _isLoading = true;
 
@@ -64,7 +67,7 @@ class ApplyLoanState extends State<ApplyLoan> {
     _scrollController.addListener(_scrollListener);
     setState(() {
       _isInit = widget.isInit;
-      _isFromChamasoftActive = widget.isFromChamasoftActive;
+      _isFromAmt = widget.isFromChamasoftActive;
       _isFromGroupActive = widget.isFromGroupActive;
       if (!_isInit) {
         _isLoading = false;
@@ -80,51 +83,60 @@ class ApplyLoanState extends State<ApplyLoan> {
     super.dispose();
   }
 
-  @override
-  void didChangeDependencies() {
-    // get the loan products
-    if (_isInit)
-      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   if (_isInit) {
+  //     _fetchDefaultValues(context);
+  //   }
+  //   super.didChangeDependencies();
+  // }
+  // @override
+  // void didChangeDependencies() {
+  //   // get the loan products
+  //   if (_isInit)
+  //     WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+  //   super.didChangeDependencies();
+  // }
 
   // fetch loan products
-  Future<void> _fetchLoanProducts(BuildContext context) async {
-    try {
-      // get the form data
-      Provider.of<Groups>(context, listen: false)
-          .loadInitialFormData(member: true, loanTypes: true)
-          .then((value) {
-        // get the loan products
-        Provider.of<ChamasoftLoans>(context, listen: false)
-            .fetchLoanProducts()
-            .then((loanProducts) {
-          setState(() {
-            _loanProducts = loanProducts;
-            _formLoadData = value;
-            _isInit = false;
-            _isLoading = false;
-            _loanTypes = Provider.of<Groups>(context, listen: false).loanTypes;
-          });
-        });
-      });
-    } on CustomException catch (error) {
-      StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            _fetchLoanProducts(context);
-          },
-          scaffoldState: _scaffoldKey.currentState);
-    }
-  }
+  // Future<void> _fetchLoanProducts(BuildContext context) async {
+  //   try {
+  //     // get the form data
+  //     Provider.of<Groups>(context, listen: false)
+  //         .loadInitialFormData(member: true, loanTypes: true)
+  //         .then((value) {
+  //       // get the loan products
+  //       Provider.of<ChamasoftLoans>(context, listen: false)
+  //           .fetchLoanProducts()
+  //           .then((loanProducts) {
+  //         setState(() {
+  //           _loanProducts = loanProducts;
+  //           _formLoadData = value;
+  //           _isInit = false;
+  //           _isLoading = false;
+  //           _loanTypes = Provider.of<Groups>(context, listen: false).loanTypes;
+  //         });
+  //       });
+  //     });
+  //   } on CustomException catch (error) {
+  //     StatusHandler().handleStatus(
+  //         context: context,
+  //         error: error,
+  //         callback: () {
+  //           _fetchLoanProducts(context);
+  //         },
+  //         scaffoldState: _scaffoldKey.currentState);
+  //   }
+  // }
 
-  Future<bool> _fetchData() async {
-    // fetch loan products
-    return _fetchLoanProducts(context).then((value) => true);
-  }
+  // Future<bool> _fetchData() async {
+  //   // fetch loan products
+  //   return _fetchLoanProducts(context).then((value) => true);
+  // }
 
   final formKey = new GlobalKey<FormState>();
+
+  final ValueNotifier<int> _tabIndexBasicToggle = ValueNotifier(1);
   @override
   Widget build(BuildContext context) {
     // LoanType typeLoan;
@@ -149,7 +161,7 @@ class ApplyLoanState extends State<ApplyLoan> {
             backgroundColor: (themeChangeProvider.darkTheme)
                 ? Colors.blueGrey[800]
                 : Colors.white,
-            onRefresh: () => _fetchData(),
+            //onRefresh: () => _fetchData(),
             child: GestureDetector(
               onTap: () {
                 FocusScope.of(context).unfocus();
@@ -170,39 +182,114 @@ class ApplyLoanState extends State<ApplyLoan> {
                                 height: 0.0,
                               ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                          child: FlutterToggleTab(
-                            width: 55.0,
-                            height: MediaQuery.of(context).size.height * 0.04,
-                            borderRadius: 10.0,
-                            labels: ['From Group', 'From ChamaSoft'],
-                            selectedIndex: 0,
-                            selectedLabelIndex: (index) {
-                              setState(() {
-                                if (index == 0) {
-                                  _isFromGroupActive = true;
-                                  _isFromChamasoftActive = false;
-                                }
-                                if (index == 1) {
-                                  _isFromChamasoftActive = true;
-                                  _isFromGroupActive = false;
-                                }
-                              });
-                            },
-                            selectedBackgroundColors: [Colors.grey],
-                            unSelectedBackgroundColors: [Colors.white70],
-                            selectedTextStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12.0,
-                                fontWeight: FontWeight.w600),
-                            unSelectedTextStyle: TextStyle(
-                                color: Colors.black,
-                                fontSize: 10.0,
-                                fontWeight: FontWeight.w400),
-                          ),
+                          padding: const EdgeInsets.only(
+                              top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
+                          child: ValueListenableBuilder(
+                              valueListenable: _tabIndexBasicToggle,
+                              builder: (context, currentIndex, _) {
+                                return FlutterToggleTab(
+                                  //width: 55.0,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.04,
+                                  borderRadius: 10.0,
+
+                                  labels: [
+                                    'From Group',
+                                    'From AMT',
+                                    'AMT Individual Loans'
+                                  ],
+                                  selectedIndex: _tabIndexBasicToggle.value,
+                                  selectedLabelIndex: (index) {
+                                    _tabIndexBasicToggle.value = index;
+                                    setState(() {
+                                      if (index == 0) {
+                                        _isFromGroupActive = true;
+                                        _isFromAmt = false;
+                                        _isFromAmtIndividual = false;
+                                      }
+                                      if (index == 1) {
+                                        _isFromAmt = true;
+                                        _isFromGroupActive = false;
+                                        _isFromAmtIndividual = false;
+                                      }
+                                      if (index == 2) {
+                                        _isFromAmtIndividual = true;
+                                        _isFromAmt = false;
+                                        _isFromGroupActive = false;
+                                      }
+                                    });
+                                  },
+                                  selectedBackgroundColors: [Colors.grey],
+                                  unSelectedBackgroundColors: [Colors.white70],
+                                  selectedTextStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w600),
+                                  unSelectedTextStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 10.0,
+                                      fontWeight: FontWeight.w400),
+                                );
+                              }),
                         )
                       ],
                     ),
+//                     Padding(
+//   padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+//   child: isAdmin
+//       ? FlutterToggleTab(
+//           width: 55.0,
+//           height: MediaQuery.of(context).size.height * 0.04,
+//           borderRadius: 10.0,
+//           labels: ['From Group', 'From AMT'],
+//           selectedIndex: 0,
+//           selectedLabelIndex: (index) {
+//             setState(() {
+//               if (index == 0) {
+//                 _isFromGroupActive = true;
+//                 _isFromChamasoftActive = false;
+//               }
+//               if (index == 1) {
+//                 _isFromChamasoftActive = true;
+//                 _isFromGroupActive = false;
+//               }
+//             });
+//           },
+//           selectedBackgroundColors: [Colors.grey],
+//           unSelectedBackgroundColors: [Colors.white70],
+//           selectedTextStyle: TextStyle(
+//               color: Colors.white,
+//               fontSize: 12.0,
+//               fontWeight: FontWeight.w600),
+//           unSelectedTextStyle: TextStyle(
+//               color: Colors.black,
+//               fontSize: 10.0,
+//               fontWeight: FontWeight.w400),
+//         )
+//       : FlutterToggleTab(
+//           width: 55.0,
+//           height: MediaQuery.of(context).size.height * 0.04,
+//           borderRadius: 10.0,
+//           labels: ['From AMT'],
+//           selectedIndex: 0,
+//           selectedLabelIndex: (index) {
+//             setState(() {
+//               // Handle selected index for members
+//             });
+//           },
+//           selectedBackgroundColors: [Colors.grey],
+//           unSelectedBackgroundColors: [Colors.white70],
+//           selectedTextStyle: TextStyle(
+//               color: Colors.white,
+//               fontSize: 12.0,
+//               fontWeight: FontWeight.w600),
+//           unSelectedTextStyle: TextStyle(
+//               color: Colors.black,
+//               fontSize: 10.0,
+//               fontWeight: FontWeight.w400),
+//         ),
+// ),
+
                     //Group loans
                     Container(
                       child: SingleChildScrollView(
@@ -215,13 +302,15 @@ class ApplyLoanState extends State<ApplyLoan> {
                         ),
                       ),
                     ),
-                    //Chamasoft loans
+                    //AMt loans
                     Container(
                       child: Visibility(
-                          visible: _isFromChamasoftActive,
-                          child: ApplyLoanFromChamasoft(
-                              formLoadData: _formLoadData,
-                              loanProducts: _loanProducts)),
+                          visible: _isFromAmt, child: ApplyLoanFromAmt()),
+                    ),
+                    Container(
+                      child: Visibility(
+                          visible: _isFromAmtIndividual,
+                          child: ApplyIndividualAmtLoan()),
                     )
                   ],
                 ),

@@ -504,7 +504,7 @@ class _NewGroupState extends State<NewGroup> {
             : Text(
                 "Group Info",
                 style: TextStyle(
-                  // ignore: deprecated_member_use
+                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                   fontWeight: FontWeight.normal,
@@ -519,14 +519,14 @@ class _NewGroupState extends State<NewGroup> {
             children: <Widget>[
               subtitle1(
                 text: "Select group avatar",
-                // ignore: deprecated_member_use
+               
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start,
               ),
               subtitle2(
                 text: "Could be a logo or an image associated with your group",
-                // ignore: deprecated_member_use
+               
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start,
@@ -728,7 +728,7 @@ class _NewGroupState extends State<NewGroup> {
             children: <Widget>[
               subtitle1(
                 text: "Do you have a referral code?",
-                // ignore: deprecated_member_use
+               
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start,
@@ -736,7 +736,7 @@ class _NewGroupState extends State<NewGroup> {
               subtitle2(
                 text:
                     "Use it if referred by a Bank, an NGO, a Partner or anyone",
-                // ignore: deprecated_member_use
+               
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start,
@@ -833,7 +833,7 @@ class _NewGroupState extends State<NewGroup> {
                     children: <Widget>[
                       Icon(
                         Icons.lightbulb_outline,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor,
@@ -855,7 +855,7 @@ class _NewGroupState extends State<NewGroup> {
                             subtitle2(
                               text:
                                   "Follow all the steps and provide all required data about this group. You'll be able to preview a summary of the group before you submit.",
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,

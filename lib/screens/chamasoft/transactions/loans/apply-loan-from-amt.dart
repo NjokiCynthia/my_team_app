@@ -2,7 +2,6 @@ import 'package:chamasoft/providers/chamasoft-loans.dart';
 
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-chamasoft-form.dart';
 
-
 import 'package:chamasoft/widgets/backgrounds.dart';
 
 import 'package:chamasoft/widgets/empty_screens.dart';
@@ -11,16 +10,16 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
-class ApplyLoanFromChamasoft extends StatefulWidget {
+class ApplyLoanFromAmt extends StatefulWidget {
   Map<String, dynamic> formLoadData;
   List<LoanProduct> loanProducts;
-  ApplyLoanFromChamasoft({this.formLoadData, this.loanProducts});
+  ApplyLoanFromAmt({this.formLoadData, this.loanProducts});
 
   @override
-  _ApplyLoanFromChamasoftState createState() => _ApplyLoanFromChamasoftState();
+  _ApplyLoanFromAmtState createState() => _ApplyLoanFromAmtState();
 }
 
-class _ApplyLoanFromChamasoftState extends State<ApplyLoanFromChamasoft> {
+class _ApplyLoanFromAmtState extends State<ApplyLoanFromAmt> {
   @override
   void initState() {
     super.initState();
@@ -33,9 +32,6 @@ class _ApplyLoanFromChamasoftState extends State<ApplyLoanFromChamasoft> {
 
   @override
   Widget build(BuildContext context) {
-    List<LoanProduct> _loanProducts = widget.loanProducts;
-    print('loanProducts $_loanProducts');
-
     return Container(
       width: double.infinity,
       child: Column(
@@ -44,28 +40,18 @@ class _ApplyLoanFromChamasoftState extends State<ApplyLoanFromChamasoft> {
               context: context,
               title: "Note that...",
               message:
-                  "Apply quick loan from Chamasoft guaranteed by your savings and fellow group members."),
+                  "Apply quick loan from Amt guaranteed by your savings and fellow group members."),
           SingleChildScrollView(
             child: Container(
-              height: MediaQuery.of(context).size.height * 0.749,
-              child: _loanProducts.length > 0
-                  ? ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      primary: true,
-                      itemCount: _loanProducts.length,
-                      itemBuilder: (context, index) {
-                        LoanProduct loanProduct = _loanProducts[index];
-                        return ChamasoftLoanProductCard(
-                            loanProduct: loanProduct,
-                            formLoadData: widget.formLoadData);
-                      },
-                    )
-                  : emptyList(
-                      color: Colors.blue[400],
-                      iconData: LineAwesomeIcons.angle_double_down,
-                      text: "There are no loan products to display"),
-            ),
+                height: MediaQuery.of(context).size.height * 0.749,
+                child:
+                    //?
+                    Text('AMT loans')
+                // : emptyList(
+                //     color: Colors.blue[400],
+                //     iconData: LineAwesomeIcons.angle_double_down,
+                //     text: "There are no loan products to display"),
+                ),
           ),
         ],
       ),
@@ -96,14 +82,14 @@ class ChamasoftLoanProductCard extends StatelessWidget {
             child: ListTile(
               title: subtitle1(
                   color: Theme.of(context)
-                     
+                      // ignore: deprecated_member_use
                       .textSelectionTheme
                       .selectionHandleColor,
                   text: loanProduct.name,
                   textAlign: TextAlign.start),
               subtitle: subtitle2(
                   color: Theme.of(context)
-                     
+                      // ignore: deprecated_member_use
                       .textSelectionTheme
                       .selectionHandleColor,
                   text: loanProduct.description,

@@ -106,7 +106,7 @@ class _ListContributionsState extends State<ListContributions> {
                           text: "Edit Contribution",
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
@@ -125,7 +125,7 @@ class _ListContributionsState extends State<ListContributions> {
 //                          text: "Delete Contribution",
 //                          fontWeight: FontWeight.w600,
 //                          textAlign: TextAlign.start,
-//                          // ignore: deprecated_member_use
+//                         
 //  	                      color: Theme.of(context).textSelectionTheme.selectionHandleColor),
 //                      onTap: () {
 //                        Navigator.pop(context);
@@ -172,7 +172,7 @@ class _ListContributionsState extends State<ListContributions> {
             child: IconButton(
               icon: Icon(
                 Icons.add,
-                // ignore: deprecated_member_use
+               
                 color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               ),
               onPressed: () async {
@@ -268,14 +268,14 @@ class _ListContributionsState extends State<ListContributions> {
                                                 fontWeight: FontWeight.w700,
                                                 fontSize: 16.0,
                                                 color: Theme.of(context)
-                                                    // ignore: deprecated_member_use
+                                                   
                                                     .textSelectionTheme.selectionHandleColor,
                                               ),
                                               richTextWithWrap(
                                                 title: 'Contribution Type: ',
                                                 message: contribution.type,
                                                 color: Theme.of(context)
-                                                    // ignore: deprecated_member_use
+                                                   
                                                     .textSelectionTheme.selectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
@@ -284,7 +284,7 @@ class _ListContributionsState extends State<ListContributions> {
                                                 title: 'Frequency: ',
                                                 message: contribution.frequency,
                                                 color: Theme.of(context)
-                                                    // ignore: deprecated_member_use
+                                                   
                                                     .textSelectionTheme.selectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
@@ -293,7 +293,7 @@ class _ListContributionsState extends State<ListContributions> {
                                                 text:
                                                     '$_groupCurrency ${currencyFormat.format(double.tryParse(contribution.amount) ?? 0)}',
                                                 color: Theme.of(context)
-                                                    // ignore: deprecated_member_use
+                                                   
                                                     .textSelectionTheme.selectionHandleColor,
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 12.0,

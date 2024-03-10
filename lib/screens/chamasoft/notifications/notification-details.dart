@@ -27,7 +27,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
           backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
               text: "Confirm Mpesa Number",
-              // ignore: deprecated_member_use
+             
               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               textAlign: TextAlign.start),
           content: TextFormField(
@@ -36,7 +36,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
             initialValue: "254712233344",
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
-              // ignore: deprecated_member_use
+             
               // WhitelistingTextInputFormatter.digitsOnly
               FilteringTextInputFormatter.digitsOnly
             ],
@@ -52,7 +52,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
             ),
           ),
           actions: <Widget>[
-            // ignore: deprecated_member_use
+           
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
@@ -67,7 +67,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
               ),
             ),
 
-            // ignore: deprecated_member_use
+           
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
@@ -117,7 +117,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                       flex: 1,
                       child: heading2(
                         text: widget.notification.message,
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor,
@@ -129,7 +129,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                         customTitle(
                           text: "Ksh ",
                           fontSize: 18.0,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -137,7 +137,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                         ),
                         heading2(
                           text: "2,000",
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -155,7 +155,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                   children: <Widget>[
                     subtitle1(
                       text: "Group: ",
-                      // ignore: deprecated_member_use
+                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,
@@ -163,7 +163,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                     customTitle(
                       textAlign: TextAlign.start,
                       text: "Freedom Welfare Caucus",
-                      // ignore: deprecated_member_use
+                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,
@@ -176,7 +176,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                   children: <Widget>[
                     subtitle1(
                       text: "Invoice Date: ",
-                      // ignore: deprecated_member_use
+                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,
@@ -184,7 +184,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                     customTitle(
                       textAlign: TextAlign.start,
                       text: "12 May 2020",
-                      // ignore: deprecated_member_use
+                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,
@@ -197,7 +197,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                   children: <Widget>[
                     subtitle1(
                       text: "Due Date: ",
-                      // ignore: deprecated_member_use
+                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,
@@ -205,7 +205,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                     customTitle(
                       textAlign: TextAlign.start,
                       text: "20 May 2020",
-                      // ignore: deprecated_member_use
+                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,

@@ -28,10 +28,10 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
   final Permission _permission = Permission.contacts;
   PermissionStatus _permissionStatus = PermissionStatus.denied;
   // initially permissionstatus was undetermined
-  // ignore: deprecated_member_use
+ 
   //List<CustomContact> _contacts = new List<CustomContact>();
   List<CustomContact> _contacts = <CustomContact>[];
-  // ignore: deprecated_member_use
+ 
   // List<CustomContact> _selectedContacts = List<CustomContact>();
   List<CustomContact> _selectedContacts = <CustomContact>[];
   bool _isLoading = false;
@@ -178,14 +178,14 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
                   subtitle1(
                     text: "Retrieving contact list",
                     color: Theme.of(context)
-                        // ignore: deprecated_member_use
+                       
                         .textSelectionTheme
                         .selectionHandleColor,
                   ),
                   subtitle2(
                     text: "Please be patient",
                     color: Theme.of(context)
-                        // ignore: deprecated_member_use
+                       
                         .textSelectionTheme
                         .selectionHandleColor,
                   ),
@@ -235,7 +235,7 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
         color: _selectedContacts.contains(_contacts[index])
             ? primaryColor
             : Theme.of(context)
-                // ignore: deprecated_member_use
+               
                 .textSelectionTheme
                 .selectionHandleColor,
       ),
@@ -246,7 +246,7 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
               color: _selectedContacts.contains(_contacts[index])
                   ? primaryColor
                   : Theme.of(context)
-                      // ignore: deprecated_member_use
+                     
                       .textSelectionTheme
                       .selectionHandleColor,
             )

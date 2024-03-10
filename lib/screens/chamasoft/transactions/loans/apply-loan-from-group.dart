@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
@@ -7,6 +9,7 @@ import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/group-loan-amortizatioin.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
@@ -27,18 +30,21 @@ class ApplyLoanFromGroup extends StatefulWidget {
 
 class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
   final _formKey = GlobalKey<FormState>();
-  int _loanTypeId;
+  //int _loanTypeId;
+  int loanTypeId;
   int _groupLoanAmount;
   bool _isChecked = false;
   int _numOfGuarantors;
-  // ignore: unused_field
+
   int _repaymentPeriod;
   int _interestRate;
   String _groupLoanName;
-  // ignore: unused_field
+
   LoanType _loanType;
   List<int> _guarantors = [];
   List<int> _amounts = [];
+
+  Map<String, dynamic> formLoadData = {};
 
   int get totalGuaranteed {
     int total = 0;
@@ -110,18 +116,18 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                   text:
                       "Accept loan application of ${groupObject.groupCurrency} ${currencyFormat.format(_groupLoanAmount)}."),
               actions: [
-                // ignore: deprecated_member_use
+               
                 negativeActionDialogButton(
                   text: ('CANCEL'),
                   color: Theme.of(context)
-                      // ignore: deprecated_member_use
+                     
                       .textSelectionTheme
                       .selectionHandleColor,
                   action: () {
                     Navigator.of(context).pop();
                   },
                 ),
-                // ignore: deprecated_member_use
+               
                 positiveActionDialogButton(
                     text: ('PROCEED'),
                     color: primaryColor,
@@ -139,7 +145,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
   void submitGroupLoanApplication(
       BuildContext context, Group groupObject) async {
     Map<String, dynamic> formData = {
-      'loan_product_id': _loanTypeId,
+      'loan_product_id': loanTypeId,
       'amount': _groupLoanAmount,
       'guarantors': _guarantors,
       'amounts': _amounts,
@@ -194,17 +200,89 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
         MaterialPageRoute(
             builder: (BuildContext context) => GroupLoanAmortization(
                 loanAmount: _groupLoanAmount,
-                loanTypeId: _loanTypeId,
+                loanTypeId: loanTypeId,
                 repayementPeriod: _repaymentPeriod,
                 loanInterestRate: _interestRate,
                 groupLoanName: _groupLoanName,
-                groupLoanType: _loanTypeId),
+                groupLoanType: loanTypeId),
             settings: RouteSettings(arguments: {
               'loanType': _loanType,
               'groupLoanAmount': _groupLoanAmount
             })),
       );
     }
+  }
+
+  bool _isFormInputEnabled = true;
+  bool _isLoading = false;
+  bool _isInit = true;
+  Map<String, dynamic> _formData = {};
+  Future<void> _fetchDefaultValues(BuildContext context) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      showDialog<String>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+    });
+    formLoadData = await Provider.of<Groups>(context, listen: false)
+        .loadInitialFormData(acc: true, member: true, loanTypes: true);
+    setState(() {
+      _isInit = false;
+    });
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  void _submit(BuildContext context) async {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _isFormInputEnabled = false;
+    });
+
+    _formKey.currentState.save();
+    // _formData['disbursement_date'] = disbursementDate.toString();
+    _formData['loan_type_id'] = loanTypeId;
+
+    _formData['loan_amount'] = _groupLoanAmount;
+
+    log(_formData.toString());
+    try {
+      String message = await Provider.of<Groups>(context, listen: false)
+          .recordMemberLoan(_formData);
+      StatusHandler().showSuccessSnackBar(context, message);
+
+      Future.delayed(const Duration(milliseconds: 2500), () {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (BuildContext context) => ReviewLoan()));
+      });
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _submit(context);
+          });
+    } finally {
+      setState(() {
+        _isLoading = false;
+        _isFormInputEnabled = true;
+      });
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      _fetchDefaultValues(context);
+    }
+    super.didChangeDependencies();
   }
 
   @override
@@ -260,47 +338,67 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                             padding: EdgeInsets.all(16.0),
                             child: Column(children: [
                               CustomDropDownButton(
-                                enabled: true,
-                                labelText: "Select group loan type",
-                                listItems: loanTypeOptions,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _loanTypeId = value;
-                                    _numOfGuarantors = int.tryParse(widget
-                                        .loanTypes
-                                        .firstWhere((loanType) =>
-                                            loanType.id.toString() ==
-                                            value.toString())
-                                        .guarantors
-                                        .replaceAll(new RegExp(r'[^0-9]'), ''));
-                                    _repaymentPeriod = int.tryParse(widget
-                                        .loanTypes
-                                        .firstWhere((loanType) =>
-                                            loanType.id.toString() ==
-                                            value.toString())
-                                        .repaymentPeriod
-                                        .replaceAll(new RegExp(r'[^0-9]'), ''));
-                                    _interestRate = int.tryParse(widget
-                                        .loanTypes
-                                        .firstWhere((loanType) =>
-                                            loanType.id.toString() ==
-                                            value.toString())
-                                        .interestRate
-                                        .replaceAll(new RegExp(r'[^0-9]'), ''));
-                                    _groupLoanName = widget.loanTypes
-                                        .firstWhere((loanType) =>
-                                            loanType.id.toString() ==
-                                            value.toString())
-                                        .name;
-                                  });
-                                },
+                                labelText: "Select  Group Loan Type",
+                                enabled: _isFormInputEnabled,
+                                listItems:
+                                    formLoadData.containsKey("loanTypeOptions")
+                                        ? formLoadData["loanTypeOptions"]
+                                        : [],
+                                selectedItem: loanTypeId,
                                 validator: (value) {
-                                  if (value == "" || value == null) {
+                                  if (value == null) {
                                     return "This field is required";
                                   }
                                   return null;
                                 },
+                                onChanged: (value) {
+                                  setState(() {
+                                    loanTypeId = value;
+                                  });
+                                },
                               ),
+                              // CustomDropDownButton(
+                              //   enabled: true,
+                              //   labelText: "Select group loan type",
+                              //   listItems: loanTypeOptions,
+                              //   onChanged: (value) {
+                              //     setState(() {
+                              //       _loanTypeId = value;
+                              //       _numOfGuarantors = int.tryParse(widget
+                              //           .loanTypes
+                              //           .firstWhere((loanType) =>
+                              //               loanType.id.toString() ==
+                              //               value.toString())
+                              //           .guarantors
+                              //           .replaceAll(new RegExp(r'[^0-9]'), ''));
+                              //       _repaymentPeriod = int.tryParse(widget
+                              //           .loanTypes
+                              //           .firstWhere((loanType) =>
+                              //               loanType.id.toString() ==
+                              //               value.toString())
+                              //           .repaymentPeriod
+                              //           .replaceAll(new RegExp(r'[^0-9]'), ''));
+                              //       _interestRate = int.tryParse(widget
+                              //           .loanTypes
+                              //           .firstWhere((loanType) =>
+                              //               loanType.id.toString() ==
+                              //               value.toString())
+                              //           .interestRate
+                              //           .replaceAll(new RegExp(r'[^0-9]'), ''));
+                              //       _groupLoanName = widget.loanTypes
+                              //           .firstWhere((loanType) =>
+                              //               loanType.id.toString() ==
+                              //               value.toString())
+                              //           .name;
+                              //     });
+                              //   },
+                              //   validator: (value) {
+                              //     if (value == "" || value == null) {
+                              //       return "This field is required";
+                              //     }
+                              //     return null;
+                              //   },
+                              // ),
                               amountTextInputField(
                                   context: context,
                                   validator: (value) {

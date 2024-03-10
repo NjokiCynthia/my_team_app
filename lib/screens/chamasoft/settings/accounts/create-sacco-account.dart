@@ -95,7 +95,7 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
       );
 
       Navigator.pop(context);
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully added a Sacco Account",
@@ -108,7 +108,7 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
     } on CustomException catch (error) {
       Navigator.pop(context);
 
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error Adding the Sacco Account. ${error.message} ",

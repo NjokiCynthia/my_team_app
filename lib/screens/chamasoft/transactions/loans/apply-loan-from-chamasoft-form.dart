@@ -108,18 +108,18 @@ class _ApplyLoanFromChamasoftFormState
                   text:
                       "Accept loan application of ${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}."),
               actions: [
-                // ignore: deprecated_member_use
+              
                 negativeActionDialogButton(
                   text: ('CANCEL'),
                   color: Theme.of(_buildContext)
-                      // ignore: deprecated_member_use
+                    
                       .textSelectionTheme
                       .selectionHandleColor,
                   action: () {
                     Navigator.of(_buildContext).pop();
                   },
                 ),
-                // ignore: deprecated_member_use
+              
                 positiveActionDialogButton(
                     text: ('PROCEED'),
                     color: primaryColor,

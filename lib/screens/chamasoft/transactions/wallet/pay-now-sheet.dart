@@ -283,7 +283,7 @@ class _PayNowSheetState extends State<PayNowSheet> {
             children: [
               heading2(
                   text: "Confirm Payment Number",
-                  // ignore: deprecated_member_use
+                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                   textAlign: TextAlign.start),
@@ -308,7 +308,7 @@ class _PayNowSheetState extends State<PayNowSheet> {
             initialValue: Provider.of<Auth>(context).phoneNumber,
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
-              // ignore: deprecated_member_use
+             
               FilteringTextInputFormatter.digitsOnly
             ],
             decoration: InputDecoration(
@@ -328,7 +328,7 @@ class _PayNowSheetState extends State<PayNowSheet> {
           actions: <Widget>[
             negativeActionDialogButton(
                 text: "Cancel",
-                // ignore: deprecated_member_use
+               
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
@@ -382,7 +382,7 @@ class _PayNowSheetState extends State<PayNowSheet> {
               ),
               heading2(
                   text: "Wallet Payment",
-                  // ignore: deprecated_member_use
+                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                   textAlign: TextAlign.start),
@@ -443,7 +443,7 @@ class _PayNowSheetState extends State<PayNowSheet> {
                                   child: Center(
                                       child: CircularProgressIndicator()),
                                 )
-                              // ignore: deprecated_member_use
+                             
                               : ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: primaryColor),

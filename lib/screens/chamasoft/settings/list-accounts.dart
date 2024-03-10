@@ -111,7 +111,7 @@ class _ListAccountsState extends State<ListAccounts> {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                // ignore: deprecated_member_use
+               
                 TextButton(
                   style: TextButton.styleFrom(
                     foregroundColor: Theme.of(context).textSelectionTheme.selectionHandleColor, textStyle: TextStyle(
@@ -302,7 +302,7 @@ class _ListAccountsState extends State<ListAccounts> {
                                 fontWeight: FontWeight.w600,
                                 textAlign: TextAlign.start,
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme.selectionHandleColor
                                     .withOpacity(0.6),
                                 fontSize: 13.0,
@@ -326,7 +326,7 @@ class _ListAccountsState extends State<ListAccounts> {
                                         customTitleWithWrap(
                                           text: account.name,
                                           color: Theme.of(context)
-                                              // ignore: deprecated_member_use
+                                             
                                               .textSelectionTheme.selectionHandleColor,
                                           textAlign: TextAlign.start,
                                           fontWeight: FontWeight.w700,
@@ -338,7 +338,7 @@ class _ListAccountsState extends State<ListAccounts> {
                                                 fontWeight: FontWeight.w600,
                                                 textAlign: TextAlign.start,
                                                 color: Theme.of(context)
-                                                    // ignore: deprecated_member_use
+                                                   
                                                     .textSelectionTheme.selectionHandleColor
                                                     .withOpacity(0.5),
                                                 fontSize: 12.0,

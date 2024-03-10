@@ -59,7 +59,7 @@ class _RepayLoanState extends State<RepayLoan> {
             initialValue: "254712233344",
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
-              // ignore: deprecated_member_use
+             
               FilteringTextInputFormatter.digitsOnly
             ],
             decoration: InputDecoration(
@@ -74,12 +74,12 @@ class _RepayLoanState extends State<RepayLoan> {
             ),
           ),
           actions: <Widget>[
-            // ignore: deprecated_member_use
+           
             new TextButton(
               child: new Text(
                 "Cancel",
                 style: TextStyle(
-                    // ignore: deprecated_member_use
+                   
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor),
@@ -88,7 +88,7 @@ class _RepayLoanState extends State<RepayLoan> {
                 Navigator.of(context).pop();
               },
             ),
-            // ignore: deprecated_member_use
+           
             new TextButton(
               child: new Text(
                 "Pay Now",
@@ -147,7 +147,7 @@ class _RepayLoanState extends State<RepayLoan> {
                                 "${widget.loan.name}",
                                 style: TextStyle(
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor
                                       .withOpacity(0.8),
@@ -163,7 +163,7 @@ class _RepayLoanState extends State<RepayLoan> {
                                   style: TextStyle(
                                     fontSize: 18.0,
                                     color: Theme.of(context)
-                                        // ignore: deprecated_member_use
+                                       
                                         .textSelectionTheme
                                         .selectionHandleColor,
                                     fontWeight: FontWeight.w400,
@@ -173,7 +173,7 @@ class _RepayLoanState extends State<RepayLoan> {
                                   "${currencyFormat.format(widget.loan.amount)}",
                                   style: TextStyle(
                                     color: Theme.of(context)
-                                        // ignore: deprecated_member_use
+                                       
                                         .textSelectionTheme
                                         .selectionHandleColor,
                                     fontSize: 18.0,
@@ -195,7 +195,7 @@ class _RepayLoanState extends State<RepayLoan> {
                               "Amount Repaid: ",
                               style: TextStyle(
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                    
                                     .textSelectionTheme
                                     .selectionHandleColor
                                     .withOpacity(0.8),
@@ -207,7 +207,7 @@ class _RepayLoanState extends State<RepayLoan> {
                               "Ksh ${currencyFormat.format(100)}",
                               style: TextStyle(
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionHandleColor
                                     .withOpacity(0.8),
@@ -224,7 +224,7 @@ class _RepayLoanState extends State<RepayLoan> {
                               "Balance: ",
                               style: TextStyle(
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionHandleColor
                                     .withOpacity(0.8),
@@ -236,7 +236,7 @@ class _RepayLoanState extends State<RepayLoan> {
                               "Ksh ${currencyFormat.format(100)}",
                               style: TextStyle(
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionHandleColor
                                     .withOpacity(0.8),
@@ -253,7 +253,7 @@ class _RepayLoanState extends State<RepayLoan> {
                               "Applied On: ",
                               style: TextStyle(
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionHandleColor
                                     .withOpacity(0.8),
@@ -265,7 +265,7 @@ class _RepayLoanState extends State<RepayLoan> {
                               "${defaultDateFormat.format(DateTime.now())}",
                               style: TextStyle(
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionHandleColor
                                     .withOpacity(0.8),

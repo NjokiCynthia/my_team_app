@@ -270,27 +270,27 @@ class _EditCollectionsState extends State<EditCollections> {
           title: heading2(
             text: "Remove $_title",
             textAlign: TextAlign.start,
-            // ignore: deprecated_member_use
+           
             color: Theme.of(context).textSelectionTheme.selectionHandleColor,
           ),
           content: customTitleWithWrap(
             text:
                 "Are you sure you want to remove this ${_title.toString().toLowerCase()}?",
             textAlign: TextAlign.start,
-            // ignore: deprecated_member_use
+           
             color: Theme.of(context).textSelectionTheme.selectionColor,
             maxLines: null,
           ),
           actions: <Widget>[
             negativeActionDialogButton(
               text: "Cancel",
-              // ignore: deprecated_member_use
+             
               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               action: () {
                 Navigator.of(context).pop();
               },
             ),
-            // ignore: deprecated_member_use
+           
 
             TextButton(
               onPressed: () {
@@ -328,14 +328,14 @@ class _EditCollectionsState extends State<EditCollections> {
   }
 
   _showSnackbar(String msg, int duration) {
-    // ignore: deprecated_member_use
+   
     ScaffoldMessenger.of(_scaffoldKey.currentState.context)
         .hideCurrentSnackBar();
     final snackBar = SnackBar(
       content: Text(msg),
       duration: Duration(seconds: duration),
     );
-    // ignore: deprecated_member_use
+   
     ScaffoldMessenger.of(_scaffoldKey.currentState.context)
         .showSnackBar(snackBar);
   }
@@ -424,7 +424,7 @@ class _EditCollectionsState extends State<EditCollections> {
               tooltip: "Add New",
               icon: Icon(
                 Icons.add,
-                // ignore: deprecated_member_use
+               
                 color: Theme.of(context).textSelectionTheme.selectionColor,
               ),
               onPressed: _isLoading
@@ -467,7 +467,7 @@ class _EditCollectionsState extends State<EditCollections> {
                         children: <Widget>[
                           Icon(
                             Icons.lightbulb_outline,
-                            // ignore: deprecated_member_use
+                           
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -484,7 +484,7 @@ class _EditCollectionsState extends State<EditCollections> {
                                   text: "About ${widget.type}",
                                   textAlign: TextAlign.start,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -492,7 +492,7 @@ class _EditCollectionsState extends State<EditCollections> {
                                   text:
                                       "You can add or remove ${widget.type} from the list",
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                   textAlign: TextAlign.start,
@@ -506,7 +506,7 @@ class _EditCollectionsState extends State<EditCollections> {
                                     text:
                                         'Available amount to disburse is ${groupObject.groupCurrency} ${_totalAmountDisbursable > 0 ? currencyFormat.format(_totalAmountDisbursable) : 0}',
                                     color: Theme.of(context)
-                                        // ignore: deprecated_member_use
+                                       
                                         .textSelectionTheme
                                         .selectionHandleColor,
                                     textAlign: TextAlign.start,
@@ -524,7 +524,7 @@ class _EditCollectionsState extends State<EditCollections> {
                             shrinkWrap: true,
                             separatorBuilder: (context, index) => Divider(
                               color: Theme.of(context)
-                                  // ignore: deprecated_member_use
+                                 
                                   .textSelectionTheme
                                   .selectionHandleColor
                                   .withOpacity(0.5),
@@ -556,7 +556,7 @@ class _EditCollectionsState extends State<EditCollections> {
                                               text: _data[index]['member']
                                                   ['name'],
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               textAlign: TextAlign.start,
@@ -565,7 +565,7 @@ class _EditCollectionsState extends State<EditCollections> {
                                               text: _data[index]['member']
                                                   ['identity'],
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               textAlign: TextAlign.start,
@@ -655,7 +655,7 @@ class _EditCollectionsState extends State<EditCollections> {
                                             _groupCurrency,
                                             style: TextStyle(
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                             ),
@@ -668,7 +668,7 @@ class _EditCollectionsState extends State<EditCollections> {
                                                 .format(_data[index]['amount']),
                                             style: TextStyle(
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               fontWeight: FontWeight.bold,
@@ -888,7 +888,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
       title: heading2(
         text: "New $title",
         textAlign: TextAlign.start,
-        // ignore: deprecated_member_use
+       
         color: Theme.of(context).textSelectionTheme.selectionHandleColor,
       ),
       content: SingleChildScrollView(
@@ -1277,13 +1277,13 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
       actions: <Widget>[
         negativeActionDialogButton(
           text: "Cancel",
-          // ignore: deprecated_member_use
+         
           color: Theme.of(context).textSelectionTheme.selectionHandleColor,
           action: () {
             Navigator.of(context).pop();
           },
         ),
-        // ignore: deprecated_member_use
+       
         TextButton(
           onPressed: () async {
             if (_formKey.currentState.validate()) {
