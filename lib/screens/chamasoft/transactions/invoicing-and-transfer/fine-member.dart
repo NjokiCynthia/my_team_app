@@ -259,7 +259,7 @@ class FineMemberState extends State<FineMember> {
                             Wrap(
                               children: memberWidgets.toList(),
                             ),
-                            // ignore: deprecated_member_use
+                            
                             TextButton(
                               onPressed: () async {
                                 //open select members dialog

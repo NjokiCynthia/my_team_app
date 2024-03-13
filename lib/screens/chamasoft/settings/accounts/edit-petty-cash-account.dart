@@ -88,7 +88,7 @@ class _EditPettyCashAccountState extends State<EditPettyCashAccount> {
       );
 
       Navigator.pop(context);
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully updated the Petty Cash Account",
@@ -100,7 +100,7 @@ class _EditPettyCashAccountState extends State<EditPettyCashAccount> {
     } on CustomException catch (error) {
       Navigator.pop(context);
 
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error updating the Petty Cash Account. ${error.message} ",

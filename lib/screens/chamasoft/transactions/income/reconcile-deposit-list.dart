@@ -267,7 +267,7 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                             customTitle(
                               text: "${widget.groupObject.groupCurrency} ",
                               fontSize: 18.0,
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -276,7 +276,7 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                             heading2(
                               text:
                                   currencyFormat.format(widget.deposit.amount),
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -328,7 +328,7 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                 padding: const EdgeInsets.all(4.0),
                 child: Row(
                   children: [
-                    // ignore: deprecated_member_use
+                   
                     TextButton(
                       onPressed: () {
                         setState(() {
@@ -349,7 +349,7 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                       ),
                     ),
                     Spacer(),
-                    // ignore: deprecated_member_use
+                   
                     TextButton(
                       onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute(

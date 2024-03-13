@@ -342,7 +342,7 @@ class _WalletState extends State<Wallet> {
                         padding: EdgeInsets.symmetric(
                           horizontal: 16.0,
                         ),
-                        // ignore: deprecated_member_use
+                        
                         child: OutlinedButton(
                           style: OutlinedButton.styleFrom(
                             backgroundColor: Colors.white,

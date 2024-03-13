@@ -369,7 +369,7 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
                       //           fontSize: 18,
                       //           fontWeight: FontWeight.w300,
                       //           color: Theme.of(context)
-                      //               // ignore: deprecated_member_use
+
                       //               .textSelectionHandleColor,
                       //         ),
                       //       ],

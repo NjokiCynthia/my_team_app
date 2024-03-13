@@ -3,11 +3,13 @@ import 'package:path/path.dart' as p;
 
 class DatabaseHelper {
   static final _databaseName = "chamasoft-app.db";
-  static final _databaseVersion = 2; // currently on playstore we are using database version 1
+  static final _databaseVersion =
+      2; // currently on playstore we are using database version 1
 
   static final dataTable = 'data';
   static final membersTable = 'members';
   static final meetingsTable = 'meetings';
+  static final loansTable = 'loans';
   static final payContributionsTable = 'payContributions';
   static final contributionsTable = 'contributions';
   static final groupAccountsTable = 'groupAccounts';
@@ -93,6 +95,19 @@ class DatabaseHelper {
               modified_on INTEGER NOT NULL
             )
             ''');
+      // Loans table schema
+      batch.execute('''
+  CREATE TABLE IF NOT EXISTS $loansTable (
+    _id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL DEFAULT '',
+    id INTEGER NOT NULL,
+    location TEXT NOT NULL DEFAULT '',
+    houseNumber TEXT NOT NULL DEFAULT '',
+    amount REAL NOT NULL DEFAULT 0,
+    value REAL NOT NULL DEFAULT 0,
+  )
+''');
+
       // Meetings table
       batch.execute('''
             CREATE TABLE IF NOT EXISTS $meetingsTable (

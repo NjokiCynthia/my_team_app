@@ -171,7 +171,7 @@ class _ContributionSettingsState extends State<ContributionSettings> {
             children: <Widget>[
               customTitle(
                   text: "Settings",
-                  // ignore: deprecated_member_use
+                 
                   color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                   fontWeight: FontWeight.w400,
                   textAlign: TextAlign.start),
@@ -182,7 +182,7 @@ class _ContributionSettingsState extends State<ContributionSettings> {
             children: <Widget>[
               subtitle2(
                   text: "Configure the behaviour of your contribution",
-                  // ignore: deprecated_member_use
+                 
                   color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                   textAlign: TextAlign.start),
             ],
@@ -460,7 +460,7 @@ class _ContributionSettingsState extends State<ContributionSettings> {
                     children: <Widget>[
                       customTitle(
                           text: "Disable contribution arrears",
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                           fontWeight: FontWeight.w500,
                           textAlign: TextAlign.start),

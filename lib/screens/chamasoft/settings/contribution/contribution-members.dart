@@ -143,7 +143,7 @@ class _ContributionMembersState extends State<ContributionMembers> {
               title: Text(
                 "Members",
                 style: TextStyle(
-                    // ignore: deprecated_member_use
+                   
                     color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                     fontWeight: FontWeight.w500),
               ),
@@ -156,7 +156,7 @@ class _ContributionMembersState extends State<ContributionMembers> {
               title: Text(
                 "Select All",
                 style: TextStyle(
-                    // ignore: deprecated_member_use
+                   
                     color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                     fontWeight: FontWeight.w500),
               ),

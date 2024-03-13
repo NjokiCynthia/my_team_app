@@ -82,7 +82,7 @@ class _ListGroupRolesState extends State<ListGroupRoles> {
                                       '${expense.name}',
                                       style: TextStyle(
                                         color: Theme.of(context)
-                                            // ignore: deprecated_member_use
+                                          
                                             .textSelectionTheme.selectionHandleColor,
                                         fontWeight: FontWeight.w800,
                                         fontSize: 18.0,

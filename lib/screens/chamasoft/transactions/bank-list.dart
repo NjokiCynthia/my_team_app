@@ -41,12 +41,12 @@ class _BankListState extends State<BankList> {
             ),
           ),
           actions: <Widget>[
-            // ignore: deprecated_member_use
+           
             new TextButton(
               child: new Text(
                 "Cancel",
                 style: TextStyle(
-                    // ignore: deprecated_member_use
+                   
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor),
@@ -55,7 +55,7 @@ class _BankListState extends State<BankList> {
                 Navigator.of(context).pop();
               },
             ),
-            // ignore: deprecated_member_use
+           
             new TextButton(
               child: new Text(
                 "Proceed",
@@ -130,7 +130,7 @@ class _BankListState extends State<BankList> {
                             subtitle1(
                                 text: bank.name,
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context)
                                         .textSelectionTheme
                                         .selectionHandleColor,

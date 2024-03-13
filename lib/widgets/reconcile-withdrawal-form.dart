@@ -159,7 +159,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
       title: heading2(
         text: 'Reconcile withdrawal',
         textAlign: TextAlign.start,
-        // ignore: deprecated_member_use
+       
 
         color: Theme.of(context).textSelectionTheme.selectionHandleColor,
       ),
@@ -632,12 +632,12 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
       actions: [
         negativeActionDialogButton(
             text: "Cancel",
-            // ignore: deprecated_member_use
+           
             color: Theme.of(context).textSelectionTheme.selectionHandleColor,
             action: () {
               Navigator.of(context).pop();
             }),
-        // ignore: deprecated_member_use
+       
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),

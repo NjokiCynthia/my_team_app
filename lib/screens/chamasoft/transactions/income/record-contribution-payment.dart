@@ -368,7 +368,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                       Column(
                                         children: memberWidgets.toList(),
                                       ),
-                                      // ignore: deprecated_member_use
+                                 
                                       TextButton(
                                         onPressed: () async {
                                           //open select members dialog

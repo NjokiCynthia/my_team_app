@@ -82,7 +82,7 @@ class _CreateAssetCategoryState extends State<CreateAssetCategory> {
       if (widget.isEdit) {
         message = "You have successfully updated the asset category";
       }
-      // ignore: deprecated_member_use
+      
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         message,

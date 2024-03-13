@@ -168,7 +168,7 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                       text: "Phone Number",
                       textAlign: TextAlign.start,
                       fontSize: 11,
-                      // ignore: deprecated_member_use
+                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor),
@@ -208,7 +208,7 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                                       fontFamily: 'SegoeUI',
                                       fontSize: 16,
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionHandleColor),
                                   onChanged: (countryCode) {

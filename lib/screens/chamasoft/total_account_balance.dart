@@ -39,7 +39,7 @@ class _TotalAccountBalanceRecieptState
     //final subject = "${widget.title}";
 
     // await Share.share([image.path] );
-   
+
     await Share.shareFiles([image.path], text: text);
 
     // Share.share(imageFile);
@@ -70,7 +70,6 @@ class _TotalAccountBalanceRecieptState
           backgroundColor: (themeChangeProvider.darkTheme)
               ? Colors.blueGrey[800]
               : Colors.white,
-          // ignore: missing_return
           onRefresh: () {},
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -97,30 +96,24 @@ class _TotalAccountBalanceRecieptState
                             SizedBox(
                               height: 10,
                             ),
-                           
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: heading2(
                                   text: accountName,
-                                  color:
-                                     
-                                      Theme.of(context)
-                                         
-                                          .textSelectionTheme
-                                          .selectionHandleColor),
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor),
                             ),
                             Image.asset(
                               'assets/icon/main.png',
                               width: 80.0,
                               height: 90.0,
                             ),
-
                             customTitleWithWrap(
                               text: "Account Balance",
                               fontSize: 22,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
-                                 
                                   .textSelectionTheme
                                   .selectionHandleColor,
                             ),
@@ -146,7 +139,6 @@ class _TotalAccountBalanceRecieptState
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -157,7 +149,6 @@ class _TotalAccountBalanceRecieptState
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -168,7 +159,6 @@ class _TotalAccountBalanceRecieptState
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -198,7 +188,6 @@ class _TotalAccountBalanceRecieptState
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                   color: Theme.of(context)
-                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -213,13 +202,11 @@ class _TotalAccountBalanceRecieptState
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
                               ],
                             ),
-
                             SizedBox(
                               height: 10,
                             )
@@ -294,7 +281,6 @@ class _TotalAccountBalanceRecieptState
                               fontSize: 18,
                               fontWeight: FontWeight.w300,
                               color: Theme.of(context)
-                                 
                                   .textSelectionTheme
                                   .selectionHandleColor,
                             ),
@@ -335,7 +321,6 @@ class _TotalAccountBalanceRecieptState
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -377,7 +362,6 @@ class _TotalAccountBalanceRecieptState
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
-                                   
                                     .textSelectionTheme
                                     .selectionColor,
                               ),

@@ -258,7 +258,7 @@ class _UnreconciledWithdrawalCardState
                             customTitle(
                               text: "${widget.groupObject.groupCurrency} ",
                               fontSize: 18.0,
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -267,7 +267,7 @@ class _UnreconciledWithdrawalCardState
                             heading2(
                               text: currencyFormat
                                   .format(widget.withdrawal.amount),
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -324,7 +324,7 @@ class _UnreconciledWithdrawalCardState
                 padding: const EdgeInsets.all(4.0),
                 child: Row(
                   children: [
-                    // ignore: deprecated_member_use
+                   
                     TextButton(
                       onPressed: () {
                         setState(() {
@@ -344,7 +344,7 @@ class _UnreconciledWithdrawalCardState
                       ),
                     ),
                     Spacer(),
-                    // ignore: deprecated_member_use
+                   
                     TextButton(
                       onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute(

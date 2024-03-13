@@ -180,7 +180,7 @@ class _ContributionFineSettingsState extends State<ContributionFineSettings> {
             children: <Widget>[
               customTitle(
                   text: "Fines",
-                  // ignore: deprecated_member_use
+                 
                   color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                   fontWeight: FontWeight.w400,
                   textAlign: TextAlign.start),
@@ -191,7 +191,7 @@ class _ContributionFineSettingsState extends State<ContributionFineSettings> {
             children: <Widget>[
               subtitle2(
                   text: "Set Fines for Late Payments",
-                  // ignore: deprecated_member_use
+                 
                   color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                   textAlign: TextAlign.start),
             ],
@@ -201,7 +201,7 @@ class _ContributionFineSettingsState extends State<ContributionFineSettings> {
             children: <Widget>[
               customTitle(
                   text: "Activate Fine Settings",
-                  // ignore: deprecated_member_use
+                 
                   color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                   fontWeight: FontWeight.w500,
                   textAlign: TextAlign.start),

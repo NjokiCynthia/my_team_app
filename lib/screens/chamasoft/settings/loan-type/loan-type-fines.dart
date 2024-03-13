@@ -221,7 +221,7 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
               children: <Widget>[
                 customTitle(
                     text: "Fines Details",
-                    // ignore: deprecated_member_use
+                   
                     color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                     fontWeight: FontWeight.w400,
                     textAlign: TextAlign.start),
@@ -232,7 +232,7 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
               children: <Widget>[
                 subtitle2(
                     text: "Configure the fine settings",
-                    // ignore: deprecated_member_use
+                   
                     color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                     textAlign: TextAlign.start),
               ],
@@ -248,7 +248,7 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
                         children: <Widget>[
                           customTitle(
                               text: "Enable late loan repayment fines",
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               fontWeight: FontWeight.w600,
                               textAlign: TextAlign.start),
@@ -496,7 +496,7 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
                         children: <Widget>[
                           customTitle(
                               text: "Enable fines for outstanding balances",
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               fontWeight: FontWeight.w600,
                               textAlign: TextAlign.start),

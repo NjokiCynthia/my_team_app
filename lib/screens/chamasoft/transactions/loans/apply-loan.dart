@@ -3,13 +3,10 @@
 // import 'package:chamasoft/screens/chamasoft/transactions/loans/chamasoft-loan-type.dart';
 // import 'package:chamasoft/screens/chamasoft/transactions/loans/loan-amortization.dart';
 import 'package:chamasoft/helpers/common.dart';
-import 'package:chamasoft/helpers/custom-helper.dart';
-import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-for-individual-amt-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-amt.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-chamasoft.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-group.dart';
 // import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -19,16 +16,17 @@ import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 
 class ApplyLoan extends StatefulWidget {
   final bool isInit;
   final bool isFromGroupActive;
-  final bool isFromChamasoftActive;
+  final bool isFromAmt;
+  final bool isFromAmtIndividual;
 
   ApplyLoan(
       {this.isInit = true,
-      this.isFromChamasoftActive = false,
+      this.isFromAmt = false,
+      this.isFromAmtIndividual = false,
       this.isFromGroupActive = true});
   @override
   State<StatefulWidget> createState() {
@@ -44,11 +42,11 @@ class ApplyLoanState extends State<ApplyLoan> {
   bool _isFromAmt = false;
   bool _isFromAmtIndividual = false;
   bool _isInit = true;
-  bool _isLoading = true;
+  //bool _isLoading = true;
 
   double amountInputValue;
   Map<String, dynamic> _formLoadData = {};
-  List<LoanProduct> _loanProducts = [];
+
   List<LoanType> _loanTypes = [];
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -67,11 +65,12 @@ class ApplyLoanState extends State<ApplyLoan> {
     _scrollController.addListener(_scrollListener);
     setState(() {
       _isInit = widget.isInit;
-      _isFromAmt = widget.isFromChamasoftActive;
+      _isFromAmt = widget.isFromAmt;
       _isFromGroupActive = widget.isFromGroupActive;
-      if (!_isInit) {
-        _isLoading = false;
-      }
+      _isFromAmtIndividual = widget.isFromAmtIndividual;
+      // if (!_isInit) {
+      //   _isLoading = false;
+      // }
     });
     super.initState();
   }
@@ -136,7 +135,7 @@ class ApplyLoanState extends State<ApplyLoan> {
 
   final formKey = new GlobalKey<FormState>();
 
-  final ValueNotifier<int> _tabIndexBasicToggle = ValueNotifier(1);
+  final ValueNotifier<int> _tabIndexBasicToggle = ValueNotifier(0);
   @override
   Widget build(BuildContext context) {
     // LoanType typeLoan;
@@ -144,8 +143,9 @@ class ApplyLoanState extends State<ApplyLoan> {
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
-        action: () => Navigator.of(context)
-            .popUntil((Route<dynamic> route) => route.isFirst),
+        action: () => Navigator.pop(context),
+        // Navigator.of(context)
+        //     .popUntil((Route<dynamic> route) => route.isFirst),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
         title: "Apply Loan",
@@ -157,83 +157,82 @@ class ApplyLoanState extends State<ApplyLoan> {
               ? Colors.blueGrey[800]
               : Colors.white,
           height: MediaQuery.of(context).size.height * 0.9,
-          child: RefreshIndicator(
-            backgroundColor: (themeChangeProvider.darkTheme)
-                ? Colors.blueGrey[800]
-                : Colors.white,
-            //onRefresh: () => _fetchData(),
-            child: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-              },
-              child: Container(
-                padding: EdgeInsets.all(0.0),
-                width: MediaQuery.of(context).size.width,
-                decoration: primaryGradient(context),
-                //Switches
-                child: Column(
-                  children: <Widget>[
-                    Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        _isLoading
-                            ? showLinearProgressIndicator()
-                            : SizedBox(
-                                height: 0.0,
-                              ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
-                          child: ValueListenableBuilder(
-                              valueListenable: _tabIndexBasicToggle,
-                              builder: (context, currentIndex, _) {
-                                return FlutterToggleTab(
-                                  //width: 55.0,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.04,
-                                  borderRadius: 10.0,
+          // child: RefreshIndicator(
+          // backgroundColor: (themeChangeProvider.darkTheme)
+          //     ? Colors.blueGrey[800]
+          //     : Colors.white,
+          //onRefresh: () => _fetchData(),
+          child: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: Container(
+              padding: EdgeInsets.all(0.0),
+              width: MediaQuery.of(context).size.width,
+              decoration: primaryGradient(context),
+              //Switches
+              child: Column(
+                children: <Widget>[
+                  Column(mainAxisSize: MainAxisSize.max, children: <Widget>[
+                    // _isLoading
+                    //     ? showLinearProgressIndicator()
+                    //     : SizedBox(
+                    //         height: 0.0,
+                    //       ),
+                    Padding(
+                        padding: const EdgeInsets.only(
+                            top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
+                        child:
+                            // ValueListenableBuilder(
+                            //     valueListenable: _tabIndexBasicToggle,
+                            //     builder: (context, currentIndex, _) {
+                            //       return
+                            FlutterToggleTab(
+                          //width: 55.0,
+                          height: MediaQuery.of(context).size.height * 0.04,
+                          borderRadius: 10.0,
 
-                                  labels: [
-                                    'From Group',
-                                    'From AMT',
-                                    'AMT Individual Loans'
-                                  ],
-                                  selectedIndex: _tabIndexBasicToggle.value,
-                                  selectedLabelIndex: (index) {
-                                    _tabIndexBasicToggle.value = index;
-                                    setState(() {
-                                      if (index == 0) {
-                                        _isFromGroupActive = true;
-                                        _isFromAmt = false;
-                                        _isFromAmtIndividual = false;
-                                      }
-                                      if (index == 1) {
-                                        _isFromAmt = true;
-                                        _isFromGroupActive = false;
-                                        _isFromAmtIndividual = false;
-                                      }
-                                      if (index == 2) {
-                                        _isFromAmtIndividual = true;
-                                        _isFromAmt = false;
-                                        _isFromGroupActive = false;
-                                      }
-                                    });
-                                  },
-                                  selectedBackgroundColors: [Colors.grey],
-                                  unSelectedBackgroundColors: [Colors.white70],
-                                  selectedTextStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w600),
-                                  unSelectedTextStyle: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 10.0,
-                                      fontWeight: FontWeight.w400),
-                                );
-                              }),
+                          labels: [
+                            'From Group',
+                            'From AMT',
+                            'AMT Individual Loans'
+                          ],
+                          selectedIndex: _tabIndexBasicToggle.value,
+                          selectedLabelIndex: (index) {
+                            _tabIndexBasicToggle.value = index;
+                            setState(() {
+                              if (index == 0) {
+                                _isFromGroupActive = true;
+                                _isFromAmt = false;
+                                _isFromAmtIndividual = false;
+                              }
+                              if (index == 1) {
+                                _isFromAmt = true;
+                                _isFromGroupActive = false;
+                                _isFromAmtIndividual = false;
+                              }
+                              if (index == 2) {
+                                _isFromAmtIndividual = true;
+                                _isFromAmt = false;
+                                _isFromGroupActive = false;
+                              }
+                            });
+                          },
+                          selectedBackgroundColors: [Colors.grey],
+                          unSelectedBackgroundColors: [Colors.white70],
+                          selectedTextStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w600),
+                          unSelectedTextStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 10.0,
+                              fontWeight: FontWeight.w400),
                         )
-                      ],
-                    ),
+                        //  }
+                        ),
+                  ]),
+
 //                     Padding(
 //   padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
 //   child: isAdmin
@@ -290,35 +289,34 @@ class ApplyLoanState extends State<ApplyLoan> {
 //         ),
 // ),
 
-                    //Group loans
-                    Container(
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: Visibility(
-                          visible: _isFromGroupActive,
-                          child: ApplyLoanFromGroup(
-                              formLoadData: _formLoadData,
-                              loanTypes: _loanTypes),
-                        ),
+                  //Group loans
+                  Container(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Visibility(
+                        visible: _isFromGroupActive,
+                        child: ApplyLoanFromGroup(
+                            formLoadData: _formLoadData, loanTypes: _loanTypes),
                       ),
                     ),
-                    //AMt loans
-                    Container(
-                      child: Visibility(
-                          visible: _isFromAmt, child: ApplyLoanFromAmt()),
-                    ),
-                    Container(
-                      child: Visibility(
-                          visible: _isFromAmtIndividual,
-                          child: ApplyIndividualAmtLoan()),
-                    )
-                  ],
-                ),
+                  ),
+                  //AMt loans
+                  Container(
+                    child: Visibility(
+                        visible: _isFromAmt, child: ApplyLoanFromAmt()),
+                  ),
+                  Container(
+                    child: Visibility(
+                        visible: _isFromAmtIndividual,
+                        child: ApplyIndividualAmtLoan()),
+                  )
+                ],
               ),
             ),
           ),
         ),
       ),
+      //  ),
     );
   }
 }

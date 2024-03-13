@@ -7,7 +7,6 @@ import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/edit-collections.dart';
 
-// import 'package:chamasoft/screens/chamasoft/meetings/select-members.dart';
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/select-member.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -18,7 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
-// import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class EditMeeting extends StatefulWidget {
@@ -28,7 +26,7 @@ class EditMeeting extends StatefulWidget {
 
 class _EditMeetingState extends State<EditMeeting> {
   double _appBarElevation = 0;
-  ScrollController _scrollController;
+  ScrollController _scrollController = ScrollController();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   //  List<MembersFilterEntry> selectedMembersList = [];
@@ -107,14 +105,13 @@ class _EditMeetingState extends State<EditMeeting> {
   }
 
   _showSnackbar(String msg, int duration) {
-   
     ScaffoldMessenger.of(_scaffoldKey.currentState.context)
         .hideCurrentSnackBar();
     final snackBar = SnackBar(
       content: Text(msg),
       duration: Duration(seconds: duration),
     );
-   
+
     ScaffoldMessenger.of(_scaffoldKey.currentState.context)
         .showSnackBar(snackBar);
   }
@@ -198,7 +195,6 @@ class _EditMeetingState extends State<EditMeeting> {
       style: TextStyle(
         color: currentStep >= step
             ? primaryColor
-           
             : Theme.of(context).textSelectionTheme.selectionHandleColor,
         fontFamily: 'SegoeUI',
         fontWeight: currentStep >= step ? FontWeight.bold : FontWeight.normal,
@@ -244,7 +240,6 @@ class _EditMeetingState extends State<EditMeeting> {
 
   Widget agendaItem({String agenda, Function action}) {
     return Container(
-     
       color: Theme.of(context)
           .textSelectionTheme
           .selectionHandleColor
@@ -262,7 +257,6 @@ class _EditMeetingState extends State<EditMeeting> {
                 Text(
                   agenda,
                   style: TextStyle(
-                   
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor,
@@ -292,7 +286,6 @@ class _EditMeetingState extends State<EditMeeting> {
     return Text(
       text,
       style: TextStyle(
-       
         color: Theme.of(context).textSelectionTheme.selectionHandleColor,
         fontSize: 12.0,
       ),
@@ -303,7 +296,6 @@ class _EditMeetingState extends State<EditMeeting> {
 
   TextStyle summaryContentFormat() {
     return TextStyle(
-     
       color: Theme.of(context).textSelectionTheme.selectionHandleColor,
       fontSize: 16.0,
       fontWeight: FontWeight.bold,
@@ -352,22 +344,18 @@ class _EditMeetingState extends State<EditMeeting> {
           ? _list
           : [
               subtitle1(
-                color:
-                   
-                    Theme.of(context)
-                        .textSelectionTheme
-                        .selectionHandleColor
-                        .withOpacity(0.7),
+                color: Theme.of(context)
+                    .textSelectionTheme
+                    .selectionHandleColor
+                    .withOpacity(0.7),
                 text: "No agenda added",
                 textAlign: TextAlign.left,
               ),
               subtitle2(
-                color:
-                   
-                    Theme.of(context)
-                        .textSelectionTheme
-                        .selectionHandleColor
-                        .withOpacity(0.7),
+                color: Theme.of(context)
+                    .textSelectionTheme
+                    .selectionHandleColor
+                    .withOpacity(0.7),
                 text: "Added agenda items will be displayed here",
                 textAlign: TextAlign.left,
               ),
@@ -396,22 +384,18 @@ class _EditMeetingState extends State<EditMeeting> {
           ? _list
           : [
               subtitle1(
-                color:
-                   
-                    Theme.of(context)
-                        .textSelectionTheme
-                        .selectionHandleColor
-                        .withOpacity(0.7),
+                color: Theme.of(context)
+                    .textSelectionTheme
+                    .selectionHandleColor
+                    .withOpacity(0.7),
                 text: "No AOB added",
                 textAlign: TextAlign.left,
               ),
               subtitle2(
-                color:
-                   
-                    Theme.of(context)
-                        .textSelectionTheme
-                        .selectionHandleColor
-                        .withOpacity(0.7),
+                color: Theme.of(context)
+                    .textSelectionTheme
+                    .selectionHandleColor
+                    .withOpacity(0.7),
                 text: "Added AOB items will be displayed here",
                 textAlign: TextAlign.left,
               ),
@@ -963,7 +947,6 @@ class _EditMeetingState extends State<EditMeeting> {
                     children: <Widget>[
                       Icon(
                         Icons.lightbulb_outline,
-                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor,
@@ -1015,45 +998,6 @@ class _EditMeetingState extends State<EditMeeting> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                         
-                          // RaisedButton(
-                          //   color: primaryColor,
-                          //   child: Padding(
-                          //     padding:
-                          //     EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-                          //     child: Row(
-                          //       children: [
-                          //         Text(
-                          //           currentStep == 5
-                          //               ? "Confirm & Submit"
-                          //               : "Save & Continue",
-                          //           style: TextStyle(
-                          //               fontFamily: 'SegoeUI',
-                          //               fontWeight: FontWeight.w700),
-                          //         ),
-                          //         (_saving)
-                          //             ? SizedBox(width: 10.0)
-                          //             : SizedBox(),
-                          //         (_saving)
-                          //             ? SizedBox(
-                          //           height: 16.0,
-                          //           width: 16.0,
-                          //           child: CircularProgressIndicator(
-                          //             strokeWidth: 2.5,
-                          //             backgroundColor: Colors.transparent,
-                          //             valueColor:
-                          //             AlwaysStoppedAnimation<Color>(
-                          //               Colors.grey[700],
-                          //             ),
-                          //           ),
-                          //         )
-                          //             : SizedBox(),
-                          //       ],
-                          //     ),
-                          //   ),
-                          //   textColor: Colors.white,
-                          //   onPressed: (!_saving) ? onStepContinue : null,
-                          // ),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: primaryColor,
@@ -1093,46 +1037,16 @@ class _EditMeetingState extends State<EditMeeting> {
                             onPressed:
                                 !_saving ? controlDetails.onStepContinue : null,
                           ),
-
                           SizedBox(
                             width: 20.0,
                           ),
                           currentStep > 0
-                             
-                              // ? OutlineButton(
-                              //     color: Colors.white,
-                              //     child: Text(
-                              //       "Go Back",
-                              //       style: TextStyle(
-                              //         color: Theme.of(context)
-                              //            
-                              //             .textSelectionTheme.selectionHandleColor,
-                              //       ),
-                              //     ),
-                              //     borderSide: BorderSide(
-                              //       width: 2.0,
-                              //       color: Theme.of(context)
-                              //          
-                              //           .textSelectionTheme.selectionHandleColor
-                              //           .withOpacity(0.5),
-                              //     ),
-                              //     highlightColor: Theme.of(context)
-                              //        
-                              //         .textSelectionTheme.selectionHandleColor
-                              //         .withOpacity(0.1),
-                              //     highlightedBorderColor: Theme.of(context)
-                              //        
-                              //         .textSelectionTheme.selectionHandleColor
-                              //         .withOpacity(0.6),
-                              //     onPressed: (!_saving) ? onStepCancel : null,
-                              //   )
                               ? OutlinedButton(
                                   style: OutlinedButton.styleFrom(
                                     foregroundColor: Colors.white,
                                     side: BorderSide(
                                       width: 2.0,
                                       color: Theme.of(context)
-                                         
                                           .textSelectionTheme
                                           .selectionHandleColor
                                           .withOpacity(0.5),
@@ -1145,7 +1059,6 @@ class _EditMeetingState extends State<EditMeeting> {
                                     "Go Back",
                                     style: TextStyle(
                                       color: Theme.of(context)
-                                         
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                     ),

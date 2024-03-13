@@ -116,18 +116,14 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                   text:
                       "Accept loan application of ${groupObject.groupCurrency} ${currencyFormat.format(_groupLoanAmount)}."),
               actions: [
-               
                 negativeActionDialogButton(
                   text: ('CANCEL'),
-                  color: Theme.of(context)
-                     
-                      .textSelectionTheme
-                      .selectionHandleColor,
+                  color:
+                      Theme.of(context).textSelectionTheme.selectionHandleColor,
                   action: () {
                     Navigator.of(context).pop();
                   },
                 ),
-               
                 positiveActionDialogButton(
                     text: ('PROCEED'),
                     color: primaryColor,
@@ -174,7 +170,8 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
       Future.delayed(const Duration(milliseconds: 2500), () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (_) => ApplyLoan(
-                  isFromChamasoftActive: false,
+                  isFromAmt: false,
+                  isFromAmtIndividual: false,
                   isFromGroupActive: true,
                 )));
       });

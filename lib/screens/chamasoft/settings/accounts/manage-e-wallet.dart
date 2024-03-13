@@ -64,7 +64,7 @@ class _ManageEWalletState extends State<ManageEWallet> {
                           customTitleWithWrap(
                               text:
                                   "With the Chamasoft E-Wallet, your group can enjoy the power of automatic reconciliations by transacting with M-Pesa",
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               fontWeight: FontWeight.w600,
                               maxLines: null,
@@ -81,13 +81,13 @@ class _ManageEWalletState extends State<ManageEWallet> {
                   SwitchListTile(
                     title: customTitle(
                         text: "Chamasoft E-Wallet Account",
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                         textAlign: TextAlign.start,
                         fontWeight: FontWeight.w500),
                     subtitle: subtitle2(
                         text: _walletEnabled ? "Enabled" : "Disabled",
-                        // ignore: deprecated_member_use
+                       
                         color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                         textAlign: TextAlign.start),
                     value: _walletEnabled,

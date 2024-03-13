@@ -92,7 +92,7 @@ class _EditExpenseCategoryState extends State<EditExpenseCategory> {
           id: id.toString());
 
       Navigator.pop(context);
-      // ignore: deprecated_member_use
+      
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully updated the expense category",

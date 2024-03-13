@@ -111,7 +111,6 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
             child: customTitle(
                 text: "ADD MANUALLY",
                 fontSize: 12,
-               
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor),
           ),
@@ -144,7 +143,6 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                 customTitle(
                     text: "ADD MEMBERS",
                     fontSize: 12,
-                   
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor),
@@ -519,7 +517,6 @@ class AccountsTabView extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     textAlign: TextAlign.start,
                     color: Theme.of(context)
-                       
                         .textSelectionTheme
                         .selectionHandleColor
                         .withOpacity(0.6),
@@ -550,7 +547,6 @@ class AccountsTabView extends StatelessWidget {
                                   customTitleWithWrap(
                                     text: account.name,
                                     color: Theme.of(context)
-                                       
                                         .textSelectionTheme
                                         .selectionHandleColor,
                                     textAlign: TextAlign.start,
@@ -563,7 +559,6 @@ class AccountsTabView extends StatelessWidget {
                                           fontWeight: FontWeight.w600,
                                           textAlign: TextAlign.start,
                                           color: Theme.of(context)
-                                             
                                               .textSelectionTheme
                                               .selectionHandleColor
                                               .withOpacity(0.5),
@@ -675,7 +670,6 @@ class ContributionsTabView extends StatelessWidget {
                                 customTitle(
                                   text: '${contribution.name}',
                                   color: Theme.of(context)
-                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                   fontWeight: FontWeight.w700,
@@ -692,7 +686,6 @@ class ContributionsTabView extends StatelessWidget {
                                           fontWeight: FontWeight.w600,
                                           textAlign: TextAlign.start,
                                           color: Theme.of(context)
-                                             
                                               .textSelectionTheme
                                               .selectionHandleColor
                                               .withOpacity(0.5),
@@ -704,7 +697,6 @@ class ContributionsTabView extends StatelessWidget {
                                             fontWeight: FontWeight.w700,
                                             textAlign: TextAlign.start,
                                             color: Theme.of(context)
-                                               
                                                 .textSelectionTheme
                                                 .selectionHandleColor
                                                 .withOpacity(0.7),
@@ -720,7 +712,6 @@ class ContributionsTabView extends StatelessWidget {
                                           fontWeight: FontWeight.w600,
                                           textAlign: TextAlign.start,
                                           color: Theme.of(context)
-                                             
                                               .textSelectionTheme
                                               .selectionHandleColor
                                               .withOpacity(0.5),
@@ -732,7 +723,6 @@ class ContributionsTabView extends StatelessWidget {
                                             fontWeight: FontWeight.w700,
                                             textAlign: TextAlign.start,
                                             color: Theme.of(context)
-                                               
                                                 .textSelectionTheme
                                                 .selectionHandleColor
                                                 .withOpacity(0.7),
@@ -839,7 +829,6 @@ class MembersTabView extends StatelessWidget {
                         children: <Widget>[
                           customTitleWithWrap(
                             text: '${member.name}',
-                           
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -852,7 +841,6 @@ class MembersTabView extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                             textAlign: TextAlign.start,
                             color: Theme.of(context)
-                               
                                 .textSelectionTheme
                                 .selectionHandleColor
                                 .withOpacity(0.5),

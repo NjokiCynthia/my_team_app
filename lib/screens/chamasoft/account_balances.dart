@@ -62,6 +62,7 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
         title: "Account Balance Receipts",
         action: () => Navigator.of(context).pop(),
         elevation: 1,
+        
         trailingAction: shareTransaction(),
         leadingIcon: LineAwesomeIcons
             .arrow_left, /* trailingIcon: LineAwesomeIcons.download */

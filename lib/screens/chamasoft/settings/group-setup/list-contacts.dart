@@ -29,9 +29,9 @@ class _ListContactsState extends State<ListContacts> {
   final Permission _permission = Permission.contacts;
   PermissionStatus _permissionStatus = PermissionStatus.denied;
   // initially permissionstatus was undetermined
-  // ignore: deprecated_member_use
+ 
   List<CustomContact> _contacts = [];
-  // ignore: deprecated_member_use
+ 
   List<CustomContact> _selectedContacts = [];
   bool _isLoading = false;
   String floatingButtonLabel;

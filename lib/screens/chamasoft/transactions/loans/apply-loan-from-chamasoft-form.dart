@@ -108,18 +108,15 @@ class _ApplyLoanFromChamasoftFormState
                   text:
                       "Accept loan application of ${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}."),
               actions: [
-              
                 negativeActionDialogButton(
                   text: ('CANCEL'),
                   color: Theme.of(_buildContext)
-                    
                       .textSelectionTheme
                       .selectionHandleColor,
                   action: () {
                     Navigator.of(_buildContext).pop();
                   },
                 ),
-              
                 positiveActionDialogButton(
                     text: ('PROCEED'),
                     color: primaryColor,
@@ -162,7 +159,7 @@ class _ApplyLoanFromChamasoftFormState
       Future.delayed(const Duration(milliseconds: 2500), () {
         Navigator.of(_buildContext).pushReplacement(MaterialPageRoute(
             builder: (_) => ApplyLoan(
-                  isFromChamasoftActive: true,
+                  isFromAmt: true,
                   isFromGroupActive: false,
                 )));
       });
