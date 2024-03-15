@@ -1,6 +1,8 @@
 import 'package:chamasoft/helpers/theme.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SortContainer extends StatefulWidget {
   final String selectedSort;
@@ -38,6 +40,9 @@ class _SortContainerState extends State<SortContainer> {
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Wrap(
       children: [
         Container(
@@ -51,7 +56,12 @@ class _SortContainerState extends State<SortContainer> {
                 color: primaryColor,
                 child: customTitle(
                     textAlign: TextAlign.start,
-                    text: "SORT BY",
+                    text: currentLanguage == 'English'
+                        ? 'SORT BY'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('SORT BY') ??
+                            'SORT BY',
                     color: Colors.white,
                     fontSize: 12,
                     fontWeight: FontWeight.w600),
@@ -66,9 +76,14 @@ class _SortContainerState extends State<SortContainer> {
                       value: 1,
                       groupValue: selectedRadioTile,
                       title: subtitle1(
-                          text: "Transaction Date: Newest First",
+                          text: currentLanguage == 'English'
+                              ? 'Transaction Date: Newest First'
+                              : Provider.of<TranslationProvider>(context,
+                                          listen: false)
+                                      .translate(
+                                          'Transaction Date: Newest First') ??
+                                  'Transaction Date: Newest First',
                           textAlign: TextAlign.start,
-                         
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor),
@@ -83,9 +98,14 @@ class _SortContainerState extends State<SortContainer> {
                       value: 2,
                       groupValue: selectedRadioTile,
                       title: subtitle1(
-                          text: "Transaction Date: Oldest First",
+                          text: currentLanguage == 'English'
+                              ? 'Transaction Date: Oldest First'
+                              : Provider.of<TranslationProvider>(context,
+                                          listen: false)
+                                      .translate(
+                                          'Transaction Date: Oldest First') ??
+                                  'Transaction Date: Oldest First',
                           textAlign: TextAlign.start,
-                         
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor),
@@ -100,9 +120,13 @@ class _SortContainerState extends State<SortContainer> {
                       value: 3,
                       groupValue: selectedRadioTile,
                       title: subtitle1(
-                          text: "Amount: Highest to Lowest",
+                          text: currentLanguage == 'English'
+                        ? 'Amount: Highest to Lowest'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('Amount: Highest to Lowest') ??
+                            'Amount: Highest to Lowest',
                           textAlign: TextAlign.start,
-                         
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor),
@@ -117,9 +141,13 @@ class _SortContainerState extends State<SortContainer> {
                       value: 4,
                       groupValue: selectedRadioTile,
                       title: subtitle1(
-                          text: "Amount: Lowest to Highest",
+                          text: currentLanguage == 'English'
+                        ? 'Amount: Lowest to Highest'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('Amount: Lowest to Highest') ??
+                            'Amount: Lowest to Highest',
                           textAlign: TextAlign.start,
-                         
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor),

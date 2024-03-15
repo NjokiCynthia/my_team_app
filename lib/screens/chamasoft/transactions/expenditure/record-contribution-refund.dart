@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/reports/withdrawal_receipts.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
@@ -132,13 +133,20 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.times,
-        title: "Record Contribution Refund",
+        title: currentLanguage == 'English'
+            ? 'Record Contribution Refund'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Record Contribution Refund') ??
+                'Record Contribution Refund',
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(
@@ -153,7 +161,13 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                 children: <Widget>[
                   toolTip(
                     context: context,
-                    title: "Manually record contribution refund",
+                    title: currentLanguage == 'English'
+                        ? 'Manually record contribution refund'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate(
+                                    'Manually record contribution refund') ??
+                            'Manually record contribution refund',
                     message: "",
                   ),
                   Padding(
@@ -169,7 +183,14 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                             children: <Widget>[
                               Expanded(
                                 child: DatePicker(
-                                  labelText: 'Select Refund Date',
+                                  labelText: currentLanguage == 'English'
+                                      ? 'Select Refund Date'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  'Select Refund Date') ??
+                                          'Select Refund Date',
                                   lastDate: now,
                                   selectedDate: refundDate == null
                                       ? new DateTime(now.year, now.month,
@@ -187,14 +208,28 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                               ),
                               Expanded(
                                 child: CustomDropDownButton(
-                                  labelText: 'Select Refund Method',
+                                  labelText: currentLanguage == 'English'
+                                      ? 'Select Refund Method'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  'Select Refund Method') ??
+                                          'Select Refund Method',
                                   enabled: _isFormInputEnabled,
                                   listItems: withdrawalMethods,
                                   selectedItem: withdrawalMethod,
                                   validator: (value) {
                                     if (value.toString().isEmpty ||
                                         value == null) {
-                                      return "Field is required";
+                                      return currentLanguage == 'English'
+                                          ? 'This field is required'
+                                          : Provider.of<TranslationProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .translate(
+                                                      'This field is required') ??
+                                              'This field is required';
                                     }
                                     return null;
                                   },
@@ -208,7 +243,13 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                             ],
                           ),
                           CustomDropDownButton(
-                            labelText: 'Select Contribution to refund from',
+                            labelText: currentLanguage == 'English'
+                                ? 'Select Contribution to refund from'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate(
+                                            'Select Contribution to refund from') ??
+                                    'Select Contribution to refund from',
                             enabled: _isFormInputEnabled,
                             listItems:
                                 formLoadData.containsKey("contributionOptions")
@@ -217,7 +258,13 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                             selectedItem: contributionId,
                             validator: (value) {
                               if (value.toString().isEmpty || value == null) {
-                                return "Field is required";
+                                return currentLanguage == 'English'
+                                    ? 'This field is required'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate(
+                                                'This field is required') ??
+                                        'This field is required';
                               }
                               return null;
                             },
@@ -228,7 +275,13 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                             },
                           ),
                           CustomDropDownButton(
-                            labelText: 'Select account to refund from',
+                            labelText: currentLanguage == 'English'
+                                ? 'Select account to refund from'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate(
+                                            'Select account to refund from') ??
+                                    'Select account to refund from',
                             enabled: _isFormInputEnabled,
                             listItems:
                                 formLoadData.containsKey("accountOptions")
@@ -237,7 +290,13 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                             selectedItem: accountId,
                             validator: (value) {
                               if (value.toString().isEmpty || value == null) {
-                                return "Field is required";
+                                return currentLanguage == 'English'
+                                    ? 'This field is required'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate(
+                                                'This field is required') ??
+                                        'This field is required';
                               }
                               return null;
                             },
@@ -248,7 +307,12 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                             },
                           ),
                           CustomDropDownButton(
-                            labelText: 'Select Member to refund',
+                            labelText: currentLanguage == 'English'
+                                ? 'Select Member to refund'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Select Member to refund') ??
+                                    'Select Member to refund',
                             enabled: _isFormInputEnabled,
                             listItems: formLoadData.containsKey("memberOptions")
                                 ? formLoadData["memberOptions"]
@@ -256,7 +320,13 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                             selectedItem: groupMemberId,
                             validator: (value) {
                               if (value.toString().isEmpty || value == null) {
-                                return "Field is required";
+                                return currentLanguage == 'English'
+                                    ? 'This field is required'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate(
+                                                'This field is required') ??
+                                        'This field is required';
                               }
                               return null;
                             },
@@ -269,10 +339,22 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                           amountTextInputField(
                               context: context,
                               enabled: _isFormInputEnabled,
-                              labelText: 'Enter Amount refunded',
+                              labelText: currentLanguage == 'English'
+                                  ? 'Enter Amount refunded'
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate('Enter Amount refunded') ??
+                                      'Enter Amount refunded',
                               validator: (value) {
                                 if (value.toString().isEmpty || value == null) {
-                                  return "Field is required";
+                                  return currentLanguage == 'English'
+                                      ? 'This field is required'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  'This field is required') ??
+                                          'This field is required';
                                 }
                                 return null;
                               },
@@ -283,7 +365,13 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                               }),
                           multilineTextField(
                               context: context,
-                              labelText: 'Short Description (Optional)',
+                              labelText: currentLanguage == 'English'
+                                  ? 'Short Description (Optional)'
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate(
+                                              'Short Description (Optional)') ??
+                                      'Short Description (Optional)',
                               maxLines: 5,
                               onChanged: (value) {
                                 setState(() {
@@ -301,7 +389,13 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                                 )
                               : defaultButton(
                                   context: context,
-                                  text: "SAVE",
+                                  text: currentLanguage == 'English'
+                                      ? 'SAVE'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('SAVE') ??
+                                          'SAVE',
                                   onPressed: () {
                                     _submit(context);
                                   },

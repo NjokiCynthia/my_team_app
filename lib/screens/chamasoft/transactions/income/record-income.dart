@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/reports/deposit-receipts.dart';
 import 'package:chamasoft/helpers/common.dart';
@@ -147,13 +148,20 @@ class _RecordIncomeState extends State<RecordIncome> {
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.times_circle,
-        title: "Record Income",
+        title: currentLanguage == 'English'
+            ? 'Record Income'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Record Income') ??
+                'Record Income',
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(
@@ -171,7 +179,13 @@ class _RecordIncomeState extends State<RecordIncome> {
                   toolTip(
                       context: context,
                       message: "",
-                      title: "Manually record income payment",
+                      title: currentLanguage == 'English'
+                          ? 'Manually record income payment'
+                          : Provider.of<TranslationProvider>(context,
+                                      listen: false)
+                                  .translate(
+                                      'Manually record income payment') ??
+                              'Manually record income payment',
                       showTitle: true),
                   Padding(
                     padding: inputPagePadding,
@@ -189,7 +203,14 @@ class _RecordIncomeState extends State<RecordIncome> {
                               Expanded(
                                 flex: 2,
                                 child: DatePicker(
-                                  labelText: 'Select Deposit Date',
+                                  labelText: currentLanguage == 'English'
+                                      ? 'Select Deposit Date'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  'Select Deposit Date') ??
+                                          'Select Deposit Date',
                                   lastDate: DateTime.now(),
                                   selectedDate: incomeDate == null
                                       ? new DateTime(now.year, now.month,
@@ -208,13 +229,27 @@ class _RecordIncomeState extends State<RecordIncome> {
                               Expanded(
                                 flex: 3,
                                 child: CustomDropDownButton(
-                                  labelText: 'Select Deposit Method',
+                                  labelText: currentLanguage == 'English'
+                                      ? 'Select Deposit Method'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  'Select Deposit Method') ??
+                                          'Select Deposit Method',
                                   enabled: _isFormInputEnabled,
                                   listItems: depositMethods,
                                   selectedItem: depositMethod,
                                   validator: (value) {
                                     if (value == null || value == "") {
-                                      return "Field required";
+                                      return currentLanguage == 'English'
+                                          ? 'This field is required'
+                                          : Provider.of<TranslationProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .translate(
+                                                      'This field is required') ??
+                                              'This field is required';
                                     }
                                     return null;
                                   },
@@ -228,7 +263,12 @@ class _RecordIncomeState extends State<RecordIncome> {
                             ],
                           ),
                           CustomDropDownButton(
-                            labelText: 'Select Depositor',
+                            labelText: currentLanguage == 'English'
+                                ? 'Select Depositor'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Select Depositor') ??
+                                    'Select Depositor',
                             enabled: _isFormInputEnabled,
                             listItems:
                                 formLoadData.containsKey("depositorOptions")
@@ -237,7 +277,13 @@ class _RecordIncomeState extends State<RecordIncome> {
                             selectedItem: depositorId,
                             validator: (value) {
                               if (value == null || value == "") {
-                                return "Field required";
+                                return currentLanguage == 'English'
+                                    ? 'This field is required'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate(
+                                                'This field is required') ??
+                                        'This field is required';
                               }
                               return null;
                             },
@@ -248,7 +294,12 @@ class _RecordIncomeState extends State<RecordIncome> {
                             },
                           ),
                           CustomDropDownButton(
-                            labelText: 'Select Income Category',
+                            labelText: currentLanguage == 'English'
+                                ? 'Select Income Category'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Select Income Category') ??
+                                    'Select Income Category',
                             enabled: _isFormInputEnabled,
                             listItems: formLoadData
                                     .containsKey("incomeCategoryOptions")
@@ -257,7 +308,13 @@ class _RecordIncomeState extends State<RecordIncome> {
                             selectedItem: incomeCategoryId,
                             validator: (value) {
                               if (value == null || value == "") {
-                                return "Field required";
+                                return currentLanguage == 'English'
+                                    ? 'This field is required'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate(
+                                                'This field is required') ??
+                                        'This field is required';
                               }
                               return null;
                             },
@@ -268,7 +325,12 @@ class _RecordIncomeState extends State<RecordIncome> {
                             },
                           ),
                           CustomDropDownButton(
-                            labelText: 'Select Account',
+                            labelText: currentLanguage == 'English'
+                                ? 'Select Account'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Select Account') ??
+                                    'Select Account',
                             enabled: _isFormInputEnabled,
                             listItems:
                                 formLoadData.containsKey("accountOptions")
@@ -277,7 +339,13 @@ class _RecordIncomeState extends State<RecordIncome> {
                             selectedItem: accountId,
                             validator: (value) {
                               if (value == null || value == "") {
-                                return "Field required";
+                                return currentLanguage == 'English'
+                                    ? 'This field is required'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate(
+                                                'This field is required') ??
+                                        'This field is required';
                               }
                               return null;
                             },
@@ -290,7 +358,12 @@ class _RecordIncomeState extends State<RecordIncome> {
                           amountTextInputField(
                             context: context,
                             enabled: _isFormInputEnabled,
-                            labelText: 'Enter Amount',
+                            labelText: currentLanguage == 'English'
+                                ? 'Enter Amount'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Enter Amount') ??
+                                    'Enter Amount',
                             onChanged: (value) {
                               setState(() {
                                 amount = double.parse(value);
@@ -298,7 +371,13 @@ class _RecordIncomeState extends State<RecordIncome> {
                             },
                             validator: (value) {
                               if (value == null || value == "") {
-                                return "Field required";
+                                return currentLanguage == 'English'
+                                    ? 'This field is required'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate(
+                                                'This field is required') ??
+                                        'This field is required';
                               }
                               return null;
                             },
@@ -306,7 +385,13 @@ class _RecordIncomeState extends State<RecordIncome> {
                           multilineTextField(
                               maxLines: 30,
                               context: context,
-                              labelText: 'Short Description (Optional)',
+                              labelText: currentLanguage == 'English'
+                                  ? 'Short Description (Optional)'
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate(
+                                              'Short Description (Optional)') ??
+                                      'Short Description (Optional)',
                               onChanged: (value) {
                                 setState(() {
                                   description = value;
@@ -323,7 +408,13 @@ class _RecordIncomeState extends State<RecordIncome> {
                                 )
                               : defaultButton(
                                   context: context,
-                                  text: "SAVE",
+                                  text: currentLanguage == 'English'
+                                      ? 'SAVE'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('SAVE') ??
+                                          'SAVE',
                                   onPressed: () {
                                     _submit(context);
                                   },

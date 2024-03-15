@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
@@ -107,10 +108,7 @@ class SelectMemberState extends State<SelectMember> {
                 fontWeight: FontWeight.w700,
                 color: isSelected
                     ? primaryColor
-                    : Theme.of(context)
-                       
-                        .textSelectionTheme
-                        .selectionHandleColor,
+                    : Theme.of(context).textSelectionTheme.selectionHandleColor,
               ),
             ),
             subtitle: Text(
@@ -119,10 +117,7 @@ class SelectMemberState extends State<SelectMember> {
                 fontSize: 12,
                 color: isSelected
                     ? primaryColor
-                    : Theme.of(context)
-                       
-                        .textSelectionTheme
-                        .selectionHandleColor,
+                    : Theme.of(context).textSelectionTheme.selectionHandleColor,
               ),
             ),
             value: isSelected,
@@ -137,10 +132,7 @@ class SelectMemberState extends State<SelectMember> {
                         : Colors.white,
                 backgroundColor: isSelected
                     ? primaryColor
-                    : Theme.of(context)
-                       
-                        .textSelectionTheme
-                        .selectionHandleColor,
+                    : Theme.of(context).textSelectionTheme.selectionHandleColor,
                 child: Text(
                   CustomHelper.getInitials(
                     entry.name,
@@ -170,6 +162,9 @@ class SelectMemberState extends State<SelectMember> {
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Scaffold(
       appBar: tertiaryPageAppbar(
         context: context,
@@ -187,12 +182,23 @@ class SelectMemberState extends State<SelectMember> {
               builder: (BuildContext context) {
                 return AlertDialog(
                   backgroundColor: Theme.of(context).backgroundColor,
-                  title: new Text("Please select a member"),
+                  title: new Text(
+                    currentLanguage == 'English'
+                        ? 'Please select a member'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('Please select a member') ??
+                            'Please select a member',
+                  ),
                   actions: <Widget>[
-                   
                     new TextButton(
                       child: new Text(
-                        "OK",
+                        currentLanguage == 'English'
+                            ? 'OK'
+                            : Provider.of<TranslationProvider>(context,
+                                        listen: false)
+                                    .translate('OK') ??
+                                'OK',
                         style: TextStyle(color: Colors.blue),
                       ),
                       onPressed: () {
@@ -220,7 +226,11 @@ class SelectMemberState extends State<SelectMember> {
               TextField(
                 style: inputTextStyle(),
                 decoration: InputDecoration(
-                  labelText: "Search Member",
+                  labelText: currentLanguage == 'English'
+                      ? 'Search Member'
+                      : Provider.of<TranslationProvider>(context, listen: false)
+                              .translate('Search Member') ??
+                          'Search Member',
                   prefixIcon: Icon(LineAwesomeIcons.search),
                 ),
                 controller: controller,
@@ -232,7 +242,15 @@ class SelectMemberState extends State<SelectMember> {
                   margin: EdgeInsets.only(bottom: 50.0),
                   child: _membersList == null
                       ? Center(
-                          child: Text("There are no members to select"),
+                          child: Text(
+                            currentLanguage == 'English'
+                                ? 'There are no members to select'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate(
+                                            'There are no members to select') ??
+                                    'There are no members to select',
+                          ),
                         )
                       : FutureBuilder(
                           future: _future,
@@ -249,7 +267,15 @@ class SelectMemberState extends State<SelectMember> {
                                       _getGroupMembers(context, true),
                                   child: Consumer<Groups>(
                                     child: Center(
-                                      child: Text("Groups"),
+                                      child: Text(
+                                        currentLanguage == 'English'
+                                            ? 'Groups'
+                                            : Provider.of<TranslationProvider>(
+                                                        context,
+                                                        listen: false)
+                                                    .translate('Groups') ??
+                                                'Groups',
+                                      ),
                                     ),
                                     builder: (ctx, groups, ch) =>
                                         ListView.builder(

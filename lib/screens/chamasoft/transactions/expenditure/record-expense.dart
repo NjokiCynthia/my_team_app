@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/reports/withdrawal_receipts.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
@@ -131,13 +132,20 @@ class RecordExpenseState extends State<RecordExpense> {
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.times_circle,
-        title: "Record Expense",
+        title: currentLanguage == 'English'
+            ? 'Record Expense'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Record Expense') ??
+                'Record Expense',
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(
@@ -156,7 +164,13 @@ class RecordExpenseState extends State<RecordExpense> {
                 children: <Widget>[
                   toolTip(
                       context: context,
-                      title: "Manually record expense payment",
+                      title: currentLanguage == 'English'
+                          ? 'Manually record expense payment'
+                          : Provider.of<TranslationProvider>(context,
+                                      listen: false)
+                                  .translate(
+                                      'Manually record expense payment') ??
+                              'Manually record expense payment',
                       message: ""),
                   Padding(
                     padding: inputPagePadding,
@@ -172,7 +186,14 @@ class RecordExpenseState extends State<RecordExpense> {
                               Expanded(
                                 flex: 2,
                                 child: DatePicker(
-                                  labelText: 'Select Expense Date',
+                                  labelText: currentLanguage == 'English'
+                                      ? 'Select Expense Date'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  'Select Expense Date') ??
+                                          'Select Expense Date',
                                   lastDate: DateTime.now(),
                                   selectedDate: expenseDate == null
                                       ? new DateTime(now.year, now.month,
@@ -191,13 +212,27 @@ class RecordExpenseState extends State<RecordExpense> {
                               Expanded(
                                 flex: 3,
                                 child: CustomDropDownButton(
-                                  labelText: 'Select Withdrawal Method',
+                                  labelText: currentLanguage == 'English'
+                                      ? 'Select Withdrawal Method'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  'Select Withdrawal Method') ??
+                                          'Select Withdrawal Method',
                                   enabled: _isFormInputEnabled,
                                   listItems: withdrawalMethods,
                                   selectedItem: withdrawalMethod,
                                   validator: (value) {
                                     if (value == null || value == "") {
-                                      return "Field is required";
+                                      return currentLanguage == 'English'
+                                          ? 'This field is required'
+                                          : Provider.of<TranslationProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .translate(
+                                                      'This field is required') ??
+                                              'This field is required';
                                     }
                                     return null;
                                   },
@@ -211,7 +246,12 @@ class RecordExpenseState extends State<RecordExpense> {
                             ],
                           ),
                           CustomDropDownButton(
-                            labelText: 'Select Expense Category',
+                            labelText: currentLanguage == 'English'
+                                ? 'Select Expense Category'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Select Expense Category') ??
+                                    'Select Expense Category',
                             enabled: _isFormInputEnabled,
                             listItems:
                                 formLoadData.containsKey("expenseCategories")
@@ -220,7 +260,13 @@ class RecordExpenseState extends State<RecordExpense> {
                             selectedItem: expenseCategoryId,
                             validator: (value) {
                               if (value == null || value == "") {
-                                return "Field is required";
+                                return currentLanguage == 'English'
+                                    ? 'This field is required'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate(
+                                                'This field is required') ??
+                                        'This field is required';
                               }
                               return null;
                             },
@@ -231,7 +277,12 @@ class RecordExpenseState extends State<RecordExpense> {
                             },
                           ),
                           CustomDropDownButton(
-                            labelText: 'Select Account',
+                            labelText: currentLanguage == 'English'
+                                ? 'Select Account'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Select Account') ??
+                                    'Select Account',
                             enabled: _isFormInputEnabled,
                             listItems:
                                 formLoadData.containsKey("accountOptions")
@@ -240,7 +291,13 @@ class RecordExpenseState extends State<RecordExpense> {
                             selectedItem: accountId,
                             validator: (value) {
                               if (value == null || value == "") {
-                                return "Field is required";
+                                return currentLanguage == 'English'
+                                    ? 'This field is required'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate(
+                                                'This field is required') ??
+                                        'This field is required';
                               }
                               return null;
                             },
@@ -253,7 +310,12 @@ class RecordExpenseState extends State<RecordExpense> {
                           amountTextInputField(
                               context: context,
                               enabled: _isFormInputEnabled,
-                              labelText: 'Enter Amount Expensed',
+                              labelText: currentLanguage == 'English'
+                                  ? 'Enter Amount Expensed'
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate('Enter Amount Expensed') ??
+                                      'Enter Amount Expensed',
                               onChanged: (value) {
                                 setState(() {
                                   amount = double.parse(value);
@@ -261,13 +323,26 @@ class RecordExpenseState extends State<RecordExpense> {
                               },
                               validator: (value) {
                                 if (value == null || value == "") {
-                                  return "Field required";
+                                  return currentLanguage == 'English'
+                                      ? 'This field is required'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  'This field is required') ??
+                                          'This field is required';
                                 }
                                 return null;
                               }),
                           multilineTextField(
                               context: context,
-                              labelText: 'Short Description (Optional)',
+                              labelText: currentLanguage == 'English'
+                                  ? 'Short Description (Optional)'
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate(
+                                              'Short Description (Optional)') ??
+                                      'Short Description (Optional)',
                               maxLines: 5,
                               onChanged: (value) {
                                 setState(() {
@@ -285,7 +360,13 @@ class RecordExpenseState extends State<RecordExpense> {
                                 )
                               : defaultButton(
                                   context: context,
-                                  text: "SAVE",
+                                  text: currentLanguage == 'English'
+                                      ? 'SAVE'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('SAVE') ??
+                                          'SAVE',
                                   onPressed: () {
                                     _submit(context);
                                   },

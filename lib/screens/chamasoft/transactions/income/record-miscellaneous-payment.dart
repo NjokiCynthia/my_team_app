@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/reports/deposit-receipts.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
@@ -129,13 +130,20 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Scaffold(
         appBar: secondaryPageAppbar(
           context: context,
           action: () => Navigator.of(context).pop(),
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.times_circle,
-          title: "Record Miscellaneous Payment",
+          title: currentLanguage == 'English'
+              ? 'Record Miscellaneous Payment'
+              : Provider.of<TranslationProvider>(context, listen: false)
+                      .translate('Record Miscellaneous Payment') ??
+                  'Record Miscellaneous Payment',
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: Builder(
@@ -150,7 +158,13 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                   children: <Widget>[
                     toolTip(
                         context: context,
-                        title: "Manually record miscellaneous payments",
+                        title: currentLanguage == 'English'
+                            ? 'Manually record miscellaneous payments'
+                            : Provider.of<TranslationProvider>(context,
+                                        listen: false)
+                                    .translate(
+                                        'Manually record miscellaneous payments') ??
+                                'Manually record miscellaneous payments',
                         message: ""),
                     Padding(
                       padding: inputPagePadding,
@@ -166,7 +180,14 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                                 Expanded(
                                   flex: 2,
                                   child: DatePicker(
-                                    labelText: 'Select Deposit Date',
+                                    labelText: currentLanguage == 'English'
+                                        ? 'Select Deposit Date'
+                                        : Provider.of<TranslationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .translate(
+                                                    'Select Deposit Date') ??
+                                            'Select Deposit Date',
                                     lastDate: DateTime.now(),
                                     selectedDate: depositDate == null
                                         ? new DateTime(now.year, now.month,
@@ -183,13 +204,27 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                                 Expanded(
                                   flex: 3,
                                   child: CustomDropDownButton(
-                                    labelText: 'Select Deposit Method',
+                                    labelText: currentLanguage == 'English'
+                                        ? 'Select Deposit Method'
+                                        : Provider.of<TranslationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .translate(
+                                                    'Select Deposit Method') ??
+                                            'Select Deposit Method',
                                     enabled: _isFormInputEnabled,
                                     listItems: depositMethods,
                                     selectedItem: depositMethod,
                                     validator: (value) {
                                       if (value == "" || value == null) {
-                                        return "Field is required";
+                                        return currentLanguage == 'English'
+                                            ? 'This field is required'
+                                            : Provider.of<TranslationProvider>(
+                                                        context,
+                                                        listen: false)
+                                                    .translate(
+                                                        'This field is required') ??
+                                                'This field is required';
                                       }
                                       return null;
                                     },
@@ -203,7 +238,12 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                               ],
                             ),
                             CustomDropDownButton(
-                              labelText: 'Select Member',
+                              labelText: currentLanguage == 'English'
+                                  ? 'Select Member'
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate('Select Member') ??
+                                      'Select Member',
                               enabled: _isFormInputEnabled,
                               listItems:
                                   formLoadData.containsKey("memberOptions")
@@ -212,7 +252,14 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                               selectedItem: memberId,
                               validator: (value) {
                                 if (value == "" || value == null) {
-                                  return "Field is required";
+                                  return currentLanguage == 'English'
+                                      ? 'This field is required'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  'This field is required') ??
+                                          'This field is required';
                                 }
                                 return null;
                               },
@@ -223,7 +270,12 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                               },
                             ),
                             CustomDropDownButton(
-                              labelText: 'Select Account',
+                              labelText: currentLanguage == 'English'
+                                  ? 'Select Account'
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate('Select Account') ??
+                                      'Select Account',
                               enabled: _isFormInputEnabled,
                               listItems:
                                   formLoadData.containsKey("accountOptions")
@@ -232,7 +284,14 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                               selectedItem: accountId,
                               validator: (value) {
                                 if (value == "" || value == null) {
-                                  return "Field is required";
+                                  return currentLanguage == 'English'
+                                      ? 'This field is required'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  'This field is required') ??
+                                          'This field is required';
                                 }
                                 return null;
                               },
@@ -244,11 +303,23 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                             ),
                             amountTextInputField(
                                 context: context,
-                                labelText: 'Enter Amount',
+                                labelText: currentLanguage == 'English'
+                                    ? 'Enter Amount'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate('Enter Amount') ??
+                                        'Enter Amount',
                                 enabled: _isFormInputEnabled,
                                 validator: (value) {
                                   if (value == "" || value == null) {
-                                    return "Field is required";
+                                    return currentLanguage == 'English'
+                                        ? 'This field is required'
+                                        : Provider.of<TranslationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .translate(
+                                                    'This field is required') ??
+                                            'This field is required';
                                   }
                                   return null;
                                 },
@@ -259,7 +330,13 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                                 }),
                             multilineTextField(
                                 context: context,
-                                labelText: 'Short Description (Optional)',
+                                labelText: currentLanguage == 'English'
+                                    ? 'Short Description (Optional)'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate(
+                                                'Short Description (Optional)') ??
+                                        'Short Description (Optional)',
                                 maxLines: 5,
                                 onChanged: (value) {
                                   setState(() {
@@ -277,7 +354,13 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                                   )
                                 : defaultButton(
                                     context: context,
-                                    text: "SAVE",
+                                    text: currentLanguage == 'English'
+                                        ? 'SAVE'
+                                        : Provider.of<TranslationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .translate('SAVE') ??
+                                            'SAVE',
                                     onPressed: () {
                                       _submit(context);
                                     },

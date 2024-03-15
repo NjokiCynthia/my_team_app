@@ -216,7 +216,12 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
           customShowCase(
             key: createWithdrawalKey,
             description:
-                "Create a withdrawal from from chamasoft ewalet to mpesa",
+                currentLanguage == 'English'
+                        ? 'Create a withdrawal from from chamasoft ewalet to mpesa'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('Create a withdrawal from from chamasoft ewalet to mpesa') ??
+                            'Create a withdrawal from from chamasoft ewalet to mpesa',
             child: Container(
                 width: 132.0,
                 child: svgGridButton(
@@ -285,7 +290,12 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
           ),
           customShowCase(
             key: loanApprovalKey,
-            description: "Approve loans applied by members",
+            description: currentLanguage == 'English'
+                        ? 'Approve loans applied by members'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('Approve loans applied by members') ??
+                            'Approve loans applied by members',
             child: Container(
                 width: 132.0,
                 child: svgGridButton(
@@ -319,7 +329,12 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
           ),
           customShowCase(
             key: recordMemberLoan,
-            description: "Manualy Record Loans given to members",
+            description: currentLanguage == 'English'
+                        ? 'Manualy Record Loans given to members'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('Manualy Record Loans given to members') ??
+                            'Manualy Record Loans given to members',
             child: Container(
                 width: 132.0,
                 child: svgGridButton(
@@ -350,7 +365,12 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
           ),
           customShowCase(
             key: recordRepaymentKey,
-            description: "Manualy Record Loans paid by a member",
+            description: currentLanguage == 'English'
+                        ? 'Manualy Record Loan repayment by members'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('Manualy Record Loan repayment by members') ??
+                            'Manualy Record Loan repayment by members',
             child: Container(
                 width: 132.0,
                 child: svgGridButton(
@@ -382,7 +402,12 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
           ),
           customShowCase(
             key: bankLoanRepaymentKey,
-            description: "Manualy Record Bank Loan repayment by members",
+            description: currentLanguage == 'English'
+                        ? 'Manualy Record Bank Loan repayment by members'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('Manualy Record Bank Loan repayment by members') ??
+                            'Manualy Record Bank Loan repayment by members',
             child: Container(
                 width: 132.0,
                 child: svgGridButton(
