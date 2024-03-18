@@ -41,7 +41,6 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
           title: heading2(
             text: "Logout",
             textAlign: TextAlign.start,
-            
             color: Theme.of(context).textSelectionTheme.selectionHandleColor,
           ),
           content: customTitleWithWrap(
@@ -382,6 +381,18 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[
                                       Text("Oromo",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              color: Theme.of(context)
+                                                  .indicatorColor)),
+                                    ],
+                                  )),
+                              PopupMenuItem(
+                                  value: "Somali",
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text("Somali",
                                           style: TextStyle(
                                               fontWeight: FontWeight.w600,
                                               color: Theme.of(context)
