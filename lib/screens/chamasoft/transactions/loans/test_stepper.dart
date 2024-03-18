@@ -18,8 +18,6 @@ class StepperPage extends StatefulWidget {
 class _StepperPageState extends State<StepperPage> {
   List<String> titles = [];
   List<List<TextEditingController>> controllersList = [];
-  List<Widget> memberFields =
-      []; // List to hold dynamically generated member text fields
   int currentStep = 0; // Track the current step
 
   double _appBarElevation = 0;
@@ -57,7 +55,6 @@ class _StepperPageState extends State<StepperPage> {
     'houseNumber': "",
     'amount': "",
     'value': "",
-    'members': [], // List to store members' data
   };
 
   Future<List<String>> fetchFields(String selectedOption) async {
@@ -69,7 +66,6 @@ class _StepperPageState extends State<StepperPage> {
         'Plot Location',
         'Loan amount applied for',
         'Number of rooms',
-        'Members', // Add a field for adding members
       ];
     } else {
       return [
@@ -77,8 +73,7 @@ class _StepperPageState extends State<StepperPage> {
         'Why do you want a loan?',
         'Your borrowing record',
         'Your present economic activity/project',
-        'Other sources of income',
-        'Members', // Add a field for adding members
+        'Other sources of income'
       ];
     }
   }
@@ -105,9 +100,6 @@ class _StepperPageState extends State<StepperPage> {
         case 2:
           fieldName = 'amount';
           break;
-        case 3: // This case handles members' data
-          fieldName = 'members';
-          break;
       }
     } else if (stepIndex == 2) {
       switch (fieldIndex) {
@@ -127,24 +119,11 @@ class _StepperPageState extends State<StepperPage> {
     print('Saving data to database:');
     print(_data); // For debugging purposes
 
-    String membersJson = jsonEncode(_data['members']);
-
-    _data['members'] = membersJson;
-
+    // Add your database saving logic here
     await insertToLocalDb(DatabaseHelper.loansTable, _data);
 
+    // Navigate back after saving data
     Navigator.of(context).pop();
-  }
-
-  void addMemberField() {
-    setState(() {
-      memberFields.add(TextFormField(
-        decoration: InputDecoration(labelText: 'Enter member name'),
-        onChanged: (value) {
-          _data['members'].add(value); // Add member to the list
-        },
-      ));
-    });
   }
 
   Widget buildStepper() {
@@ -207,10 +186,6 @@ class _StepperPageState extends State<StepperPage> {
                     fieldName = 'amount';
                     labelText = 'Enter amount';
                     break;
-                  case 3:
-                    fieldName = 'members';
-                    labelText = 'Enter members';
-                    break;
                 }
               } else if (index == 2) {
                 switch (i) {
@@ -221,25 +196,15 @@ class _StepperPageState extends State<StepperPage> {
                 }
               }
 
-              return fieldName == 'members'
-                  ? Column(
-                      children: [
-                        ...memberFields,
-                        ElevatedButton(
-                          onPressed: addMemberField,
-                          child: Text('Add Member'),
-                        ),
-                      ],
-                    )
-                  : TextFormField(
-                      controller: controllersList[index][i],
-                      decoration: InputDecoration(
-                        labelText: labelText,
-                      ),
-                      onChanged: (value) {
-                        updateData(index, i, value);
-                      },
-                    );
+              return TextFormField(
+                controller: controllersList[index][i],
+                decoration: InputDecoration(
+                  labelText: labelText,
+                ),
+                onChanged: (value) {
+                  updateData(index, i, value);
+                },
+              );
             },
           ),
         ),
@@ -255,11 +220,7 @@ class _StepperPageState extends State<StepperPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             for (var entry in _data.entries)
-              if (entry.key != 'members') Text('${entry.key}: ${entry.value}'),
-            if (_data.containsKey('members'))
-              ..._data['members']
-                  .map((member) => Text('Member: $member'))
-                  .toList(),
+              Text('${entry.key}: ${entry.value}'),
           ],
         ),
         isActive: currentStep == titles.length,
@@ -273,7 +234,7 @@ class _StepperPageState extends State<StepperPage> {
     if (stepIndex == 0) {
       return 2;
     } else if (stepIndex == 1) {
-      return 4; // Increased for the members field
+      return 3;
     } else if (stepIndex == 2) {
       return 1;
     } else {
