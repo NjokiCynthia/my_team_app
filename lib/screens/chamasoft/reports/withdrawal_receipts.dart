@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/withdrawal.dart';
 import 'package:chamasoft/screens/chamasoft/reports/sort-container.dart';
 import 'package:chamasoft/helpers/common.dart';
@@ -163,6 +164,9 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return WillPopScope(
       onWillPop: () async {
         Navigator.of(context).pop();
@@ -173,7 +177,11 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
           key: _scaffoldKey,
           appBar: secondaryPageAppbar(
               context: context,
-              title: "Withdrawals Receipts",
+              title: currentLanguage == 'English'
+                  ? 'Withdrawals Receipts'
+                  : Provider.of<TranslationProvider>(context, listen: false)
+                          .translate('Withdrawals Receipts') ??
+                      'Withdrawals Receipts',
               action: () => widget.requestId == WITHDRAWAL_REQUEST
                   ? Navigator.of(context).popUntil((_) => count++ >= 4)
                   : Navigator.of(context).pop(),
@@ -225,13 +233,17 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
                                         children: [
                                           Icon(LineAwesomeIcons.sort,
                                               color: Theme.of(context)
-                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor),
                                           subtitle1(
-                                              text: "Sort",
+                                              text: currentLanguage == 'English'
+                                                  ? 'Sort'
+                                                  : Provider.of<TranslationProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .translate('Sort') ??
+                                                      'Sort',
                                               color: Theme.of(context)
-                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor)
                                         ],
@@ -268,13 +280,18 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
                                         children: [
                                           Icon(LineAwesomeIcons.filter,
                                               color: Theme.of(context)
-                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor),
                                           subtitle1(
-                                              text: "Filter",
+                                              text: currentLanguage == 'English'
+                                                  ? 'Filter'
+                                                  : Provider.of<TranslationProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .translate(
+                                                              'Filter') ??
+                                                      'Filter',
                                               color: Theme.of(context)
-                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor)
                                         ],
@@ -348,6 +365,9 @@ class WithdrawalCard extends StatelessWidget {
   GlobalKey _containerKey = GlobalKey();
 
   void _voidWithdrawalTransaction(String id) async {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(bodyContext, listen: false)
+            .currentLanguage;
     Navigator.of(bodyContext).pop();
     showDialog<String>(
         context: bodyContext,
@@ -362,7 +382,13 @@ class WithdrawalCard extends StatelessWidget {
           .voidWithdrawlTransaction(id, position, bodyContext);
       Navigator.of(bodyContext).pop();
       StatusHandler().showSuccessSnackBar(
-          bodyContext, "Good news: Transaction successfully voided");
+        bodyContext,
+        currentLanguage == 'English'
+            ? 'Good news: Transaction successfully voided'
+            : Provider.of<TranslationProvider>(bodyContext, listen: false)
+                    .translate('Good news: Transaction successfully voided') ??
+                'Good news: Transaction successfully voided',
+      );
     } on CustomException catch (error) {
       Navigator.of(bodyContext).pop();
       StatusHandler().handleStatus(
@@ -376,6 +402,9 @@ class WithdrawalCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Padding(
@@ -407,23 +436,17 @@ class WithdrawalCard extends StatelessWidget {
                               customTitle(
                                 text: withdrawal.type,
                                 fontSize: 16.0,
-                               
-                                color:
-                                   
-                                    Theme.of(context)
-                                        .textSelectionTheme
-                                        .selectionHandleColor,
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                                 textAlign: TextAlign.start,
                               ),
                               subtitle2(
                                 text: withdrawal.name,
                                 textAlign: TextAlign.start,
-                               
-                                color:
-                                   
-                                    Theme.of(context)
-                                        .textSelectionTheme
-                                        .selectionHandleColor,
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                               )
                             ],
                           ),
@@ -438,7 +461,6 @@ class WithdrawalCard extends StatelessWidget {
                             customTitle(
                               text: "${groupObject.groupCurrency} ",
                               fontSize: 18.0,
-                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -446,7 +468,6 @@ class WithdrawalCard extends StatelessWidget {
                             ),
                             heading2(
                               text: currencyFormat.format(withdrawal.amount),
-                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -470,24 +491,24 @@ class WithdrawalCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               subtitle2(
-                                  text: "Recipient By",
-                                  color:
-                                     
-                                      Theme.of(context)
-                                         
-                                          .textSelectionTheme
-                                          .selectionHandleColor,
+                                  text: currentLanguage == 'English'
+                                      ? 'Recipient By'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('Recipient By') ??
+                                          'Recipient By',
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.start),
                               customTitle1(
                                   text: withdrawal.recipient,
                                   fontSize: 15.0,
                                   fontWeight: FontWeight.w600,
-                                  color:
-                                     
-                                      Theme.of(context)
-                                         
-                                          .textSelectionTheme
-                                          .selectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.start),
                             ],
                           ),
@@ -495,23 +516,23 @@ class WithdrawalCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
                               subtitle2(
-                                  text: "Withdrawn On",
-                                  color:
-                                     
-                                      Theme.of(context)
-                                         
-                                          .textSelectionTheme
-                                          .selectionHandleColor,
+                                  text: currentLanguage == 'English'
+                                      ? 'Withdrawn On'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('Withdrawn On') ??
+                                          'Withdrawn On',
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.end),
                               customTitle1(
                                   text: withdrawal.recordedOn,
                                   fontSize: 16,
-                                  color:
-                                     
-                                      Theme.of(context)
-                                         
-                                          .textSelectionTheme
-                                          .selectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.end)
                             ],
                           ),
@@ -527,24 +548,23 @@ class WithdrawalCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         subtitle2(
-                            text: "Narration: ",
-                            color:
-                               
-                                Theme.of(context)
-                                   
-                                    .textSelectionTheme
-                                    .selectionHandleColor,
+                            text: currentLanguage == 'English'
+                                ? 'Narration:'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Narration:') ??
+                                    'Narration:',
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             textAlign: TextAlign.start),
                         subtitle2(
                             text:
                                 "${withdrawal.type} -- ${withdrawal.reconciliation}",
                             fontSize: 12.0,
-                            color:
-                               
-                                Theme.of(context)
-                                   
-                                    .textSelectionTheme
-                                    .selectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             textAlign: TextAlign.start),
                       ],
                     ),
@@ -597,7 +617,13 @@ class WithdrawalCard extends StatelessWidget {
                             children: <Widget>[
                               groupObject.isGroupAdmin
                                   ? plainButtonWithIcon(
-                                      text: "VOID",
+                                      text: currentLanguage == 'English'
+                                          ? 'VOID'
+                                          : Provider.of<TranslationProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .translate('VOID') ??
+                                              'VOID',
                                       size: 14.0,
                                       spacing: 2.0,
                                       color: Colors.red,
@@ -611,7 +637,14 @@ class WithdrawalCard extends StatelessWidget {
                                           context: context,
                                           message:
                                               "Are you sure you want to void ${withdrawal.type} of ${groupObject.groupCurrency} ${currencyFormat.format(withdrawal.amount)} by ${withdrawal.recipient}?",
-                                          title: "Confirm Action",
+                                          title: currentLanguage == 'English'
+                                              ? 'Confirm Action'
+                                              : Provider.of<TranslationProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .translate(
+                                                          'Confirm Action') ??
+                                                  'Confirm Action',
                                         );
                                       })
                                   : Container(),

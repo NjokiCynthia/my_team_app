@@ -120,7 +120,12 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
           ),
           customShowCase(
             key: contributionStatementKey,
-            description: "View and Download your Transaction summary from here",
+            description: currentLanguage == 'English'
+                ? 'View and Download your Transaction summary from here'
+                : Provider.of<TranslationProvider>(context, listen: false)
+                        .translate(
+                            'View and Download your Transaction summary from here') ??
+                    'View and Download your Transaction summary from here',
             child: Container(
                 width: 132.0,
                 child: svgGridButton(
@@ -155,7 +160,12 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
           ),
           customShowCase(
             key: fineStatementKey,
-            description: "View and Download your Fine summary from here",
+            description: currentLanguage == 'English'
+                ? 'View and Download your Fine summary from here'
+                : Provider.of<TranslationProvider>(context, listen: false)
+                        .translate(
+                            'View and Download your Fine summary from here') ??
+                    'View and Download your Fine summary from here',
             child: Container(
                 width: 132.0,
                 child: svgGridButton(
@@ -191,7 +201,12 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
           ),
           customShowCase(
             key: loansummaryKey,
-            description: "View, Download and Share your Loan summary from here",
+            description: currentLanguage == 'English'
+                ? 'View, Download and Share your Loan summary from here'
+                : Provider.of<TranslationProvider>(context, listen: false)
+                        .translate(
+                            'View, Download and Share your Loan summary from here') ??
+                    'View, Download and Share your Loan summary from here',
             child: Container(
                 width: 132.0,
                 child: svgGridButton(
@@ -239,8 +254,16 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                 child: svgGridButton(
                     context: context,
                     icon: customIcons['cash-in-hand'],
-                    title: 'DEPOSIT',
-                    subtitle: 'RECEIPTS',
+                    title: currentLanguage == 'English'
+                        ? 'DEPOSIT'
+                        : Provider.of<TranslationProvider>(context, listen: false)
+                                .translate('DEPOSIT') ??
+                            'DEPOSIT',
+                    subtitle: currentLanguage == 'English'
+                        ? 'RECEIPTS'
+                        : Provider.of<TranslationProvider>(context, listen: false)
+                                .translate('RECEIPTS') ??
+                            'RECEIPTS',
                     color: Config.appName.toLowerCase() == "chamasoft"
                         ? Colors.blue[400]
                         : Theme.of(context).primaryColor,
@@ -263,8 +286,16 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                 child: svgGridButton(
                     context: context,
                     icon: customIcons['cash-register'],
-                    title: 'WITHDRAWAL',
-                    subtitle: 'RECEIPTS',
+                    title: currentLanguage == 'English'
+                        ? 'WITHDRAWAL'
+                        : Provider.of<TranslationProvider>(context, listen: false)
+                                .translate('WITHDRAWAL') ??
+                            'WITHDRAWAL',
+                    subtitle: currentLanguage == 'English'
+                        ? 'RECEIPTS'
+                        : Provider.of<TranslationProvider>(context, listen: false)
+                                .translate('RECEIPTS') ??
+                            'RECEIPTS',
                     color: Config.appName.toLowerCase() == "chamasoft"
                         ? Colors.blue[400]
                         : Theme.of(context).primaryColor,
@@ -506,7 +537,12 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "Your Reports",
+                      currentLanguage == 'English'
+                          ? 'Your Reports'
+                          : Provider.of<TranslationProvider>(context,
+                                      listen: false)
+                                  .translate('Your Reports') ??
+                              'Your Reports',
                       style: TextStyle(
                         color: Colors.blueGrey[400],
                         fontFamily: 'SegoeUI',
@@ -541,7 +577,12 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "Transaction Reports",
+                      currentLanguage == 'English'
+                          ? 'Transaction Reports'
+                          : Provider.of<TranslationProvider>(context,
+                                      listen: false)
+                                  .translate('Transaction Reports') ??
+                              'Transaction Reports',
                       style: TextStyle(
                         color: Colors.blueGrey[400],
                         fontFamily: 'SegoeUI',
@@ -572,18 +613,20 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
               ),
               Visibility(
                 visible: group.isGroupAdmin ||
-                                    !group.isGroupAdmin &&
-                                        !group
-                                                .enablehidegroupbalancestoMembers,
-                                            
-             
+                    !group.isGroupAdmin &&
+                        !group.enablehidegroupbalancestoMembers,
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        "Group Reports",
+                        currentLanguage == 'English'
+                            ? 'Group Reports'
+                            : Provider.of<TranslationProvider>(context,
+                                        listen: false)
+                                    .translate('Group Reports') ??
+                                'Group Reports',
                         style: TextStyle(
                           color: Colors.blueGrey[400],
                           fontFamily: 'SegoeUI',
@@ -607,14 +650,17 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                   height: 160.0,
                   child: customShowCase(
                     key: groupReortKey,
-                    description:
-                        "View, Download and Share group Account Balances, Contribution Summary, fine Summary,Loan Summary, Expenses Summary and Transaction Statements from here",
+                    description: currentLanguage == 'English'
+                        ? 'View, Download and Share group Account Balances, Contribution Summary, fine Summary,Loan Summary, Expenses Summary and Transaction Statements from here'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate(
+                                    'View, Download and Share group Account Balances, Contribution Summary, fine Summary,Loan Summary, Expenses Summary and Transaction Statements from here') ??
+                            'View, Download and Share group Account Balances, Contribution Summary, fine Summary,Loan Summary, Expenses Summary and Transaction Statements from here',
                     child: Visibility(
-                       visible: group.isGroupAdmin ||
-                                    !group.isGroupAdmin &&
-                                        !group
-                                                .enablehidegroupbalancestoMembers
-                                            ,
+                      visible: group.isGroupAdmin ||
+                          !group.isGroupAdmin &&
+                              !group.enablehidegroupbalancestoMembers,
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
@@ -633,11 +679,12 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                         children: <Widget>[
                           Text(
                             currentLanguage == 'English'
-                      ? 'Statements'
-                      : Provider.of<TranslationProvider>(context, listen: false)
-                              .translate('Statements') ??
-                          'Statements',
-                          //  "Statements",
+                                ? 'Statements'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Statements') ??
+                                    'Statements',
+                            //  "Statements",
                             style: TextStyle(
                               color: Colors.blueGrey[400],
                               fontFamily: 'SegoeUI',
