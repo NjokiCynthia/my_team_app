@@ -104,7 +104,7 @@ flutter:
     - assets/certificates/mobile.key
     - assets/certificates/pubkey.pem
     - assets/icon/main.png
-    - assets/oromo.json
+    - assets/translations.json
     
   fonts:
     - family: SegoeUI

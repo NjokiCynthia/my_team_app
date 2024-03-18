@@ -15,7 +15,7 @@ class TranslationProvider extends ChangeNotifier {
   }
 
   Future<void> _loadTranslations() async {
-    final jsonString = await rootBundle.loadString('assets/oromo.json');
+    final jsonString = await rootBundle.loadString('assets/translations.json');
     final Map<String, dynamic> translationsJson = json.decode(jsonString);
     _translations = translationsJson[_currentLanguage];
   }
