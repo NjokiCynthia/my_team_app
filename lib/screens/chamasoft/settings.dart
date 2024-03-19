@@ -94,8 +94,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
   }
 
   String _currentLanguage = 'English';
-  TranslationProvider _translationProvider =
-      TranslationProvider(initialLanguage: 'English');
+  TranslationProvider _translationProvider = TranslationProvider();
   bool _isLoaded = false;
   @override
   void initState() {
@@ -393,6 +392,18 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[
                                       Text("Somali",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              color: Theme.of(context)
+                                                  .indicatorColor)),
+                                    ],
+                                  )),
+                              PopupMenuItem(
+                                  value: "Swahili",
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text("Swahili",
                                           style: TextStyle(
                                               fontWeight: FontWeight.w600,
                                               color: Theme.of(context)

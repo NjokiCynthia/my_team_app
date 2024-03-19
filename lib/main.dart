@@ -115,7 +115,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<TranslationProvider>(
-          create: (context) => TranslationProvider(initialLanguage: 'English'),
+          create: (context) => TranslationProvider(),
         ),
         ChangeNotifierProvider(
           create: (_) => ChatMessage(),
