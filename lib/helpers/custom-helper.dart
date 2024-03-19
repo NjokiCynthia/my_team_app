@@ -32,7 +32,7 @@ class CustomHelper {
 
   static String _getBaseUrl() {
     String _url = chamasoftUatUrl;
-    print("the flavor $_flavor");
+    //print("the flavor $_flavor");
     if (_flavor.contains("eazzyclub"))
       //change back to prodUrl
       // _url = EazzyclubDevUrl;

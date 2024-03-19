@@ -16,13 +16,183 @@ class StepperPage extends StatefulWidget {
 }
 
 class _StepperPageState extends State<StepperPage> {
-  List<String> titles = [];
+  List<Map<String, String>> titles = [];
+  List<Map<String, String>> fields = [];
   List<List<TextEditingController>> controllersList = [];
-  List<Widget> memberFields =
-      []; // List to hold dynamically generated member text fields
-  int currentStep = 0; // Track the current step
+  List<Widget> memberFields = [];
+
+  int currentStep = 0;
+
+  Map<String, List<Map<String, dynamic>>> sectionQuestionsMap = {};
+  void parseJsonData(dynamic jsonData) {
+    List<dynamic> entities = jsonData['entities'];
+    for (var entity in entities) {
+      List<Map<String, dynamic>> questions =
+          entity['customAdditionalInputFields'];
+      for (var question in questions) {
+        String section = question['section'];
+        if (!sectionQuestionsMap.containsKey(section)) {
+          sectionQuestionsMap[section] = [];
+        }
+        sectionQuestionsMap[section].add(question);
+      }
+    }
+  }
 
   double _appBarElevation = 0;
+
+  List<Map<String, dynamic>> dynamicFields = [];
+
+  @override
+  void initState() {
+    super.initState();
+    dynamic jsonData = {
+      "result_code": 1,
+      "entities": [
+        {
+          "id": 1,
+          "enabled": 0,
+          "name": "Tester",
+          "type": "1",
+          "minAmount": "4000",
+          "maxAmount": "10000",
+          "times": null,
+          "interestType": "1",
+          "interestRate": "1",
+          "interestCharge": "3",
+          "repaymentPeriodType": "1",
+          "repaymentPeriod": "5",
+          "maxRepaymentPeriod": "",
+          "minRepaymentPeriod": "",
+          "enableFinesForLateInstallments": "1",
+          "lateLoanPaymentFineType": "1",
+          "oneOffPercentageOn": "",
+          "percentageFineRate": "",
+          "fineFrequency": "",
+          "outstandingBalOneOffAmount": "",
+          "outstandingBalFixedFineAmount": "",
+          "outstandingBalFineFrequency": "",
+          "outstandingBalPercentageFineRate": "",
+          "outstandingBalFineChargeFactor": "",
+          "fineChargeFactor": "",
+          "enableGuarantors": "1",
+          "enableLoanProfitFee": "",
+          "loanProfitFeeType": "",
+          "percentageLoanProfitFee": "",
+          "eventToEnableGuarantors": "1",
+          "minGuarantors": "3",
+          "loanProcessingFeeType": "",
+          "loanProcessingFeeAmount": "",
+          "loanProcessingFeePercentage": "",
+          "loanProcessingFeePercentageFactor": "",
+          "fixedLoanProfitFeeAmount": "",
+          "oneOffFineType": "",
+          "oneOffFixedAmount": "",
+          "enableFinesForOutstandingBalances": "",
+          "outstandingBalanceFineType": "",
+          "enableLoanProcessingFee": "0",
+          "disableAutomatedLoanProcessingIncome": "",
+          "requireOfficialsApproval": "1",
+          "requirePurposeOfLoan": "",
+          "loanProductNature": "1",
+          "loanProductMode": "1",
+          "gracePeriod": "1",
+          "groupId": "",
+          "is_migrated": false,
+          "chama_loan_type_id": "",
+          "institutionId": "653765c21bc18d64a8846b8f",
+          "referralCode": "CWA1153",
+          "customAdditionalInputFields": [
+            {
+              "id": 1,
+              "question": "What is the reason for applying this loan",
+              "slug": "what_is_the_reason_for_applying_this_loan",
+              "type": "Text",
+              "options": null,
+              "section": "Financial"
+            },
+            {
+              "id": 2,
+              "question": "How Much do you get in full",
+              "slug": "how_much_do_you_get_in_full",
+              "type": "Number",
+              "options": null,
+              "section": "Financial"
+            },
+            {
+              "id": 3,
+              "question": "How Much do you make ",
+              "slug": "how_much_do_you_make",
+              "type": "Number",
+              "options": null,
+              "section": "COORPORATE"
+            },
+            {
+              "id": 4,
+              "question": "How Much do yOU EARN HERE ",
+              "slug": "how_much_do_you_EARN_HERE",
+              "type": "Number",
+              "options": null,
+              "section": "COORPORATE"
+            }
+          ],
+          "additionalDocumentFields": [
+            {
+              "title": "Colored Passport Picture (Both side)",
+              "slug": "passport_picture",
+              "type": "1"
+            },
+            {"title": "Bank Statement", "slug": "bank_statement", "type": "1"},
+            {
+              "title": "Constitution / Memo-Arts",
+              "slug": "constitution",
+              "type": "1"
+            },
+            {"title": "ID Card", "slug": "id_card", "type": "1"},
+            {
+              "title": "Current Bank Statement",
+              "slug": "current_bank_statement",
+              "type": "1"
+            }
+          ],
+          "active": 0,
+          "_id": "65f8871abdfff13f0da60a8d",
+          "modifiedBy": "65030cb0811ec23f2e32ee49",
+          "createdAt": "2024-03-18T18:25:30.658Z",
+          "updatedAt": "2024-03-18T18:25:30.658Z"
+        }
+      ],
+      "totalCount": 1,
+      "message": "Success"
+    }; // Your JSON data here
+    parseJsonData(jsonData);
+    fetchFields(widget.selectedOption).then((data) {
+      setState(() {
+        titles = data['titles'];
+        fields = data['fields'];
+        dynamicFields = data['fields']
+            .map((e) => e['slug'])
+            .map((e) => {"field": e, "value": ""})
+            .toList();
+        controllersList = List.generate(
+          titles.length,
+          (index) {
+            // Check if sectionQuestionsMap has data for the current title
+            if (sectionQuestionsMap.containsKey(titles[index]['value'])) {
+              return List.generate(
+                sectionQuestionsMap[titles[index]['value']].length,
+                (index) =>
+                    TextEditingController(text: fields[index]['question']),
+              );
+            } else {
+              // Handle case where sectionQuestionsMap does not contain data for the title
+              return []; // or handle it as needed in your application
+            }
+          },
+        );
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,102 +219,28 @@ class _StepperPageState extends State<StepperPage> {
     );
   }
 
-  // Your _data map
-  Map<String, dynamic> _data = {
-    'name': "",
-    'location': "",
-    'id': "",
-    'houseNumber': "",
-    'amount': "",
-    'value': "",
-    'members': [], // List to store members' data
-  };
-
-  Future<List<String>> fetchFields(String selectedOption) async {
+  Future<Map<String, List<Map<String, String>>>> fetchFields(
+      String selectedOption) async {
     // Simulate API call or fetch data based on selectedOption
     // Return a list of titles
-    await Future.delayed(Duration(seconds: 1)); // Simulating API delay
-    if (widget.selectedOption == '1') {
-      return [
-        'Plot Location',
-        'Loan amount applied for',
-        'Number of rooms',
-        'Members', // Add a field for adding members
-      ];
-    } else {
-      return [
-        'Applicant details',
-        'Why do you want a loan?',
-        'Your borrowing record',
-        'Your present economic activity/project',
-        'Other sources of income',
-        'Members', // Add a field for adding members
-      ];
-    }
-  }
 
-  void updateData(int stepIndex, int fieldIndex, String value) {
-    String fieldName = '';
-    if (stepIndex == 0) {
-      switch (fieldIndex) {
-        case 0:
-          fieldName = 'name';
-          break;
-        case 1:
-          fieldName = 'location';
-          break;
-      }
-    } else if (stepIndex == 1) {
-      switch (fieldIndex) {
-        case 0:
-          fieldName = 'id';
-          break;
-        case 1:
-          fieldName = 'houseNumber';
-          break;
-        case 2:
-          fieldName = 'amount';
-          break;
-        case 3: // This case handles members' data
-          fieldName = 'members';
-          break;
-      }
-    } else if (stepIndex == 2) {
-      switch (fieldIndex) {
-        case 0:
-          fieldName = 'value';
-          break;
+    List<Map<String, String>> fields = [];
+    List<Map<String, String>> titles = [];
+    print("<<<<<<<<<<<<<<<<");
+    print(sectionQuestionsMap);
+    print('end of the section question map');
+    for (var section in sectionQuestionsMap.keys) {
+      // Add section as stepper title
+      titles.add({"value": section});
+      List<Map<String, dynamic>> questions = sectionQuestionsMap[section];
+      for (var question in questions) {
+        fields.add({
+          "slug": question['slug'],
+          "title": question['question']
+        }); // Add question as stepper field
       }
     }
-    if (fieldName.isNotEmpty) {
-      setState(() {
-        _data[fieldName] = value;
-      });
-    }
-  }
-
-  void saveData() async {
-    print('Saving data to database:');
-    print(_data); // For debugging purposes
-
-    String membersJson = jsonEncode(_data['members']);
-
-    _data['members'] = membersJson;
-
-    await insertToLocalDb(DatabaseHelper.loansTable, _data);
-
-    Navigator.of(context).pop();
-  }
-
-  void addMemberField() {
-    setState(() {
-      memberFields.add(TextFormField(
-        decoration: InputDecoration(labelText: 'Enter member name'),
-        onChanged: (value) {
-          _data['members'].add(value); // Add member to the list
-        },
-      ));
-    });
+    return {"fields": fields, "titles": titles};
   }
 
   Widget buildStepper() {
@@ -158,7 +254,6 @@ class _StepperPageState extends State<StepperPage> {
             currentStep += 1;
           } else {
             // Save data when reaching the last step (summary page)
-            saveData();
           }
         });
       },
@@ -173,128 +268,99 @@ class _StepperPageState extends State<StepperPage> {
   }
 
   List<Step> _buildSteps() {
-    List<Step> steps = List.generate(titles.length, (index) {
-      return Step(
-        title: Text(titles[index]),
+    List<Step> steps = [];
+
+    // Step 1: Primary Fields (Amount and Loan Repayment Period)
+    List<Widget> primaryStepContent = [];
+    TextEditingController amountController = TextEditingController();
+    TextEditingController repaymentController = TextEditingController();
+
+    primaryStepContent.add(TextFormField(
+      controller: amountController,
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(labelText: 'Amount'),
+      onChanged: (value) {},
+    ));
+
+    primaryStepContent.add(TextFormField(
+      controller: repaymentController,
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(labelText: 'Loan Repayment Period'),
+      onChanged: (value) {},
+    ));
+
+    steps.add(
+      Step(
+        title: Text('Primary Details'),
         content: Column(
-          children: List.generate(
-            _getFieldCount(index),
-            (i) {
-              String fieldName = '';
-              String labelText = '';
-              if (index == 0) {
-                switch (i) {
-                  case 0:
-                    fieldName = 'name';
-                    labelText = 'Enter name';
-                    break;
-                  case 1:
-                    fieldName = 'location';
-                    labelText = 'Enter location';
-                    break;
-                }
-              } else if (index == 1) {
-                switch (i) {
-                  case 0:
-                    fieldName = 'id';
-                    labelText = 'Enter id';
-                    break;
-                  case 1:
-                    fieldName = 'houseNumber';
-                    labelText = 'Enter house number';
-                    break;
-                  case 2:
-                    fieldName = 'amount';
-                    labelText = 'Enter amount';
-                    break;
-                  case 3:
-                    fieldName = 'members';
-                    labelText = 'Enter members';
-                    break;
-                }
-              } else if (index == 2) {
-                switch (i) {
-                  case 0:
-                    fieldName = 'value';
-                    labelText = 'Enter value';
-                    break;
-                }
-              }
-
-              return fieldName == 'members'
-                  ? Column(
-                      children: [
-                        ...memberFields,
-                        ElevatedButton(
-                          onPressed: addMemberField,
-                          child: Text('Add Member'),
-                        ),
-                      ],
-                    )
-                  : TextFormField(
-                      controller: controllersList[index][i],
-                      decoration: InputDecoration(
-                        labelText: labelText,
-                      ),
-                      onChanged: (value) {
-                        updateData(index, i, value);
-                      },
-                    );
-            },
-          ),
+          children: primaryStepContent,
         ),
-        isActive: true,
-      );
-    });
+        isActive: currentStep == 0,
+      ),
+    );
 
-    // Add the summary step
+    // Step 2 and beyond: Additional Sections
+    for (int index = 0; index < titles.length; index++) {
+      String section = titles[index]["value"];
+      List<Map<String, dynamic>> questions =
+          sectionQuestionsMap[section] ?? []; // Use an empty list if null
+
+      List<Widget> stepContent = [];
+
+      for (var question in questions) {
+        String labelText = question['question'];
+        Map<String, dynamic> field = dynamicFields.firstWhere(
+            (element) => element['field'] == question['slug'],
+            orElse: () => null); // Handle null if field not found
+        stepContent.add(TextFormField(
+          controller: controllersList[index][stepContent.length] ?? 0,
+          // controller:
+          //     TextEditingController(text: field != null ? field['value'] : ''),
+          decoration: InputDecoration(
+            labelText: labelText,
+          ),
+          onChanged: (value) {
+            setState(() {
+              field['value'] = value;
+            });
+          },
+        ));
+      }
+
+      steps.add(
+        Step(
+          title: Text(section),
+          content: Column(
+            children: stepContent,
+          ),
+          isActive: currentStep == index + 1,
+        ),
+      );
+    }
+
     steps.add(
       Step(
         title: Text('Summary'),
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            for (var entry in _data.entries)
-              if (entry.key != 'members') Text('${entry.key}: ${entry.value}'),
-            if (_data.containsKey('members'))
-              ..._data['members']
-                  .map((member) => Text('Member: $member'))
-                  .toList(),
+            ElevatedButton(
+              onPressed: () {
+                // Print the values of all fields here
+                print('Amount: ${amountController.text}');
+                print('Loan Repayment Period: ${repaymentController.text}');
+                for (var field in dynamicFields) {
+                  print('${field['field']}: ${field['value']}');
+                }
+              },
+              child: Text('Save data'),
+            ),
           ],
         ),
-        isActive: currentStep == titles.length,
+        isActive: currentStep == titles.length + 1,
       ),
     );
 
     return steps;
-  }
-
-  int _getFieldCount(int stepIndex) {
-    if (stepIndex == 0) {
-      return 2;
-    } else if (stepIndex == 1) {
-      return 4; // Increased for the members field
-    } else if (stepIndex == 2) {
-      return 1;
-    } else {
-      return 1;
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    fetchFields(widget.selectedOption).then((fields) {
-      setState(() {
-        titles = fields;
-        controllersList = List.generate(
-          titles.length,
-          (index) => List.generate(
-            _getFieldCount(index),
-            (index) => TextEditingController(),
-          ),
-        );
-      });
-    });
   }
 }

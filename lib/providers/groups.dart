@@ -2067,6 +2067,35 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<dynamic> fetchLo(int saccoAccountId) async {
+    final url = EndpointUrl.GET_SACCO_ACCOUNTS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final groupSaccoAccounts = response['saccos'] as List<dynamic>;
+        for (int i = 0; i < groupSaccoAccounts.length; i++) {
+          if (groupSaccoAccounts[i]['id'].toString() ==
+              saccoAccountId.toString()) {
+            return groupSaccoAccounts[i];
+          }
+        }
+        return null;
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   Future<dynamic> fetchSaccoAccount(int saccoAccountId) async {
     final url = EndpointUrl.GET_SACCO_ACCOUNTS;
     try {
@@ -2552,6 +2581,58 @@ class Groups with ChangeNotifier {
         addGroupBorrowerOptions(groupBorrowerOptionsData);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchLoanProducts() async {
+    final url = EndpointUrl.GET_GROUP_LOAN_TYPES;
+    try {
+      final postRequest = json.encode({
+        "referralCode": _userId,
+      });
+
+      try {
+        // ignore: unused_local_variable
+
+        // ignore: todo
+        // TODO: handle reseting of data.
+        // if (_localData.length > 0 &&
+        //     jsonDecode(_localData[0]['value']).length > 0) {
+        //   addLoanTypes(jsonDecode(_localData[0]['value']));
+        // } else {
+        final response = await PostToServer.post(postRequest, url);
+        _loanTypes = []; //clear
+        final groupLoanTypes = response['loan_types'] as List<dynamic>;
+        Map<String, dynamic> loanTypesMap = {
+          "group_id": currentGroupId,
+          "value": jsonEncode(groupLoanTypes),
+          "modified_on": DateTime.now().millisecondsSinceEpoch,
+        };
+        await dbHelper.deleteMultiple(
+            [int.parse(_currentGroupId)], DatabaseHelper.loanTypesTable);
+        await dbHelper.insert(loanTypesMap, DatabaseHelper.loanTypesTable);
+        addLoanTypes(groupLoanTypes);
+        //}
+      } on CustomException catch (error) {
+        if (error.status == ErrorStatusCode.statusNoInternet) {
+          //=== BEGIN: OFFLINE PLUG
+          dynamic _localData = await getLocalData('loanTypes');
+          if (_localData['value'] != null) {
+            List<dynamic> _loanTypesData = jsonDecode(_localData['value']);
+            _loanTypes = []; //clear
+            addLoanTypes(_loanTypesData);
+          }
+          //=== END: OFFLINE PLUG
+        } else {
+          throw CustomException(message: error.message, status: error.status);
+        }
       } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
       }
