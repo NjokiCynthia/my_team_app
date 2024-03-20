@@ -322,6 +322,7 @@ class LoanType {
   final String id;
   final String name;
   final String repaymentPeriod;
+  final String repaymentPeriodType;
   final String loanAmount;
   final String interestRate;
   final String loanProcessing;
@@ -335,6 +336,7 @@ class LoanType {
     this.id,
     this.name,
     this.repaymentPeriod,
+    this.repaymentPeriodType,
     this.loanAmount,
     this.interestRate,
     this.loanProcessing,

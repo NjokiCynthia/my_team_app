@@ -545,10 +545,10 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
 
     final _myFile = File('$_dirPath/data.txt');
 
-    print("File size is : ${await _myFile.length()}");
+    // print("File size is : ${await _myFile.length()}");
 
     if (await logfilePath.length() >= 10000) {
-      print("Hello, its more than 10kb");
+      //print("Hello, its more than 10kb");
 
       // _formData['data'] = logDataSaved;
       try {
@@ -558,11 +558,11 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         StatusHandler()
             .handleStatus(context: context, error: error, callback: () {});
       }
-      print("Data saved to the server");
+      // print("Data saved to the server");
       await _myFile.delete();
       // readFileData();
     } else {
-      print("Hello, its less than 10kb");
+      // print("Hello, its less than 10kb");
       // readFileData();
     }
   }
@@ -906,8 +906,13 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                           listen: false)
                                       .translate('Chamasoft Meetings Banner') ??
                                   'Chamasoft Meetings Banner',
-                          description:
-                              currentLanguage == 'English' ? 'Schedule,View and Manage Chama Meetings' : Provider.of<TranslationProvider>(context, listen: false).translate('Schedule,View and Manage Chama Meetings') ?? 'Schedule,View and Manage Chama Meetings',
+                          description: currentLanguage == 'English'
+                              ? 'Schedule,View and Manage Chama Meetings'
+                              : Provider.of<TranslationProvider>(context,
+                                          listen: false)
+                                      .translate(
+                                          'Schedule,View and Manage Chama Meetings') ??
+                                  'Schedule,View and Manage Chama Meetings',
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(
                               16.0,
@@ -2127,7 +2132,7 @@ class _ContrubutionsState extends State<Contrubutions> {
       [Color(0xFF00ABF2), Color(/* 0xFF008CC5 */ 0xFF00ABF2)],
     ];
 
-    print("Current state is $_isLoading ");
+    // print("Current state is $_isLoading ");
 
     return /* dashboardContributionSummary.groupContributionAmount.abs() > 0 */ !_isLoading
         ? Container(
@@ -2194,11 +2199,13 @@ class _ContrubutionsState extends State<Contrubutions> {
                                 children: <Widget>[
                                   customTitle(
                                     text: currentLanguage == 'English'
-                                    ? 'Your Total Contribution'
-                                    : Provider.of<TranslationProvider>(context,
-                                                listen: false)
-                                            .translate('Your Total Contribution') ??
-                                        'Your Total Contribution', 
+                                        ? 'Your Total Contribution'
+                                        : Provider.of<TranslationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .translate(
+                                                    'Your Total Contribution') ??
+                                            'Your Total Contribution',
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
                                     color: Theme.of(context)
@@ -2293,11 +2300,13 @@ class _ContrubutionsState extends State<Contrubutions> {
                                                 .enablehidegroupbalancestoMembers,
                                     child: customTitle(
                                       text: currentLanguage == 'English'
-                                    ? 'Group Total Contribution'
-                                    : Provider.of<TranslationProvider>(context,
-                                                listen: false)
-                                            .translate('Group Total Contribution') ??
-                                        'Group Total Contribution', 
+                                          ? 'Group Total Contribution'
+                                          : Provider.of<TranslationProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .translate(
+                                                      'Group Total Contribution') ??
+                                              'Group Total Contribution',
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
                                       color: Theme.of(context)
@@ -2388,11 +2397,13 @@ class _ContrubutionsState extends State<Contrubutions> {
                                     },
                                     child: customTitle(
                                         text: currentLanguage == 'English'
-                                    ? 'View your Contributions'
-                                    : Provider.of<TranslationProvider>(context,
-                                                listen: false)
-                                            .translate('View your Contributions') ??
-                                        'View your Contributions', 
+                                            ? 'View your Contributions'
+                                            : Provider.of<TranslationProvider>(
+                                                        context,
+                                                        listen: false)
+                                                    .translate(
+                                                        'View your Contributions') ??
+                                                'View your Contributions',
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                         color: Colors.green),
@@ -2435,17 +2446,21 @@ class _ContrubutionsState extends State<Contrubutions> {
                                                       .memberContributionArrears) <
                                                   0
                                               ? currentLanguage == 'English'
-                                    ? 'Your Contribution overpayment'
-                                    : Provider.of<TranslationProvider>(context,
-                                                listen: false)
-                                            .translate('Your Contribution overpayment') ??
-                                        'Your Contribution overpayment'
+                                                  ? 'Your Contribution overpayment'
+                                                  : Provider.of<TranslationProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .translate(
+                                                              'Your Contribution overpayment') ??
+                                                      'Your Contribution overpayment'
                                               : currentLanguage == 'English'
-                                    ? 'Your Contribution Arrears'
-                                    : Provider.of<TranslationProvider>(context,
-                                                listen: false)
-                                            .translate('Your Contribution Arrears') ??
-                                        'Your Contribution Arrears', 
+                                                  ? 'Your Contribution Arrears'
+                                                  : Provider.of<TranslationProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .translate(
+                                                              'Your Contribution Arrears') ??
+                                                      'Your Contribution Arrears',
                                           fontSize: 12,
                                           textAlign: TextAlign.start,
                                           fontWeight: FontWeight.w400,
@@ -2502,11 +2517,13 @@ class _ContrubutionsState extends State<Contrubutions> {
                                     children: [
                                       customTitle(
                                         text: currentLanguage == 'English'
-                                    ? 'Next Contribution Date'
-                                    : Provider.of<TranslationProvider>(context,
-                                                listen: false)
-                                            .translate('Next Contribution Date') ??
-                                        'Next Contribution Date', 
+                                            ? 'Next Contribution Date'
+                                            : Provider.of<TranslationProvider>(
+                                                        context,
+                                                        listen: false)
+                                                    .translate(
+                                                        'Next Contribution Date') ??
+                                                'Next Contribution Date',
                                         fontSize: 12,
                                         textAlign: TextAlign.start,
                                         fontWeight: FontWeight.w400,
@@ -3797,16 +3814,16 @@ class _ExpensesState extends State<Expenses> {
     //     _expenseRows[0].paid ?? 0*/
     //     );
 
-    print("Total Expenses will be ${_expenseSummary.totalExpensesSummaries}");
-    print("Some of the three items will be $sumOfThreeItems");
-    print("object Other Expenses will be $otherExpenses");
-    print("new other Expenses amount will be $newOtherExpenses");
-    print(
-        "Item1 will be ${(_expenseSummary.newExpensesSummariesList.length > 0 ? _expenseSummary.newExpensesSummariesList[0].expenseAmount : 0)}");
-    print(
-        "Item2 will be ${(_expenseSummary.newExpensesSummariesList.length > 1 ? _expenseSummary.newExpensesSummariesList[1].expenseAmount : 0)}");
-    print(
-        "Item3 will be ${(_expenseSummary.newExpensesSummariesList.length > 2 ? _expenseSummary.newExpensesSummariesList[2].expenseAmount : 0)}");
+    // print("Total Expenses will be ${_expenseSummary.totalExpensesSummaries}");
+    // print("Some of the three items will be $sumOfThreeItems");
+    // print("object Other Expenses will be $otherExpenses");
+    // print("new other Expenses amount will be $newOtherExpenses");
+    // print(
+    //     "Item1 will be ${(_expenseSummary.newExpensesSummariesList.length > 0 ? _expenseSummary.newExpensesSummariesList[0].expenseAmount : 0)}");
+    // print(
+    //     "Item2 will be ${(_expenseSummary.newExpensesSummariesList.length > 1 ? _expenseSummary.newExpensesSummariesList[1].expenseAmount : 0)}");
+    // print(
+    //     "Item3 will be ${(_expenseSummary.newExpensesSummariesList.length > 2 ? _expenseSummary.newExpensesSummariesList[2].expenseAmount : 0)}");
 
     /*Map<String, double> dataMaptest = {
       "Item1": (_expenseRows?.length > 0 ? _expenseRows[0].paid : 0),

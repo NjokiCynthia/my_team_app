@@ -733,7 +733,8 @@ class EndpointUrl {
       "/mobile/chamasoft_loans/get_chamasoft_loan_calculator";
   // ignore: non_constant_identifier_names
   static final String GET_GROUP_LOAN_CALCULATOR = CustomHelper.baseUrl +
-      "/mobile/chamasoft_loans/get_group_loan_calculator";
+      "/mobile/loan_applications/get_group_loan_calculator";
+  // "/mobile/chamasoft_loans/get_group_loan_calculator";
 
   //Log APIs
   // ignore: non_constant_identifier_names

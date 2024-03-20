@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/database-helper.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -16,12 +17,31 @@ class StepperPage extends StatefulWidget {
 
 class _StepperPageState extends State<StepperPage> {
   List<Map<String, String>> titles = [];
+  List<Map<String, String>> fields = [];
   List<List<TextEditingController>> controllersList = [];
+  List<Widget> memberFields = [];
+
   int currentStep = 0;
 
   Map<String, List<Map<String, dynamic>>> sectionQuestionsMap = {};
-  Map<String, dynamic> _data = {}; // Data storage for form fields
-  bool hasDocumentFields = false;
+  void parseJsonData(dynamic jsonData) {
+    List<dynamic> entities = jsonData['entities'];
+    for (var entity in entities) {
+      List<Map<String, dynamic>> questions =
+          entity['customAdditionalInputFields'];
+      for (var question in questions) {
+        String section = question['section'];
+        if (!sectionQuestionsMap.containsKey(section)) {
+          sectionQuestionsMap[section] = [];
+        }
+        sectionQuestionsMap[section].add(question);
+      }
+    }
+  }
+
+  double _appBarElevation = 0;
+
+  List<Map<String, dynamic>> dynamicFields = [];
 
   @override
   void initState() {
@@ -144,60 +164,35 @@ class _StepperPageState extends State<StepperPage> {
       ],
       "totalCount": 1,
       "message": "Success"
-    };
+    }; // Your JSON data here
     parseJsonData(jsonData);
     fetchFields(widget.selectedOption).then((data) {
       setState(() {
         titles = data['titles'];
+        fields = data['fields'];
+        dynamicFields = data['fields']
+            .map((e) => e['slug'])
+            .map((e) => {"field": e, "value": ""})
+            .toList();
         controllersList = List.generate(
           titles.length,
-          (index) => List.generate(
-            sectionQuestionsMap[titles[index]['value']].length,
-            (index) => TextEditingController(),
-          ),
+          (index) {
+            // Check if sectionQuestionsMap has data for the current title
+            if (sectionQuestionsMap.containsKey(titles[index]['value'])) {
+              return List.generate(
+                sectionQuestionsMap[titles[index]['value']].length,
+                (index) =>
+                    TextEditingController(text: fields[index]['question']),
+              );
+            } else {
+              // Handle case where sectionQuestionsMap does not contain data for the title
+              return []; // or handle it as needed in your application
+            }
+          },
         );
-        hasDocumentFields = checkDocumentFields(jsonData);
       });
     });
   }
-
-  void parseJsonData(dynamic jsonData) {
-    List<dynamic> entities = jsonData['entities'];
-    for (var entity in entities) {
-      List<Map<String, dynamic>> questions =
-          entity['customAdditionalInputFields'];
-      for (var question in questions) {
-        String section = question['section'];
-        if (!sectionQuestionsMap.containsKey(section)) {
-          sectionQuestionsMap[section] = [];
-        }
-        sectionQuestionsMap[section].add(question);
-      }
-    }
-  }
-
-  Future<Map<String, List<Map<String, String>>>> fetchFields(
-      String selectedOption) async {
-    // Simulate API call or fetch data based on selectedOption
-    // Return a list of titles
-    List<Map<String, String>> titles = [];
-    for (var section in sectionQuestionsMap.keys) {
-      titles.add({"value": section});
-    }
-    return {"titles": titles};
-  }
-
-  bool checkDocumentFields(dynamic jsonData) {
-    List<dynamic> entities = jsonData['entities'];
-    for (var entity in entities) {
-      if (entity.containsKey('additionalDocumentFields')) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  double _appBarElevation = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -216,55 +211,117 @@ class _StepperPageState extends State<StepperPage> {
               ? Colors.blueGrey[800]
               : Colors.white,
           height: MediaQuery.of(context).size.height * 0.9,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Stepper(
-                physics: ClampingScrollPhysics(),
-                steps: _buildSteps(),
-                currentStep: currentStep,
-                onStepContinue: () {
-                  setState(() {
-                    if (currentStep < titles.length) {
-                      currentStep += 1;
-                    } else {
-                      saveData();
-                    }
-                  });
-                },
-                onStepCancel: () {
-                  setState(() {
-                    if (currentStep > 0) {
-                      currentStep -= 1;
-                    }
-                  });
-                },
-              ),
-            ],
-          ),
+          child: titles.isEmpty
+              ? Center(child: CircularProgressIndicator())
+              : buildStepper(),
         ),
       ),
+    );
+  }
+
+  Future<Map<String, List<Map<String, String>>>> fetchFields(
+      String selectedOption) async {
+    // Simulate API call or fetch data based on selectedOption
+    // Return a list of titles
+
+    List<Map<String, String>> fields = [];
+    List<Map<String, String>> titles = [];
+    print("<<<<<<<<<<<<<<<<");
+    print(sectionQuestionsMap);
+    print('end of the section question map');
+    for (var section in sectionQuestionsMap.keys) {
+      // Add section as stepper title
+      titles.add({"value": section});
+      List<Map<String, dynamic>> questions = sectionQuestionsMap[section];
+      for (var question in questions) {
+        fields.add({
+          "slug": question['slug'],
+          "title": question['question']
+        }); // Add question as stepper field
+      }
+    }
+    return {"fields": fields, "titles": titles};
+  }
+
+  Widget buildStepper() {
+    return Stepper(
+      physics: ClampingScrollPhysics(),
+      steps: _buildSteps(),
+      currentStep: currentStep,
+      onStepContinue: () {
+        setState(() {
+          if (currentStep < titles.length) {
+            currentStep += 1;
+          } else {
+            // Save data when reaching the last step (summary page)
+          }
+        });
+      },
+      onStepCancel: () {
+        setState(() {
+          if (currentStep > 0) {
+            currentStep -= 1;
+          }
+        });
+      },
     );
   }
 
   List<Step> _buildSteps() {
     List<Step> steps = [];
 
+    // Step 1: Primary Fields (Amount and Loan Repayment Period)
+    List<Widget> primaryStepContent = [];
+    TextEditingController amountController = TextEditingController();
+    TextEditingController repaymentController = TextEditingController();
+
+    primaryStepContent.add(TextFormField(
+      controller: amountController,
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(labelText: 'Amount'),
+      onChanged: (value) {},
+    ));
+
+    primaryStepContent.add(TextFormField(
+      controller: repaymentController,
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(labelText: 'Loan Repayment Period'),
+      onChanged: (value) {},
+    ));
+
+    steps.add(
+      Step(
+        title: Text('Primary Details'),
+        content: Column(
+          children: primaryStepContent,
+        ),
+        isActive: currentStep == 0,
+      ),
+    );
+
+    // Step 2 and beyond: Additional Sections
     for (int index = 0; index < titles.length; index++) {
       String section = titles[index]["value"];
-      List<Map<String, dynamic>> questions = sectionQuestionsMap[section] ?? [];
+      List<Map<String, dynamic>> questions =
+          sectionQuestionsMap[section] ?? []; // Use an empty list if null
 
       List<Widget> stepContent = [];
 
       for (var question in questions) {
+        String labelText = question['question'];
+        Map<String, dynamic> field = dynamicFields.firstWhere(
+            (element) => element['field'] == question['slug'],
+            orElse: () => null); // Handle null if field not found
         stepContent.add(TextFormField(
-          controller: controllersList[index][stepContent.length],
+          controller: controllersList[index][stepContent.length] ?? 0,
+          // controller:
+          //     TextEditingController(text: field != null ? field['value'] : ''),
           decoration: InputDecoration(
-            labelText: question['question'],
+            labelText: labelText,
           ),
           onChanged: (value) {
             setState(() {
-              _data[question['slug']] = value; // Store form data
+              field['value'] = value;
             });
           },
         ));
@@ -276,36 +333,34 @@ class _StepperPageState extends State<StepperPage> {
           content: Column(
             children: stepContent,
           ),
-          isActive: currentStep == index,
+          isActive: currentStep == index + 1,
         ),
       );
     }
 
-    // Add a step for uploading documents only if additionalDocumentFields exist
-    if (hasDocumentFields) {
-      steps.add(
-        Step(
-          title: Text('Upload Documents'),
-          content: Column(
-            children: [
-              Text(
-                  'Upload your documents here'), // Add upload widgets here as needed
-            ],
-          ),
-          isActive: currentStep == titles.length,
+    steps.add(
+      Step(
+        title: Text('Summary'),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                // Print the values of all fields here
+                print('Amount: ${amountController.text}');
+                print('Loan Repayment Period: ${repaymentController.text}');
+                for (var field in dynamicFields) {
+                  print('${field['field']}: ${field['value']}');
+                }
+              },
+              child: Text('Save data'),
+            ),
+          ],
         ),
-      );
-    }
+        isActive: currentStep == titles.length + 1,
+      ),
+    );
 
     return steps;
-  }
-
-  void saveData() {
-    // Implement your save data logic here
-    print('Saving data:');
-    print(_data);
-    // Reset form data if needed
-    _data.clear();
-    // Navigate to next screen or perform other actions
   }
 }

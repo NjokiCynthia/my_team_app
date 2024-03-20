@@ -4,6 +4,8 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/endpoint-url.dart';
 import 'package:chamasoft/helpers/post-to-server.dart';
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/loan-type.dart';
 import 'package:flutter/cupertino.dart';
 
 class LoanProduct {
@@ -53,11 +55,59 @@ class LoanProduct {
       this.enableLoanGuarantors});
 }
 
+class LoanTypes {
+  String id;
+  String name;
+  String repaymentPeriod;
+  String loanAmount;
+  String interestRate;
+  String loanProcessing;
+  String guarantors;
+  String enableLoanGuarantors;
+  String minimumGuarantors;
+  String latePaymentFines;
+  String outstandingPaymentFines;
+  int isHidden;
+  String repaymentPeriodType;
+
+  String fixedRepaymentPeriod;
+  String minimumRepaymentPeriod;
+  String maximumRepaymentPeriod;
+
+  LoanTypes(
+      {this.id,
+      this.name,
+      this.repaymentPeriod,
+      this.loanAmount,
+      this.interestRate,
+      this.loanProcessing,
+      this.guarantors,
+      this.enableLoanGuarantors,
+      this.minimumGuarantors,
+      this.latePaymentFines,
+      this.outstandingPaymentFines,
+      this.isHidden,
+      this.repaymentPeriodType,
+      this.fixedRepaymentPeriod,
+      this.minimumRepaymentPeriod,
+      this.maximumRepaymentPeriod});
+}
+
 class ChamasoftLoans with ChangeNotifier {
   List<LoanProduct> _loanProducts = [];
 
+  List<LoanTypes> _loanTypes = [];
+  List<LoanTypes> get getLoanTypes {
+    return [..._loanTypes];
+  }
+
   List<LoanProduct> get getLoanProducts {
     return [..._loanProducts];
+  }
+
+  void resetLoanTypes() {
+    _loanTypes = [];
+    notifyListeners();
   }
 
   void resetLoanProducts() {
@@ -79,6 +129,35 @@ class ChamasoftLoans with ChangeNotifier {
 
   String get userId {
     return _userId;
+  }
+
+  void addLoanTypes({List<dynamic> loanTypes}) {
+    if (loanTypes.length > 0) {
+      for (var loanType in loanTypes) {
+        final _loanType = LoanTypes(
+          id: loanType['id']..toString(),
+          name: loanType['name']..toString(),
+          repaymentPeriod: loanType['repayment_period']..toString(),
+          loanAmount: loanType['loan_amount']..toString(),
+          interestRate: loanType['interest_rate']..toString(),
+          loanProcessing: loanType['loan_processing']..toString(),
+          guarantors: loanType['guarantors']..toString(),
+          enableLoanGuarantors: loanType['enable_loan_guarantors']..toString(),
+          minimumGuarantors: loanType['minimum_guarantors']..toString(),
+          latePaymentFines: loanType['late_payment_fines']..toString(),
+          outstandingPaymentFines: loanType['outstanding_payment_fines']
+            ..toString(),
+          isHidden: loanType['is_hidden']..toString(),
+          repaymentPeriodType: loanType["repayment_period_type"]..toString(),
+          fixedRepaymentPeriod: loanType['fixed_repayment_period']..toString(),
+          minimumRepaymentPeriod: loanType['minimum_repayment_period']
+            ..toString(),
+          maximumRepaymentPeriod: loanType['maximum_repayment_period']
+            ..toString(),
+        );
+        _loanTypes.add(_loanType);
+      }
+    }
   }
 
   void addLoanProducts({List<dynamic> loanProducts}) {
@@ -123,25 +202,25 @@ class ChamasoftLoans with ChangeNotifier {
     }
   }
 
-  // Future<List<LoanProduct>> fetchLoanProducts() async {
-  //   final url = EndpointUrl.GET_CHAMASOFT_LOAN_PRODUCTS;
-  //   try {
-  //     try {
-  //       final postRequest = json.encode({
-  //         "user_id": _userId,
-  //         "group_id": _currentGroupId,
-  //       });
+  Future<List<LoanTypes>> fetchLoanTypes() async {
+    final url = EndpointUrl.GET_GROUP_LOAN_TYPES;
+    try {
+      try {
+        final postRequest = json.encode({
+          "user_id": _userId,
+          "group_id": _currentGroupId,
+        });
 
-  //       final response = await PostToServer.post(postRequest, url);
-  //       addLoanProducts(loanProducts: response['loan_products']);
-  //       return getLoanProducts;
-  //     } catch (error) {
-  //       throw CustomException(message: ERROR_MESSAGE);
-  //     }
-  //   } catch (error) {
-  //     throw CustomException(message: ERROR_MESSAGE);
-  //   }
-  // }
+        final response = await PostToServer.post(postRequest, url);
+        addLoanTypes(loanTypes: response['loan_types']);
+        return getLoanTypes;
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
 
   Future<String> submitLoanApplication(Map<String, dynamic> formData) async {
     final url = EndpointUrl.CREATE_CHAMASOFT_LOAN_APPLICATION;

@@ -39,6 +39,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
   int _repaymentPeriod;
   int _interestRate;
   String _groupLoanName;
+  String _repaymentPeriodTypes;
 
   LoanType _loanType;
   List<int> _guarantors = [];
@@ -300,15 +301,35 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
           : Color(0xff00a9f0);
     }
 
-    List<NamesListItem> loanTypeOptions =
-        widget.formLoadData.containsKey('loanTypeOptions')
-            ? widget.formLoadData['loanTypeOptions']
-            : [];
+    // List<NamesListItem> loanTypeOptions =
+    //     widget.formLoadData.containsKey('loanTypeOptions')
+    //         ? widget.formLoadData['loanTypeOptions']
+    //         : [];
+    // final arguments =
+    //     ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    // LoanType _loanType = arguments['loanType'];
+    final arguments =
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    if (arguments != null && arguments.containsKey('loanType')) {
+      LoanType _loanType = arguments['loanType'];
+      print(_loanType.guarantors);
+      // Now you can use _loanType or perform further operations
+    } else {
+      // Handle the case where 'loanType' is not found in arguments
+      print('Error: Key "loanType" not found in arguments.');
+    }
 
     List<NamesListItem> memberOptions =
         widget.formLoadData.containsKey('memberOptions')
             ? widget.formLoadData['memberOptions']
             : [];
+    // int _numOfGuarantors = int.tryParse(_loanType.guarantors) != null
+    //     ? int.tryParse(_loanType.guarantors)
+    //     : 0;
+
+    // String repaymentPeriod = _loanType.repaymentPeriod != ""
+    //     ? _loanType.repaymentPeriod
+    //     : _loanType.maximumRepaymentPeriod;
 
     return Builder(builder: (BuildContext context) {
       return GestureDetector(
@@ -337,6 +358,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                               CustomDropDownButton(
                                 labelText: "Select  Group Loan Type",
                                 enabled: _isFormInputEnabled,
+                                //listItems: loanTypeOptions,
                                 listItems:
                                     formLoadData.containsKey("loanTypeOptions")
                                         ? formLoadData["loanTypeOptions"]
@@ -351,51 +373,49 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                                 onChanged: (value) {
                                   setState(() {
                                     loanTypeId = value;
+                                    print(loanTypeId);
+                                    var matchingLoanType =
+                                        widget.loanTypes.firstWhere(
+                                      (loanType) =>
+                                          loanType.id.toString() ==
+                                          value.toString(),
+                                      orElse: () => null,
+                                    );
+                                    print('I want to see this');
+                                    print(widget.loanTypes.firstWhere(
+                                      (loanType) =>
+                                          loanType.id.toString() ==
+                                          value.toString(),
+                                      orElse: () => null,
+                                    ));
+                                    _numOfGuarantors = matchingLoanType != null
+                                        ? int.tryParse(matchingLoanType
+                                            .guarantors
+                                            .replaceAll(RegExp(r'[^0-9]'), ''))
+                                        : 0;
+                                    print('number of guarantors');
+                                    print(_numOfGuarantors);
+
+                                    _repaymentPeriodTypes = matchingLoanType !=
+                                            null
+                                        ? matchingLoanType.repaymentPeriodType
+                                        : 0;
+                                    print('repayment period type');
+                                    print(_repaymentPeriodTypes);
+                                    _interestRate = matchingLoanType != null
+                                        ? int.tryParse(matchingLoanType
+                                            .interestRate
+                                            .replaceAll(
+                                                new RegExp(r'[^0-9]'), ''))
+                                        : 0;
+                                    print(_interestRate);
+                                    _groupLoanName = matchingLoanType != null
+                                        ? matchingLoanType.name
+                                        : '';
+                                    print(_groupLoanName);
                                   });
                                 },
                               ),
-                              // CustomDropDownButton(
-                              //   enabled: true,
-                              //   labelText: "Select group loan type",
-                              //   listItems: loanTypeOptions,
-                              //   onChanged: (value) {
-                              //     setState(() {
-                              //       _loanTypeId = value;
-                              //       _numOfGuarantors = int.tryParse(widget
-                              //           .loanTypes
-                              //           .firstWhere((loanType) =>
-                              //               loanType.id.toString() ==
-                              //               value.toString())
-                              //           .guarantors
-                              //           .replaceAll(new RegExp(r'[^0-9]'), ''));
-                              //       _repaymentPeriod = int.tryParse(widget
-                              //           .loanTypes
-                              //           .firstWhere((loanType) =>
-                              //               loanType.id.toString() ==
-                              //               value.toString())
-                              //           .repaymentPeriod
-                              //           .replaceAll(new RegExp(r'[^0-9]'), ''));
-                              //       _interestRate = int.tryParse(widget
-                              //           .loanTypes
-                              //           .firstWhere((loanType) =>
-                              //               loanType.id.toString() ==
-                              //               value.toString())
-                              //           .interestRate
-                              //           .replaceAll(new RegExp(r'[^0-9]'), ''));
-                              //       _groupLoanName = widget.loanTypes
-                              //           .firstWhere((loanType) =>
-                              //               loanType.id.toString() ==
-                              //               value.toString())
-                              //           .name;
-                              //     });
-                              //   },
-                              //   validator: (value) {
-                              //     if (value == "" || value == null) {
-                              //       return "This field is required";
-                              //     }
-                              //     return null;
-                              //   },
-                              // ),
                               amountTextInputField(
                                   context: context,
                                   validator: (value) {
@@ -428,9 +448,10 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                                 )
                             ]),
                           ),
-                          SizedBox(
-                            height: 20,
-                          ),
+                          if (_repaymentPeriod != null)
+                            SizedBox(
+                              height: 20,
+                            ),
                           Padding(
                             padding: EdgeInsets.only(left: 30.0, right: 30.0),
                             child: Row(

@@ -62,7 +62,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
     var begin = '-----BEGIN PUBLIC KEY-----\n';
     var end = '\n-----END PUBLIC KEY-----';
     int splitCount = str.length ~/ 64;
-  
+
     List<String> strList = [];
 
     for (int i = 0; i < splitCount; i++) {
@@ -79,7 +79,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
     var begin = '-----BEGIN PRIVATE KEY-----\n';
     var end = '\n-----END PRIVATE KEY-----';
     int splitCount = str.length ~/ 64;
-  
+
     List<String> strList = [];
 
     for (int i = 0; i < splitCount; i++) {
@@ -136,10 +136,9 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
     try {
       final response = json.decode(jsonObjectResponse);
       final String secretKey = response["secret"] ?? "";
-      final String body = response["body"]?? "";
+      final String body = response["body"] ?? "";
       try {
-        if ( body.isEmpty ||
-            secretKey.isEmpty) {
+        if (body.isEmpty || secretKey.isEmpty) {
           return;
         }
         final secretKeyString = await _decryptSecretKey(secretKey);
@@ -172,7 +171,8 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
           final String versionCode =
               await CustomHelper.getApplicationBuildNumber();
           final String userAccessTokenKey = await Auth.getAccessToken();
-          final String userAccessToken = userAccessTokenKey ??  _defaultAuthenticationToken;
+          final String userAccessToken =
+              userAccessTokenKey ?? _defaultAuthenticationToken;
           final Map<String, String> headers = {
             "Secret": secretKey,
             "Versioncode": versionCode,

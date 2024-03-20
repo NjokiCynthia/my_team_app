@@ -3,6 +3,8 @@
 // import 'package:chamasoft/screens/chamasoft/transactions/loans/chamasoft-loan-type.dart';
 // import 'package:chamasoft/screens/chamasoft/transactions/loans/loan-amortization.dart';
 import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-for-individual-amt-loan.dart';
@@ -16,6 +18,7 @@ import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class ApplyLoan extends StatefulWidget {
   final bool isInit;
@@ -59,6 +62,7 @@ class ApplyLoanState extends State<ApplyLoan> {
     }
   }
 
+  bool _isLoading = true;
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -68,11 +72,12 @@ class ApplyLoanState extends State<ApplyLoan> {
       _isFromAmt = widget.isFromAmt;
       _isFromGroupActive = widget.isFromGroupActive;
       _isFromAmtIndividual = widget.isFromAmtIndividual;
-      // if (!_isInit) {
-      //   _isLoading = false;
-      // }
+      if (!_isInit) {
+        _isLoading = false;
+      }
     });
     super.initState();
+    _fetchData();
   }
 
   @override
@@ -82,56 +87,49 @@ class ApplyLoanState extends State<ApplyLoan> {
     super.dispose();
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   if (_isInit) {
-  //     _fetchDefaultValues(context);
-  //   }
-  //   super.didChangeDependencies();
-  // }
-  // @override
-  // void didChangeDependencies() {
-  //   // get the loan products
-  //   if (_isInit)
-  //     WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
-  //   super.didChangeDependencies();
-  // }
+  @override
+  void didChangeDependencies() {
+    // get the loan types
+    if (_isInit)
+      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    super.didChangeDependencies();
+  }
 
-  // fetch loan products
-  // Future<void> _fetchLoanProducts(BuildContext context) async {
-  //   try {
-  //     // get the form data
-  //     Provider.of<Groups>(context, listen: false)
-  //         .loadInitialFormData(member: true, loanTypes: true)
-  //         .then((value) {
-  //       // get the loan products
-  //       Provider.of<ChamasoftLoans>(context, listen: false)
-  //           .fetchLoanProducts()
-  //           .then((loanProducts) {
-  //         setState(() {
-  //           _loanProducts = loanProducts;
-  //           _formLoadData = value;
-  //           _isInit = false;
-  //           _isLoading = false;
-  //           _loanTypes = Provider.of<Groups>(context, listen: false).loanTypes;
-  //         });
-  //       });
-  //     });
-  //   } on CustomException catch (error) {
-  //     StatusHandler().handleStatus(
-  //         context: context,
-  //         error: error,
-  //         callback: () {
-  //           _fetchLoanProducts(context);
-  //         },
-  //         scaffoldState: _scaffoldKey.currentState);
-  //   }
-  // }
+  Future<void> _fetchLoanTypes(BuildContext context) async {
+    try {
+      // get the form data
+      Provider.of<Groups>(context, listen: false)
+          .loadInitialFormData(member: true, loanTypes: true)
+          .then((value) {
+        // get the loan types
+        Provider.of<ChamasoftLoans>(context, listen: false)
+            .fetchLoanTypes()
+            .then((loanTypes) {
+          setState(() {
+            _formLoadData = value;
+            _isInit = false;
+            _isLoading = false;
+            _loanTypes = Provider.of<Groups>(context, listen: false).loanTypes;
+          });
+          print('Let me see the loan types');
+          print(_loanTypes);
+        });
+      });
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _fetchLoanTypes(context);
+          },
+          scaffoldState: _scaffoldKey.currentState);
+    }
+  }
 
-  // Future<bool> _fetchData() async {
-  //   // fetch loan products
-  //   return _fetchLoanProducts(context).then((value) => true);
-  // }
+  Future<bool> _fetchData() async {
+    // fetch loan types
+    return _fetchLoanTypes(context).then((value) => true);
+  }
 
   final formKey = new GlobalKey<FormState>();
 

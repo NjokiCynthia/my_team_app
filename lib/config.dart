@@ -1,6 +1,6 @@
 class Config {
   static const APP_FLAVOR = String.fromEnvironment('flavor');
-  
+
   static bool get isProd {
     String _s = 'Dev';
     if (APP_FLAVOR != "") _s = APP_FLAVOR.substring(APP_FLAVOR.length - 3);
@@ -10,7 +10,7 @@ class Config {
   static String get appName {
     String _name = 'Chamasoft';
 
-    print("flavor ${APP_FLAVOR.length ?? "not defined"}");
+    // print("flavor ${APP_FLAVOR.length ?? "not defined"}");
     String _flavor =
         APP_FLAVOR.substring(0, APP_FLAVOR.length - 3).toLowerCase();
     switch (_flavor) {
