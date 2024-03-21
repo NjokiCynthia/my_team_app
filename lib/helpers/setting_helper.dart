@@ -152,6 +152,8 @@ List<LoanType> parseLoanTypes(List<dynamic> groupLoanTypes) {
         disbursementDate: groupLoanTypesJSON['disbursement_date'].toString(),
         guarantors: groupLoanTypesJSON['guarantors'].toString(),
         latePaymentFines: groupLoanTypesJSON['late_payment_fines'].toString(),
+        repaymentPeriodType:
+            groupLoanTypesJSON['repayment_period_type'].toString(),
         outstandingPaymentFines:
             groupLoanTypesJSON['outstanding_payment_fines'].toString(),
         isHidden:

@@ -4,6 +4,7 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/theme.dart';
+import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
@@ -33,13 +34,14 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
   //int _loanTypeId;
   int loanTypeId;
   int _groupLoanAmount;
+  int _repaymentType;
   bool _isChecked = false;
   int _numOfGuarantors;
 
   int _repaymentPeriod;
   int _interestRate;
   String _groupLoanName;
-  String _repaymentPeriodTypes;
+  int _repaymentPeriodTypes;
 
   LoanType _loanType;
   List<int> _guarantors = [];
@@ -53,6 +55,19 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
     total = _amounts.reduce((value, element) => value + element);
 
     return total;
+  }
+
+  Group _group;
+  Auth _user;
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      _fetchDefaultValues(context);
+    }
+    _group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    _user = Provider.of<Auth>(context, listen: false);
+
+    super.didChangeDependencies();
   }
 
   void submitGroupLoan(
@@ -142,11 +157,17 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
   void submitGroupLoanApplication(
       BuildContext context, Group groupObject) async {
     Map<String, dynamic> formData = {
+      "user_id": _user.id,
+      "group_id": _group.groupId,
+      "member_id": _group.memberId,
+
+      "loan_amount": _groupLoanAmount,
+      "repayment_period": _repaymentPeriod,
       'loan_product_id': loanTypeId,
-      'amount': _groupLoanAmount,
-      'guarantors': _guarantors,
-      'amounts': _amounts,
-      'group_id': groupObject.groupId
+      // 'amount': _groupLoanAmount,
+      // 'guarantors': _guarantors,
+      // 'amounts': _amounts,
+      // 'group_id': groupObject.groupId
     };
 
     print('form data is: $formData');
@@ -276,14 +297,6 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
   }
 
   @override
-  void didChangeDependencies() {
-    if (_isInit) {
-      _fetchDefaultValues(context);
-    }
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
@@ -381,13 +394,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                                           value.toString(),
                                       orElse: () => null,
                                     );
-                                    print('I want to see this');
-                                    print(widget.loanTypes.firstWhere(
-                                      (loanType) =>
-                                          loanType.id.toString() ==
-                                          value.toString(),
-                                      orElse: () => null,
-                                    ));
+
                                     _numOfGuarantors = matchingLoanType != null
                                         ? int.tryParse(matchingLoanType
                                             .guarantors
@@ -395,11 +402,19 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                                         : 0;
                                     print('number of guarantors');
                                     print(_numOfGuarantors);
-
-                                    _repaymentPeriodTypes = matchingLoanType !=
-                                            null
-                                        ? matchingLoanType.repaymentPeriodType
+                                    _numOfGuarantors = matchingLoanType != null
+                                        ? int.tryParse(matchingLoanType
+                                            .guarantors
+                                            .replaceAll(RegExp(r'[^0-9]'), ''))
                                         : 0;
+
+                                    _repaymentPeriodTypes =
+                                        matchingLoanType != null
+                                            ? int.tryParse(matchingLoanType
+                                                .repaymentPeriodType)
+                                            //.replaceAll(RegExp(r'[^0-9]'), ''
+                                            //))
+                                            : 0;
                                     print('repayment period type');
                                     print(_repaymentPeriodTypes);
                                     _interestRate = matchingLoanType != null
@@ -448,10 +463,32 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                                 )
                             ]),
                           ),
-                          if (_repaymentPeriod != null)
-                            SizedBox(
-                              height: 20,
+                          if (_repaymentPeriodTypes != null &&
+                              _repaymentPeriodTypes == 2)
+                            Padding(
+                              padding: EdgeInsets.all(20),
+                              child: TextFormField(
+                                onChanged: (value) {
+                                  setState(() {
+                                    _repaymentType = value != null
+                                        ? int.tryParse(value)
+                                        : 0.0;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  labelText: "Enter loan repayment period",
+                                ),
+                                validator: (value) {
+                                  if (value == "" || value == null) {
+                                    return "This field is required";
+                                  }
+                                  return null;
+                                },
+                              ),
                             ),
+                          SizedBox(
+                            height: 20,
+                          ),
                           Padding(
                             padding: EdgeInsets.only(left: 30.0, right: 30.0),
                             child: Row(

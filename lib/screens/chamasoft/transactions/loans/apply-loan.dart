@@ -72,9 +72,9 @@ class ApplyLoanState extends State<ApplyLoan> {
       _isFromAmt = widget.isFromAmt;
       _isFromGroupActive = widget.isFromGroupActive;
       _isFromAmtIndividual = widget.isFromAmtIndividual;
-      if (!_isInit) {
-        _isLoading = false;
-      }
+      // if (!_isInit) {
+      //   _isLoading = false;
+      // }
     });
     super.initState();
     _fetchData();

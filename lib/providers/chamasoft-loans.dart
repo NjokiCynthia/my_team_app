@@ -4,8 +4,7 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/endpoint-url.dart';
 import 'package:chamasoft/helpers/post-to-server.dart';
-import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/models/loan-type.dart';
+
 import 'package:flutter/cupertino.dart';
 
 class LoanProduct {
