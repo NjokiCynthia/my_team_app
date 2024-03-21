@@ -104,7 +104,7 @@ class DatabaseHelper {
     location TEXT NOT NULL DEFAULT '',
     houseNumber TEXT NOT NULL DEFAULT '',
     amount REAL NOT NULL DEFAULT 0,
-    value REAL NOT NULL DEFAULT 0,
+    value REAL NOT NULL DEFAULT 0
   )
 ''');
 

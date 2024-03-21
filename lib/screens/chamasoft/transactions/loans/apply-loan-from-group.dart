@@ -160,14 +160,12 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
       "user_id": _user.id,
       "group_id": _group.groupId,
       "member_id": _group.memberId,
-
-      "loan_amount": _groupLoanAmount,
-      "repayment_period": _repaymentPeriod,
       'loan_product_id': loanTypeId,
-      // 'amount': _groupLoanAmount,
-      // 'guarantors': _guarantors,
-      // 'amounts': _amounts,
-      // 'group_id': groupObject.groupId
+      "loan_amount": _groupLoanAmount,
+      "repayment_period": 2,
+      'guarantors': _guarantors,
+      'amounts': _amounts,
+      "comments": ["test", "test"]
     };
 
     print('form data is: $formData');
