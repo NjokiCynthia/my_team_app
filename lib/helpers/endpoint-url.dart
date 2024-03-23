@@ -607,6 +607,9 @@ class EndpointUrl {
   // ignore: non_constant_identifier_names
   static final String GET_BILLING_INVOICES =
       CustomHelper.baseUrl + "/mobile/billing/get_group_billing_invoices";
+
+  static final String CREATE_INVOICE =
+      CustomHelper.baseUrl + "/mobile/invoices/create";
   // ignore: non_constant_identifier_names
   static final String GET_SUBSCRIPTION_PAYMENTS =
       CustomHelper.baseUrl + "/mobile/billing/get_group_billing_payments";
@@ -728,6 +731,7 @@ class EndpointUrl {
   // ignore: non_constant_identifier_names
   static final String CREATE_GROUP_LOAN_APPLICATION = CustomHelper.baseUrl +
       "/mobile/chamasoft_loans/create_group_loan_application";
+
   // ignore: non_constant_identifier_names
   static final String GET_CHAMASOFT_LOAN_CALCULATOR = CustomHelper.baseUrl +
       "/mobile/chamasoft_loans/get_chamasoft_loan_calculator";

@@ -17,6 +17,7 @@ import 'package:chamasoft/screens/chamasoft/transactions/income/record-fine-paym
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-income.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-miscellaneous-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/account-to-account-transfer.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/create-invoice.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/fine-member.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/send-to-mobile.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/create-loan.dart';
@@ -679,22 +680,23 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
         ];
 
         List<Widget> invoicingOptions = [
-//      SizedBox(
-//        width: 16.0,
-//      ),
-//      Container(
-//          width: 132.0,
-//          child: svgGridButton(
-//              context: context,
-//              icon: customIcons['group'],
-//              title: 'INVOICE',
-//              subtitle: 'MEMBERS',
-//              color: Colors.blue[400],
-//              isHighlighted: false,
-//              action: () => Navigator.of(context).push(MaterialPageRoute(
-//                  builder: (BuildContext context) => CreateInvoice(), settings: RouteSettings(arguments: 0))),
-//              margin: 0,
-//              imageHeight: 100.0)),
+          SizedBox(
+            width: 16.0,
+          ),
+          Container(
+              width: 132.0,
+              child: svgGridButton(
+                  context: context,
+                  icon: customIcons['group'],
+                  title: 'INVOICE',
+                  subtitle: 'MEMBERS',
+                  color: Colors.blue[400],
+                  isHighlighted: false,
+                  action: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => CreateInvoice(),
+                      settings: RouteSettings(arguments: 0))),
+                  margin: 0,
+                  imageHeight: 100.0)),
           SizedBox(
             width: 16.0,
           ),
@@ -1043,7 +1045,6 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                                                   .paymentTitle,
                                                               color: Theme.of(
                                                                       context)
-                                                                  // ignore: deprecated_member_use
                                                                   .textSelectionTheme
                                                                   .selectionHandleColor,
                                                               textAlign:
@@ -1090,7 +1091,6 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                                               transaction
                                                                   .paymentAmount),
                                                       color: Theme.of(context)
-                                                          // ignore: deprecated_member_use
                                                           .textSelectionTheme
                                                           .selectionHandleColor,
                                                       textAlign:
@@ -1099,7 +1099,6 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                                       text: transaction
                                                           .paymentDate,
                                                       color: Theme.of(context)
-                                                          // ignore: deprecated_member_use
                                                           .textSelectionTheme
                                                           .selectionHandleColor,
                                                       textAlign:

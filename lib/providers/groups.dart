@@ -5514,9 +5514,28 @@ class Groups with ChangeNotifier {
     _unreconciledDeposits = [];
   }
 
-  //SubmitLoan Type
   Future<String> submitLoanApplication(Map<String, dynamic> formData) async {
-    final url = EndpointUrl.CREATE_GROUP_LOAN_APPLICATION;
+    final url = EndpointUrl.CREATE_CHAMASOFT_LOAN_APPLICATION;
+    try {
+      try {
+        formData['user_id'] = _userId;
+
+        final postRequest = json.encode(formData);
+
+        final response = await PostToServer.post(postRequest, url);
+
+        return response['message'];
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  //Invoice members
+  Future<String> createInvoice(Map<String, dynamic> formData) async {
+    final url = EndpointUrl.CREATE_INVOICE;
     try {
       try {
         formData['user_id'] = _userId;

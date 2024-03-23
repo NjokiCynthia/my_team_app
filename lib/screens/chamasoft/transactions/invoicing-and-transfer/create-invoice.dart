@@ -1,3 +1,8 @@
+import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/helpers/common.dart';
@@ -5,10 +10,12 @@ import 'package:chamasoft/helpers/date-picker.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
+import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../select-member.dart';
 import 'fine-member.dart';
@@ -18,11 +25,7 @@ List<NamesListItem> refundMethods = [
   NamesListItem(id: 2, name: "Cheque"),
   NamesListItem(id: 3, name: "MPesa"),
 ];
-List<NamesListItem> invoiceTypes = [
-  NamesListItem(id: 1, name: "Contribution Invoice"),
-  NamesListItem(id: 2, name: "Loan Invoice"),
-  NamesListItem(id: 3, name: "Goods Invoice"),
-];
+
 List<NamesListItem> contributions = [
   NamesListItem(id: 1, name: "Kikopey Land Leasing"),
   NamesListItem(id: 2, name: "Masaai Foreign Advantage"),
@@ -30,6 +33,12 @@ List<NamesListItem> contributions = [
 ];
 
 class CreateInvoice extends StatefulWidget {
+  final bool isEditMode;
+  final Function(dynamic) onButtonPressed;
+
+  const CreateInvoice({Key key, this.isEditMode, this.onButtonPressed})
+      : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return CreateInvoiceState();
@@ -38,8 +47,206 @@ class CreateInvoice extends StatefulWidget {
 
 class CreateInvoiceState extends State<CreateInvoice> {
   double _appBarElevation = 0;
-  ScrollController _scrollController;
+  ScrollController _scrollController = ScrollController();
   List<MembersFilterEntry> selectedMembersList = [];
+
+  int _invoiceFor;
+  int _dropdownValue;
+
+  String _description = "";
+  List<NamesListItem> _dropdownItems = [];
+
+  bool _isInit = true;
+  Map<String, dynamic> formLoadData = {};
+
+  String _labelText = 'Select  for first--';
+  bool _invoiceForEnabled = false;
+  final now = DateTime.now();
+  static final List<NamesListItem> invoiceTypes = [
+    NamesListItem(id: 1, name: "Contribution Invoice"),
+    NamesListItem(id: 2, name: "Contribution Invoice Types"),
+    NamesListItem(id: 3, name: "Fine Invoice"),
+    NamesListItem(id: 4, name: "Miscellaneous Invoice"),
+  ];
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      _fetchDefaultValues(context);
+    }
+    super.didChangeDependencies();
+  }
+
+  Future<void> _fetchDefaultValues(BuildContext context) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      showDialog<String>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+    });
+    try {
+      formLoadData = await Provider.of<Groups>(context, listen: false)
+          .loadInitialFormData(
+              contr: true, fineOptions: true, memberOngoingLoans: true);
+      setState(() {
+        _isInit = false;
+      });
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(context: context, error: error);
+    } finally {
+      Navigator.of(context, rootNavigator: true).pop();
+    }
+  }
+
+  void _populatePaymentFor() {
+    if (_invoiceFor == 1) {
+      setState(() {
+        _dropdownValue = null;
+        _dropdownItems = formLoadData.containsKey("contributionOptions")
+            ? formLoadData["contributionOptions"]
+            : [];
+        _invoiceForEnabled = true;
+        _labelText = "Select Contribution";
+      });
+    } else if (_invoiceFor == 2) {
+      setState(() {
+        _dropdownValue = null;
+        _dropdownItems = formLoadData.containsKey("contributionOptions")
+            ? formLoadData["contributionOptions"]
+            : [];
+        _invoiceForEnabled = true;
+        _labelText = "Select Contribution";
+      });
+    } else if (_invoiceFor == 3) {
+      setState(() {
+        _dropdownValue = null;
+        _dropdownItems = formLoadData.containsKey("finesOptions")
+            ? formLoadData["finesOptions"]
+            : [];
+        _invoiceForEnabled = true;
+        _labelText = "Select Fine Type";
+      });
+    } else {
+      setState(() {
+        _dropdownValue = null;
+        _dropdownItems = [];
+        _invoiceForEnabled = false;
+        _labelText = "Select invoice for first---";
+      });
+    }
+  }
+
+  Widget customDropDown(
+      {int selectedItem,
+      String labelText,
+      Function onChanged,
+      Function validator,
+      List<NamesListItem> listItems,
+      bool enabled}) {
+    return new Theme(
+      data: Theme.of(context).copyWith(
+        canvasColor: Theme.of(context).cardColor,
+      ),
+      child: new DropdownButtonFormField(
+        isExpanded: true,
+        isDense: true,
+        value: selectedItem,
+        items: listItems.map((NamesListItem item) {
+          return new DropdownMenuItem(
+            value: item.id,
+            child: new Text(
+              item.name,
+              style: inputTextStyle(),
+            ),
+          );
+        }).toList(),
+        decoration: InputDecoration(
+            isDense: true,
+            filled: false,
+            floatingLabelBehavior: FloatingLabelBehavior.auto,
+            labelStyle: inputTextStyle(),
+            hintStyle: inputTextStyle(),
+            errorStyle: inputTextStyle(),
+            hintText: labelText,
+            labelText: selectedItem == null ? labelText : labelText,
+            enabled: enabled ?? true,
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Theme.of(context).hintColor,
+                width: 1.0,
+              ),
+            )),
+        validator: validator,
+        onChanged: onChanged,
+      ),
+    );
+  }
+
+  Widget buildDropDown() {
+    return FormField(
+      builder: (FormFieldState state) {
+        return DropdownButtonHideUnderline(
+          child: new Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                flex: 7,
+                child: customDropDown(
+                    selectedItem:
+                        //invoiceTypeId,
+                        _invoiceFor,
+                    labelText: 'Select Invoice for',
+                    onChanged: (int newValue) {
+                      setState(() {
+                        // invoiceTypeId = newValue;
+                        _invoiceFor = newValue;
+
+                        _populatePaymentFor();
+                      });
+                    },
+                    validator: (newValue) {
+                      if (newValue == null) {
+                        return "Field is required";
+                      }
+                      return null;
+                    },
+                    listItems: invoiceTypes,
+                    enabled: _invoiceForEnabled),
+              ),
+              Visibility(
+                  visible: _invoiceFor != 4,
+                  child: Expanded(flex: 1, child: SizedBox(height: 10))),
+              Visibility(
+                visible: _invoiceFor != 4,
+                child: Expanded(
+                  flex: 7,
+                  child: customDropDown(
+                      selectedItem: _dropdownValue,
+                      labelText: _labelText,
+                      onChanged: (int newValue) {
+                        setState(() {
+                          _dropdownValue = newValue;
+                        });
+                      },
+                      validator: (newValue) {
+                        if (_invoiceFor != 4 && newValue == null) {
+                          return "Field is required";
+                        }
+                        return null;
+                      },
+                      listItems: _dropdownItems,
+                      enabled: _invoiceForEnabled),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -59,8 +266,8 @@ class CreateInvoiceState extends State<CreateInvoice> {
 
   @override
   void dispose() {
-    _scrollController?.removeListener(_scrollListener);
-    _scrollController?.dispose();
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -83,7 +290,7 @@ class CreateInvoiceState extends State<CreateInvoice> {
     }
   }
 
-  final formKey = new GlobalKey<FormState>();
+  //final formKey = new GlobalKey<FormState>();
   bool toolTipIsVisible = true;
   DateTime invoiceDate = DateTime.now();
   DateTime dueDate = DateTime.now();
@@ -92,6 +299,74 @@ class CreateInvoiceState extends State<CreateInvoice> {
   int contributionId;
   double amount;
   String description;
+  final _formKey = GlobalKey<FormState>();
+  Auth user;
+
+  bool _isFormEnabled = true;
+  var _isLoading = false;
+
+  void invoiceApplication(BuildContext context, Group groupObject) async {
+    Map<String, dynamic> formData = {
+      'group_id': groupObject.groupId,
+      "user_id": user.id,
+      "send_sms_notification": "1",
+      "send_email_notification": "1",
+      "description": description,
+      "amount_payable": amount,
+      "invoice_date": "1711107162",
+      "due_date": "1711107162",
+      "send_to": memberTypeId,
+      "member_ids": [
+            selectedMembersList.map((MembersFilterEntry mem) {
+              return print(mem.memberId);
+            }).toList()
+          ] ??
+          [],
+      "member_names": [
+            selectedMembersList.map((MembersFilterEntry mem) {
+              return print(mem.name);
+            }).toList()
+          ] ??
+          [],
+      "contribution_id": _dropdownValue,
+      "type": _invoiceFor,
+    };
+
+    print('form data is: $formData');
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      showDialog<String>(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+    });
+
+    try {
+      String response = await Provider.of<Groups>(context, listen: false)
+          .createInvoice(formData);
+
+      StatusHandler().showSuccessSnackBar(context, "Great: $response");
+
+      Future.delayed(const Duration(milliseconds: 2500), () {
+        Navigator.of(context).pushReplacement(MaterialPageRoute());
+      });
+    } on CustomException catch (error) {
+      StatusHandler().showDialogWithAction(
+          context: context,
+          message: error.toString(),
+          function: () =>
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  // builder: (_) => ApplyLoan(
+                  //       isInit: false,
+                  //     )
+                  )),
+          dismissible: true);
+    } finally {}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +376,7 @@ class CreateInvoiceState extends State<CreateInvoice> {
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.times,
-        title: "Create Invoice",
+        title: "Create Invoices",
       ),
       backgroundColor: Colors.transparent,
       body: GestureDetector(
@@ -136,8 +411,11 @@ class CreateInvoiceState extends State<CreateInvoice> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
                             Expanded(
+                              // flex: 2,
                               child: DatePicker(
                                 labelText: 'Select Invoice Date',
+                                lastDate: DateTime.now()
+                                    .add(Duration(days: 365 * 10)),
                                 selectedDate: invoiceDate == null
                                     ? DateTime.now()
                                     : invoiceDate,
@@ -152,8 +430,11 @@ class CreateInvoiceState extends State<CreateInvoice> {
                               width: 5.0,
                             ),
                             Expanded(
+                              //flex: 2,
                               child: DatePicker(
                                 labelText: 'Select Due Date',
+                                lastDate: DateTime.now()
+                                    .add(Duration(days: 365 * 10)),
                                 selectedDate:
                                     dueDate == null ? DateTime.now() : dueDate,
                                 selectDate: (selectedDate) {
@@ -165,26 +446,56 @@ class CreateInvoiceState extends State<CreateInvoice> {
                             ),
                           ],
                         ),
-                        CustomDropDownButton(
-                          labelText: 'Select invoice type',
-                          listItems: invoiceTypes,
-                          selectedItem: invoiceTypeId,
-                          onChanged: (value) {
-                            setState(() {
-                              invoiceTypeId = value;
-                            });
-                          },
+                        // CustomDropDownButton(
+                        //   labelText: 'Select invoice type',
+                        //   listItems: invoiceTypes,
+                        //   selectedItem: invoiceTypeId,
+                        //   onChanged: (value) {
+                        //     setState(() {
+                        //       invoiceTypeId = value;
+                        //     });
+                        //   },
+                        // ),
+                        Visibility(
+                            visible: _invoiceFor == 4,
+                            child: SizedBox(height: 10)),
+                        Visibility(
+                          visible: _invoiceFor == 4,
+                          child: simpleTextInputField(
+                              context: context,
+                              labelText: 'Short Description (Optional)',
+                              onChanged: (value) {
+                                setState(() {
+                                  _description = value;
+                                });
+                              }),
                         ),
-                        CustomDropDownButton(
-                          labelText: 'Select Contribution ',
-                          listItems: contributions,
-                          selectedItem: contributionId,
-                          onChanged: (value) {
-                            setState(() {
-                              contributionId = value;
-                            });
-                          },
+                        // CustomDropDownButton(
+                        //   labelText: 'Select Contribution ',
+                        //   listItems: contributions,
+                        //   selectedItem: contributionId,
+                        //   onChanged: (value) {
+                        //     setState(() {
+                        //       contributionId = value;
+                        //     });
+                        //   },
+                        // ),
+                        buildDropDown(),
+                        Visibility(
+                            visible: _invoiceFor == 4,
+                            child: SizedBox(height: 10)),
+                        Visibility(
+                          visible: _invoiceFor == 4,
+                          child: simpleTextInputField(
+                              context: context,
+                              labelText: 'Short Description (Optional)',
+                              onChanged: (value) {
+                                setState(() {
+                                  _description = value;
+                                });
+                              }),
                         ),
+                        SizedBox(height: 10),
                         CustomDropDownButton(
                           labelText: 'Select Member',
                           listItems: memberTypes,
@@ -219,7 +530,6 @@ class CreateInvoiceState extends State<CreateInvoice> {
                               Wrap(
                                 children: memberWidgets.toList(),
                               ),
-                              // ignore: deprecated_member_use
                               TextButton(
                                 onPressed: () async {
                                   //open select members dialog
@@ -267,11 +577,16 @@ class CreateInvoiceState extends State<CreateInvoice> {
                           onPressed: () {
                             print('Invoice date: $invoiceDate');
                             print('Due date: $dueDate');
-                            print('Invoice Type: $invoiceTypeId');
-                            print('Contribution: $contributionId');
+                            print('Invoice Type: $_invoiceFor');
+                            print('Contribution: $_dropdownValue');
                             print('Member type: $memberTypeId');
                             print('Amount: $amount');
                             print('Description: $description');
+                            print(
+                                'Members selected id: ${selectedMembersList.length}');
+                            selectedMembersList.map((MembersFilterEntry mem) {
+                              return print(mem.memberId);
+                            }).toList();
                             print('Members: ${selectedMembersList.length}');
                             selectedMembersList.map((MembersFilterEntry mem) {
                               return print(mem.name);
