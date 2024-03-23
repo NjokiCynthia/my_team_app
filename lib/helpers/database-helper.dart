@@ -3,7 +3,8 @@ import 'package:path/path.dart' as p;
 
 class DatabaseHelper {
   static final _databaseName = "chamasoft-app.db";
-  static final _databaseVersion = 2; // currently on playstore we are using database version 1
+  static final _databaseVersion =
+      2; // currently on playstore we are using database version 1
 
   static final dataTable = 'data';
   static final membersTable = 'members';
@@ -14,6 +15,7 @@ class DatabaseHelper {
 
   // create databases for the following tables:
   static final fineCategories = 'fineCategories';
+  static final invoices = 'invoices';
   static final memberLoanOptions = 'memberLoanOptions';
   static final loanTypesTable = 'loanTypes';
   static final expenseCategoriesTable = 'expenseCategories';
@@ -137,6 +139,19 @@ class DatabaseHelper {
               amount DOUBLE NOT NULL DEFAULT 0,
               balance DOUBLE NOT NULL DEFAULT 0,
               modified_on INTEGER NOT NULL
+            )
+            ''');
+      // Invoices Category table
+      batch.execute('''
+            CREATE TABLE IF NOT EXISTS $invoices (
+              _id INTEGER PRIMARY KEY AUTOINCREMENT,
+              group_id INTEGER NOT NULL,
+              id INTEGER NOT NULL,
+              invoice_date TEXT NOT NULL DEFAULT '',
+              due_date TEXT NOT NULL DEFAULT '',
+               member TEXT NOT NULL DEFAULT '',
+                amount_payable DOUBLE NOT NULL DEFAULT 0,
+                 amount_paid DOUBLE NOT NULL DEFAULT 0    
             )
             ''');
       // Member loans options table

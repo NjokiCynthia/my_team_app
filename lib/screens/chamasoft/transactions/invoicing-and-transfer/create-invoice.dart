@@ -14,6 +14,7 @@ import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -294,6 +295,9 @@ class CreateInvoiceState extends State<CreateInvoice> {
   bool toolTipIsVisible = true;
   DateTime invoiceDate = DateTime.now();
   DateTime dueDate = DateTime.now();
+
+  String formattedInvoiceDate; // Variable to store formatted invoice date
+  String formattedDueDate;
   int invoiceTypeId;
   int memberTypeId;
   int contributionId;
@@ -301,32 +305,33 @@ class CreateInvoiceState extends State<CreateInvoice> {
   String description;
   final _formKey = GlobalKey<FormState>();
   Auth user;
+  Group group;
 
   bool _isFormEnabled = true;
   var _isLoading = false;
 
-  void invoiceApplication(BuildContext context, Group groupObject) async {
+  void createinvoiceApplication(BuildContext context) async {
+    group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    user = Provider.of<Auth>(context, listen: false);
     Map<String, dynamic> formData = {
-      'group_id': groupObject.groupId,
+      'group_id': group.groupId,
       "user_id": user.id,
       "send_sms_notification": "1",
       "send_email_notification": "1",
       "description": description,
       "amount_payable": amount,
-      "invoice_date": "1711107162",
-      "due_date": "1711107162",
+      "invoice_date": formattedInvoiceDate,
+      //"1711107162",
+      "due_date": formattedDueDate,
+      //"1711107162",
       "send_to": memberTypeId,
-      "member_ids": [
-            selectedMembersList.map((MembersFilterEntry mem) {
-              return print(mem.memberId);
-            }).toList()
-          ] ??
+      "member_ids": selectedMembersList.map((MembersFilterEntry mem) {
+            return (mem.memberId);
+          }).toList() ??
           [],
-      "member_names": [
-            selectedMembersList.map((MembersFilterEntry mem) {
-              return print(mem.name);
-            }).toList()
-          ] ??
+      "member_names": selectedMembersList.map((MembersFilterEntry mem) {
+            return (mem.name);
+          }).toList() ??
           [],
       "contribution_id": _dropdownValue,
       "type": _invoiceFor,
@@ -344,29 +349,45 @@ class CreateInvoiceState extends State<CreateInvoice> {
             );
           });
     });
-
     try {
       String response = await Provider.of<Groups>(context, listen: false)
           .createInvoice(formData);
-
-      StatusHandler().showSuccessSnackBar(context, "Great: $response");
+      print('I want to see this point');
+      print(response);
+      Navigator.pop(context);
+      // ignore: deprecated_member_use
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+        "You have successfully created an invoice",
+      )));
 
       Future.delayed(const Duration(milliseconds: 2500), () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute());
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (BuildContext context) {}));
       });
     } on CustomException catch (error) {
-      StatusHandler().showDialogWithAction(
-          context: context,
-          message: error.toString(),
-          function: () =>
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  // builder: (_) => ApplyLoan(
-                  //       isInit: false,
-                  //     )
-                  )),
-          dismissible: true);
-    } finally {}
+      Navigator.pop(context);
+
+      // ignore: deprecated_member_use
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+        "Error Creating an invoice. ${error.message} ",
+      )));
+    }
   }
+  //   } on CustomException catch (error) {
+  //     StatusHandler().showDialogWithAction(
+  //         context: context,
+  //         message: error.toString(),
+  //         function: () =>
+  //             Navigator.of(context).pushReplacement(MaterialPageRoute(
+  //                 // builder: (_) => ApplyLoan(
+  //                 //       isInit: false,
+  //                 //     )
+  //                 )),
+  //         dismissible: true);
+  //   } finally {}
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -422,6 +443,12 @@ class CreateInvoiceState extends State<CreateInvoice> {
                                 selectDate: (selectedDate) {
                                   setState(() {
                                     invoiceDate = selectedDate;
+                                    formattedInvoiceDate =
+                                        DateFormat('yyMMddHHmm')
+                                            .format(invoiceDate);
+
+                                    // Print the formatted date
+                                    print(formattedInvoiceDate);
                                   });
                                 },
                               ),
@@ -440,6 +467,11 @@ class CreateInvoiceState extends State<CreateInvoice> {
                                 selectDate: (selectedDate) {
                                   setState(() {
                                     dueDate = selectedDate;
+                                    formattedDueDate = DateFormat('yyMMddHHmm')
+                                        .format(dueDate);
+
+                                    // Print the formatted date
+                                    print(formattedDueDate);
                                   });
                                 },
                               ),
@@ -572,27 +604,50 @@ class CreateInvoiceState extends State<CreateInvoice> {
                           height: 24,
                         ),
                         defaultButton(
-                          context: context,
-                          text: "SAVE",
-                          onPressed: () {
-                            print('Invoice date: $invoiceDate');
-                            print('Due date: $dueDate');
-                            print('Invoice Type: $_invoiceFor');
-                            print('Contribution: $_dropdownValue');
-                            print('Member type: $memberTypeId');
-                            print('Amount: $amount');
-                            print('Description: $description');
-                            print(
-                                'Members selected id: ${selectedMembersList.length}');
-                            selectedMembersList.map((MembersFilterEntry mem) {
-                              return print(mem.memberId);
-                            }).toList();
-                            print('Members: ${selectedMembersList.length}');
-                            selectedMembersList.map((MembersFilterEntry mem) {
-                              return print(mem.name);
-                            }).toList();
-                          },
-                        ),
+                            context: context,
+                            text: "SAVE",
+                            onPressed: () => createinvoiceApplication(context)
+                            //  {
+                            // if (invoiceDate != null) {
+                            //   // Format the invoiceDate into the desired format "yyMMddHHmm"
+                            //   String formattedDate =
+                            //       DateFormat('yyMMddHHmm').format(invoiceDate);
+
+                            //   // Print the formatted date
+                            //   print(formattedDate); // Output: Formatted date
+
+                            //   // You can use the formattedDate for further processing
+                            // } else {
+                            //   // Handle case where invoiceDate is null
+                            //   print('Please select a date.');
+                            // }
+
+                            // print('Due date: $dueDate');
+                            // if (formattedInvoiceDate != null &&
+                            //     formattedDueDate != null) {
+                            //   print('Invoice date: $formattedInvoiceDate');
+                            //   print('Due date: $formattedDueDate');
+                            //   // Print other values or perform actions here
+                            // } else {
+                            //   // Handle case where dates are null
+                            //   print('Please select invoice and due dates.');
+                            // }
+                            // print('Invoice Type: $_invoiceFor');
+                            // print('Contribution: $_dropdownValue');
+                            // print('Member type: $memberTypeId');
+                            // print('Amount: $amount');
+                            // print('Description: $description');
+                            // print(
+                            //     'Members selected id: ${selectedMembersList.length}');
+                            // selectedMembersList.map((MembersFilterEntry mem) {
+                            //   return print(mem.memberId);
+                            // }).toList();
+                            // print('Members: ${selectedMembersList.length}');
+                            // selectedMembersList.map((MembersFilterEntry mem) {
+                            //   return print(mem.name);
+                            // }).toList();
+                            // },
+                            ),
                       ],
                     ),
                   ),

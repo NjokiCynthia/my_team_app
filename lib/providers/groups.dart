@@ -241,6 +241,25 @@ class FineType {
   });
 }
 
+class Invoices {
+  String id;
+  String invoiceDate;
+  String dueDate;
+  String member;
+  String type;
+  String amountPayable;
+  dynamic amountPaid;
+
+  Invoices(
+      {this.id,
+      this.invoiceDate,
+      this.dueDate,
+      this.member,
+      this.type,
+      this.amountPayable,
+      this.amountPaid});
+}
+
 class IncomeCategories {
   @required
   final String id;
@@ -509,6 +528,7 @@ class Groups with ChangeNotifier {
   List<Contribution> _payContributions = [];
   List<Expense> _expenses = [];
   List<FineType> _fineTypes = [];
+  List<Invoices> _invoices = [];
   List<IncomeCategories> _incomeCategories = [];
   List<IncomeCategories> _detailedIncomeCategories = [];
   List<IncomeCategories> _assetCategories = [], _groupAssetOptions = [];
@@ -612,6 +632,10 @@ class Groups with ChangeNotifier {
 
   List<FineType> get fineTypes {
     return [..._fineTypes];
+  }
+
+  List<Invoices> get invoices {
+    return [..._invoices];
   }
 
   List<IncomeCategories> get detailedIncomeCategories {
@@ -1115,6 +1139,55 @@ class Groups with ChangeNotifier {
             [int.parse(_currentGroupId)], DatabaseHelper.fineCategories);
         await dbHelper.batchInsert(
             _fineTypesList, DatabaseHelper.fineCategories);
+      }
+    }
+    notifyListeners();
+  }
+
+  Future<void> addInvoices(
+      {List<dynamic> groupInvoices, isLocal = false}) async {
+    if (groupInvoices.length > 0) {
+      if (isLocal) {
+        for (var groupInvoicesJSON in groupInvoices) {
+          final newInvoice = Invoices(
+            id: groupInvoicesJSON['id'].toString(),
+            amountPaid: groupInvoicesJSON['amount_paid'].toString(),
+            amountPayable: groupInvoicesJSON['amount_payable'].toString(),
+            dueDate: groupInvoicesJSON['due_date'].toString(),
+            invoiceDate: groupInvoicesJSON['invoice_date'].toString(),
+            member: groupInvoicesJSON['member'].toString(),
+            type: groupInvoicesJSON['type'].toString(),
+          );
+          _invoices.add(newInvoice);
+        }
+      } else {
+        List<Map> _invoicesList = [];
+        for (var groupInvoicesJSON in groupInvoices) {
+          final newInvoice = Invoices(
+            id: groupInvoicesJSON['id'].toString(),
+            amountPaid: groupInvoicesJSON['amount_paid'].toString(),
+            amountPayable: groupInvoicesJSON['amount_payable'].toString(),
+            dueDate: groupInvoicesJSON['due_date'].toString(),
+            invoiceDate: groupInvoicesJSON['invoice_date'].toString(),
+            member: groupInvoicesJSON['member'].toString(),
+            type: groupInvoicesJSON['type'].toString(),
+          );
+
+          // var fineTypeMap = {
+          //   "id": int.parse(groupFineTypesJSON['id'].toString()),
+          //   "group_id": int.parse(_currentGroupId),
+          //   "amount": double.parse(groupFineTypesJSON['amount'].toString()),
+          //   "balance": double.parse(groupFineTypesJSON['balance'].toString()),
+          //   "name": groupFineTypesJSON['name'].toString(),
+          //   "modified_on": DateTime.now().millisecondsSinceEpoch,
+          // };
+          _invoices.add(newInvoice);
+          // _fineTypesList.add(fineTypeMap);
+        }
+        await dbHelper.deleteMultiple(
+            [int.parse(_currentGroupId)], DatabaseHelper.fineCategories);
+        // await dbHelper.batchInsert(
+        //     _fineTypesList, DatabaseHelper.fineCategories);
       }
     }
     notifyListeners();
@@ -2308,6 +2381,45 @@ class Groups with ChangeNotifier {
         final groupFineTypes =
             response['fine_category_options'] as List<dynamic>;
         addFineTypes(groupFineTypes: groupFineTypes, isLocal: false);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+      //}
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchInvoices() async {
+    final url = EndpointUrl.GET_GROUP_INVOICES;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      // ignore: unused_local_variable
+      List<dynamic> _localData = [];
+      _localData = await dbHelper.queryWhere(
+        table: DatabaseHelper.invoices,
+        column: "group_id",
+        whereArguments: [_currentGroupId],
+        orderBy: 'invoice_date',
+        //order: 'DESC',
+      );
+      // ignore: todo
+      // TODO: TO BE LOOKED INTO..
+      // if (_localData.length > 0) {
+      //   addFineTypes(groupFineTypes: _localData, isLocal: true);
+      // } else {
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        _invoices = []; //clear accounts
+        final groupInvoices = response['invoices'] as List<dynamic>;
+        addInvoices(groupInvoices: groupInvoices, isLocal: false);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {

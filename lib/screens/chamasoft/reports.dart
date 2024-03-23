@@ -3,12 +3,15 @@ import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/reports/deposit-receipts.dart';
+import 'package:chamasoft/screens/chamasoft/reports/group/group-loan-applications.dart';
+import 'package:chamasoft/screens/chamasoft/reports/loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member-statement.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/loan-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/withdrawal_receipts.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/svg-icons.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/list-invoices.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/showCase.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +44,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
   final contributionStatementKey = GlobalKey();
   final fineStatementKey = GlobalKey();
   final loansummaryKey = GlobalKey();
+  final loanapplicationkey = GlobalKey();
   final depositRecieptKey = GlobalKey();
   final withdrawalRecieptKey = GlobalKey();
   final groupReortKey = GlobalKey();
@@ -217,6 +221,45 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => LoanSummary(),
+                        settings: RouteSettings(arguments: 0))),
+                    margin: 0,
+                    imageHeight: 100.0)),
+          ),
+          SizedBox(
+            width: 16.0,
+          ),
+          SizedBox(
+            width: 16.0,
+          ),
+          customShowCase(
+            key: loanapplicationkey,
+            description:
+                "View, Download and Share your Loan applications from here",
+            child: Container(
+                width: 132.0,
+                child: svgGridButton(
+                    context: context,
+                    icon: customIcons['refund'],
+                    title: currentLanguage == 'English'
+                        ? 'LOAN'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('LOAN') ??
+                            'LOAN',
+                    //'LOAN',
+                    subtitle: currentLanguage == 'English'
+                        ? 'APPLICATIONS'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('APPLICATIONS') ??
+                            'APPLICATIONS',
+                    //'SUMMARY',
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
+                    isHighlighted: false,
+                    action: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => LoanApplications(),
                         settings: RouteSettings(arguments: 0))),
                     margin: 0,
                     imageHeight: 100.0)),
@@ -454,6 +497,59 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
             SizedBox(
               width: 16.0,
             ),
+          if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
+            Container(
+                width: 132.0,
+                child: svgGridButton(
+                    context: context,
+                    icon: customIcons['refund'],
+                    title: 'LOAN',
+                    subtitle: currentLanguage == 'English'
+                        ? 'APPLICATIONS'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('APPLICATIONS') ??
+                            'APPLICATIONS',
+                    //'STATEMENT',
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
+                    isHighlighted: false,
+                    action: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            GroupLoanApplications())),
+                    margin: 0,
+                    imageHeight: 100.0)),
+          if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
+            SizedBox(
+              width: 16.0,
+            ),
+          if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
+            Container(
+                width: 132.0,
+                child: svgGridButton(
+                    context: context,
+                    icon: customIcons['group'],
+                    title: 'MEMBER',
+                    subtitle: currentLanguage == 'English'
+                        ? 'INVOICES'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('INVOICES') ??
+                            'INVOICES',
+                    //'STATEMENT',
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
+                    isHighlighted: false,
+                    action: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => ListInvoices())),
+                    margin: 0,
+                    imageHeight: 100.0)),
+          if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
+            SizedBox(
+              width: 16.0,
+            ),
         ];
 
         List<Widget> statementOptions = [
@@ -572,11 +668,8 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
               ),
               Visibility(
                 visible: group.isGroupAdmin ||
-                                    !group.isGroupAdmin &&
-                                        !group
-                                                .enablehidegroupbalancestoMembers,
-                                            
-             
+                    !group.isGroupAdmin &&
+                        !group.enablehidegroupbalancestoMembers,
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
                   child: Row(
@@ -610,11 +703,9 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     description:
                         "View, Download and Share group Account Balances, Contribution Summary, fine Summary,Loan Summary, Expenses Summary and Transaction Statements from here",
                     child: Visibility(
-                       visible: group.isGroupAdmin ||
-                                    !group.isGroupAdmin &&
-                                        !group
-                                                .enablehidegroupbalancestoMembers
-                                            ,
+                      visible: group.isGroupAdmin ||
+                          !group.isGroupAdmin &&
+                              !group.enablehidegroupbalancestoMembers,
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
@@ -633,11 +724,12 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                         children: <Widget>[
                           Text(
                             currentLanguage == 'English'
-                      ? 'Statements'
-                      : Provider.of<TranslationProvider>(context, listen: false)
-                              .translate('Statements') ??
-                          'Statements',
-                          //  "Statements",
+                                ? 'Statements'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Statements') ??
+                                    'Statements',
+                            //  "Statements",
                             style: TextStyle(
                               color: Colors.blueGrey[400],
                               fontFamily: 'SegoeUI',
