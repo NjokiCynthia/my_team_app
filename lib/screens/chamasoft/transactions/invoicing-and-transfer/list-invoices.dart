@@ -88,9 +88,7 @@ class _ListInvoicesState extends State<ListInvoices> {
           _voidMemberInvoice(context, id); // Retry the operation
         },
       );
-    } finally {
-      // Any cleanup code can go here
-    }
+    } finally {}
   }
 
   @override

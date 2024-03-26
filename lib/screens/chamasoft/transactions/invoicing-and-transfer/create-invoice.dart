@@ -34,6 +34,11 @@ List<NamesListItem> contributions = [
   NamesListItem(id: 3, name: "DVEA Properties"),
 ];
 
+List<NamesListItem> memberType = [
+  NamesListItem(id: 2, name: "Individual Members"),
+  NamesListItem(id: 1, name: "All Members"),
+];
+
 class CreateInvoice extends StatefulWidget {
   final bool isEditMode;
   final Function(dynamic) onButtonPressed;
@@ -66,10 +71,24 @@ class CreateInvoiceState extends State<CreateInvoice> {
   //final now = DateTime.now();
   static final List<NamesListItem> invoiceTypes = [
     NamesListItem(id: 1, name: "Contribution Invoice"),
-    NamesListItem(id: 2, name: "Contribution Invoice Types"),
+    //NamesListItem(id: 2, name: "Contribution Invoice Types"),
     // NamesListItem(id: 3, name: "Fine Invoice"),
     // NamesListItem(id: 4, name: "Miscellaneous Invoice"),
   ];
+  List<Map<String, dynamic>> getMembersData() {
+    List<Map<String, dynamic>> membersData = [];
+
+    for (MembersFilterEntry mem in selectedMembersList) {
+      Map<String, dynamic> memberMap = {
+        "member_id": mem.memberId,
+        "member_name": mem.name,
+      };
+      membersData.add(memberMap);
+    }
+
+    return membersData;
+  }
+
   @override
   void didChangeDependencies() {
     if (_isInit) {
@@ -113,24 +132,24 @@ class CreateInvoiceState extends State<CreateInvoice> {
         _invoiceForEnabled = true;
         _labelText = "Select Contribution";
       });
-    } else if (_invoiceFor == 2) {
-      setState(() {
-        _dropdownValue = null;
-        _dropdownItems = formLoadData.containsKey("contributionOptions")
-            ? formLoadData["contributionOptions"]
-            : [];
-        _invoiceForEnabled = true;
-        _labelText = "Select Contribution";
-      });
-    } else if (_invoiceFor == 3) {
-      setState(() {
-        _dropdownValue = null;
-        _dropdownItems = formLoadData.containsKey("finesOptions")
-            ? formLoadData["finesOptions"]
-            : [];
-        _invoiceForEnabled = true;
-        _labelText = "Select Fine Type";
-      });
+      // } else if (_invoiceFor == 2) {
+      //   setState(() {
+      //     _dropdownValue = null;
+      //     _dropdownItems = formLoadData.containsKey("contributionOptions")
+      //         ? formLoadData["contributionOptions"]
+      //         : [];
+      //     _invoiceForEnabled = true;
+      //     _labelText = "Select Contribution";
+      //   });
+      // } else if (_invoiceFor == 3) {
+      //   setState(() {
+      //     _dropdownValue = null;
+      //     _dropdownItems = formLoadData.containsKey("finesOptions")
+      //         ? formLoadData["finesOptions"]
+      //         : [];
+      //     _invoiceForEnabled = true;
+      //     _labelText = "Select Fine Type";
+      //   });
     } else {
       setState(() {
         _dropdownValue = null;
@@ -332,14 +351,19 @@ class CreateInvoiceState extends State<CreateInvoice> {
       // int.tryParse(formattedDueDate),
       //"1711107162",
       "send_to": memberTypeId,
-      "member_ids": selectedMembersList.map((MembersFilterEntry mem) {
-            return (mem.memberId);
-          }).toList() ??
-          [],
-      "member_names": selectedMembersList.map((MembersFilterEntry mem) {
-            return (mem.name);
-          }).toList() ??
-          [],
+      "members": getMembersData(),
+      // "members": [
+      //   {"member_id": 64004, "member_name": "Cynthia Njoki"},
+      //   {"member_id": 64005, "member_name": "Franklin Karanja"}
+      // ],
+      // "member_ids": selectedMembersList.map((MembersFilterEntry mem) {
+      //       return (mem.memberId);
+      //     }).toList() ??
+      //     [],
+      // "member_names": selectedMembersList.map((MembersFilterEntry mem) {
+      //       return (mem.name);
+      //     }).toList() ??
+      //     [],
       "contribution_id": _dropdownValue,
       "type": _invoiceFor,
       "request_id": requestId,
@@ -549,10 +573,10 @@ class CreateInvoiceState extends State<CreateInvoice> {
                         SizedBox(height: 10),
                         CustomDropDownButton(
                           labelText: 'Select Member',
-                          listItems: memberTypes,
+                          listItems: memberType,
                           selectedItem: memberTypeId,
                           onChanged: (selected) async {
-                            if (selected == 1) {
+                            if (selected == 2) {
                               await Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -574,7 +598,7 @@ class CreateInvoiceState extends State<CreateInvoice> {
                           },
                         ),
                         Visibility(
-                          visible: memberTypeId == 1,
+                          visible: memberTypeId == 2,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
