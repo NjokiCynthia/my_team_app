@@ -51,14 +51,12 @@ class StatementBody extends StatelessWidget {
                       children: <Widget>[
                         subtitle1(
                             text: row.title,
-                           
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
                             textAlign: TextAlign.start),
                         subtitle2(
                             text: row.description,
-                           
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -76,14 +74,12 @@ class StatementBody extends StatelessWidget {
                     text: groupObject.groupCurrency +
                         " " +
                         currencyFormat.format(row.amount),
-                   
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor,
                     textAlign: TextAlign.start),
                 subtitle2(
                     text: row.date,
-                   
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor,
@@ -161,7 +157,6 @@ class MemberStatementBody extends StatelessWidget {
                     ? Colors.red
                     : (row.balance < 0
                         ? Colors.green
-                       
                         : Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor),
@@ -190,7 +185,6 @@ class StatementHeader extends StatelessWidget {
         color: Theme.of(context).backgroundColor,
         child: subtitle2(
             text: row.month,
-           
             color: Theme.of(context).textSelectionTheme.selectionHandleColor,
             textAlign: TextAlign.start),
       ),
@@ -223,14 +217,12 @@ class AmortizationBody extends StatelessWidget {
               children: <Widget>[
                 subtitle1(
                     text: defaultDateFormat.format(installment.date),
-                   
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor,
                     textAlign: TextAlign.start),
                 subtitle2(
                     text: "Installment",
-                   
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor,
@@ -242,7 +234,6 @@ class AmortizationBody extends StatelessWidget {
               children: <Widget>[
                 subtitle1(
                     text: groupObject.groupCurrency + " " + installment.amount,
-                   
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor,
@@ -250,7 +241,6 @@ class AmortizationBody extends StatelessWidget {
                 subtitle2(
                     text: "Balance: ${groupObject.groupCurrency} " +
                         installment.balance,
-                   
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor,
@@ -292,18 +282,12 @@ class LoanStatementBody extends StatelessWidget {
                 children: <Widget>[
                   subtitle1(
                       text: row.type,
-                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,
                       textAlign: TextAlign.start),
                   subtitle2(
                       text: row.date,
-<<<<<<< HEAD
-                     
-=======
-                    
->>>>>>> 8b29323a0260057218cc9b3e579da81b710c236b
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,
@@ -317,7 +301,6 @@ class LoanStatementBody extends StatelessWidget {
                   text: groupObject.groupCurrency +
                       " " +
                       currencyFormat.format(row.paid),
-                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                   textAlign: TextAlign.end),
@@ -328,7 +311,6 @@ class LoanStatementBody extends StatelessWidget {
                   text: groupObject.groupCurrency +
                       " " +
                       currencyFormat.format(row.balance),
-                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                   textAlign: TextAlign.end),
@@ -382,7 +364,6 @@ class ContributionSummaryBody extends StatelessWidget {
                         Expanded(
                           child: subtitle1(
                               text: contributionSummary[index].memberName,
-                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -398,7 +379,6 @@ class ContributionSummaryBody extends StatelessWidget {
                             " " +
                             currencyFormat
                                 .format(contributionSummary[index].paidAmount),
-                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor,
@@ -415,7 +395,6 @@ class ContributionSummaryBody extends StatelessWidget {
                             ? Colors.red
                             : (contributionSummary[index].balanceAmount < 0
                                 ? Colors.green
-                               
                                 : Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor),
@@ -449,7 +428,6 @@ class AccountHeader extends StatelessWidget {
         color: Theme.of(context).backgroundColor,
         child: subtitle2(
             text: header.header,
-           
             color: Theme.of(context).textSelectionTheme.selectionHandleColor,
             textAlign: TextAlign.start),
       ),
@@ -498,7 +476,6 @@ class AccountBody extends StatelessWidget {
                         customTitleWithWrap(
                             text: account.name,
                             maxLines: 2,
-                           
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -506,7 +483,6 @@ class AccountBody extends StatelessWidget {
                         if (account.accountNumber != "0")
                           subtitle2(
                               text: account.accountNumber,
-                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -568,7 +544,6 @@ class LoanSummaryBody extends StatelessWidget {
                 children: <Widget>[
                   customTitleWithWrap(
                       text: row.name,
-                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,
@@ -576,7 +551,6 @@ class LoanSummaryBody extends StatelessWidget {
                       textAlign: TextAlign.start),
                   customTitle(
                       text: defaultDateFormat.format(row.date),
-                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,
@@ -592,7 +566,6 @@ class LoanSummaryBody extends StatelessWidget {
                   text: groupObject.groupCurrency +
                       " " +
                       currencyFormat.format(row.amountDue),
-                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                   fontSize: 13,
@@ -604,7 +577,6 @@ class LoanSummaryBody extends StatelessWidget {
                   text: groupObject.groupCurrency +
                       " " +
                       currencyFormat.format(row.paid),
-                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                   fontSize: 13,
@@ -616,7 +588,6 @@ class LoanSummaryBody extends StatelessWidget {
                   text: groupObject.groupCurrency +
                       " " +
                       currencyFormat.format(row.balance),
-                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                   fontSize: 13,
@@ -665,7 +636,6 @@ class ExpenseBody extends StatelessWidget {
                   Expanded(
                       child: customTitleWithWrap(
                           text: row.name,
-                         
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -677,7 +647,6 @@ class ExpenseBody extends StatelessWidget {
                 text: groupObject.groupCurrency +
                     " " +
                     currencyFormat.format(row.paid),
-               
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                 fontWeight: FontWeight.w400,
@@ -718,7 +687,6 @@ class TransactionStatementBody extends StatelessWidget {
                   flex: 1,
                   child: customTitle(
                       text: row.date,
-                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,
@@ -746,7 +714,6 @@ class TransactionStatementBody extends StatelessWidget {
                           " " +
                           currencyFormat.format(row.withdrawal),
                       color: row.withdrawal == 0
-                         
                           ? Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor
@@ -771,7 +738,6 @@ class TransactionStatementBody extends StatelessWidget {
             ),
             subtitle2(
               text: row.description,
-             
               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               textAlign: TextAlign.start,
             ),

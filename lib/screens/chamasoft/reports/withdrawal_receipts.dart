@@ -355,7 +355,7 @@ class WithdrawalCard extends StatelessWidget {
       this.details,
       this.voidItem,
       @required this.bodyContext,
-      @required this.position})
+      this.position})
       : super(key: key);
 
   final Withdrawal withdrawal;

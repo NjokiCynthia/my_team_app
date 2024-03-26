@@ -149,10 +149,7 @@ class _LoanStatementState extends State<LoanStatement> {
                                             child: heading2(
                                               text: "${widget.loan.name}",
                                               color: Theme.of(context)
-<<<<<<< HEAD
-=======
                                                   // ignore: deprecated_member_use
->>>>>>> 8b29323a0260057218cc9b3e579da81b710c236b
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               textAlign: TextAlign.start,
@@ -165,10 +162,7 @@ class _LoanStatementState extends State<LoanStatement> {
                                                     "${groupObject.groupCurrency} ",
                                                 fontSize: 18.0,
                                                 color: Theme.of(context)
-<<<<<<< HEAD
-=======
                                                     // ignore: deprecated_member_use
->>>>>>> 8b29323a0260057218cc9b3e579da81b710c236b
                                                     .textSelectionTheme
                                                     .selectionHandleColor,
                                                 fontWeight: FontWeight.w400,
@@ -177,10 +171,7 @@ class _LoanStatementState extends State<LoanStatement> {
                                                 text:
                                                     "${currencyFormat.format(widget.loan.amount)}",
                                                 color: Theme.of(context)
-<<<<<<< HEAD
-=======
                                                     // ignore: deprecated_member_use
->>>>>>> 8b29323a0260057218cc9b3e579da81b710c236b
                                                     .textSelectionTheme
                                                     .selectionHandleColor,
                                                 textAlign: TextAlign.end,
@@ -211,10 +202,7 @@ class _LoanStatementState extends State<LoanStatement> {
                                           subtitle2(
                                               text: "Amount Repaid ",
                                               color: Theme.of(context)
-<<<<<<< HEAD
-=======
                                                   // ignore: deprecated_member_use
->>>>>>> 8b29323a0260057218cc9b3e579da81b710c236b
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               textAlign: TextAlign.start),
@@ -222,10 +210,7 @@ class _LoanStatementState extends State<LoanStatement> {
                                               text:
                                                   "${groupObject.groupCurrency} ${currencyFormat.format(data.getLoanStatements.paid)}",
                                               color: Theme.of(context)
-<<<<<<< HEAD
-=======
                                                   // ignore: deprecated_member_use
->>>>>>> 8b29323a0260057218cc9b3e579da81b710c236b
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               textAlign: TextAlign.start),
@@ -238,10 +223,7 @@ class _LoanStatementState extends State<LoanStatement> {
                                           subtitle2(
                                               text: "Balance ",
                                               color: Theme.of(context)
-<<<<<<< HEAD
-=======
                                                   // ignore: deprecated_member_use
->>>>>>> 8b29323a0260057218cc9b3e579da81b710c236b
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               textAlign: TextAlign.start),
@@ -249,10 +231,7 @@ class _LoanStatementState extends State<LoanStatement> {
                                               text:
                                                   "${groupObject.groupCurrency} ${currencyFormat.format(data.getLoanStatements.balance)}",
                                               color: Theme.of(context)
-<<<<<<< HEAD
-=======
                                                   // ignore: deprecated_member_use
->>>>>>> 8b29323a0260057218cc9b3e579da81b710c236b
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               textAlign: TextAlign.start),
