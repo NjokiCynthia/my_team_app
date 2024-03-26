@@ -105,6 +105,58 @@ void twoButtonAlertDialog(
           ));
 }
 
+void twoAlertDialog({
+  BuildContext context,
+  String message,
+  String title,
+  Function action,
+  String yesText = "Continue",
+  String noText = "Cancel",
+}) {
+  showDialog(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      ),
+      content: customTitleWithWrap(
+        text: message,
+        textAlign: TextAlign.start,
+        maxLines: null,
+      ),
+      title: heading2(
+        text: title,
+        textAlign: TextAlign.start,
+        color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+      ),
+      actions: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            negativeActionDialogButton(
+              text: noText,
+              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+              action: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+            SizedBox(width: 20.0),
+            positiveActionDialogButton(
+              text: yesText,
+              color: primaryColor,
+              action: () {
+                Navigator.of(context).pop(); // Close the dialog
+                action(); // Perform the action (continue)
+              },
+            ),
+            SizedBox(width: 6.0),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
 void twoButtonAlertDialogwithConteiner(
     {BuildContext context,
     Container message,

@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import "package:provider/provider.dart";
 
-// ignore: must_be_immutable
 class PayNowSheet extends StatefulWidget {
   //Function payNowFunction;
   PayNowSheet(this.payNowFunction);
@@ -283,7 +282,10 @@ class _PayNowSheetState extends State<PayNowSheet> {
             children: [
               heading2(
                   text: "Confirm Payment Number",
+<<<<<<< HEAD
                  
+=======
+>>>>>>> 8b29323a0260057218cc9b3e579da81b710c236b
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                   textAlign: TextAlign.start),
@@ -308,7 +310,10 @@ class _PayNowSheetState extends State<PayNowSheet> {
             initialValue: Provider.of<Auth>(context).phoneNumber,
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
+<<<<<<< HEAD
              
+=======
+>>>>>>> 8b29323a0260057218cc9b3e579da81b710c236b
               FilteringTextInputFormatter.digitsOnly
             ],
             decoration: InputDecoration(
@@ -328,7 +333,10 @@ class _PayNowSheetState extends State<PayNowSheet> {
           actions: <Widget>[
             negativeActionDialogButton(
                 text: "Cancel",
+<<<<<<< HEAD
                
+=======
+>>>>>>> 8b29323a0260057218cc9b3e579da81b710c236b
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                 action: () {
@@ -382,7 +390,10 @@ class _PayNowSheetState extends State<PayNowSheet> {
               ),
               heading2(
                   text: "Wallet Payment",
+<<<<<<< HEAD
                  
+=======
+>>>>>>> 8b29323a0260057218cc9b3e579da81b710c236b
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                   textAlign: TextAlign.start),

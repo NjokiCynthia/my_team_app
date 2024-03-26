@@ -21,7 +21,8 @@ class CreateContribution extends StatefulWidget {
   _CreateContributionState createState() => _CreateContributionState();
 }
 
-class _CreateContributionState extends State<CreateContribution> with SingleTickerProviderStateMixin {
+class _CreateContributionState extends State<CreateContribution>
+    with SingleTickerProviderStateMixin {
   double _appBarElevation = 0;
   dynamic responseData;
   PageController _pageController;
@@ -50,7 +51,9 @@ class _CreateContributionState extends State<CreateContribution> with SingleTick
       child: Scaffold(
           appBar: secondaryPageTabbedAppbar(
             context: context,
-            title: widget.isEditMode == null ? "Create Contribution" : "Edit Contribution",
+            title: widget.isEditMode == null
+                ? "Create Contribution"
+                : "Edit Contribution",
             action: () => Navigator.of(context).pop(_formEdited),
             elevation: _appBarElevation,
             leadingIcon: LineAwesomeIcons.arrow_left,
@@ -73,7 +76,9 @@ class _CreateContributionState extends State<CreateContribution> with SingleTick
                               thickness: 5.0,
                               indent: 10,
                               endIndent: 10,
-                              color: currentPage == 0 ? primaryColor : Color(0xFFAEAEAE),
+                              color: currentPage == 0
+                                  ? primaryColor
+                                  : Color(0xFFAEAEAE),
                             ),
                           ),
                         ),
@@ -84,7 +89,9 @@ class _CreateContributionState extends State<CreateContribution> with SingleTick
                               thickness: 5.0,
                               indent: 10,
                               endIndent: 10,
-                              color: currentPage == 1 ? primaryColor : Color(0xFFAEAEAE),
+                              color: currentPage == 1
+                                  ? primaryColor
+                                  : Color(0xFFAEAEAE),
                             ),
                           ),
                         ),
@@ -95,7 +102,9 @@ class _CreateContributionState extends State<CreateContribution> with SingleTick
                               thickness: 5.0,
                               indent: 10,
                               endIndent: 10,
-                              color: currentPage == 2 ? primaryColor : Color(0xFFAEAEAE),
+                              color: currentPage == 2
+                                  ? primaryColor
+                                  : Color(0xFFAEAEAE),
                             ),
                           ),
                         ),
@@ -108,7 +117,8 @@ class _CreateContributionState extends State<CreateContribution> with SingleTick
                       controller: _pageController,
                       children: [
                         new ContributionSettings(
-                            isEditMode: widget.isEditMode == null ? false : true,
+                            isEditMode:
+                                widget.isEditMode == null ? false : true,
                             contributionDetails: widget.contributionDetails,
                             onButtonPressed: (response) {
                               if (_pageController.hasClients) {
@@ -127,7 +137,8 @@ class _CreateContributionState extends State<CreateContribution> with SingleTick
                             }),
                         new ContributionMembers(
                             responseData: responseData,
-                            isEditMode: widget.isEditMode == null ? false : true,
+                            isEditMode:
+                                widget.isEditMode == null ? false : true,
                             contributionDetails: widget.contributionDetails,
                             onButtonPressed: (response) {
                               if (_pageController.hasClients) {

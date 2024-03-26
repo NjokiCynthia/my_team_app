@@ -18,8 +18,7 @@ class BankAccountDashboardSummary {
   final String accountName;
   final double balance;
 
-  BankAccountDashboardSummary(
-      {this.accountName, this.balance});
+  BankAccountDashboardSummary({this.accountName, this.balance});
 }
 
 class RecentTransactionSummary {
@@ -324,8 +323,8 @@ class Dashboard with ChangeNotifier {
       _contributionDateDaysleft =
           memberDetails["contribution_date_days_left"] ?? "--";
       _nextcontributionDate = memberDetails["next_contribution_date"] ?? "--";
-      _memberFinesAmount = double.tryParse(memberDetails["total_fines"].toString()) ??
-              0.0;
+      _memberFinesAmount =
+          double.tryParse(memberDetails["total_fines"].toString()) ?? 0.0;
       _memberContributionArrears =
           double.tryParse(memberDetails["contribution_arrears"].toString()) ??
               0.0;
@@ -590,14 +589,11 @@ class Dashboard with ChangeNotifier {
       BarChartRodData(
         fromY: y1,
         color: depositsBarColor,
-        width: width, toY: 1.0,
+        width: width,
+        toY: 1.0,
       ),
       BarChartRodData(
-        fromY: y2,
-        color: withdrawalsBarColor,
-        width: width,
-        toY:1.0
-      ),
+          fromY: y2, color: withdrawalsBarColor, width: width, toY: 1.0),
     ]);
   }
 

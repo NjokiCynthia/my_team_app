@@ -23,7 +23,7 @@ class NotificationManager {
       'user_id': userId,
       'mobile_token': token,
     };
-    print("refresh toke stream");
+    print("refresh token stream");
     try {
       // String token = await FirebaseMessaging.instance.getToken();
       // Map<String, String> notificationData = {
@@ -49,7 +49,8 @@ class NotificationManager {
   static const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
     'High Importance Notifications', // title
-    description: 'This channel is used for important notifications.', // description
+    description:
+        'This channel is used for important notifications.', // description
     importance: Importance.high,
   );
 
@@ -97,7 +98,7 @@ class NotificationManager {
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage message) {
-      print("initial message2 $message");
+      //  print("initial message2 $message");
       // if (message != null) {
 
       //   // Navigator.pushNamed(context, '/message',
@@ -121,9 +122,9 @@ class NotificationManager {
                 channel.id,
                 channel.name,
                 channelDescription: channel.description,
-      // ignore: todo
-      // TODO add a proper drawable resource to android, for now using
-      //      one that already exists in example app.
+                // ignore: todo
+                // TODO add a proper drawable resource to android, for now using
+                //      one that already exists in example app.
                 icon: 'launch_background',
               ),
             ));

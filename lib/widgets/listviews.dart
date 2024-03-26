@@ -299,7 +299,11 @@ class LoanStatementBody extends StatelessWidget {
                       textAlign: TextAlign.start),
                   subtitle2(
                       text: row.date,
+<<<<<<< HEAD
                      
+=======
+                    
+>>>>>>> 8b29323a0260057218cc9b3e579da81b710c236b
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,

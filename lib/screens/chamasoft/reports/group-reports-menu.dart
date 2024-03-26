@@ -1,10 +1,12 @@
 import 'package:chamasoft/screens/chamasoft/models/report-menu.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/contribution-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/expense-summary.dart';
+import 'package:chamasoft/screens/chamasoft/reports/group/group-loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/group-loans-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/transaction-statement.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/svg-icons.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/list-invoices.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -37,9 +39,10 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
       ReportMenuSvg("CONTRIBUTION", "SUMMARY", customIcons['money-bag']),
       ReportMenuSvg("FINE", "SUMMARY", customIcons['expense']),
       ReportMenuSvg("LOAN", "SUMMARY", customIcons['transaction']),
-      //ReportMenuSvg("LOAN", "APPLICATIONS", customIcons['refund']),
+      ReportMenuSvg("LOAN", "APPLICATIONS", customIcons['refund']),
       ReportMenuSvg("EXPENSE", "SUMMARY", customIcons['card-payment']),
       ReportMenuSvg("TRANSACTION", "STATEMENT", customIcons['invoice']),
+      ReportMenuSvg("MEMBER", "INVOICES", customIcons['group']),
     ];
     return Scaffold(
       appBar: secondaryPageAppbar(
@@ -104,11 +107,12 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
           return GroupLoansSummary();
         }));
         break;
-//      case 4:
-//        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-//          return GroupLoanApplications();
-//        }));
-//        break;
+      case 4:
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext context) {
+          return GroupLoanApplications();
+        }));
+        break;
       case 4:
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (BuildContext context) {
@@ -119,6 +123,12 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (BuildContext context) {
           return TransactionStatement();
+        }));
+        break;
+      case 6:
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext context) {
+          return ListInvoices();
         }));
     }
   }

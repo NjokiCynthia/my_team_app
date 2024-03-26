@@ -203,7 +203,8 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (_) => ApplyLoan(
                         isInit: false,
-                      ))),
+                      )
+                      )),
           dismissible: true);
     } finally {}
   }
