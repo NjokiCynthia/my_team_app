@@ -2402,14 +2402,14 @@ class Groups with ChangeNotifier {
         "group_id": _currentGroupId,
       });
       // ignore: unused_local_variable
-      List<dynamic> _localData = [];
-      _localData = await dbHelper.queryWhere(
-        table: DatabaseHelper.invoices,
-        column: "group_id",
-        whereArguments: [_currentGroupId],
-        orderBy: 'invoice_date',
-        //order: 'DESC',
-      );
+      // List<dynamic> _localData = [];
+      // _localData = await dbHelper.queryWhere(
+      //   table: DatabaseHelper.invoices,
+      //   column: "group_id",
+      //   whereArguments: [_currentGroupId],
+      //   orderBy: 'invoice_date',
+      //   //order: 'DESC',
+      // );
       // ignore: todo
       // TODO: TO BE LOOKED INTO..
       // if (_localData.length > 0) {
