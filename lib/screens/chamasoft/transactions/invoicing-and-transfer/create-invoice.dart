@@ -7,6 +7,7 @@ import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/date-picker.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/list-invoices.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
@@ -62,12 +63,12 @@ class CreateInvoiceState extends State<CreateInvoice> {
 
   String _labelText = 'Select  for first--';
   bool _invoiceForEnabled = false;
-  final now = DateTime.now();
+  //final now = DateTime.now();
   static final List<NamesListItem> invoiceTypes = [
     NamesListItem(id: 1, name: "Contribution Invoice"),
     NamesListItem(id: 2, name: "Contribution Invoice Types"),
-    NamesListItem(id: 3, name: "Fine Invoice"),
-    NamesListItem(id: 4, name: "Miscellaneous Invoice"),
+    // NamesListItem(id: 3, name: "Fine Invoice"),
+    // NamesListItem(id: 4, name: "Miscellaneous Invoice"),
   ];
   @override
   void didChangeDependencies() {
@@ -293,11 +294,13 @@ class CreateInvoiceState extends State<CreateInvoice> {
 
   //final formKey = new GlobalKey<FormState>();
   bool toolTipIsVisible = true;
+  //DateTime invoiceDate = DateTime.now();
+  //DateTime dueDate = DateTime.now();
+
+  DateTime now = DateTime.now();
   DateTime invoiceDate = DateTime.now();
   DateTime dueDate = DateTime.now();
-
-  String formattedInvoiceDate; // Variable to store formatted invoice date
-  String formattedDueDate;
+  final dateFormat = DateFormat('dd-MM-y');
   int invoiceTypeId;
   int memberTypeId;
   int contributionId;
@@ -310,6 +313,8 @@ class CreateInvoiceState extends State<CreateInvoice> {
   bool _isFormEnabled = true;
   var _isLoading = false;
 
+  String requestId =
+      ((DateTime.now().millisecondsSinceEpoch / 1000).truncate()).toString();
   void createinvoiceApplication(BuildContext context) async {
     group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     user = Provider.of<Auth>(context, listen: false);
@@ -320,9 +325,11 @@ class CreateInvoiceState extends State<CreateInvoice> {
       "send_email_notification": "1",
       "description": description,
       "amount_payable": amount,
-      "invoice_date": formattedInvoiceDate,
+      "invoice_date": dateFormat.format(invoiceDate),
+      //int.tryParse(formattedInvoiceDate),
       //"1711107162",
-      "due_date": formattedDueDate,
+      "due_date": dateFormat.format(dueDate),
+      // int.tryParse(formattedDueDate),
       //"1711107162",
       "send_to": memberTypeId,
       "member_ids": selectedMembersList.map((MembersFilterEntry mem) {
@@ -335,6 +342,7 @@ class CreateInvoiceState extends State<CreateInvoice> {
           [],
       "contribution_id": _dropdownValue,
       "type": _invoiceFor,
+      "request_id": requestId,
     };
 
     print('form data is: $formData');
@@ -350,25 +358,20 @@ class CreateInvoiceState extends State<CreateInvoice> {
           });
     });
     try {
-      String response = await Provider.of<Groups>(context, listen: false)
-          .createInvoice(formData);
-      print('I want to see this point');
-      print(response);
+      await Provider.of<Groups>(context, listen: false).createInvoice(formData);
+
       Navigator.pop(context);
-      // ignore: deprecated_member_use
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully created an invoice",
       )));
 
       Future.delayed(const Duration(milliseconds: 2500), () {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (BuildContext context) {}));
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (_) => ListInvoices()));
       });
     } on CustomException catch (error) {
       Navigator.pop(context);
-
-      // ignore: deprecated_member_use
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error Creating an invoice. ${error.message} ",
@@ -431,24 +434,38 @@ class CreateInvoiceState extends State<CreateInvoice> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
+                            //       Expanded(
+                            //   flex: 1,
+                            //   child: DatePicker(
+                            //     labelText: "Select Invoice Date",
+                            //     firstDate: DateTime.now(),
+                            //     lastDate: new DateTime(2099),
+                            //     selectedDate: _invoiceDate,
+                            //     selectDate: (selectedDate) {
+                            //       setState(() {
+                            //         _invoiceDate = selectedDate;
+                            //       });
+                            //     },
+                            //   ),
+                            // ),
                             Expanded(
-                              // flex: 2,
+                              flex: 2,
                               child: DatePicker(
                                 labelText: 'Select Invoice Date',
-                                lastDate: DateTime.now()
-                                    .add(Duration(days: 365 * 10)),
+                                lastDate: new DateTime(2099),
+                                firstDate: DateTime.now(),
                                 selectedDate: invoiceDate == null
                                     ? DateTime.now()
                                     : invoiceDate,
                                 selectDate: (selectedDate) {
                                   setState(() {
                                     invoiceDate = selectedDate;
-                                    formattedInvoiceDate =
-                                        DateFormat('yyMMddHHmm')
-                                            .format(invoiceDate);
+                                    // formattedInvoiceDate =
+                                    //     DateFormat('yyMMddHHmm')
+                                    //         .format(invoiceDate);
 
                                     // Print the formatted date
-                                    print(formattedInvoiceDate);
+                                    //print(formattedInvoiceDate);
                                   });
                                 },
                               ),
@@ -457,21 +474,23 @@ class CreateInvoiceState extends State<CreateInvoice> {
                               width: 5.0,
                             ),
                             Expanded(
-                              //flex: 2,
+                              flex: 2,
                               child: DatePicker(
                                 labelText: 'Select Due Date',
-                                lastDate: DateTime.now()
-                                    .add(Duration(days: 365 * 10)),
+                                lastDate: new DateTime(2099),
+                                firstDate: DateTime.now(),
+                                // lastDate: DateTime.now()
+                                //     .add(Duration(days: 365 * 10)),
                                 selectedDate:
                                     dueDate == null ? DateTime.now() : dueDate,
                                 selectDate: (selectedDate) {
                                   setState(() {
                                     dueDate = selectedDate;
-                                    formattedDueDate = DateFormat('yyMMddHHmm')
-                                        .format(dueDate);
+                                    // formattedDueDate = DateFormat('yyMMddHHmm')
+                                    //     .format(dueDate);
 
-                                    // Print the formatted date
-                                    print(formattedDueDate);
+                                    // // Print the formatted date
+                                    // print(formattedDueDate);
                                   });
                                 },
                               ),

@@ -587,7 +587,7 @@ class Groups with ChangeNotifier {
 
   Groups(List<Group> _groups, String _userId, String _identity,
       String _currentGroupId) {
-    print('the data being set ${_userId}, ${_groups}, ${_identity}');
+    print('the data being set $_userId, $_groups, $_identity');
     this._groups = _groups;
     this._userId = _userId;
     this._identity = _identity;
@@ -5547,6 +5547,34 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<void> voidMemberInvoice(String id, BuildContext context) async {
+    try {
+      final url = EndpointUrl.VOID_INVOICE;
+      Map<String, String> formData = {
+        "user_id": _userId,
+        "group_id": currentGroupId,
+        "id": id,
+      };
+
+      try {
+        final postRequest = json.encode(formData);
+        await PostToServer.post(postRequest, url);
+        // Provider.of<Dashboard>(context, listen: false)
+        //     .unreconciledWithdrawalCount = 1;
+        // _withdrawalList.removeAt(position);
+        notifyListeners();
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   Future<void> voidWithdrawlTransaction(
       String id, int position, BuildContext context) async {
     try {
@@ -5646,17 +5674,23 @@ class Groups with ChangeNotifier {
   }
 
   //Invoice members
-  Future<String> createInvoice(Map<String, dynamic> formData) async {
+  Future<void> createInvoice(Map<String, dynamic> formData) async {
     final url = EndpointUrl.CREATE_INVOICE;
     try {
       try {
-        formData['user_id'] = _userId;
-
+        //formData['user_id'] = _userId;
+        // formData['request_id'] =
+        //     "${formData['request_id']}_${_userId}_$_identity";
         final postRequest = json.encode(formData);
+        print('I need to see this');
+        print(postRequest);
+        await PostToServer.post(postRequest, url);
+        notifyListeners();
 
-        final response = await PostToServer.post(postRequest, url);
+        // final response = await PostToServer.post(postRequest, url);
+        // print(response);
 
-        return response['message'];
+        // return response['message'];
       } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
       }

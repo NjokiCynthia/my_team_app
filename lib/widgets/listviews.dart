@@ -292,14 +292,14 @@ class LoanStatementBody extends StatelessWidget {
                 children: <Widget>[
                   subtitle1(
                       text: row.type,
-                      // ignore: deprecated_member_use
+                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,
                       textAlign: TextAlign.start),
                   subtitle2(
                       text: row.date,
-                      // ignore: deprecated_member_use
+                    
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,

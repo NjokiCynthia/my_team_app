@@ -607,7 +607,7 @@ class EndpointUrl {
   // ignore: non_constant_identifier_names
   static final String GET_BILLING_INVOICES =
       CustomHelper.baseUrl + "/mobile/billing/get_group_billing_invoices";
-
+// ignore: non_constant_identifier_names
   static final String CREATE_INVOICE =
       CustomHelper.baseUrl + "/mobile/invoices/create";
   // ignore: non_constant_identifier_names

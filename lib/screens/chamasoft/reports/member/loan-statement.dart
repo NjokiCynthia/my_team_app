@@ -150,7 +150,8 @@ class _LoanStatementState extends State<LoanStatement> {
                                               text: "${widget.loan.name}",
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionTheme.selectionHandleColor,
+                                                  .textSelectionTheme
+                                                  .selectionHandleColor,
                                               textAlign: TextAlign.start,
                                             ),
                                           ),
@@ -162,7 +163,8 @@ class _LoanStatementState extends State<LoanStatement> {
                                                 fontSize: 18.0,
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionTheme.selectionHandleColor,
+                                                    .textSelectionTheme
+                                                    .selectionHandleColor,
                                                 fontWeight: FontWeight.w400,
                                               ),
                                               heading2(
@@ -170,7 +172,8 @@ class _LoanStatementState extends State<LoanStatement> {
                                                     "${currencyFormat.format(widget.loan.amount)}",
                                                 color: Theme.of(context)
                                                     // ignore: deprecated_member_use
-                                                    .textSelectionTheme.selectionHandleColor,
+                                                    .textSelectionTheme
+                                                    .selectionHandleColor,
                                                 textAlign: TextAlign.end,
                                               ),
                                             ],
@@ -200,14 +203,16 @@ class _LoanStatementState extends State<LoanStatement> {
                                               text: "Amount Repaid ",
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionTheme.selectionHandleColor,
+                                                  .textSelectionTheme
+                                                  .selectionHandleColor,
                                               textAlign: TextAlign.start),
                                           subtitle1(
                                               text:
                                                   "${groupObject.groupCurrency} ${currencyFormat.format(data.getLoanStatements.paid)}",
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionTheme.selectionHandleColor,
+                                                  .textSelectionTheme
+                                                  .selectionHandleColor,
                                               textAlign: TextAlign.start),
                                         ],
                                       ),
@@ -219,14 +224,16 @@ class _LoanStatementState extends State<LoanStatement> {
                                               text: "Balance ",
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionTheme.selectionHandleColor,
+                                                  .textSelectionTheme
+                                                  .selectionHandleColor,
                                               textAlign: TextAlign.start),
                                           subtitle1(
                                               text:
                                                   "${groupObject.groupCurrency} ${currencyFormat.format(data.getLoanStatements.balance)}",
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
-                                                  .textSelectionTheme.selectionHandleColor,
+                                                  .textSelectionTheme
+                                                  .selectionHandleColor,
                                               textAlign: TextAlign.start),
                                         ],
                                       ),
@@ -237,15 +244,15 @@ class _LoanStatementState extends State<LoanStatement> {
                                           subtitle2(
                                               text: "Disbursed On ",
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
-                                                  .textSelectionTheme.selectionHandleColor,
+                                                  .textSelectionTheme
+                                                  .selectionHandleColor,
                                               textAlign: TextAlign.start),
                                           subtitle1(
                                               text:
                                                   widget.loan.disbursementDate,
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
-                                                  .textSelectionTheme.selectionHandleColor,
+                                                  .textSelectionTheme
+                                                  .selectionHandleColor,
                                               textAlign: TextAlign.start),
                                         ],
                                       ),

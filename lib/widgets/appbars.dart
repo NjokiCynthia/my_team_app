@@ -71,7 +71,7 @@ PreferredSizeWidget tertiaryPageAppbar(
     action,
     @required double elevation,
     @required IconData leadingIcon,
-    @required IconData trailingIcon,
+    IconData trailingIcon,
     trailingAction,
     List<Widget> actions}) {
   return AppBar(
