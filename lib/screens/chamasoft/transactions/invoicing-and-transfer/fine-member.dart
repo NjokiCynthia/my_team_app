@@ -17,8 +17,8 @@ import 'package:provider/provider.dart';
 import '../select-member.dart';
 
 List<NamesListItem> memberTypes = [
-  NamesListItem(id: 2, name: "Individual Members"),
-  NamesListItem(id: 1, name: "All Members"),
+  NamesListItem(id: 1, name: "Individual Members"),
+  NamesListItem(id: 2, name: "All Members"),
 ];
 
 class FineMember extends StatefulWidget {
