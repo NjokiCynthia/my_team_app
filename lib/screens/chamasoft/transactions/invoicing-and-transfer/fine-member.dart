@@ -259,7 +259,6 @@ class FineMemberState extends State<FineMember> {
                             Wrap(
                               children: memberWidgets.toList(),
                             ),
-                            
                             TextButton(
                               onPressed: () async {
                                 //open select members dialog
