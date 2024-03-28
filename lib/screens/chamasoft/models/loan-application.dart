@@ -13,6 +13,8 @@ class LoanApplication {
     this.status,
   });
 }
+
+
 // class LoanApplication {
 //   String id;
 //   String memberId;

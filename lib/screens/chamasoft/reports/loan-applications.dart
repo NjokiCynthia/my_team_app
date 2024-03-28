@@ -11,12 +11,12 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 // import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-class LoanApplications extends StatefulWidget {
+class ListLoanApplications extends StatefulWidget {
   @override
-  _LoanApplicationsState createState() => _LoanApplicationsState();
+  _ListLoanApplicationsState createState() => _ListLoanApplicationsState();
 }
 
-class _LoanApplicationsState extends State<LoanApplications> {
+class _ListLoanApplicationsState extends State<ListLoanApplications> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 

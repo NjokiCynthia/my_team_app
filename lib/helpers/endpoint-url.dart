@@ -741,6 +741,11 @@ class EndpointUrl {
   // ignore: non_constant_identifier_names
   static final String CREATE_GROUP_LOAN_APPLICATION = CustomHelper.baseUrl +
       "/mobile/chamasoft_loans/create_group_loan_application";
+  // ignore: non_constant_identifier_names
+  static final String GET_MEMBER_ACTION_GUARANTORSHIP_REQUESTS =
+      CustomHelper.baseUrl +
+          "/mobile/loan_applications/get_member_action_guarantorship_requests";
+  // ignore: non_constant_identifier_names
 
   // ignore: non_constant_identifier_names
   static final String GET_CHAMASOFT_LOAN_CALCULATOR = CustomHelper.baseUrl +

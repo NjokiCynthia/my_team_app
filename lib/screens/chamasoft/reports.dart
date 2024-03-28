@@ -271,7 +271,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                         : Theme.of(context).primaryColor,
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => LoanApplications(),
+                        builder: (BuildContext context) => ListLoanApplications(),
                         settings: RouteSettings(arguments: 0))),
                     margin: 0,
                     imageHeight: 100.0)),

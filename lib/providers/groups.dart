@@ -437,6 +437,105 @@ class OngoingMemberLoanOptions {
       this.loanType});
 }
 
+class LoanApplications {
+  String id;
+  String memberId;
+  String groupId;
+  String loanTypeId;
+  String loanAmount;
+  String repaymentPeriod;
+  String isApproved;
+  String description;
+  String active;
+  String createdBy;
+  String createdOn;
+  String modifiedOn;
+  String modifiedBy;
+  String status;
+  String agreeToRules;
+  String isDeleted;
+  String accountId;
+  String reviewReport;
+  String declineMessage;
+  String isDeclined;
+  String isLoanDisbursed;
+  String disburseStatus;
+  String memberSupervisorId;
+  String affirmation;
+  String saccoManagerMemberId;
+  String saccoManagerStatus;
+  String saccomManagerMemberId;
+  String saccomManagerStatus;
+  String userId;
+  String declineReason;
+  String declinedBy;
+  String disbursementCharges;
+  String disbursementReceiptNumber;
+  String isDisbursementDeclined;
+  String declinedOn;
+  String disbursementFailedErrorMessage;
+  String referenceNumber;
+  String disbursementResultStatus;
+  String disbursementStatus;
+  String isDisbursed;
+  String disbursedOn;
+  String disbursementResultDescription;
+  String accountSelectedBy;
+  String oldId;
+  String isLoanCreated;
+  String applicationReason;
+  String loanTypeUsesNewWorkflow;
+
+  LoanApplications(
+      {this.id,
+      this.memberId,
+      this.groupId,
+      this.loanTypeId,
+      this.loanAmount,
+      this.repaymentPeriod,
+      this.isApproved,
+      this.description,
+      this.active,
+      this.createdBy,
+      this.createdOn,
+      this.modifiedOn,
+      this.modifiedBy,
+      this.status,
+      this.agreeToRules,
+      this.isDeleted,
+      this.accountId,
+      this.reviewReport,
+      this.declineMessage,
+      this.isDeclined,
+      this.isLoanDisbursed,
+      this.disburseStatus,
+      this.memberSupervisorId,
+      this.affirmation,
+      this.saccoManagerMemberId,
+      this.saccoManagerStatus,
+      this.saccomManagerMemberId,
+      this.saccomManagerStatus,
+      this.userId,
+      this.declineReason,
+      this.declinedBy,
+      this.disbursementCharges,
+      this.disbursementReceiptNumber,
+      this.isDisbursementDeclined,
+      this.declinedOn,
+      this.disbursementFailedErrorMessage,
+      this.referenceNumber,
+      this.disbursementResultStatus,
+      this.disbursementStatus,
+      this.isDisbursed,
+      this.disbursedOn,
+      this.disbursementResultDescription,
+      this.accountSelectedBy,
+      this.oldId,
+      this.isLoanCreated,
+      this.applicationReason,
+      this.loanTypeUsesNewWorkflow});
+}
+
 class UnreconciledDeposit {
   final int type;
   final String transactionType;
@@ -528,6 +627,8 @@ class Groups with ChangeNotifier {
 
   List<Account> _accounts = [];
   List<Contribution> _contributions = [];
+  List<GuarantorshipRequests> _guarantorRequests = [];
+  List<LoanApplications> _grouploanApplications = [];
   List<Contribution> _payContributions = [];
   List<Expense> _expenses = [];
   List<FineType> _fineTypes = [];
@@ -619,6 +720,14 @@ class Groups with ChangeNotifier {
 
   List<Contribution> get contributions {
     return [..._contributions];
+  }
+
+  List<GuarantorshipRequests> get guarantorRequests {
+    return [..._guarantorRequests];
+  }
+
+  List<LoanApplications> get grouploanApplications {
+    return [..._grouploanApplications];
   }
 
   List<Contribution> get payContributions {
@@ -981,78 +1090,201 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> addGuarantors(
-      {List<dynamic> groupGuarantors, isLocal = false}) async {
-    if (groupGuarantors.length > 0) {
-      List<Map> _getMemeberActionGuarantorshiprequests = [];
-      for (var groupGuarantorRequestsJSON in groupGuarantors) {
-        final newGuarantorshiprequest = GuarantorshipRequests(
-          id: groupGuarantorRequestsJSON['id'].toString(),
-          amount: groupGuarantorRequestsJSON['amount'].toString(),
-          loanTypeId: groupGuarantorRequestsJSON['loan_type_id'].toString(),
-          loanApplicationId:groupGuarantorRequestsJSON['loan_application_id'].toString(),
-          loanRequestApplicantUserId: groupGuarantorRequestsJSON['loan_request_applicant_user_id'].toString(),
-           loanRequestApplicantMemberId: groupGuarantorRequestsJSON['loan_request_applicant_member_id'].toString(),
-          guarantorMemberId: groupGuarantorRequestsJSON['guarantor_member_id'].toString(),
-guarantorUserId:groupGuarantorRequestsJSON['guarantor_user_id'].toString(),
-groupId: groupGuarantorRequestsJSON['group_id'].toString(),
-           comment: groupGuarantorRequestsJSON['comment'].toString(),
-          loanRequestProgressStatus: groupGuarantorRequestsJSON['loan_request_progress_status'].toString(),
-            "loan_request_progress_status": "1",
-            "is_approved": null,
-            "is_declined": null,
-            "active": "1",
-            "approved_on": null,
-            "declined_on": null,
-            "approve_comment": null,
-            "decline_comment": null,
-            "created_by": "49012",
-            "created_on": "1711013233",
-            "modified_on": null,
-            "modified_by": null,
-            "status": null,
-            "decline_reason": null,
-            "loan_applicant_user_id": null,
-            "loan_applicant_member_id": null,
-            "old_id": null
-          type: groupContributionJSON['type'].toString(),
-          contributionType:
-              groupContributionJSON['contribution_type'].toString(),
-          frequency: groupContributionJSON['frequency'].toString(),
-          invoiceDate: groupContributionJSON['invoice_date'].toString(),
-          contributionDate:
-              groupContributionJSON['contribution_date'].toString(),
-          oneTimeContributionSetting:
-              groupContributionJSON['one_time_contribution_setting'].toString(),
-          isHidden: groupContributionJSON['is_hidden'].toString(),
-          active: groupContributionJSON['active'].toString(),
+  Future<void> addLoanApplications(
+      {List<dynamic> groupLoanApplications}) async {
+    if (groupLoanApplications.length > 0) {
+      for (var groupLoanApplicationsJSON in groupLoanApplications) {
+        final newloanApplications = LoanApplications(
+          id: groupLoanApplicationsJSON['id'].toString(),
+          memberId: groupLoanApplicationsJSON['member_id'].toString(),
+          groupId: groupLoanApplicationsJSON['group_id'].toString(),
+          loanTypeId: groupLoanApplicationsJSON['loan_type_id'].toString(),
+          loanAmount: groupLoanApplicationsJSON['loan_amount'].toString(),
+          repaymentPeriod:
+              groupLoanApplicationsJSON['repayment_period'].toString(),
+          isApproved: groupLoanApplicationsJSON['is_approved'].toString(),
+          description: groupLoanApplicationsJSON['description'].toString(),
+          active: groupLoanApplicationsJSON['active'].toString(),
+          createdBy: groupLoanApplicationsJSON['created_by'].toString(),
+          createdOn: groupLoanApplicationsJSON['created_on'].toString(),
+          modifiedOn: groupLoanApplicationsJSON['modified_on'].toString(),
+          modifiedBy: groupLoanApplicationsJSON['modified_by'].toString(),
+          status: groupLoanApplicationsJSON['status'].toString(),
+          agreeToRules: groupLoanApplicationsJSON['agree_to_rules'].toString(),
+          isDeleted: groupLoanApplicationsJSON['is_deleted'].toString(),
+          accountId: groupLoanApplicationsJSON['account_id'].toString(),
+          reviewReport: groupLoanApplicationsJSON['review_report'].toString(),
+          declineMessage:
+              groupLoanApplicationsJSON['decline_message'].toString(),
+          isDeclined: groupLoanApplicationsJSON['is_declined'].toString(),
+          isLoanDisbursed:
+              groupLoanApplicationsJSON['is_loan_disbursed'].toString(),
+          disburseStatus:
+              groupLoanApplicationsJSON['disburse_status'].toString(),
+          memberSupervisorId:
+              groupLoanApplicationsJSON['member_supervisor_id'].toString(),
+          affirmation: groupLoanApplicationsJSON['affirmation'].toString(),
+          saccoManagerMemberId:
+              groupLoanApplicationsJSON['sacco_manager_member_id'].toString(),
+          saccoManagerStatus:
+              groupLoanApplicationsJSON['sacco_manager_status'].toString(),
+          saccomManagerMemberId:
+              groupLoanApplicationsJSON['saccom_manager_member_id'].toString(),
+          saccomManagerStatus:
+              groupLoanApplicationsJSON['saccom_manager_status'].toString(),
+          userId: groupLoanApplicationsJSON['user_id'].toString(),
+          declineReason: groupLoanApplicationsJSON['decline_reason'].toString(),
+          declinedBy: groupLoanApplicationsJSON['declined_by'].toString(),
+          disbursementCharges:
+              groupLoanApplicationsJSON['disbursement_charges'].toString(),
+          disbursementReceiptNumber:
+              groupLoanApplicationsJSON['disbursement_receipt_number']
+                  .toString(),
+          isDisbursementDeclined:
+              groupLoanApplicationsJSON['is_disbursement_declined'].toString(),
+          declinedOn: groupLoanApplicationsJSON['declined_on'].toString(),
+          disbursedOn: groupLoanApplicationsJSON['disbursed_on'].toString(),
+          disbursementFailedErrorMessage:
+              groupLoanApplicationsJSON['disbursement_failed_error_message']
+                  .toString(),
+          referenceNumber:
+              groupLoanApplicationsJSON['reference_number'].toString(),
+          disbursementResultStatus:
+              groupLoanApplicationsJSON['disbursement_result_status']
+                  .toString(),
+          disbursementResultDescription:
+              groupLoanApplicationsJSON['disbursement_result_description']
+                  .toString(),
+          disbursementStatus:
+              groupLoanApplicationsJSON['disbursement_status'].toString(),
+          isDisbursed: groupLoanApplicationsJSON['is_disbursed'].toString(),
+          accountSelectedBy:
+              groupLoanApplicationsJSON['account_selected_by'].toString(),
+          applicationReason:
+              groupLoanApplicationsJSON['application_reason'].toString(),
+          isLoanCreated:
+              groupLoanApplicationsJSON['is_loan_created'].toString(),
+          loanTypeUsesNewWorkflow:
+              groupLoanApplicationsJSON['loan_type_uses_new_workflow']
+                  .toString(),
+          oldId: groupLoanApplicationsJSON['old_id'].toString(),
         );
-        _contributions.add(newContribution);
-        if (!isLocal) {
-          var contributionMap = {
-            "id": int.parse(groupContributionJSON['id'].toString()),
-            "group_id": int.parse(_currentGroupId),
-            "name": groupContributionJSON['name'].toString(),
-            "amount": groupContributionJSON['amount'].toString(),
-            "type": groupContributionJSON['type'].toString(),
-            "contribution_type":
-                groupContributionJSON['contribution_type'].toString(),
-            "frequency": groupContributionJSON['frequency'].toString(),
-            "invoice_date": groupContributionJSON['invoice_date'].toString(),
-            "contribution_date":
-                groupContributionJSON['contribution_date'].toString(),
-            " one_time_contribution_setting":
-                groupContributionJSON['one_time_contribution_setting']
-                    .toString(),
-            "is_hidden": groupContributionJSON['is_hidden'].toString(),
-            "active": groupContributionJSON['active'].toString(),
-            "modified_on": DateTime.now().millisecondsSinceEpoch,
-          };
-          _contributionsList.add(contributionMap);
-        }
+        _grouploanApplications.add(newloanApplications);
       }
     }
     notifyListeners();
+  }
+
+  Future<void> fetchGroupLoanApplications() async {
+    final url = EndpointUrl.GET_GROUP_LOAN_APPLICATIONS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+
+      final response = await PostToServer.post(postRequest, url);
+      _grouploanApplications = [];
+
+      final groupLoanApplications = response['data'] as List<dynamic>;
+      addLoanApplications(groupLoanApplications: groupLoanApplications);
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchMemberLoanApplications({String memberId = ""}) async {
+    final url = EndpointUrl.GET_MEMBER_ACTION_GUARANTORSHIP_REQUESTS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+        "member_id": memberId,
+      });
+
+      final response = await PostToServer.post(postRequest, url);
+      _grouploanApplications = [];
+
+      final groupLoanApplications = response['data'] as List<dynamic>;
+      addLoanApplications(groupLoanApplications: groupLoanApplications);
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> addGuarantors({List<dynamic> groupGuarantors}) async {
+    if (groupGuarantors.length > 0) {
+      for (var groupGuarantorRequestsJSON in groupGuarantors) {
+        final newGroupGuarantors = GuarantorshipRequests(
+          id: groupGuarantorRequestsJSON['id'].toString(),
+          amount: groupGuarantorRequestsJSON['amount'].toString(),
+          loanTypeId: groupGuarantorRequestsJSON['loan_type_id'].toString(),
+          loanApplicationId:
+              groupGuarantorRequestsJSON['loan_application_id'].toString(),
+          loanRequestApplicantUserId:
+              groupGuarantorRequestsJSON['loan_request_applicant_user_id']
+                  .toString(),
+          loanRequestApplicantMemberId:
+              groupGuarantorRequestsJSON['loan_request_applicant_member_id']
+                  .toString(),
+          guarantorMemberId:
+              groupGuarantorRequestsJSON['guarantor_member_id'].toString(),
+          guarantorUserId:
+              groupGuarantorRequestsJSON['guarantor_user_id'].toString(),
+          groupId: groupGuarantorRequestsJSON['group_id'].toString(),
+          comment: groupGuarantorRequestsJSON['comment'].toString(),
+          loanRequestProgressStatus:
+              groupGuarantorRequestsJSON['loan_request_progress_status']
+                  .toString(),
+          isApproved: groupGuarantorRequestsJSON['is_approved'].toString(),
+          isDeclined: groupGuarantorRequestsJSON['is_declined'].toString(),
+          active: groupGuarantorRequestsJSON['active'].toString(),
+          approveComment:
+              groupGuarantorRequestsJSON['approve_comment'].toString(),
+          approvedOn: groupGuarantorRequestsJSON['approved_on'].toString(),
+          declinedOn: groupGuarantorRequestsJSON['declined_on'].toString(),
+          declineComment:
+              groupGuarantorRequestsJSON['decline_comment'].toString(),
+          createdBy: groupGuarantorRequestsJSON['created_by'].toString(),
+          createdOn: groupGuarantorRequestsJSON['created_on'].toString(),
+          modifiedOn: groupGuarantorRequestsJSON['modified_on'].toString(),
+          modifiedBy: groupGuarantorRequestsJSON['modified_by'].toString(),
+          status: groupGuarantorRequestsJSON['status'].toString(),
+          declineReason:
+              groupGuarantorRequestsJSON['decline_reason'].toString(),
+          loanApplicantMemberId:
+              groupGuarantorRequestsJSON['loan_applicant_member_id'].toString(),
+          loanApplicantUserId:
+              groupGuarantorRequestsJSON['loan_applicant_user_id'].toString(),
+          oldId: groupGuarantorRequestsJSON['old_id'].toString(),
+        );
+        _guarantorRequests.add(newGroupGuarantors);
+      }
+    }
+    notifyListeners();
+  }
+
+  Future<void> fetchGuarantorShipRequests() async {
+    final url = EndpointUrl.GET_MEMBER_ACTION_GUARANTORSHIP_REQUESTS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+
+      final response = await PostToServer.post(postRequest, url);
+      _guarantorRequests = [];
+      final groupGuarantors = response['data'] as List<dynamic>;
+      addGuarantors(groupGuarantors: groupGuarantors);
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
   }
 
   Future<void> addContributions(
