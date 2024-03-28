@@ -11,6 +11,7 @@ import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
 import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
 import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/screens/chamasoft/models/guarantor.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
@@ -978,6 +979,80 @@ class Groups with ChangeNotifier {
         }
       }
     }
+  }
+
+  Future<void> addGuarantors(
+      {List<dynamic> groupGuarantors, isLocal = false}) async {
+    if (groupGuarantors.length > 0) {
+      List<Map> _getMemeberActionGuarantorshiprequests = [];
+      for (var groupGuarantorRequestsJSON in groupGuarantors) {
+        final newGuarantorshiprequest = GuarantorshipRequests(
+          id: groupGuarantorRequestsJSON['id'].toString(),
+          amount: groupGuarantorRequestsJSON['amount'].toString(),
+          loanTypeId: groupGuarantorRequestsJSON['loan_type_id'].toString(),
+          loanApplicationId:groupGuarantorRequestsJSON['loan_application_id'].toString(),
+          loanRequestApplicantUserId: groupGuarantorRequestsJSON['loan_request_applicant_user_id'].toString(),
+           loanRequestApplicantMemberId: groupGuarantorRequestsJSON['loan_request_applicant_member_id'].toString(),
+          guarantorMemberId: groupGuarantorRequestsJSON['guarantor_member_id'].toString(),
+guarantorUserId:groupGuarantorRequestsJSON['guarantor_user_id'].toString(),
+groupId: groupGuarantorRequestsJSON['group_id'].toString(),
+           comment: groupGuarantorRequestsJSON['comment'].toString(),
+          loanRequestProgressStatus: groupGuarantorRequestsJSON['loan_request_progress_status'].toString(),
+            "loan_request_progress_status": "1",
+            "is_approved": null,
+            "is_declined": null,
+            "active": "1",
+            "approved_on": null,
+            "declined_on": null,
+            "approve_comment": null,
+            "decline_comment": null,
+            "created_by": "49012",
+            "created_on": "1711013233",
+            "modified_on": null,
+            "modified_by": null,
+            "status": null,
+            "decline_reason": null,
+            "loan_applicant_user_id": null,
+            "loan_applicant_member_id": null,
+            "old_id": null
+          type: groupContributionJSON['type'].toString(),
+          contributionType:
+              groupContributionJSON['contribution_type'].toString(),
+          frequency: groupContributionJSON['frequency'].toString(),
+          invoiceDate: groupContributionJSON['invoice_date'].toString(),
+          contributionDate:
+              groupContributionJSON['contribution_date'].toString(),
+          oneTimeContributionSetting:
+              groupContributionJSON['one_time_contribution_setting'].toString(),
+          isHidden: groupContributionJSON['is_hidden'].toString(),
+          active: groupContributionJSON['active'].toString(),
+        );
+        _contributions.add(newContribution);
+        if (!isLocal) {
+          var contributionMap = {
+            "id": int.parse(groupContributionJSON['id'].toString()),
+            "group_id": int.parse(_currentGroupId),
+            "name": groupContributionJSON['name'].toString(),
+            "amount": groupContributionJSON['amount'].toString(),
+            "type": groupContributionJSON['type'].toString(),
+            "contribution_type":
+                groupContributionJSON['contribution_type'].toString(),
+            "frequency": groupContributionJSON['frequency'].toString(),
+            "invoice_date": groupContributionJSON['invoice_date'].toString(),
+            "contribution_date":
+                groupContributionJSON['contribution_date'].toString(),
+            " one_time_contribution_setting":
+                groupContributionJSON['one_time_contribution_setting']
+                    .toString(),
+            "is_hidden": groupContributionJSON['is_hidden'].toString(),
+            "active": groupContributionJSON['active'].toString(),
+            "modified_on": DateTime.now().millisecondsSinceEpoch,
+          };
+          _contributionsList.add(contributionMap);
+        }
+      }
+    }
+    notifyListeners();
   }
 
   Future<void> addContributions(
@@ -4706,8 +4781,7 @@ class Groups with ChangeNotifier {
         "lower_limit": lowerLimit,
         "upper_limit": lowerLimit + 20
       });
-      print('This is teh request i post');
-      print(postRequest);
+
       try {
         final response = await PostToServer.post(postRequest, url);
         final data = response['withdrawals'] as List<dynamic>;
@@ -5786,7 +5860,7 @@ class Groups with ChangeNotifier {
   Future<Map<String, dynamic>> fetchGroupLoanCalculator(
       Map<String, dynamic> formData) async {
     final url = EndpointUrl.GET_GROUP_LOAN_CALCULATOR;
-    print("Here is the url" + url);
+
     try {
       formData['user_id'] = _userId;
       formData['group_id'] = _currentGroupId;

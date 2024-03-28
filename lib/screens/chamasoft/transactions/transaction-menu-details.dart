@@ -6,6 +6,8 @@ import 'package:chamasoft/screens/chamasoft/transactions/income/record-income.da
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-miscellaneous-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/account-to-account-transfer.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/contribution-transfer.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/record-loan-payment.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-purpose.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -126,12 +128,12 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
               : ReviewWithdrawalRequests();
         }));
         break;
-      // case 1:
-      //   Navigator.of(context)
-      //       .push(MaterialPageRoute(builder: (BuildContext context) {
-      //     return (index == 0) ? ReviewLoanApplications() : RecordLoanPayment();
-      //   }));
-      //   break;
+      case 1:
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext context) {
+          return (index == 0) ? ReviewLoanApplications() : RecordLoanPayment();
+        }));
+        break;
       case 1:
         if (index == 0) {
           Navigator.of(context)

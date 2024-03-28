@@ -1,4 +1,4 @@
-class Data {
+class GuarantorshipRequests {
   String id;
   String loanTypeId;
   String loanApplicationId;
@@ -27,7 +27,7 @@ class Data {
   String loanApplicantMemberId;
   String oldId;
 
-  Data(
+  GuarantorshipRequests(
       {this.id,
       this.loanTypeId,
       this.loanApplicationId,

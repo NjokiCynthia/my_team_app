@@ -109,6 +109,16 @@ class EndpointUrl {
   static final String GET_MEMBERs_LOAN_TYPE_OPTIONS =
       CustomHelper.baseUrl + "/mobile/loans/get_members_loans_options";
   // ignore: non_constant_identifier_names
+  static final String GET_MEMBER_LOAN_APPLICATIONS = CustomHelper.baseUrl +
+      "/mobile/loan_applications/get_group_loan_applications";
+
+  static final String GET_GROUP_LOAN_APPLICATIONS = CustomHelper.baseUrl +
+      "/mobile/loan_applications/get_group_loan_applications";
+
+  static final String GET_GUARANTORSHIP_REQUESTS = CustomHelper.baseUrl +
+      "/mobile/loan_applications/get_loan_application_guarantorship_requests";
+
+  // ignore: non_constant_identifier_names
   static final String GET_GROUP_CONTRIBUTIONS_OPTIONS = CustomHelper.baseUrl +
       "/mobile/contributions/get_group_contribution_options";
   // ignore: non_constant_identifier_names

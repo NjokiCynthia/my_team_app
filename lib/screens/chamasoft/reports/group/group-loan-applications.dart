@@ -18,7 +18,7 @@ class GroupLoanApplications extends StatefulWidget {
 
 class _GroupLoanApplicationsState extends State<GroupLoanApplications> {
   double _appBarElevation = 0;
-  ScrollController _scrollController;
+  ScrollController _scrollController = ScrollController();
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -38,8 +38,8 @@ class _GroupLoanApplicationsState extends State<GroupLoanApplications> {
 
   @override
   void dispose() {
-    _scrollController?.removeListener(_scrollListener);
-    _scrollController?.dispose();
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -152,15 +152,16 @@ class GroupApplicationCard extends StatelessWidget {
                             customTitle(
                               text: application.loanName,
                               fontWeight: FontWeight.w700,
-                             
-                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               textAlign: TextAlign.start,
                             ),
                             subtitle2(
                                 text: "Applied By Jackie Chan",
-                                color:
-                                   
-                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                                 textAlign: TextAlign.start),
                           ],
                         ),
@@ -186,16 +187,16 @@ class GroupApplicationCard extends StatelessWidget {
                           children: <Widget>[
                             subtitle2(
                                 text: "Applied On",
-                                color:
-                                   
-                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                                 textAlign: TextAlign.start),
                             subtitle1(
                                 text: defaultDateFormat
                                     .format(application.requestDate),
-                                color:
-                                   
-                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                                 textAlign: TextAlign.start)
                           ],
                         ),
@@ -205,15 +206,17 @@ class GroupApplicationCard extends StatelessWidget {
                           children: <Widget>[
                             subtitle1(
                               text: "${groupObject.groupCurrency} ",
-                             
-                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                             ),
                             customTitle(
                               text: currencyFormat.format(application.amount),
                               textAlign: TextAlign.end,
                               fontSize: 20.0,
-                             
-                              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
                               fontWeight: FontWeight.w700,
                             ),
                           ],

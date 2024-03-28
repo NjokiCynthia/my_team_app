@@ -243,43 +243,38 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
           SizedBox(
             width: 16.0,
           ),
-          Visibility(
-            visible: false,
-            child: customShowCase(
-              key: loanapplicationkey,
-              description:
-                  "View, Download and Share your Loan applications from here",
-              child: Container(
-                  width: 132.0,
-                  child: svgGridButton(
-                      context: context,
-                      icon: customIcons['refund'],
-                      title: currentLanguage == 'English'
-                          ? 'LOAN'
-                          : Provider.of<TranslationProvider>(context,
-                                      listen: false)
-                                  .translate('LOAN') ??
-                              'LOAN',
-                      //'LOAN',
-                      subtitle: currentLanguage == 'English'
-                          ? 'APPLICATIONS'
-                          : Provider.of<TranslationProvider>(context,
-                                      listen: false)
-                                  .translate('APPLICATIONS') ??
-                              'APPLICATIONS',
-                      //'SUMMARY',
-                      color: Config.appName.toLowerCase() == "chamasoft"
-                          ? Colors.blue[400]
-                          : Theme.of(context).primaryColor,
-                      isHighlighted: false,
-                      action: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  LoanApplications(),
-                              settings: RouteSettings(arguments: 0))),
-                      margin: 0,
-                      imageHeight: 100.0)),
-            ),
+          customShowCase(
+            key: loanapplicationkey,
+            description:
+                "View, Download and Share your Loan applications from here",
+            child: Container(
+                width: 132.0,
+                child: svgGridButton(
+                    context: context,
+                    icon: customIcons['refund'],
+                    title: currentLanguage == 'English'
+                        ? 'LOAN'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('LOAN') ??
+                            'LOAN',
+                    //'LOAN',
+                    subtitle: currentLanguage == 'English'
+                        ? 'APPLICATIONS'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('APPLICATIONS') ??
+                            'APPLICATIONS',
+                    //'SUMMARY',
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
+                    isHighlighted: false,
+                    action: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => LoanApplications(),
+                        settings: RouteSettings(arguments: 0))),
+                    margin: 0,
+                    imageHeight: 100.0)),
           ),
           SizedBox(
             width: 16.0,
