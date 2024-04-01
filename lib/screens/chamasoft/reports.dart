@@ -526,9 +526,8 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
               width: 16.0,
             ),
           if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
-            Visibility(
-              visible: false,
-              child: Container(
+            
+               Container(
                   width: 132.0,
                   child: svgGridButton(
                       context: context,
@@ -551,7 +550,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                                   GroupLoanApplications())),
                       margin: 0,
                       imageHeight: 100.0)),
-            ),
+            
           if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
             SizedBox(
               width: 16.0,

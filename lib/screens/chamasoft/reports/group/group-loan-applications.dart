@@ -1,3 +1,4 @@
+import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-application.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan.dart';
@@ -29,10 +30,42 @@ class _GroupLoanApplicationsState extends State<GroupLoanApplications> {
     }
   }
 
+  bool _isLoading = false;
+  Future<void> fetchLoanApplications(BuildContext context) async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      await Provider.of<Groups>(context, listen: false)
+          .fetchGroupLoanApplications();
+      // Navigator.pop(context);
+      // Navigator.of(context)
+      //     .push(MaterialPageRoute(builder: (context) => ListFineTypes()));
+    } on CustomException catch (error) {
+      print(error.message);
+      final snackBar = SnackBar(
+        content: Text('Network Error occurred: could not fetch invoices'),
+        action: SnackBarAction(
+          label: 'Retry',
+          onPressed: () async {
+            fetchLoanApplications(context);
+          },
+        ),
+      );
+      // Navigator.pop(context);
+      // ignore: deprecated_member_use
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    fetchLoanApplications(context);
     super.initState();
   }
 
@@ -232,6 +265,17 @@ class GroupApplicationCard extends StatelessWidget {
     );
   }
 
+// {
+//     "0" : "Pending Approval",
+//     "1" : "Approved",
+//     "2" : "Pending Guarantors Approval",
+//     "3" : "Pending Signatories Approval",
+//     "4" : "Pending Disbursement",
+//     "5" : "Disbursing",
+//     "6" : "Disbursed",
+//     "7" : "Disbursement Failed",
+//     "8" : "Declined"
+// }
   Widget getStatus() {
     if (application.status == 2) {
       return statusChip(

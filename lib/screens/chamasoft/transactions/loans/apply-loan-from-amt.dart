@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/providers/access_token.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/individual_loan_stepper.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +39,11 @@ class _ApplyLoanFromAmtState extends State<ApplyLoanFromAmt> {
           final Map<String, dynamic> responseData = json.decode(response.body);
           print('These are my loan products');
           print(responseData);
+          setState(() {
+            // Assuming responseData is a list of loan products
+            loanProducts =
+                responseData['entities'].cast<Map<String, dynamic>>();
+          });
         } else {
           throw Exception(
               'Failed to fetch loan applications. Status code: ${response.statusCode}');
@@ -68,21 +75,24 @@ class _ApplyLoanFromAmtState extends State<ApplyLoanFromAmt> {
             message:
                 "Apply quick loan from Amt guaranteed by your savings and fellow group members.",
           ),
-          ListView.builder(
-            shrinkWrap: true,
-            itemCount: loanProducts.length,
-            itemBuilder: (context, index) {
-              final loanProduct = loanProducts[index];
-              return AmtLoanProduct(
-                loanProduct: loanProduct,
-                onProductSelected: (selectedOption) {
-                  // Handle the selected option here
-                  print('Selected option: $selectedOption');
-                  // You can navigate to the stepper page or perform other actions
-                },
-              );
-            },
-          ),
+          loanProducts.isEmpty
+              ? CircularProgressIndicator() // Or your custom loading widget
+              : Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: loanProducts.length,
+                    itemBuilder: (context, index) {
+                      final loanProduct = loanProducts[index];
+                      return AmtLoanProduct(
+                        loanProduct: loanProduct,
+                        onProductSelected: (selectedOption) {
+                          // Handle selected option
+                          print('Selected option: $selectedOption');
+                        },
+                      );
+                    },
+                  ),
+                ),
         ],
       ),
     );
@@ -91,7 +101,8 @@ class _ApplyLoanFromAmtState extends State<ApplyLoanFromAmt> {
 
 class AmtLoanProduct extends StatelessWidget {
   final Map<String, dynamic> loanProduct;
-  final Function(String) onProductSelected;
+  //final Function(String) onProductSelected;
+  final Function(Map<String, dynamic>) onProductSelected;
 
   const AmtLoanProduct({
     Key key,
@@ -101,23 +112,77 @@ class AmtLoanProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        loanProduct['name'] ?? '',
-        style: TextStyle(color: Colors.red),
+    return Padding(
+      padding: EdgeInsets.all(20),
+      child: Card(
+        child: ListTile(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Loan Product name:',
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12),
+              ),
+              Text(
+                loanProduct['name'] ?? '',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16),
+              ),
+            ],
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Minimum amount:'),
+                  Text(
+                    'KES ${currencyFormat.format(double.tryParse(loanProduct['minAmount'] ?? ''))}',
+                    // 'KES ${loanProduct['minAmount'] ?? ''}',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Minimum amount:'),
+                  Text(
+                    'KES ${currencyFormat.format(double.tryParse(loanProduct['maxAmount'] ?? ''))}',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          trailing: Icon(Icons.arrow_forward_ios),
+          onTap: () {
+            if (onProductSelected != null) {
+              onProductSelected(loanProduct);
+
+              // Navigate to StepperPage with loan product data
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      IndividualStepper(selectedLoanProduct: loanProduct),
+                ),
+              );
+            }
+          },
+        ),
       ),
-      subtitle: Text(
-        loanProduct['type'] ?? '',
-        style: TextStyle(color: Colors.red),
-      ),
-      trailing: Icon(Icons.arrow_forward_ios),
-      onTap: () {
-        if (onProductSelected != null) {
-          String selectedOption = loanProduct['_id'] ?? '';
-          onProductSelected(selectedOption);
-          // Navigator.push(...) if needed
-        }
-      },
     );
   }
 }
