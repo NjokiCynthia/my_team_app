@@ -2,9 +2,12 @@
 // import 'package:chamasoft/screens/chamasoft/models/loan-type.dart';
 // import 'package:chamasoft/screens/chamasoft/transactions/loans/chamasoft-loan-type.dart';
 // import 'package:chamasoft/screens/chamasoft/transactions/loans/loan-amortization.dart';
+import 'dart:convert';
+
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/providers/access_token.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-for-individual-amt-loan.dart';
@@ -15,6 +18,7 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 // import 'package:chamasoft/widgets/backgrounds.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -78,6 +82,7 @@ class ApplyLoanState extends State<ApplyLoan> {
     });
     super.initState();
     _fetchData();
+    amtAuth();
   }
 
   @override
@@ -93,6 +98,46 @@ class ApplyLoanState extends State<ApplyLoan> {
     if (_isInit)
       WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
     super.didChangeDependencies();
+  }
+
+  Future<Map<String, dynamic>> amtAuth() async {
+    print('I am here');
+    final url = 'https://api-accounts.sandbox.co.ke:8627/api/users/login';
+    final Map<String, String> headers = {
+      'Content-Type': 'application/json',
+    };
+    try {
+      final postRequest =
+          json.encode({"phone": "254797181989", "password": "p@ssword_5"});
+
+      final response =
+          await http.post(Uri.parse(url), headers: headers, body: postRequest);
+      print('I want to see my resposne');
+      print(response);
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        // Handle the response data according to your needs\\
+        print('I want to see my response data');
+
+        print(responseData);
+
+        final accessToken = responseData['user']['access_token'];
+
+        // Update access token using Provider
+        Provider.of<AccessTokenProvider>(context, listen: false)
+            .updateAccessToken(accessToken);
+
+        print('access token');
+
+        return responseData;
+      } else {
+        throw Exception(
+            'Failed to authenticate. Status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      throw Exception('Error during authentication: $error');
+    }
   }
 
   Future<void> _fetchLoanTypes(BuildContext context) async {
