@@ -628,7 +628,7 @@ class Groups with ChangeNotifier {
   List<Account> _accounts = [];
   List<Contribution> _contributions = [];
   List<GuarantorshipRequests> _guarantorRequests = [];
-  List<LoanApplications> _grouploanApplications = [];
+  List<LoanApplications> _loanApplications = [];
   List<Contribution> _payContributions = [];
   List<Expense> _expenses = [];
   List<FineType> _fineTypes = [];
@@ -663,6 +663,7 @@ class Groups with ChangeNotifier {
   List<GroupContributionSummary> _groupContributionSummary = [];
   List<GroupContributionSummary> _groupFinesSummary = [];
   List<Deposit> _depositList = [];
+
   List<Withdrawal> _withdrawalList = [];
   List<WithdrawalRequest> _withdrawalRequests = [];
   List<UnreconciledDeposit> _unreconciledDeposits = [];
@@ -726,10 +727,6 @@ class Groups with ChangeNotifier {
     return [..._guarantorRequests];
   }
 
-  List<LoanApplications> get grouploanApplications {
-    return [..._grouploanApplications];
-  }
-
   List<Contribution> get payContributions {
     return [..._payContributions];
   }
@@ -748,6 +745,10 @@ class Groups with ChangeNotifier {
 
   List<Invoices> get invoices {
     return [..._invoices];
+  }
+
+  List<LoanApplications> get loanApplications {
+    return [..._loanApplications];
   }
 
   List<IncomeCategories> get detailedIncomeCategories {
@@ -860,6 +861,10 @@ class Groups with ChangeNotifier {
 
   List<Deposit> get getDeposits {
     return [..._depositList];
+  }
+
+  List<LoanApplications> get getLoanApplications {
+    return [..._loanApplications];
   }
 
   List<Withdrawal> get getWithdrawals {
@@ -1169,7 +1174,7 @@ class Groups with ChangeNotifier {
                   .toString(),
           oldId: groupLoanApplicationsJSON['old_id'].toString(),
         );
-        _grouploanApplications.add(newloanApplications);
+        _loanApplications.add(newloanApplications);
       }
     }
     notifyListeners();
@@ -1184,9 +1189,12 @@ class Groups with ChangeNotifier {
       });
 
       final response = await PostToServer.post(postRequest, url);
-      _grouploanApplications = [];
+
+      _loanApplications = [];
 
       final groupLoanApplications = response['data'] as List<dynamic>;
+      print('here .......');
+      print(groupLoanApplications);
       addLoanApplications(groupLoanApplications: groupLoanApplications);
     } on CustomException catch (error) {
       throw CustomException(message: error.message, status: error.status);
@@ -1196,7 +1204,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchMemberLoanApplications({String memberId = ""}) async {
-    final url = EndpointUrl.GET_MEMBER_ACTION_GUARANTORSHIP_REQUESTS;
+    final url = EndpointUrl.GET_MEMBER_LOAN_APPLICATIONS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -1205,7 +1213,7 @@ class Groups with ChangeNotifier {
       });
 
       final response = await PostToServer.post(postRequest, url);
-      _grouploanApplications = [];
+      _loanApplications = [];
 
       final groupLoanApplications = response['data'] as List<dynamic>;
       addLoanApplications(groupLoanApplications: groupLoanApplications);

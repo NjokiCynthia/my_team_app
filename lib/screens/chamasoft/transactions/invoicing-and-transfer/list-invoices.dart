@@ -141,6 +141,7 @@ class _ListInvoicesState extends State<ListInvoices> {
                 )
               : Consumer<Groups>(builder: (context, groupData, child) {
                   return groupData.invoices.length > 0
+                  
                       ? ListView.separated(
                           padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
                           itemCount: groupData.invoices.length,

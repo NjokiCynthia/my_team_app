@@ -81,13 +81,13 @@ class ReviewLoanApplicationsState extends State<ReviewLoanApplications> {
                     borrowerName: loanApplication.borrowerName,
                     requestDate: dateFormat.format(loanApplication.requestDate),
                     onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              ReviewLoan(loanApplication: loanApplication),
-                          settings: RouteSettings(arguments: REVIEW_LOAN),
-                        ),
-                      );
+                      // Navigator.of(context).push(
+                      // MaterialPageRoute(
+                      //   builder: (BuildContext context) =>
+                      //       ReviewLoan(loanApplication: appl),
+                      //   settings: RouteSettings(arguments: REVIEW_LOAN),
+                      // ),
+                      // );
                     },
                   );
                 })
@@ -134,7 +134,6 @@ class LoanApplicationCard extends StatelessWidget {
                     text: "$loanName",
                     fontWeight: FontWeight.w700,
                     fontSize: 16.0,
-                   
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor,
@@ -148,7 +147,6 @@ class LoanApplicationCard extends StatelessWidget {
                       customTitle(
                         text: "Ksh ",
                         fontSize: 16.0,
-                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor,
@@ -157,7 +155,6 @@ class LoanApplicationCard extends StatelessWidget {
                         text: "$amount",
                         fontWeight: FontWeight.w700,
                         fontSize: 16.0,
-                       
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor,
@@ -175,7 +172,6 @@ class LoanApplicationCard extends StatelessWidget {
                 children: <Widget>[
                   subtitle2(
                       text: "Applied By",
-                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,
@@ -183,7 +179,6 @@ class LoanApplicationCard extends StatelessWidget {
                   SizedBox(height: 22),
                   subtitle2(
                       text: "Applied On",
-                     
                       color: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,
@@ -195,7 +190,6 @@ class LoanApplicationCard extends StatelessWidget {
                 children: <Widget>[
                   customTitle(
                     text: "$borrowerName",
-                   
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor,
@@ -204,7 +198,6 @@ class LoanApplicationCard extends StatelessWidget {
                   SizedBox(height: 22),
                   customTitle(
                     text: "$requestDate",
-                   
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor,
@@ -226,7 +219,6 @@ class LoanApplicationCard extends StatelessWidget {
                       size: 16.0,
                       spacing: 2.0,
                       color: Theme.of(context)
-                         
                           .textSelectionTheme
                           .selectionHandleColor
                           .withOpacity(.8),

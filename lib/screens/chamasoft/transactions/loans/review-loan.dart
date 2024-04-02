@@ -1,3 +1,4 @@
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-application.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-signatory.dart';
 import 'package:chamasoft/helpers/common.dart';
@@ -45,7 +46,7 @@ List<LoanSignatory> loanSignatories = [
 ];
 
 class ReviewLoan extends StatefulWidget {
-  final LoanApplication loanApplication;
+  final LoanApplications loanApplication;
 
   ReviewLoan({this.loanApplication});
 
@@ -166,8 +167,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     heading2(
-                                      text:
-                                          "${widget.loanApplication.loanName}",
+                                      text: "${widget.loanApplication.active}",
                                       color: Theme.of(context)
                                           .textSelectionTheme
                                           .selectionHandleColor,
@@ -177,7 +177,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                                         visible: flag == REVIEW_LOAN,
                                         child: customTitle(
                                           text:
-                                              "Applied By ${widget.loanApplication.borrowerName}",
+                                              "Applied By ${widget.loanApplication.createdBy}",
                                           fontSize: 12.0,
                                           color: primaryColor,
                                           textAlign: TextAlign.start,
@@ -197,7 +197,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                                   ),
                                   heading2(
                                     text:
-                                        "${numberFormat.format(widget.loanApplication.amount)}",
+                                        "${numberFormat.format(double.tryParse(widget.loanApplication.loanAmount))}",
                                     color: Theme.of(context)
                                         .textSelectionTheme
                                         .selectionHandleColor,
@@ -260,7 +260,8 @@ class ReviewLoanState extends State<ReviewLoan> {
                               customTitle(
                                 textAlign: TextAlign.start,
                                 text:
-                                    "${dateFormat.format(widget.loanApplication.requestDate)}",
+                                    //"${dateFormat.format(widget.loanApplication.requestDate)}",
+                                    '12 jAN 2023',
                                 color: Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,
