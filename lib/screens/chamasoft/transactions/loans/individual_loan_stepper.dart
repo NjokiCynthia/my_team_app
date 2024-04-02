@@ -1,8 +1,15 @@
 import 'dart:convert';
+import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/screens/chamasoft/reports/group/group-loan-applications.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:platform_file/platform_file.dart';
+import 'package:provider/provider.dart';
 
 class IndividualStepper extends StatefulWidget {
   const IndividualStepper({Key key, this.selectedLoanProduct})
@@ -18,14 +25,121 @@ class _IndividualStepperState extends State<IndividualStepper> {
   List<Map<String, dynamic>> customAdditionalFields = [];
   List<Map<String, dynamic>> additionalDocumentFields = [];
   List<Step> steps = [];
-  Map<String, dynamic> _data = {};
+  List<Map<String, dynamic>> _data = [];
 
   PlatformFile selectedProofOfPayment;
+
+  Auth _user;
+  Group _group;
+  String loanAmount;
+
+  void submitGroupLoanApplication(BuildContext context) async {
+    Map<String, dynamic> formData = {
+      "user_id": _user.id,
+      "group_id": _group.groupId,
+      "member_id": _group.memberId,
+      "loan_amount": loanAmount.toString(),
+      "name": "Tester",
+      "minAmount": "40",
+      "maxAmount": "1000067",
+      //'4000',
+      "repayment_period": 2,
+      "enabled": 0,
+      "interestType": "1",
+      "interestRate": "1",
+      "interestCharge": "3",
+      "repaymentPeriodType": "1",
+      "repaymentPeriod": "5",
+      "maxRepaymentPeriod": "",
+      "minRepaymentPeriod": "",
+      "enableFinesForLateInstallments": "1",
+      "lateLoanPaymentFineType": "1",
+      "oneOffPercentageOn": "",
+      "percentageFineRate": "",
+      "fineFrequency": "",
+      "outstandingBalOneOffAmount": "",
+      "outstandingBalFixedFineAmount": "",
+      "outstandingBalFineFrequency": "",
+      "outstandingBalPercentageFineRate": "",
+      "outstandingBalFineChargeFactor": "",
+      "fineChargeFactor": "",
+      "enableGuarantors": "0",
+      "enableLoanProfitFee": "",
+      "loanProfitFeeType": "",
+      "percentageLoanProfitFee": "",
+      "eventToEnableGuarantors": "1",
+      "minGuarantors": "3",
+      "loanProcessingFeeType": "",
+      "loanProcessingFeeAmount": "",
+      "loanProcessingFeePercentage": "",
+      "loanProcessingFeePercentageFactor": "",
+      "fixedLoanProfitFeeAmount": "",
+      "oneOffFineType": "",
+      "oneOffFixedAmount": "",
+      "enableFinesForOutstandingBalances": "",
+      "outstandingBalanceFineType": "",
+      "enableLoanProcessingFee": "0",
+      "disableAutomatedLoanProcessingIncome": "",
+      "requireOfficialsApproval": "1",
+      "requirePurposeOfLoan": "",
+      "loanProductNature": "1",
+      "loanProductMode": "1",
+      "gracePeriod": "1",
+      "groupId": "",
+      "times": '',
+      "guarantors": ["59070", "59072"],
+      "amounts": ["3000", "4310"],
+      "type": "2",
+      "comments": ["test", "test"],
+      "metadata": _data,
+      //  [
+      //   {
+      //     "what is the reason for applying  this_loan": "Car Purchase",
+      //     "slug": "what_is_the_reason_for_applying_this_loan",
+      //     "section": "Financial"
+      //   },
+      //   {
+      //     "How Much do you make": "20000",
+      //     "slug": "how_much_do_you_make",
+      //     "section": "value c"
+      //   }
+      // ]
+    };
+    print(_data);
+    print('form data is: $formData');
+    // Show the loader
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      showDialog<String>(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+    });
+
+    try {
+      String response = await Provider.of<Groups>(context, listen: false)
+          .submitAMTLoanApplication(formData);
+
+      StatusHandler().showSuccessSnackBar(context, "Good news: $response");
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => GroupLoanApplications()),
+      );
+    } on CustomException catch (error) {
+      StatusHandler().showDialogWithAction(
+          context: context, message: error.toString(), dismissible: true);
+    } finally {}
+  }
 
   @override
   void initState() {
     super.initState();
     // Extract custom additional fields and additional document fields from the selected loan product
+    _user = Provider.of<Auth>(context, listen: false);
+    _group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     if (widget.selectedLoanProduct != null) {
       customAdditionalFields = List<Map<String, dynamic>>.from(
           widget.selectedLoanProduct['customAdditionalInputFields']);
@@ -53,12 +167,26 @@ class _IndividualStepperState extends State<IndividualStepper> {
     // Create steps for each grouped section
     groupedFields.forEach((sectionName, fields) {
       List<Widget> stepContent = [];
+      stepContent.add(TextFormField(
+        decoration: InputDecoration(labelText: "Enter Loan Amount"),
+        onChanged: (value) {
+          setState(() {
+            loanAmount = value;
+          });
+        },
+      ));
       for (var field in fields) {
         stepContent.add(TextFormField(
           decoration: InputDecoration(labelText: field['question']),
           onChanged: (value) {
             setState(() {
-              _data[field['slug']] = value;
+              //_data[field['slug']] = value;
+              _data.clear();
+              _data.add({
+                field['question']: value,
+                "slug": field['slug'],
+                "section": field['section']
+              });
             });
           },
         ));
@@ -132,7 +260,8 @@ class _IndividualStepperState extends State<IndividualStepper> {
               if (currentStep < steps.length - 1) {
                 currentStep += 1; // Move to the next step
               } else {
-                // Handle last step or completion logic
+                submitGroupLoanApplication(context);
+                // saveData();
               }
             });
           },
@@ -146,5 +275,13 @@ class _IndividualStepperState extends State<IndividualStepper> {
         ),
       ),
     );
+  }
+
+  void saveData() {
+    // Implement your save data logic here
+    print('I WANT TO SEE TEH DATA:');
+    print(_data);
+    // Reset form data if needed
+    _data.clear();
   }
 }

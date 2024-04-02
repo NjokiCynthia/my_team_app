@@ -1,3 +1,4 @@
+import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-application.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-signatory.dart';
@@ -5,12 +6,14 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 //import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 List<String> approvalStatuses = ['UNKNOWN', 'WAITING RESPONSE', 'APPROVED'];
 
@@ -62,6 +65,39 @@ class ReviewLoanState extends State<ReviewLoan> {
   var dateFormat = new DateFormat("d MMMM y");
   String rejectReason = "";
   TextEditingController controller;
+
+  bool _isLoading = false;
+  Future<void> fetchApprovalRequests(BuildContext context) async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchApprovalRequests();
+      setState(() {});
+    } on CustomException catch (error) {
+      print(error.message);
+      final snackBar = SnackBar(
+        content: Text('Network Error occurred: could not fetch invoices'),
+        action: SnackBarAction(
+          label: 'Retry',
+          onPressed: () async {
+            fetchApprovalRequests(context);
+          },
+        ),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    fetchApprovalRequests(context);
+    super.initState();
+  }
 
   void _rejectActionPrompt() {
     showDialog(
@@ -261,7 +297,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                                 textAlign: TextAlign.start,
                                 text:
                                     //"${dateFormat.format(widget.loanApplication.requestDate)}",
-                                    '12 jAN 2023',
+                                    '3 April 2024',
                                 color: Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,
@@ -288,27 +324,46 @@ class ReviewLoanState extends State<ReviewLoan> {
                               height: 10,
                             ),
                             Expanded(
-                              child: ListView.separated(
-                                  scrollDirection: Axis.vertical,
-                                  shrinkWrap: true,
-                                  separatorBuilder:
-                                      (BuildContext context, int index) =>
-                                          const Divider(),
-                                  itemCount: loanSignatories.length,
-                                  itemBuilder: (context, int index) {
-                                    LoanSignatory loanSignatory =
-                                        loanSignatories[index];
-                                    return LoanSignatoryCard(
-                                      userName: loanSignatory.userName,
-                                      userRole: loanSignatory.userRole,
-                                      approvalStatus:
-                                          loanSignatory.approvalStatus,
-                                      isCurrentUser:
-                                          loanSignatory.isCurrentUser,
-                                      onPressed: () {},
-                                    );
-                                  }),
-                            ),
+                              child: _isLoading
+                                  ? Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : Consumer<Groups>(
+                                      builder: (context, groupData, child) {
+                                      return groupData
+                                                  .loanApprovalrequests.length >
+                                              0
+                                          ? ListView.separated(
+                                              scrollDirection: Axis.vertical,
+                                              shrinkWrap: true,
+                                              separatorBuilder:
+                                                  (BuildContext context,
+                                                          int index) =>
+                                                      const Divider(),
+                                              itemCount: loanSignatories.length,
+                                              itemBuilder:
+                                                  (context, int index) {
+                                                LoanApprovalRequests
+                                                    approvalRequests = groupData
+                                                            .loanApprovalrequests[
+                                                        index];
+
+                                                return LoanSignatoryCard(
+                                                  userName: approvalRequests
+                                                      .signatoryName,
+                                                  // userRole: approvalRequests.
+                                                  approvalStatus:
+                                                      approvalRequests.status ??
+                                                          0,
+                                                  // isCurrentUser:
+                                                  //     loanSignatory.isCurrentUser,
+                                                  onPressed: () {},
+                                                );
+                                              })
+                                          : betterEmptyList(
+                                              message: 'No loan approval');
+                                    }),
+                            )
                           ],
                         ),
                       ),
@@ -417,16 +472,10 @@ class LoanSignatoryCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               subtitle1(
-                text: isCurrentUser ? "$userName (You)" : "$userName",
+                text: 
+                isCurrentUser ? "$userName (You)" : "$userName",
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
-              ),
-              subtitle2(
-                text: "$userRole",
-                color: Theme.of(context)
-                    .textSelectionTheme
-                    .selectionHandleColor
-                    .withOpacity(0.5),
               ),
             ],
           ),

@@ -111,6 +111,11 @@ class EndpointUrl {
   // ignore: non_constant_identifier_names
   static final String GET_MEMBER_LOAN_APPLICATIONS = CustomHelper.baseUrl +
       "/mobile/loan_applications/get_group_loan_applications";
+  static final String GET_MEMBER_ACTION_APPROVAL_REQUESTS =
+      CustomHelper.baseUrl +
+          "/mobile/loan_applications/get_member_action_approval_requests";
+
+  ///mobile/loan_applications/get_member_action_approval_requests
 
   static final String GET_GROUP_LOAN_APPLICATIONS = CustomHelper.baseUrl +
       "/mobile/loan_applications/get_group_loan_applications";
@@ -738,6 +743,9 @@ class EndpointUrl {
   // ignore: non_constant_identifier_names
   static final String CREATE_CHAMASOFT_LOAN_APPLICATION = CustomHelper.baseUrl +
       "/mobile/chamasoft_loans/create_chamasoft_loan_application";
+  // ignore: non_constant_identifier_names
+  static final String CREATE_AMT_LOAN_APPLICATION = CustomHelper.baseUrl +
+      "/mobile/loan_applications/create_amt_loan_application";
   // ignore: non_constant_identifier_names
   static final String CREATE_GROUP_LOAN_APPLICATION = CustomHelper.baseUrl +
       "/mobile/chamasoft_loans/create_group_loan_application";

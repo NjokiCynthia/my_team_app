@@ -178,6 +178,63 @@ class Sacco {
   });
 }
 
+class LoanApprovalRequests {
+  String id;
+  String loanTypeId;
+  String loanApplicationId;
+  String loanRequestApplicantUserId;
+  String loanRequestMemberId;
+  String signatoryUserId;
+  String signatoryMemberId;
+  String groupId;
+  String loanAmount;
+  String active;
+  String isApproved;
+  String isDeclined;
+  String approveComment;
+  String declineComment;
+  String createdOn;
+  String createdBy;
+  String modifiedOn;
+  String modifiedBy;
+  String loanSignatoryProgressStatus;
+  String commiteeMemberId;
+  String committeeProgressStatus;
+  int status;
+  String oldId;
+  String firstName;
+  String lastName;
+  String signatoryName;
+
+  LoanApprovalRequests(
+      {this.id,
+      this.loanTypeId,
+      this.loanApplicationId,
+      this.loanRequestApplicantUserId,
+      this.loanRequestMemberId,
+      this.signatoryUserId,
+      this.signatoryMemberId,
+      this.groupId,
+      this.loanAmount,
+      this.active,
+      this.isApproved,
+      this.isDeclined,
+      this.approveComment,
+      this.declineComment,
+      this.createdOn,
+      this.createdBy,
+      this.modifiedOn,
+      this.modifiedBy,
+      this.loanSignatoryProgressStatus,
+      this.commiteeMemberId,
+      this.committeeProgressStatus,
+      this.status,
+      this.oldId,
+      this.firstName,
+      this.signatoryName,
+      this.lastName});
+}
+
 class SaccoBranch {
   final int id;
   final String name;
@@ -629,6 +686,8 @@ class Groups with ChangeNotifier {
   List<Contribution> _contributions = [];
   List<GuarantorshipRequests> _guarantorRequests = [];
   List<LoanApplications> _loanApplications = [];
+  List<LoanApprovalRequests> _loanApprovalRequests = [];
+
   List<Contribution> _payContributions = [];
   List<Expense> _expenses = [];
   List<FineType> _fineTypes = [];
@@ -749,6 +808,10 @@ class Groups with ChangeNotifier {
 
   List<LoanApplications> get loanApplications {
     return [..._loanApplications];
+  }
+
+  List<LoanApprovalRequests> get loanApprovalrequests {
+    return [..._loanApprovalRequests];
   }
 
   List<IncomeCategories> get detailedIncomeCategories {
@@ -1092,6 +1155,80 @@ class Groups with ChangeNotifier {
           }
         }
       }
+    }
+  }
+
+  Future<void> addApprovalRequests({List<dynamic> loanApprovalRequests}) async {
+    if (loanApprovalRequests.length > 0) {
+      for (var loanApprovalRequestsJSON in loanApprovalRequests) {
+        final newloanApprovals = LoanApprovalRequests(
+            signatoryName:
+                loanApprovalRequestsJSON['signatory_name'].toString(),
+            id: loanApprovalRequestsJSON['id'].toString(),
+            groupId: loanApprovalRequestsJSON['group_id'].toString(),
+            loanTypeId: loanApprovalRequestsJSON['loan_type_id'].toString(),
+            loanAmount: loanApprovalRequestsJSON['loan_amount'].toString(),
+            isApproved: loanApprovalRequestsJSON['is_approved'].toString(),
+            active: loanApprovalRequestsJSON['active'].toString(),
+            createdBy: loanApprovalRequestsJSON['created_by'].toString(),
+            createdOn: loanApprovalRequestsJSON['created_on'].toString(),
+            modifiedOn: loanApprovalRequestsJSON['modified_on'].toString(),
+            modifiedBy: loanApprovalRequestsJSON['modified_by'].toString(),
+            status: loanApprovalRequestsJSON['status'],
+            isDeclined: loanApprovalRequestsJSON['is_declined'].toString(),
+            oldId: loanApprovalRequestsJSON['old_id'].toString(),
+            approveComment:
+                loanApprovalRequestsJSON['approve_comment'].toString(),
+            commiteeMemberId:
+                loanApprovalRequestsJSON['commitee_member_id'].toString(),
+            committeeProgressStatus:
+                loanApprovalRequestsJSON['committee_progress_status']
+                    .toString(),
+            declineComment:
+                loanApprovalRequestsJSON['decline_comment'].toString(),
+            firstName: loanApprovalRequestsJSON['first_name'].toString(),
+            lastName: loanApprovalRequestsJSON['last_name'].toString(),
+            loanApplicationId:
+                loanApprovalRequestsJSON['loan_application_id'].toString(),
+            loanRequestApplicantUserId:
+                loanApprovalRequestsJSON['loan_request_applicant_user_id']
+                    .toString(),
+            loanRequestMemberId:
+                loanApprovalRequestsJSON['loan_request_member_id'].toString(),
+            loanSignatoryProgressStatus:
+                loanApprovalRequestsJSON['loan_signatory_progress_status']
+                    .toString(),
+            signatoryMemberId:
+                loanApprovalRequestsJSON['signatory_member_id'].toString(),
+            signatoryUserId:
+                loanApprovalRequestsJSON['signatory_user_id'].toString());
+
+        _loanApprovalRequests.add(newloanApprovals);
+      }
+    }
+    notifyListeners();
+  }
+
+  Future<void> fetchApprovalRequests() async {
+    final url = EndpointUrl.GET_MEMBER_ACTION_APPROVAL_REQUESTS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+
+      final response = await PostToServer.post(postRequest, url);
+
+      _loanApprovalRequests = [];
+
+      final loanApprovalRequests = response['data'] as List<dynamic>;
+      print('here .......');
+      print(loanApprovalRequests);
+      addApprovalRequests(loanApprovalRequests: loanApprovalRequests);
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
     }
   }
 
@@ -6053,6 +6190,24 @@ class Groups with ChangeNotifier {
 
   Future<String> submitLoanApplication(Map<String, dynamic> formData) async {
     final url = EndpointUrl.CREATE_CHAMASOFT_LOAN_APPLICATION;
+    try {
+      try {
+        formData['user_id'] = _userId;
+
+        final postRequest = json.encode(formData);
+
+        final response = await PostToServer.post(postRequest, url);
+
+        return response['message'];
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+  Future<String> submitAMTLoanApplication(Map<String, dynamic> formData) async {
+    final url = EndpointUrl.CREATE_AMT_LOAN_APPLICATION;
     try {
       try {
         formData['user_id'] = _userId;

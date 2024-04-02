@@ -14,6 +14,8 @@ class DatabaseHelper {
   static final contributionsTable = 'contributions';
   static final groupAccountsTable = 'groupAccounts';
 
+  static final approvalRequests = 'approvalRequests';
+
   // create databases for the following tables:
   static final fineCategories = 'fineCategories';
   static final invoices = 'invoices';
@@ -182,6 +184,17 @@ class DatabaseHelper {
                 loan_amount DOUBLE NOT NULL DEFAULT 0    
             )
             ''');
+      //Loan Approvals table
+      batch.execute('''
+            CREATE TABLE IF NOT EXISTS $approvalRequests (
+              _id INTEGER PRIMARY KEY AUTOINCREMENT,
+              group_id INTEGER NOT NULL,
+              id INTEGER NOT NULL,
+              created_by TEXT NOT NULL DEFAULT '',
+                loan_amount DOUBLE NOT NULL DEFAULT 0    
+            )
+            ''');
+
       // Member loans options table
       batch.execute('''
             CREATE TABLE IF NOT EXISTS $memberLoanOptions (
