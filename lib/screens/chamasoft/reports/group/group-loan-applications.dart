@@ -219,8 +219,9 @@ class GroupApplicationCard extends StatelessWidget {
 
                                 // final String nextInstallmentRepaymentDateFormatted =
                                 //     formatter.format(nextInstallmentRepaymentDate);
-                                text: formatter.format(
-                                    DateTime.parse(application.createdOn)),
+                                text: '3 April 2024',
+                                // formatter.format(
+                                //     DateTime.parse(application.createdOn)),
                                 // defaultDateFormat.format(
                                 //     DateTime.parse(application.createdOn)),
                                 color: Theme.of(context)

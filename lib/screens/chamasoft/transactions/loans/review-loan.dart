@@ -472,8 +472,8 @@ class LoanSignatoryCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               subtitle1(
-                text: 
-                isCurrentUser ? "$userName (You)" : "$userName",
+                text: 'Cynthia Njoki (You)',
+                //isCurrentUser ? "$userName (You)" : "$userName",
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
               ),

@@ -29,7 +29,7 @@ class _ApplyLoanFromAmtState extends State<ApplyLoanFromAmt> {
         'Authorization':
             'Bearer $accessToken', // Include the access token in the headers
       };
-      final body = {"referral_code": "CWA1153", "is_collective": 0};
+      final body = {"referral_code": "VTW1633", "is_collective": 0};
 
       try {
         final response = await http.post(Uri.parse(url),
@@ -141,28 +141,28 @@ class AmtLoanProduct extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Minimum amount:'),
-                  Text(
-                    'KES ${currencyFormat.format(double.tryParse(loanProduct['minAmount'] ?? ''))}',
-                    // 'KES ${loanProduct['minAmount'] ?? ''}',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Text('Minimum amount:'),
+              //     Text(
+              //       'KES ${currencyFormat.format(double.tryParse(loanProduct['minAmount'] ?? ''))}',
+              //       // 'KES ${loanProduct['minAmount'] ?? ''}',
+              //       style: TextStyle(color: Colors.black),
+              //     ),
+              //   ],
+              // ),
               SizedBox(
                 height: 10,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Minimum amount:'),
-                  Text(
-                    'KES ${currencyFormat.format(double.tryParse(loanProduct['maxAmount'] ?? ''))}',
-                    style: TextStyle(color: Colors.black),
-                  ),
+                  // Text('Minimum amount:'),
+                  // Text(
+                  //   'KES ${currencyFormat.format(double.tryParse(loanProduct['maxAmount'] ?? ""))}',
+                  //   style: TextStyle(color: Colors.black),
+                  // ),
                 ],
               ),
             ],

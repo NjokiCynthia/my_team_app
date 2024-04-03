@@ -1,270 +1,194 @@
 import 'dart:convert';
 
 import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/screens/chamasoft/reports/group/group-loan-applications.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:platform_file/platform_file.dart';
+import 'package:provider/provider.dart';
 
 class StepperPage extends StatefulWidget {
-  final String selectedOption;
+  const StepperPage({Key key, this.selectedLoanProduct}) : super(key: key);
 
-  const StepperPage({Key key, @required this.selectedOption}) : super(key: key);
+  final Map<String, dynamic> selectedLoanProduct;
 
   @override
   _StepperPageState createState() => _StepperPageState();
 }
 
 class _StepperPageState extends State<StepperPage> {
-  List<Map<String, String>> titles = [];
-  List<List<TextEditingController>> controllersList = [];
-  int currentStep = 0;
+  List<Map<String, dynamic>> customAdditionalFields = [];
+  List<Map<String, dynamic>> additionalDocumentFields = [];
+  List<Step> steps = [];
+  List<Map<String, dynamic>> _data = [];
 
-  Map<String, List<Map<String, dynamic>>> sectionQuestionsMap = {};
-  Map<String, dynamic> _data = {}; // Data storage for form fields
-  bool hasDocumentFields = false;
+  PlatformFile selectedProofOfPayment;
+
+  Auth _user;
+  Group _group;
+  String loanAmount;
+
+  void submitGroupLoanApplication(BuildContext context) async {
+    Map<String, dynamic> formData = {
+      "user_id": _user.id,
+      "group_id": _group.groupId,
+      "member_id": _group.memberId,
+      "loan_amount": loanAmount.toString(),
+      "name": "Tester",
+      "minAmount": "40",
+      "maxAmount": "1000067",
+      "loan_product_id": "2441",
+      //'4000',
+      "repayment_period": 2,
+      "enabled": 0,
+      "interestType": "1",
+      "interestRate": "1",
+      "interestCharge": "3",
+      "repaymentPeriodType": "1",
+      "repaymentPeriod": "5",
+      "maxRepaymentPeriod": "",
+      "minRepaymentPeriod": "",
+      "enableFinesForLateInstallments": "1",
+      "lateLoanPaymentFineType": "1",
+      "oneOffPercentageOn": "",
+      "percentageFineRate": "",
+      "fineFrequency": "",
+      "outstandingBalOneOffAmount": "",
+      "outstandingBalFixedFineAmount": "",
+      "outstandingBalFineFrequency": "",
+      "outstandingBalPercentageFineRate": "",
+      "outstandingBalFineChargeFactor": "",
+      "fineChargeFactor": "",
+      "enableGuarantors": "0",
+      "enableLoanProfitFee": "",
+      "loanProfitFeeType": "",
+      "percentageLoanProfitFee": "",
+      "eventToEnableGuarantors": "1",
+      "minGuarantors": "3",
+      "loanProcessingFeeType": "",
+      "loanProcessingFeeAmount": "",
+      "loanProcessingFeePercentage": "",
+      "loanProcessingFeePercentageFactor": "",
+      "fixedLoanProfitFeeAmount": "",
+      "oneOffFineType": "",
+      "oneOffFixedAmount": "",
+      "enableFinesForOutstandingBalances": "",
+      "outstandingBalanceFineType": "",
+      "enableLoanProcessingFee": "0",
+      "disableAutomatedLoanProcessingIncome": "",
+      "requireOfficialsApproval": "1",
+      "requirePurposeOfLoan": "",
+      "loanProductNature": "1",
+      "loanProductMode": "1",
+      "gracePeriod": "1",
+      "groupId": "",
+      "times": '',
+      "guarantors": ["59070", "59072"],
+      "amounts": ["3000", "4310"],
+      "type": "2",
+      "comments": ["test", "test"],
+      "metadata": _data,
+      //  [
+      //   {
+      //     "what is the reason for applying  this_loan": "Car Purchase",
+      //     "slug": "what_is_the_reason_for_applying_this_loan",
+      //     "section": "Financial"
+      //   },
+      //   {
+      //     "How Much do you make": "20000",
+      //     "slug": "how_much_do_you_make",
+      //     "section": "value c"
+      //   }
+      // ]
+    };
+    print(_data);
+    print('form data is here: $formData');
+    // Show the loader
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      showDialog<String>(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+    });
+
+    try {
+      String response = await Provider.of<Groups>(context, listen: false)
+          .submitAMTLoanApplication(formData);
+
+      StatusHandler().showSuccessSnackBar(context, "Good news: $response");
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => GroupLoanApplications()),
+      );
+    } on CustomException catch (error) {
+      StatusHandler().showDialogWithAction(
+          context: context, message: error.toString(), dismissible: true);
+    } finally {}
+  }
 
   @override
   void initState() {
     super.initState();
-    dynamic jsonData = {
-      "result_code": 1,
-      "entities": [
-        {
-          "id": 1,
-          "enabled": 0,
-          "name": "Tester",
-          "type": "1",
-          "minAmount": "4000",
-          "maxAmount": "10000",
-          "times": null,
-          "interestType": "1",
-          "interestRate": "1",
-          "interestCharge": "3",
-          "repaymentPeriodType": "1",
-          "repaymentPeriod": "5",
-          "maxRepaymentPeriod": "",
-          "minRepaymentPeriod": "",
-          "enableFinesForLateInstallments": "1",
-          "lateLoanPaymentFineType": "1",
-          "oneOffPercentageOn": "",
-          "percentageFineRate": "",
-          "fineFrequency": "",
-          "outstandingBalOneOffAmount": "",
-          "outstandingBalFixedFineAmount": "",
-          "outstandingBalFineFrequency": "",
-          "outstandingBalPercentageFineRate": "",
-          "outstandingBalFineChargeFactor": "",
-          "fineChargeFactor": "",
-          "enableGuarantors": "1",
-          "enableLoanProfitFee": "",
-          "loanProfitFeeType": "",
-          "percentageLoanProfitFee": "",
-          "eventToEnableGuarantors": "1",
-          "minGuarantors": "3",
-          "loanProcessingFeeType": "",
-          "loanProcessingFeeAmount": "",
-          "loanProcessingFeePercentage": "",
-          "loanProcessingFeePercentageFactor": "",
-          "fixedLoanProfitFeeAmount": "",
-          "oneOffFineType": "",
-          "oneOffFixedAmount": "",
-          "enableFinesForOutstandingBalances": "",
-          "outstandingBalanceFineType": "",
-          "enableLoanProcessingFee": "0",
-          "disableAutomatedLoanProcessingIncome": "",
-          "requireOfficialsApproval": "1",
-          "requirePurposeOfLoan": "",
-          "loanProductNature": "1",
-          "loanProductMode": "1",
-          "gracePeriod": "1",
-          "groupId": "",
-          "is_migrated": false,
-          "chama_loan_type_id": "",
-          "institutionId": "653765c21bc18d64a8846b8f",
-          "referralCode": "CWA1153",
-          "customAdditionalInputFields": [
-            {
-              "id": 1,
-              "question": "What is the reason for applying this loan",
-              "slug": "what_is_the_reason_for_applying_this_loan",
-              "type": "Text",
-              "options": null,
-              "section": "Financial"
-            },
-            {
-              "id": 2,
-              "question": "How Much do you get in full",
-              "slug": "how_much_do_you_get_in_full",
-              "type": "Number",
-              "options": null,
-              "section": "Financial"
-            },
-            {
-              "id": 3,
-              "question": "How Much do you make ",
-              "slug": "how_much_do_you_make",
-              "type": "Number",
-              "options": null,
-              "section": "COORPORATE"
-            },
-            {
-              "id": 4,
-              "question": "How Much do yOU EARN HERE ",
-              "slug": "how_much_do_you_EARN_HERE",
-              "type": "Number",
-              "options": null,
-              "section": "COORPORATE"
-            }
-          ],
-          "additionalDocumentFields": [
-            {
-              "title": "Colored Passport Picture (Both side)",
-              "slug": "passport_picture",
-              "type": "1"
-            },
-            {"title": "Bank Statement", "slug": "bank_statement", "type": "1"},
-            {
-              "title": "Constitution / Memo-Arts",
-              "slug": "constitution",
-              "type": "1"
-            },
-            {"title": "ID Card", "slug": "id_card", "type": "1"},
-            {
-              "title": "Current Bank Statement",
-              "slug": "current_bank_statement",
-              "type": "1"
-            }
-          ],
-          "active": 0,
-          "_id": "65f8871abdfff13f0da60a8d",
-          "modifiedBy": "65030cb0811ec23f2e32ee49",
-          "createdAt": "2024-03-18T18:25:30.658Z",
-          "updatedAt": "2024-03-18T18:25:30.658Z"
-        }
-      ],
-      "totalCount": 1,
-      "message": "Success"
-    };
-    parseJsonData(jsonData);
-    fetchFields(widget.selectedOption).then((data) {
-      setState(() {
-        titles = data['titles'];
-        controllersList = List.generate(
-          titles.length,
-          (index) => List.generate(
-            sectionQuestionsMap[titles[index]['value']].length,
-            (index) => TextEditingController(),
-          ),
-        );
-        hasDocumentFields = checkDocumentFields(jsonData);
-      });
-    });
+    // Extract custom additional fields and additional document fields from the selected loan product
+    _user = Provider.of<Auth>(context, listen: false);
+    _group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    if (widget.selectedLoanProduct != null) {
+      customAdditionalFields = List<Map<String, dynamic>>.from(
+          widget.selectedLoanProduct['customAdditionalInputFields']);
+      additionalDocumentFields = List<Map<String, dynamic>>.from(
+          widget.selectedLoanProduct['additionalDocumentFields']);
+    }
+
+    _buildSteps();
   }
 
-  void parseJsonData(dynamic jsonData) {
-    List<dynamic> entities = jsonData['entities'];
-    for (var entity in entities) {
-      List<Map<String, dynamic>> questions =
-          entity['customAdditionalInputFields'];
-      for (var question in questions) {
-        String section = question['section'];
-        if (!sectionQuestionsMap.containsKey(section)) {
-          sectionQuestionsMap[section] = [];
-        }
-        sectionQuestionsMap[section].add(question);
+  void _buildSteps() {
+    steps = [];
+
+    Map<String, List<Map<String, dynamic>>> groupedFields = {};
+
+    // Group fields by their section names
+    for (var field in customAdditionalFields) {
+      String sectionName = field['section'];
+      if (!groupedFields.containsKey(sectionName)) {
+        groupedFields[sectionName] = [];
       }
+      groupedFields[sectionName].add(field);
     }
-  }
 
-  Future<Map<String, List<Map<String, String>>>> fetchFields(
-      String selectedOption) async {
-    // Simulate API call or fetch data based on selectedOption
-    // Return a list of titles
-    List<Map<String, String>> titles = [];
-    for (var section in sectionQuestionsMap.keys) {
-      titles.add({"value": section});
-    }
-    return {"titles": titles};
-  }
-
-  bool checkDocumentFields(dynamic jsonData) {
-    List<dynamic> entities = jsonData['entities'];
-    for (var entity in entities) {
-      if (entity.containsKey('additionalDocumentFields')) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  double _appBarElevation = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: secondaryPageAppbar(
-        context: context,
-        action: () => Navigator.pop(context),
-        elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.arrow_left,
-        title: "AMT Individual groups loan application",
-      ),
-      backgroundColor: Colors.transparent,
-      body: SingleChildScrollView(
-        child: Container(
-          color: (themeChangeProvider.darkTheme)
-              ? Colors.blueGrey[800]
-              : Colors.white,
-          height: MediaQuery.of(context).size.height * 0.9,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Stepper(
-                physics: ClampingScrollPhysics(),
-                steps: _buildSteps(),
-                currentStep: currentStep,
-                onStepContinue: () {
-                  setState(() {
-                    if (currentStep < titles.length) {
-                      currentStep += 1;
-                    } else {
-                      saveData();
-                    }
-                  });
-                },
-                onStepCancel: () {
-                  setState(() {
-                    if (currentStep > 0) {
-                      currentStep -= 1;
-                    }
-                  });
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  List<Step> _buildSteps() {
-    List<Step> steps = [];
-
-    for (int index = 0; index < titles.length; index++) {
-      String section = titles[index]["value"];
-      List<Map<String, dynamic>> questions = sectionQuestionsMap[section] ?? [];
-
+    // Create steps for each grouped section
+    groupedFields.forEach((sectionName, fields) {
       List<Widget> stepContent = [];
-
-      for (var question in questions) {
+      stepContent.add(TextFormField(
+        decoration: InputDecoration(labelText: "Enter Loan Amount"),
+        onChanged: (value) {
+          setState(() {
+            loanAmount = value;
+          });
+        },
+      ));
+      for (var field in fields) {
         stepContent.add(TextFormField(
-          controller: controllersList[index][stepContent.length],
-          decoration: InputDecoration(
-            labelText: question['question'],
-          ),
+          decoration: InputDecoration(labelText: field['question']),
           onChanged: (value) {
             setState(() {
-              _data[question['slug']] = value; // Store form data
+              //_data[field['slug']] = value;
+              _data.clear();
+              _data.add({
+                field['question']: value,
+                "slug": field['slug'],
+                "section": field['section']
+              });
             });
           },
         ));
@@ -272,40 +196,85 @@ class _StepperPageState extends State<StepperPage> {
 
       steps.add(
         Step(
-          title: Text(section),
+          title: Text(sectionName),
           content: Column(
             children: stepContent,
           ),
-          isActive: currentStep == index,
+          isActive: true, // Set active for all steps initially
         ),
       );
+    });
+    void _handleFileUpload(String fieldSlug) {
+      print('Uploading file for field: $fieldSlug');
     }
 
-    // Add a step for uploading documents only if additionalDocumentFields exist
-    if (hasDocumentFields) {
+    if (additionalDocumentFields.isNotEmpty) {
+      List<Widget> uploadFields = [];
+      for (var docField in additionalDocumentFields) {
+        uploadFields.add(ElevatedButton(
+          onPressed: () {
+            _handleFileUpload(docField['slug']);
+          },
+          child: Text('Upload ${docField['title']}'),
+        ));
+      }
       steps.add(
         Step(
           title: Text('Upload Documents'),
           content: Column(
-            children: [
-              Text(
-                  'Upload your documents here'), // Add upload widgets here as needed
-            ],
+            children: uploadFields,
           ),
-          isActive: currentStep == titles.length,
+          isActive: true, // Set active for all steps initially
         ),
       );
     }
+  }
 
-    return steps;
+  int currentStep = 0;
+  double _appBarElevation = 0;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: secondaryPageAppbar(
+        context: context,
+        action: () => Navigator.pop(context),
+        // Navigator.of(context)
+        //     .popUntil((Route<dynamic> route) => route.isFirst),
+        elevation: _appBarElevation,
+        leadingIcon: LineAwesomeIcons.arrow_left,
+        title: "Apply Loan",
+      ),
+      body: SingleChildScrollView(
+        child: Stepper(
+          steps: steps,
+          currentStep: currentStep,
+          onStepContinue: () {
+            setState(() {
+              if (currentStep < steps.length - 1) {
+                currentStep += 1; // Move to the next step
+              } else {
+                submitGroupLoanApplication(context);
+                // saveData();
+              }
+            });
+          },
+          onStepCancel: () {
+            setState(() {
+              if (currentStep > 0) {
+                currentStep -= 1; // Move to the previous step
+              }
+            });
+          },
+        ),
+      ),
+    );
   }
 
   void saveData() {
     // Implement your save data logic here
-    print('Saving data:');
+    print('I WANT TO SEE TEH DATA:');
     print(_data);
     // Reset form data if needed
     _data.clear();
-    // Navigate to next screen or perform other actions
   }
 }

@@ -23,6 +23,7 @@ import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/send-to-mobile.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/create-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/record-loan-payment.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review_withdrawal_request.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-purpose.dart';
@@ -316,8 +317,11 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                         ? Colors.blue[400]
                         : Theme.of(context).primaryColor,
                     isHighlighted: false,
-                    action: () {},
-                    //  () => Navigator.of(context).push(MaterialPageRoute(
+                    action: () 
+                     => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => ReviewLoan(),
+                        settings: RouteSettings(arguments: 0))),
+                    //  => Navigator.of(context).push(MaterialPageRoute(
                     //     builder: (BuildContext context) => BankLoanRepayment(),
                     //     settings: RouteSettings(arguments: 0))),
                     margin: 0,

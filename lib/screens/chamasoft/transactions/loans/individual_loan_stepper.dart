@@ -38,10 +38,12 @@ class _IndividualStepperState extends State<IndividualStepper> {
       "user_id": _user.id,
       "group_id": _group.groupId,
       "member_id": _group.memberId,
+      "loan_product_id": "2441",
       "loan_amount": loanAmount.toString(),
       "name": "Tester",
       "minAmount": "40",
       "maxAmount": "1000067",
+      "times": '',
       //'4000',
       "repayment_period": 2,
       "enabled": 0,
@@ -86,7 +88,7 @@ class _IndividualStepperState extends State<IndividualStepper> {
       "loanProductMode": "1",
       "gracePeriod": "1",
       "groupId": "",
-      "times": '',
+      
       "guarantors": ["59070", "59072"],
       "amounts": ["3000", "4310"],
       "type": "2",
@@ -203,17 +205,9 @@ class _IndividualStepperState extends State<IndividualStepper> {
       );
     });
     void _handleFileUpload(String fieldSlug) {
-      // Implement file upload logic for the given fieldSlug
-      // This function will be called when a file upload button is pressed
 
-      // For demonstration purposes, we will print a message
       print('Uploading file for field: $fieldSlug');
-
-      // You can add your file upload logic here, such as opening a file picker dialog, uploading the file to a server, etc.
     }
-
-    // Create step for additional document fields if they exist
-    // Create step for additional document fields if they exist
     if (additionalDocumentFields.isNotEmpty) {
       List<Widget> uploadFields = [];
       for (var docField in additionalDocumentFields) {

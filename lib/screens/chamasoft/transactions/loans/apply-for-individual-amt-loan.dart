@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/providers/access_token.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/amt-individual-stepper.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class ApplyIndividualAmtLoan extends StatefulWidget {
   Map<String, dynamic> formLoadData;
@@ -21,138 +26,170 @@ class _ApplyIndividualAmtLoanState extends State<ApplyIndividualAmtLoan> {
 
   //  List<MembersFilterEntry> selectedMembersList = [];
 
-  int currentStep = 0;
-  bool complete = false;
+  Future<void> fetchLoanProducts() async {
+    final accessTokenProvider =
+        Provider.of<AccessTokenProvider>(context, listen: false);
+    final accessToken = accessTokenProvider.accessToken;
 
-  void _scrollListener() {
-    double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
-    if (_appBarElevation != newElevation) {
-      setState(() {
-        _appBarElevation = newElevation;
-      });
+    if (accessToken != null) {
+      final url =
+          'https://ngo-api.sandbox.co.ke:8631/api/loans/get-mobile-loan-applications';
+      final headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+      final body = {"referral_code": "VTW1633", "is_collective": 1};
+
+      try {
+        final response = await http.post(Uri.parse(url),
+            headers: headers, body: json.encode(body));
+
+        if (response.statusCode == 200) {
+          final Map<String, dynamic> responseData = json.decode(response.body);
+          print('These are my loan products');
+          print(responseData);
+          setState(() {
+            // Assuming responseData is a list of loan products
+            loanProducts =
+                responseData['entities'].cast<Map<String, dynamic>>();
+          });
+        } else {
+          throw Exception(
+              'Failed to fetch loan applications. Status code: ${response.statusCode}');
+        }
+      } catch (error) {
+        throw Exception('Error fetching loan applications: $error');
+      }
+    } else {
+      throw Exception('Access token is null');
     }
   }
 
   @override
   void initState() {
-    _scrollController = ScrollController();
-    _scrollController.addListener(_scrollListener);
+    fetchLoanProducts();
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _scrollController.removeListener(_scrollListener);
-    _scrollController.dispose();
-    super.dispose();
-  }
-
+  List<Map<String, dynamic>> loanProducts = [];
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
+      height: MediaQuery.of(context).size.height * 0.8,
       child: Column(
-        children: <Widget>[
+        children: [
           toolTip(
             context: context,
             title: "Note that...",
             message:
                 "Apply quick loan from Amt guaranteed by your savings and fellow group members.",
           ),
-          SingleChildScrollView(
-            child: Container(
-                height: MediaQuery.of(context).size.height * 0.749,
-                child:
-                    // _loanProducts.length > 0
-                    // ?
-                    ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  primary: true,
-                  itemCount: 3, // Replace with actual itemCount
-                  itemBuilder: (context, index) {
-                    return AmtLoanProduct(
-                      index: index,
-                      onProductSelected: (selectedIndex) {
-                        // Handle the selected index and pick the corresponding value here
-                        String selectedValue = (selectedIndex)
-                            .toString(); // Convert index to value
-                        print(
-                            'Selected value is here : $selectedValue'); // Replace with your logic
-                      },
-                    );
-                  },
-                )
-
-                // : emptyList(
-                //     color: Colors.blue[400],
-                //     iconData: LineAwesomeIcons.angle_double_down,
-                //     text: "There are no loan products to display"),
+          loanProducts.isEmpty
+              ? CircularProgressIndicator() // Or your custom loading widget
+              : Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: loanProducts.length,
+                    itemBuilder: (context, index) {
+                      final loanProduct = loanProducts[index];
+                      return AmtLoanProduct(
+                        loanProduct: loanProduct,
+                        onProductSelected: (selectedOption) {
+                          // Handle selected option
+                          print('Selected option: $selectedOption');
+                        },
+                      );
+                    },
+                  ),
                 ),
-          ),
         ],
       ),
     );
   }
 }
 
-// class AmtLoanProduct extends StatelessWidget {
-//   const AmtLoanProduct({Key key, this.loanProduct, this.formLoadData})
-//       : super(key: key);
-
-//   final LoanProduct loanProduct;
-//   final Map<String, dynamic> formLoadData;
 class AmtLoanProduct extends StatelessWidget {
-  final Function(String) onProductSelected; // Callback function
-  final int index; // Index of the item
+  final Map<String, dynamic> loanProduct;
+  //final Function(String) onProductSelected;
+  final Function(Map<String, dynamic>) onProductSelected;
+
   const AmtLoanProduct({
     Key key,
-    this.index,
+    this.loanProduct,
     this.onProductSelected,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(8.0),
+    return Padding(
+      padding: EdgeInsets.all(20),
       child: Card(
-        elevation: 0.0,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-        borderOnForeground: false,
-        child: Container(
-          decoration: cardDecoration(
-            gradient: plainCardGradient(context),
-            context: context,
+        child: ListTile(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Loan Product name:',
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12),
+              ),
+              Text(
+                loanProduct['name'] ?? '',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16),
+              ),
+            ],
           ),
-          child: ListTile(
-            title: subtitle1(
-              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
-              text: 'Water', // Placeholder text, modify as needed
-              textAlign: TextAlign.start,
-            ),
-            subtitle: subtitle2(
-              color: Theme.of(context).textSelectionTheme.selectionHandleColor,
-              text: 'Water Loan type', // Placeholder text, modify as needed
-              textAlign: TextAlign.start,
-            ),
-            trailing: Icon(Icons.arrow_forward_ios),
-            onTap: () {
-              // Call the callback function and pass the selected option
-              if (onProductSelected != null) {
-                String selectedOption = (index + 1).toString();
-                onProductSelected(selectedOption);
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        StepperPage(selectedOption: selectedOption),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Minimum amount:'),
+                  Text(
+                    'KES ${currencyFormat.format(double.tryParse(loanProduct['minAmount'] ?? ''))}',
+                    // 'KES ${loanProduct['minAmount'] ?? ''}',
+                    style: TextStyle(color: Colors.black),
                   ),
-                );
-              }
-            },
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Minimum amount:'),
+                  Text(
+                    'KES ${currencyFormat.format(double.tryParse(loanProduct['maxAmount'] ?? ''))}',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+            ],
           ),
+          trailing: Icon(Icons.arrow_forward_ios),
+          onTap: () {
+            if (onProductSelected != null) {
+              onProductSelected(loanProduct);
+
+              // Navigate to StepperPage with loan product data
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      StepperPage(selectedLoanProduct: loanProduct),
+                ),
+              );
+            }
+          },
         ),
       ),
     );
