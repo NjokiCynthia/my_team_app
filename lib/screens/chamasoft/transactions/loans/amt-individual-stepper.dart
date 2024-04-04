@@ -13,16 +13,17 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:platform_file/platform_file.dart';
 import 'package:provider/provider.dart';
 
-class StepperPage extends StatefulWidget {
-  const StepperPage({Key key, this.selectedLoanProduct}) : super(key: key);
+class IndividualLoanStepper extends StatefulWidget {
+  const IndividualLoanStepper({Key key, this.selectedLoanProduct})
+      : super(key: key);
 
   final Map<String, dynamic> selectedLoanProduct;
 
   @override
-  _StepperPageState createState() => _StepperPageState();
+  _IndividualLoanStepperState createState() => _IndividualLoanStepperState();
 }
 
-class _StepperPageState extends State<StepperPage> {
+class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
   List<Map<String, dynamic>> customAdditionalFields = [];
   List<Map<String, dynamic>> additionalDocumentFields = [];
   List<Step> steps = [];
@@ -200,7 +201,7 @@ class _StepperPageState extends State<StepperPage> {
           content: Column(
             children: stepContent,
           ),
-          isActive: true, // Set active for all steps initially
+          isActive: true,
         ),
       );
     });

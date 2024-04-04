@@ -11,17 +11,16 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:platform_file/platform_file.dart';
 import 'package:provider/provider.dart';
 
-class IndividualStepper extends StatefulWidget {
-  const IndividualStepper({Key key, this.selectedLoanProduct})
-      : super(key: key);
+class AmtStepper extends StatefulWidget {
+  const AmtStepper({Key key, this.selectedLoanProduct}) : super(key: key);
 
   final Map<String, dynamic> selectedLoanProduct;
 
   @override
-  _IndividualStepperState createState() => _IndividualStepperState();
+  _AmtStepperState createState() => _AmtStepperState();
 }
 
-class _IndividualStepperState extends State<IndividualStepper> {
+class _AmtStepperState extends State<AmtStepper> {
   List<Map<String, dynamic>> customAdditionalFields = [];
   List<Map<String, dynamic>> additionalDocumentFields = [];
   List<Step> steps = [];
@@ -88,7 +87,7 @@ class _IndividualStepperState extends State<IndividualStepper> {
       "loanProductMode": "1",
       "gracePeriod": "1",
       "groupId": "",
-      
+
       "guarantors": ["59070", "59072"],
       "amounts": ["3000", "4310"],
       "type": "2",
@@ -167,16 +166,23 @@ class _IndividualStepperState extends State<IndividualStepper> {
     }
 
     // Create steps for each grouped section
+    int stepIndex = 0;
     groupedFields.forEach((sectionName, fields) {
+      // Add loan amount field only for the first step
       List<Widget> stepContent = [];
-      stepContent.add(TextFormField(
-        decoration: InputDecoration(labelText: "Enter Loan Amount"),
-        onChanged: (value) {
-          setState(() {
-            loanAmount = value;
-          });
-        },
-      ));
+
+      // Add loan amount field only for the first step
+      if (stepIndex == 0) {
+        stepContent.add(TextFormField(
+          decoration:
+              InputDecoration(labelText: "Enter amount you are applying for"),
+          onChanged: (value) {
+            setState(() {
+              loanAmount = value;
+            });
+          },
+        ));
+      }
       for (var field in fields) {
         stepContent.add(TextFormField(
           decoration: InputDecoration(labelText: field['question']),
@@ -205,9 +211,9 @@ class _IndividualStepperState extends State<IndividualStepper> {
       );
     });
     void _handleFileUpload(String fieldSlug) {
-
       print('Uploading file for field: $fieldSlug');
     }
+
     if (additionalDocumentFields.isNotEmpty) {
       List<Widget> uploadFields = [];
       for (var docField in additionalDocumentFields) {

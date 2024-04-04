@@ -97,6 +97,8 @@ Group parseSingleGroup(dynamic groupJSON) {
             ? true
             : false,
     isGroupAdmin: groupJSON['is_admin'].toString() == "1" ? true : false,
+    isCollective: groupJSON['is_collective'].toString() == '1' ? true : false,
+    referralCode: groupJSON['referral_code'].toString(),
     groupCurrency: groupJSON['group_currency'].toString(),
     groupCurrencyId: groupJSON['country_id'].toString(),
     groupPhone: groupJSON['phone'].toString(),

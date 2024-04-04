@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/providers/access_token.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/amt-individual-stepper.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -25,11 +27,12 @@ class _ApplyIndividualAmtLoanState extends State<ApplyIndividualAmtLoan> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   //  List<MembersFilterEntry> selectedMembersList = [];
-
+  Group group;
   Future<void> fetchLoanProducts() async {
     final accessTokenProvider =
         Provider.of<AccessTokenProvider>(context, listen: false);
     final accessToken = accessTokenProvider.accessToken;
+    group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
 
     if (accessToken != null) {
       final url =
@@ -38,7 +41,12 @@ class _ApplyIndividualAmtLoanState extends State<ApplyIndividualAmtLoan> {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken',
       };
-      final body = {"referral_code": "VTW1633", "is_collective": 1};
+      final body = {
+        "referral_code": group.referralCode,
+        "is_collective": 1
+        //group.isCollective
+      };
+      // final body = {"referral_code": "VTW1633", "is_collective": 1};
 
       try {
         final response = await http.post(Uri.parse(url),
@@ -49,7 +57,6 @@ class _ApplyIndividualAmtLoanState extends State<ApplyIndividualAmtLoan> {
           print('These are my loan products');
           print(responseData);
           setState(() {
-            // Assuming responseData is a list of loan products
             loanProducts =
                 responseData['entities'].cast<Map<String, dynamic>>();
           });
@@ -185,7 +192,7 @@ class AmtLoanProduct extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) =>
-                      StepperPage(selectedLoanProduct: loanProduct),
+                      IndividualLoanStepper(selectedLoanProduct: loanProduct),
                 ),
               );
             }

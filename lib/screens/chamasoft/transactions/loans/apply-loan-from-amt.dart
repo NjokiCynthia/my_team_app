@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/providers/access_token.dart';
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/individual_loan_stepper.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -16,21 +18,29 @@ class ApplyLoanFromAmt extends StatefulWidget {
 }
 
 class _ApplyLoanFromAmtState extends State<ApplyLoanFromAmt> {
+  Group group;
+
   Future<void> fetchLoanProducts() async {
     final accessTokenProvider =
         Provider.of<AccessTokenProvider>(context, listen: false);
     final accessToken = accessTokenProvider.accessToken;
+    group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
 
     if (accessToken != null) {
       final url =
           'https://ngo-api.sandbox.co.ke:8631/api/loans/get-mobile-loan-applications';
       final headers = {
         'Content-Type': 'application/json',
-        'Authorization':
-            'Bearer $accessToken', // Include the access token in the headers
+        'Authorization': 'Bearer $accessToken',
       };
-      final body = {"referral_code": "VTW1633", "is_collective": 0};
-
+      final body = {
+        "referral_code": group.referralCode,
+        "is_collective": group.isCollective
+      };
+      print('I want to see the referral code');
+      print(group.referralCode);
+      print('I want to see whether the group is collective');
+      print(group.isCollective);
       try {
         final response = await http.post(Uri.parse(url),
             headers: headers, body: json.encode(body));
@@ -40,7 +50,6 @@ class _ApplyLoanFromAmtState extends State<ApplyLoanFromAmt> {
           print('These are my loan products');
           print(responseData);
           setState(() {
-            // Assuming responseData is a list of loan products
             loanProducts =
                 responseData['entities'].cast<Map<String, dynamic>>();
           });
@@ -176,7 +185,7 @@ class AmtLoanProduct extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) =>
-                      IndividualStepper(selectedLoanProduct: loanProduct),
+                      AmtStepper(selectedLoanProduct: loanProduct),
                 ),
               );
             }

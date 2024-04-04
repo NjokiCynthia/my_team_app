@@ -1627,21 +1627,10 @@ class Groups with ChangeNotifier {
             type: groupInvoicesJSON['type'].toString(),
           );
 
-          // var fineTypeMap = {
-          //   "id": int.parse(groupFineTypesJSON['id'].toString()),
-          //   "group_id": int.parse(_currentGroupId),
-          //   "amount": double.parse(groupFineTypesJSON['amount'].toString()),
-          //   "balance": double.parse(groupFineTypesJSON['balance'].toString()),
-          //   "name": groupFineTypesJSON['name'].toString(),
-          //   "modified_on": DateTime.now().millisecondsSinceEpoch,
-          // };
           _invoices.add(newInvoice);
-          // _fineTypesList.add(fineTypeMap);
         }
         await dbHelper.deleteMultiple(
             [int.parse(_currentGroupId)], DatabaseHelper.fineCategories);
-        // await dbHelper.batchInsert(
-        //     _fineTypesList, DatabaseHelper.fineCategories);
       }
     }
     notifyListeners();
@@ -6206,6 +6195,7 @@ class Groups with ChangeNotifier {
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
+
   Future<String> submitAMTLoanApplication(Map<String, dynamic> formData) async {
     final url = EndpointUrl.CREATE_AMT_LOAN_APPLICATION;
     try {

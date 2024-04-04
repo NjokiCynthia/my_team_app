@@ -8,6 +8,7 @@ import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
+import 'package:chamasoft/screens/chamasoft/reports/group/group-loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/group-loan-amortizatioin.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan.dart';
@@ -144,11 +145,12 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                     text: ('PROCEED'),
                     color: primaryColor,
                     action: () {
-                      // ignore: todo
-                      // TODO: SEND TO SERVER FUNCTION
-                      Navigator.of(context).pop();
-
                       submitGroupLoanApplication(context, groupObject);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GroupLoanApplications()),
+                      );
                     }),
               ],
             ));
@@ -203,8 +205,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (_) => ApplyLoan(
                         isInit: false,
-                      )
-                      )),
+                      ))),
           dismissible: true);
     } finally {}
   }
