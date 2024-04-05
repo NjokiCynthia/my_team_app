@@ -252,7 +252,7 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
           onStepContinue: () {
             setState(() {
               if (currentStep < steps.length - 1) {
-                currentStep += 1; // Move to the next step
+                currentStep += 1; 
               } else {
                 submitGroupLoanApplication(context);
                 // saveData();
@@ -262,7 +262,7 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
           onStepCancel: () {
             setState(() {
               if (currentStep > 0) {
-                currentStep -= 1; // Move to the previous step
+                currentStep -= 1; 
               }
             });
           },

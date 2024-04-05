@@ -14,6 +14,7 @@ import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/guarantor.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
+import 'package:chamasoft/screens/chamasoft/models/loan_requests.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/transaction-statement-model.dart';
@@ -176,63 +177,6 @@ class Sacco {
     @required this.name,
     this.logo,
   });
-}
-
-class LoanApprovalRequests {
-  String id;
-  String loanTypeId;
-  String loanApplicationId;
-  String loanRequestApplicantUserId;
-  String loanRequestMemberId;
-  String signatoryUserId;
-  String signatoryMemberId;
-  String groupId;
-  String loanAmount;
-  String active;
-  String isApproved;
-  String isDeclined;
-  String approveComment;
-  String declineComment;
-  String createdOn;
-  String createdBy;
-  String modifiedOn;
-  String modifiedBy;
-  String loanSignatoryProgressStatus;
-  String commiteeMemberId;
-  String committeeProgressStatus;
-  int status;
-  String oldId;
-  String firstName;
-  String lastName;
-  String signatoryName;
-
-  LoanApprovalRequests(
-      {this.id,
-      this.loanTypeId,
-      this.loanApplicationId,
-      this.loanRequestApplicantUserId,
-      this.loanRequestMemberId,
-      this.signatoryUserId,
-      this.signatoryMemberId,
-      this.groupId,
-      this.loanAmount,
-      this.active,
-      this.isApproved,
-      this.isDeclined,
-      this.approveComment,
-      this.declineComment,
-      this.createdOn,
-      this.createdBy,
-      this.modifiedOn,
-      this.modifiedBy,
-      this.loanSignatoryProgressStatus,
-      this.commiteeMemberId,
-      this.committeeProgressStatus,
-      this.status,
-      this.oldId,
-      this.firstName,
-      this.signatoryName,
-      this.lastName});
 }
 
 class SaccoBranch {
@@ -1186,8 +1130,8 @@ class Groups with ChangeNotifier {
                     .toString(),
             declineComment:
                 loanApprovalRequestsJSON['decline_comment'].toString(),
-            firstName: loanApprovalRequestsJSON['first_name'].toString(),
-            lastName: loanApprovalRequestsJSON['last_name'].toString(),
+            loanRequestMemberName:
+                loanApprovalRequestsJSON['loan_request_member_name'].toString(),
             loanApplicationId:
                 loanApprovalRequestsJSON['loan_application_id'].toString(),
             loanRequestApplicantUserId:

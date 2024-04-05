@@ -4,7 +4,7 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/providers/access_token.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/loans/individual_loan_stepper.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/amt_group_loan_stepper.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

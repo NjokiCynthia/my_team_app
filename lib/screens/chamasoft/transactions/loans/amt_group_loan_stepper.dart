@@ -138,7 +138,6 @@ class _AmtStepperState extends State<AmtStepper> {
   @override
   void initState() {
     super.initState();
-    // Extract custom additional fields and additional document fields from the selected loan product
     _user = Provider.of<Auth>(context, listen: false);
     _group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     if (widget.selectedLoanProduct != null) {
@@ -154,6 +153,28 @@ class _AmtStepperState extends State<AmtStepper> {
   void _buildSteps() {
     steps = [];
 
+    List<Widget> firstStepContent = [];
+    firstStepContent.add(TextFormField(
+      decoration:
+          InputDecoration(labelText: "Enter the amount you are applying for"),
+      onChanged: (value) {
+        setState(() {
+          loanAmount = value;
+        });
+      },
+    ));
+
+    // Insert the loan amount field in the first step
+    steps.add(
+      Step(
+        title: Text('Enter Loan Amount'),
+        content: Column(
+          children: firstStepContent,
+        ),
+        isActive: true,
+      ),
+    );
+
     Map<String, List<Map<String, dynamic>>> groupedFields = {};
 
     // Group fields by their section names
@@ -166,23 +187,9 @@ class _AmtStepperState extends State<AmtStepper> {
     }
 
     // Create steps for each grouped section
-    int stepIndex = 0;
     groupedFields.forEach((sectionName, fields) {
-      // Add loan amount field only for the first step
       List<Widget> stepContent = [];
 
-      // Add loan amount field only for the first step
-      if (stepIndex == 0) {
-        stepContent.add(TextFormField(
-          decoration:
-              InputDecoration(labelText: "Enter amount you are applying for"),
-          onChanged: (value) {
-            setState(() {
-              loanAmount = value;
-            });
-          },
-        ));
-      }
       for (var field in fields) {
         stepContent.add(TextFormField(
           decoration: InputDecoration(labelText: field['question']),
@@ -206,10 +213,12 @@ class _AmtStepperState extends State<AmtStepper> {
           content: Column(
             children: stepContent,
           ),
-          isActive: true, // Set active for all steps initially
+          isActive: true,
         ),
       );
     });
+
+    // Handle additional document fields if any
     void _handleFileUpload(String fieldSlug) {
       print('Uploading file for field: $fieldSlug');
     }
@@ -219,8 +228,7 @@ class _AmtStepperState extends State<AmtStepper> {
       for (var docField in additionalDocumentFields) {
         uploadFields.add(ElevatedButton(
           onPressed: () {
-            _handleFileUpload(
-                docField['slug']); // Pass the field slug for identification
+            _handleFileUpload(docField['slug']);
           },
           child: Text('Upload ${docField['title']}'),
         ));
