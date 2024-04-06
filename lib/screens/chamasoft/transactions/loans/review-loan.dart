@@ -16,39 +16,6 @@ import 'package:intl/intl.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
-List<String> approvalStatuses = ['UNKNOWN', 'WAITING RESPONSE', 'APPROVED'];
-
-List<LoanSignatory> loanSignatories = [
-  LoanSignatory(
-    userId: 1,
-    approvalStatus: 1,
-    isCurrentUser: true,
-    userName: 'John Doe',
-    userRole: 'Chairman',
-  ),
-  LoanSignatory(
-    userId: 4,
-    approvalStatus: 2,
-    isCurrentUser: false,
-    userName: 'Peter Kimutai',
-    userRole: 'Vice Chairman',
-  ),
-  LoanSignatory(
-    userId: 2,
-    approvalStatus: 2,
-    isCurrentUser: false,
-    userName: 'Jane Doe',
-    userRole: 'Secretary',
-  ),
-  LoanSignatory(
-    userId: 3,
-    approvalStatus: 2,
-    isCurrentUser: false,
-    userName: 'Martin Nzuki',
-    userRole: 'Treasurer',
-  ),
-];
-
 class ReviewLoan extends StatefulWidget {
   final LoanApplications loanApplication;
 
@@ -73,7 +40,8 @@ class ReviewLoanState extends State<ReviewLoan> {
       _isLoading = true;
     });
     try {
-      await Provider.of<Groups>(context, listen: false).fetchApprovalRequests();
+      await Provider.of<Groups>(context, listen: false)
+          .fetchApprovalRequests(id: widget.loanApplication.id);
       setState(() {});
     } on CustomException catch (error) {
       print(error.message);
@@ -341,24 +309,67 @@ class ReviewLoanState extends State<ReviewLoan> {
                                                   (BuildContext context,
                                                           int index) =>
                                                       const Divider(),
-                                              itemCount: loanSignatories.length,
+                                              itemCount: groupData
+                                                  .loanApprovalrequests.length,
                                               itemBuilder:
                                                   (context, int index) {
                                                 LoanApprovalRequests
                                                     approvalRequests = groupData
                                                             .loanApprovalrequests[
                                                         index];
-
-                                                return LoanSignatoryCard(
-                                                  userName: approvalRequests
-                                                      .signatoryName,
-                                                  // userRole: approvalRequests.
-                                                  approvalStatus:
-                                                      approvalRequests.status ??
-                                                          0,
-                                                  // isCurrentUser:
-                                                  //     loanSignatory.isCurrentUser,
-                                                  onPressed: () {},
+//approvalRequests
+                                                // .signatoryName,
+                                                return Container(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: <Widget>[
+                                                      Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: <Widget>[
+                                                          subtitle1(
+                                                            text: approvalRequests
+                                                                .signatoryName,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .textSelectionTheme
+                                                                .selectionHandleColor,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      statusChip(
+                                                        text: approvalRequests
+                                                                    .isApproved ==
+                                                                null
+                                                            ? 'Pending'
+                                                            : approvalRequests
+                                                                        .isApproved ==
+                                                                    "1"
+                                                                ? 'Approved'
+                                                                : 'Declined',
+                                                        textColor: Colors.black,
+                                                        backgroundColor:
+                                                            approvalRequests
+                                                                        .isApproved ==
+                                                                    "1"
+                                                                ? Colors.blue
+                                                                : Theme.of(
+                                                                        context)
+                                                                    .hintColor
+                                                                    .withOpacity(
+                                                                        0.1),
+                                                      )
+                                                    ],
+                                                  ),
                                                 );
                                               })
                                           : betterEmptyList(
@@ -442,55 +453,6 @@ class ReviewLoanState extends State<ReviewLoan> {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class LoanSignatoryCard extends StatelessWidget {
-  final String userName;
-  final String userRole;
-  final int approvalStatus;
-  final bool isCurrentUser;
-  final Function onPressed;
-
-  const LoanSignatoryCard({
-    this.userName,
-    this.userRole,
-    this.approvalStatus,
-    this.isCurrentUser,
-    this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              subtitle1(
-                text: 'Cynthia Njoki (You)',
-                //isCurrentUser ? "$userName (You)" : "$userName",
-                color:
-                    Theme.of(context).textSelectionTheme.selectionHandleColor,
-              ),
-            ],
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          statusChip(
-              text:
-                  "${approvalStatus <= (approvalStatuses.length - 1) ? approvalStatuses[this.approvalStatus] : ''}",
-              textColor: approvalStatus == 2
-                  ? primaryColor
-                  : Theme.of(context).textSelectionTheme.selectionHandleColor,
-              backgroundColor: Theme.of(context).hintColor.withOpacity(0.1)),
-        ],
       ),
     );
   }

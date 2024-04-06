@@ -486,55 +486,58 @@ class LoanApplications {
   String isLoanCreated;
   String applicationReason;
   String loanTypeUsesNewWorkflow;
+  String applicationName;
 
-  LoanApplications(
-      {this.id,
-      this.memberId,
-      this.groupId,
-      this.loanTypeId,
-      this.loanAmount,
-      this.repaymentPeriod,
-      this.isApproved,
-      this.description,
-      this.active,
-      this.createdBy,
-      this.createdOn,
-      this.modifiedOn,
-      this.modifiedBy,
-      this.status,
-      this.agreeToRules,
-      this.isDeleted,
-      this.accountId,
-      this.reviewReport,
-      this.declineMessage,
-      this.isDeclined,
-      this.isLoanDisbursed,
-      this.disburseStatus,
-      this.memberSupervisorId,
-      this.affirmation,
-      this.saccoManagerMemberId,
-      this.saccoManagerStatus,
-      this.saccomManagerMemberId,
-      this.saccomManagerStatus,
-      this.userId,
-      this.declineReason,
-      this.declinedBy,
-      this.disbursementCharges,
-      this.disbursementReceiptNumber,
-      this.isDisbursementDeclined,
-      this.declinedOn,
-      this.disbursementFailedErrorMessage,
-      this.referenceNumber,
-      this.disbursementResultStatus,
-      this.disbursementStatus,
-      this.isDisbursed,
-      this.disbursedOn,
-      this.disbursementResultDescription,
-      this.accountSelectedBy,
-      this.oldId,
-      this.isLoanCreated,
-      this.applicationReason,
-      this.loanTypeUsesNewWorkflow});
+  LoanApplications({
+    this.id,
+    this.memberId,
+    this.groupId,
+    this.loanTypeId,
+    this.loanAmount,
+    this.repaymentPeriod,
+    this.isApproved,
+    this.description,
+    this.active,
+    this.createdBy,
+    this.createdOn,
+    this.modifiedOn,
+    this.modifiedBy,
+    this.status,
+    this.agreeToRules,
+    this.isDeleted,
+    this.accountId,
+    this.reviewReport,
+    this.declineMessage,
+    this.isDeclined,
+    this.isLoanDisbursed,
+    this.disburseStatus,
+    this.memberSupervisorId,
+    this.affirmation,
+    this.saccoManagerMemberId,
+    this.saccoManagerStatus,
+    this.saccomManagerMemberId,
+    this.saccomManagerStatus,
+    this.userId,
+    this.declineReason,
+    this.declinedBy,
+    this.disbursementCharges,
+    this.disbursementReceiptNumber,
+    this.isDisbursementDeclined,
+    this.declinedOn,
+    this.disbursementFailedErrorMessage,
+    this.referenceNumber,
+    this.disbursementResultStatus,
+    this.disbursementStatus,
+    this.isDisbursed,
+    this.disbursedOn,
+    this.disbursementResultDescription,
+    this.accountSelectedBy,
+    this.oldId,
+    this.isLoanCreated,
+    this.applicationReason,
+    this.loanTypeUsesNewWorkflow,
+    this.applicationName,
+  });
 }
 
 class UnreconciledDeposit {
@@ -1153,12 +1156,13 @@ class Groups with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchApprovalRequests() async {
+  Future<void> fetchApprovalRequests({String id}) async {
     final url = EndpointUrl.GET_MEMBER_ACTION_APPROVAL_REQUESTS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
         "group_id": _currentGroupId,
+        "loan_application_id": id,
       });
 
       final response = await PostToServer.post(postRequest, url);
@@ -1254,6 +1258,9 @@ class Groups with ChangeNotifier {
               groupLoanApplicationsJSON['loan_type_uses_new_workflow']
                   .toString(),
           oldId: groupLoanApplicationsJSON['old_id'].toString(),
+          applicationName:
+              groupLoanApplicationsJSON['ngo_portal_loan_application_name']
+                  .toString(),
         );
         _loanApplications.add(newloanApplications);
       }

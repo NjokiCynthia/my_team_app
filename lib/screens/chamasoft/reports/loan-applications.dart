@@ -162,7 +162,7 @@ class MyLoansCard extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: Text(
-                          application.id,
+                          application.applicationName,
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16.0,
@@ -201,9 +201,7 @@ class MyLoansCard extends StatelessWidget {
                                     .selectionHandleColor,
                                 textAlign: TextAlign.start),
                             subtitle1(
-                                text: '3/04/2024',
-                                // defaultDateFormat
-                                //     .format(Datetime.parse(application.createdOn)),
+                                text: application.createdOn,
                                 color: Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,
@@ -252,7 +250,7 @@ class MyLoansCard extends StatelessWidget {
   Widget getStatus() {
     if (application.status == 0) {
       return statusChip(
-          text: "PENDING SIGNATORY APPROVAL",
+          text: "PENDING",
           textColor: Colors.blueGrey,
           backgroundColor: Colors.blueGrey.withOpacity(.2));
     } else if (application.status == 1) {
@@ -277,7 +275,7 @@ class MyLoansCard extends StatelessWidget {
           backgroundColor: Colors.red.withOpacity(.2));
     } else {
       return statusChip(
-          text: "PENDING SIGNATORY APPROVAL",
+          text: "PENDING",
           textColor: Colors.blueGrey,
           backgroundColor: Colors.blueGrey.withOpacity(.2));
     }
