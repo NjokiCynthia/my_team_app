@@ -174,7 +174,7 @@ class GroupApplicationCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             customTitle(
-                              text: application.repaymentPeriod ?? '',
+                              text: application.applicationName ?? '',
                               fontWeight: FontWeight.w700,
                               color: Theme.of(context)
                                   .textSelectionTheme
@@ -182,7 +182,8 @@ class GroupApplicationCard extends StatelessWidget {
                               textAlign: TextAlign.start,
                             ),
                             subtitle2(
-                                text: "Applied By ${application.createdBy}",
+                                text:
+                                    "Applied By ${application.applicationName}",
                                 color: Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,

@@ -1,4 +1,5 @@
 import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-application.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-signatory.dart';
@@ -68,6 +69,63 @@ class ReviewLoanState extends State<ReviewLoan> {
     super.initState();
   }
 
+  Map<String, String> _formData = {};
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  Future<void> submit() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    _formData["id"] = widget.loanApplication.id.toString();
+    _formData["action"] = "1";
+
+    try {
+      await Provider.of<Groups>(context, listen: false)
+          .respondToLoanRequest(_formData);
+    } on CustomException catch (error) {
+      setState(() {
+        _isLoading = false;
+      });
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            submit();
+          },
+          scaffoldState: _scaffoldKey.currentState);
+    }
+  }
+
+  void approvalDialog(String currency) {
+    String message =
+        "Are you sure you want to approve ${widget.loanApplication.applicationName} loan of $currency ${currencyFormat.format(double.tryParse(widget.loanApplication.loanAmount))}";
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              content: customTitleWithWrap(
+                  text: message, textAlign: TextAlign.start, maxLines: null),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              actions: <Widget>[
+                negativeActionDialogButton(
+                    text: "Cancel",
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor,
+                    action: () => Navigator.of(context).pop()),
+                positiveActionDialogButton(
+                    text: "Yes",
+                    color: primaryColor,
+                    action: () {
+                      _formData["approve"] = "1";
+                      Navigator.of(context).pop();
+                      submit();
+                    })
+              ],
+            ));
+  }
+
   void _rejectActionPrompt() {
     showDialog(
       context: context,
@@ -122,6 +180,8 @@ class ReviewLoanState extends State<ReviewLoan> {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     int flag = ModalRoute.of(context).settings.arguments;
     String appbarTitle = "Review Loan";
     if (flag == VIEW_APPLICATION_STATUS) {
@@ -347,27 +407,27 @@ class ReviewLoanState extends State<ReviewLoan> {
                                                         width: 10,
                                                       ),
                                                       statusChip(
-                                                        text: approvalRequests
-                                                                    .isApproved ==
-                                                                null
-                                                            ? 'Pending'
-                                                            : approvalRequests
-                                                                        .isApproved ==
-                                                                    "1"
-                                                                ? 'Approved'
-                                                                : 'Declined',
-                                                        textColor: Colors.black,
-                                                        backgroundColor:
-                                                            approvalRequests
-                                                                        .isApproved ==
-                                                                    "1"
-                                                                ? Colors.blue
-                                                                : Theme.of(
-                                                                        context)
-                                                                    .hintColor
-                                                                    .withOpacity(
-                                                                        0.1),
-                                                      )
+                                                          text: approvalRequests
+                                                                      .isDeclined ==
+                                                                  "1"
+                                                              ? 'Declined'
+                                                              : approvalRequests
+                                                                          .isApproved ==
+                                                                      "1"
+                                                                  ? 'Approved'
+                                                                  : 'Pending',
+                                                          textColor:
+                                                              Colors.black,
+                                                          backgroundColor:
+                                                              approvalRequests
+                                                                          .isApproved ==
+                                                                      "1"
+                                                                  ? Colors.blue
+                                                                  : Theme.of(
+                                                                          context)
+                                                                      .hintColor
+                                                                      .withOpacity(
+                                                                          0.1))
                                                     ],
                                                   ),
                                                 );
@@ -393,7 +453,9 @@ class ReviewLoanState extends State<ReviewLoan> {
                       style: TextButton.styleFrom(
                         backgroundColor: Colors.blueAccent.withOpacity(.2),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        approvalDialog(groupObject.groupCurrency);
+                      },
                       child: Padding(
                         padding: EdgeInsets.all(12.0),
                         child: Text(

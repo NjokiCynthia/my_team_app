@@ -5190,6 +5190,27 @@ class Groups with ChangeNotifier {
   //     throw CustomException(message: ERROR_MESSAGE);
   //   }
   // }
+  Future<void> respondToLoanRequest(Map<String, String> formData) async {
+    final url = EndpointUrl.RESPOND_TO_LOAN_REQUEST;
+    print('This is where i am sending my approval request');
+
+    try {
+      formData["user_id"] = _userId;
+      formData["group_id"] = _currentGroupId;
+      final postRequest = json.encode(formData);
+      try {
+        await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
 
   Future<void> respondToWithdrawalRequest(Map<String, String> formData) async {
     final url = EndpointUrl.RESPOND_TO_WITHDRAWAL_REQUEST;

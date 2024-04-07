@@ -39,7 +39,7 @@ class _AmtStepperState extends State<AmtStepper> {
       "member_id": _group.memberId,
       "loan_product_id": "2441",
       "loan_amount": loanAmount.toString(),
-      "name": "Tester",
+      "name": widget.selectedLoanProduct['name'],
       "minAmount": "40",
       "maxAmount": "1000067",
       "times": '',

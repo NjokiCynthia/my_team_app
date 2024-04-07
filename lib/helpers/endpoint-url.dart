@@ -305,6 +305,9 @@ class EndpointUrl {
   static final String RESPOND_TO_WITHDRAWAL_REQUEST = CustomHelper.baseUrl +
       "/mobile/withdrawals/respond_to_withdrawal_request";
 
+  static final String RESPOND_TO_LOAN_REQUEST = CustomHelper.baseUrl +
+      "/mobile/loan_applications/approve_loan_application";
+
   static final String BANK_ACCOUNTS_CONNECT =
       CustomHelper.baseUrl + "/mobile/bank_accounts/connect";
 
