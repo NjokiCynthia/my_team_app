@@ -110,7 +110,7 @@ class EndpointUrl {
       CustomHelper.baseUrl + "/mobile/loans/get_members_loans_options";
 
   static final String GET_MEMBER_LOAN_APPLICATIONS = CustomHelper.baseUrl +
-      "/mobile/loan_applications/get_group_loan_applications";
+      "/mobile/loan_applications/get_member_loan_applications";
   static final String GET_MEMBER_ACTION_APPROVAL_REQUESTS =
       CustomHelper.baseUrl +
           "/mobile/loan_applications/get_loan_application_approval_requests";

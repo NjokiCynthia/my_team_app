@@ -10,9 +10,7 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-//import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -77,12 +75,36 @@ class ReviewLoanState extends State<ReviewLoan> {
       _isLoading = true;
     });
 
-    _formData["id"] = widget.loanApplication.id.toString();
-    _formData["action"] = "1";
+    _formData["loan_application_id"] = widget.loanApplication.id.toString();
 
     try {
       await Provider.of<Groups>(context, listen: false)
           .respondToLoanRequest(_formData);
+    } on CustomException catch (error) {
+      setState(() {
+        _isLoading = false;
+      });
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            submit();
+          },
+          scaffoldState: _scaffoldKey.currentState);
+    }
+  }
+
+  Future<void> reject() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    _formData["loan_application_id"] = widget.loanApplication.id.toString();
+    _formData["action"] = "0";
+
+    try {
+      await Provider.of<Groups>(context, listen: false)
+          .cancelLoanRequest(_formData);
     } on CustomException catch (error) {
       setState(() {
         _isLoading = false;
@@ -118,9 +140,10 @@ class ReviewLoanState extends State<ReviewLoan> {
                     text: "Yes",
                     color: primaryColor,
                     action: () {
-                      _formData["approve"] = "1";
-                      Navigator.of(context).pop();
+                      _formData["action"] = "1";
+                      // Navigator.of(context).pop();
                       submit();
+                      fetchApprovalRequests(context);
                     })
               ],
             ));
@@ -168,8 +191,9 @@ class ReviewLoanState extends State<ReviewLoan> {
                 "Save",
                 style: new TextStyle(color: primaryColor),
               ),
-              onPressed: () {
-                Navigator.of(context).pop();
+              onPressed: () async {
+                await reject();
+                fetchApprovalRequests(context);
               },
             ),
           ],
@@ -187,6 +211,7 @@ class ReviewLoanState extends State<ReviewLoan> {
     if (flag == VIEW_APPLICATION_STATUS) {
       appbarTitle = "Loan Application Status";
     }
+
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
@@ -231,18 +256,18 @@ class ReviewLoanState extends State<ReviewLoan> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    heading2(
-                                      text: "${widget.loanApplication.active}",
-                                      color: Theme.of(context)
-                                          .textSelectionTheme
-                                          .selectionHandleColor,
-                                      textAlign: TextAlign.start,
-                                    ),
+                                    // heading2(
+                                    //   text: "${widget.loanApplication.active}",
+                                    //   color: Theme.of(context)
+                                    //       .textSelectionTheme
+                                    //       .selectionHandleColor,
+                                    //   textAlign: TextAlign.start,
+                                    // ),
                                     Visibility(
                                         visible: flag == REVIEW_LOAN,
                                         child: customTitle(
                                           text:
-                                              "Applied By ${widget.loanApplication.createdBy}",
+                                              "Applied By ${widget.loanApplication.applicantName}",
                                           fontSize: 12.0,
                                           color: primaryColor,
                                           textAlign: TextAlign.start,
@@ -275,25 +300,25 @@ class ReviewLoanState extends State<ReviewLoan> {
                           SizedBox(
                             height: 8.0,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              subtitle1(
-                                text: "Interest Rate: ",
-                                color: Theme.of(context)
-                                    .textSelectionTheme
-                                    .selectionHandleColor,
-                              ),
-                              customTitle(
-                                textAlign: TextAlign.start,
-                                text: "12%",
-                                color: Theme.of(context)
-                                    .textSelectionTheme
-                                    .selectionHandleColor,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.start,
+                          //   children: <Widget>[
+                          //     subtitle1(
+                          //       text: "Interest Rate: ",
+                          //       color: Theme.of(context)
+                          //           .textSelectionTheme
+                          //           .selectionHandleColor,
+                          //     ),
+                          //     customTitle(
+                          //       textAlign: TextAlign.start,
+                          //       text: "12%",
+                          //       color: Theme.of(context)
+                          //           .textSelectionTheme
+                          //           .selectionHandleColor,
+                          //       fontWeight: FontWeight.w600,
+                          //     ),
+                          //   ],
+                          // ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
@@ -305,7 +330,8 @@ class ReviewLoanState extends State<ReviewLoan> {
                               ),
                               customTitle(
                                 textAlign: TextAlign.start,
-                                text: "1 Month",
+                                text:
+                                    '${widget.loanApplication.repaymentPeriod} months',
                                 color: Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,
@@ -324,9 +350,9 @@ class ReviewLoanState extends State<ReviewLoan> {
                               ),
                               customTitle(
                                 textAlign: TextAlign.start,
-                                text:
-                                    //"${dateFormat.format(widget.loanApplication.requestDate)}",
-                                    '3 April 2024',
+                                text: widget.loanApplication.createdOn,
+                                // "${dateFormat.format(widget.loanApplication.create)}",
+                                //'3 April 2024',
                                 color: Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,
@@ -416,18 +442,21 @@ class ReviewLoanState extends State<ReviewLoan> {
                                                                       "1"
                                                                   ? 'Approved'
                                                                   : 'Pending',
-                                                          textColor:
-                                                              Colors.black,
-                                                          backgroundColor:
-                                                              approvalRequests
-                                                                          .isApproved ==
+                                                          textColor: approvalRequests
+                                                                      .isApproved ==
+                                                                  '1'
+                                                              ? Colors.blue
+                                                              : approvalRequests
+                                                                          .isDeclined ==
                                                                       "1"
-                                                                  ? Colors.blue
-                                                                  : Theme.of(
-                                                                          context)
-                                                                      .hintColor
-                                                                      .withOpacity(
-                                                                          0.1))
+                                                                  ? Colors.red
+                                                                  : Colors
+                                                                      .black,
+                                                          backgroundColor:
+                                                              Theme.of(context)
+                                                                  .hintColor
+                                                                  .withOpacity(
+                                                                      0.1))
                                                     ],
                                                   ),
                                                 );

@@ -161,19 +161,20 @@ class GroupApplicationCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             customTitle(
-                              text: application.repaymentPeriod ?? '',
+                              text: "${application.applicationName}",
                               fontWeight: FontWeight.w700,
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
                               textAlign: TextAlign.start,
                             ),
-                            subtitle2(
-                                text: "Applied By ${application.createdBy}",
-                                color: Theme.of(context)
-                                    .textSelectionTheme
-                                    .selectionHandleColor,
-                                textAlign: TextAlign.start),
+                            // subtitle2(
+                            //     text:
+                            //         "Applied By ${application.applicationName}",
+                            //     color: Theme.of(context)
+                            //         .textSelectionTheme
+                            //         .selectionHandleColor,
+                            //     textAlign: TextAlign.start),
                           ],
                         ),
                       ),
@@ -203,7 +204,7 @@ class GroupApplicationCard extends StatelessWidget {
                                     .selectionHandleColor,
                                 textAlign: TextAlign.start),
                             subtitle1(
-                                text: '3 April 2024',
+                                text: application.createdOn,
                                 color: Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,

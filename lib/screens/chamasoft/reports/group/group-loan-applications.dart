@@ -182,8 +182,7 @@ class GroupApplicationCard extends StatelessWidget {
                               textAlign: TextAlign.start,
                             ),
                             subtitle2(
-                                text:
-                                    "Applied By ${application.applicationName}",
+                                text: "Applied By ${application.applicantName}",
                                 color: Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,
@@ -217,14 +216,7 @@ class GroupApplicationCard extends StatelessWidget {
                                     .selectionHandleColor,
                                 textAlign: TextAlign.start),
                             subtitle1(
-
-                                // final String nextInstallmentRepaymentDateFormatted =
-                                //     formatter.format(nextInstallmentRepaymentDate);
-                                text: '3 April 2024',
-                                // formatter.format(
-                                //     DateTime.parse(application.createdOn)),
-                                // defaultDateFormat.format(
-                                //     DateTime.parse(application.createdOn)),
+                                text: application.createdOn,
                                 color: Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,

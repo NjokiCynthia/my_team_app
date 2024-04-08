@@ -87,24 +87,12 @@ class _AmtStepperState extends State<AmtStepper> {
       "loanProductMode": "1",
       "gracePeriod": "1",
       "groupId": "",
-
       "guarantors": ["59070", "59072"],
       "amounts": ["3000", "4310"],
       "type": "2",
       "comments": ["test", "test"],
       "metadata": _data,
-      //  [
-      //   {
-      //     "what is the reason for applying  this_loan": "Car Purchase",
-      //     "slug": "what_is_the_reason_for_applying_this_loan",
-      //     "section": "Financial"
-      //   },
-      //   {
-      //     "How Much do you make": "20000",
-      //     "slug": "how_much_do_you_make",
-      //     "section": "value c"
-      //   }
-      // ]
+   
     };
     print(_data);
     print('form data is: $formData');

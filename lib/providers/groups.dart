@@ -487,57 +487,58 @@ class LoanApplications {
   String applicationReason;
   String loanTypeUsesNewWorkflow;
   String applicationName;
+  String applicantName;
 
-  LoanApplications({
-    this.id,
-    this.memberId,
-    this.groupId,
-    this.loanTypeId,
-    this.loanAmount,
-    this.repaymentPeriod,
-    this.isApproved,
-    this.description,
-    this.active,
-    this.createdBy,
-    this.createdOn,
-    this.modifiedOn,
-    this.modifiedBy,
-    this.status,
-    this.agreeToRules,
-    this.isDeleted,
-    this.accountId,
-    this.reviewReport,
-    this.declineMessage,
-    this.isDeclined,
-    this.isLoanDisbursed,
-    this.disburseStatus,
-    this.memberSupervisorId,
-    this.affirmation,
-    this.saccoManagerMemberId,
-    this.saccoManagerStatus,
-    this.saccomManagerMemberId,
-    this.saccomManagerStatus,
-    this.userId,
-    this.declineReason,
-    this.declinedBy,
-    this.disbursementCharges,
-    this.disbursementReceiptNumber,
-    this.isDisbursementDeclined,
-    this.declinedOn,
-    this.disbursementFailedErrorMessage,
-    this.referenceNumber,
-    this.disbursementResultStatus,
-    this.disbursementStatus,
-    this.isDisbursed,
-    this.disbursedOn,
-    this.disbursementResultDescription,
-    this.accountSelectedBy,
-    this.oldId,
-    this.isLoanCreated,
-    this.applicationReason,
-    this.loanTypeUsesNewWorkflow,
-    this.applicationName,
-  });
+  LoanApplications(
+      {this.id,
+      this.memberId,
+      this.groupId,
+      this.loanTypeId,
+      this.loanAmount,
+      this.repaymentPeriod,
+      this.isApproved,
+      this.description,
+      this.active,
+      this.createdBy,
+      this.createdOn,
+      this.modifiedOn,
+      this.modifiedBy,
+      this.status,
+      this.agreeToRules,
+      this.isDeleted,
+      this.accountId,
+      this.reviewReport,
+      this.declineMessage,
+      this.isDeclined,
+      this.isLoanDisbursed,
+      this.disburseStatus,
+      this.memberSupervisorId,
+      this.affirmation,
+      this.saccoManagerMemberId,
+      this.saccoManagerStatus,
+      this.saccomManagerMemberId,
+      this.saccomManagerStatus,
+      this.userId,
+      this.declineReason,
+      this.declinedBy,
+      this.disbursementCharges,
+      this.disbursementReceiptNumber,
+      this.isDisbursementDeclined,
+      this.declinedOn,
+      this.disbursementFailedErrorMessage,
+      this.referenceNumber,
+      this.disbursementResultStatus,
+      this.disbursementStatus,
+      this.isDisbursed,
+      this.disbursedOn,
+      this.disbursementResultDescription,
+      this.accountSelectedBy,
+      this.oldId,
+      this.isLoanCreated,
+      this.applicationReason,
+      this.loanTypeUsesNewWorkflow,
+      this.applicationName,
+      this.applicantName});
 }
 
 class UnreconciledDeposit {
@@ -1261,6 +1262,7 @@ class Groups with ChangeNotifier {
           applicationName:
               groupLoanApplicationsJSON['ngo_portal_loan_application_name']
                   .toString(),
+          applicantName: groupLoanApplicationsJSON['member_name'].toString(),
         );
         _loanApplications.add(newloanApplications);
       }
@@ -1299,7 +1301,6 @@ class Groups with ChangeNotifier {
         "group_id": _currentGroupId,
         "member_id": memberId,
       });
-
       final response = await PostToServer.post(postRequest, url);
       _loanApplications = [];
 
@@ -5198,6 +5199,32 @@ class Groups with ChangeNotifier {
       formData["user_id"] = _userId;
       formData["group_id"] = _currentGroupId;
       final postRequest = json.encode(formData);
+      print('This is what i am sending');
+      print(postRequest);
+      try {
+        await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> cancelLoanRequest(Map<String, String> formData) async {
+    final url = EndpointUrl.RESPOND_TO_LOAN_REQUEST;
+    print('This is where i am sending my approval request');
+
+    try {
+      formData["user_id"] = _userId;
+      formData["group_id"] = _currentGroupId;
+      final postRequest = json.encode(formData);
+      print('This is what i am sending');
+      print(postRequest);
       try {
         await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {

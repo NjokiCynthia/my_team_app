@@ -1,7 +1,6 @@
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
-import 'package:chamasoft/screens/chamasoft/models/loan-application.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
