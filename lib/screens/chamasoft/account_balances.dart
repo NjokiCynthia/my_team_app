@@ -16,7 +16,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:share_plus/share_plus.dart';
+//import 'package:share_plus/share_plus.dart';
 
 class AccounBalancesReciept extends StatefulWidget {
   final BankAccountDashboardSummary data;
@@ -41,7 +41,7 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
     //final subject = "${widget.title}";
 
     // await Share.share([image.path] );
-    await Share.shareFiles([image.path], text: text);
+   // await Share.shareFiles([image.path], text: text);
 
     // Share.share(imageFile);
   }
@@ -234,22 +234,22 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                     children: [
                       InkWell(
                         onTap: () async {
-                          await Share.share(
-                              "Confirmed. Your account balance was: " +
-                                  widget.data.accountName +
-                                  " Account: " +
-                                  groupObject.groupCurrency +
-                                  " " +
-                                  currencyFormat.format(widget.data.balance) +
-                                  " " +
-                                  "on " +
-                                  formatter +
-                                  " at " +
-                                  actualTime +
-                                  "HRS for " +
-                                  groupObject.groupName +
-                                  "\n" +
-                                  "https://bit.ly/3GkX3lM ");
+                          // await Share.share(
+                          //     "Confirmed. Your account balance was: " +
+                          //         widget.data.accountName +
+                          //         " Account: " +
+                          //         groupObject.groupCurrency +
+                          //         " " +
+                          //         currencyFormat.format(widget.data.balance) +
+                          //         " " +
+                          //         "on " +
+                          //         formatter +
+                          //         " at " +
+                          //         actualTime +
+                          //         "HRS for " +
+                          //         groupObject.groupName +
+                          //         "\n" +
+                          //         "https://bit.ly/3GkX3lM ");
                         },
                         child: Row(
                           children: [
@@ -259,23 +259,23 @@ class _AccounBalancesRecieptState extends State<AccounBalancesReciept> {
                               ),
                               iconSize: 20.0,
                               onPressed: () async {
-                                await Share.share(
-                                    "Confirmed. Your account balance was: " +
-                                        widget.data.accountName +
-                                        " Account: " +
-                                        groupObject.groupCurrency +
-                                        " " +
-                                        currencyFormat
-                                            .format(widget.data.balance) +
-                                        " " +
-                                        "on " +
-                                        formatter +
-                                        " at " +
-                                        actualTime +
-                                        "HRS for " +
-                                        groupObject.groupName +
-                                        "\n" +
-                                        "https://bit.ly/3GkX3lM ");
+                                // await Share.share(
+                                //     "Confirmed. Your account balance was: " +
+                                //         widget.data.accountName +
+                                //         " Account: " +
+                                //         groupObject.groupCurrency +
+                                //         " " +
+                                //         currencyFormat
+                                //             .format(widget.data.balance) +
+                                //         " " +
+                                //         "on " +
+                                //         formatter +
+                                //         " at " +
+                                //         actualTime +
+                                //         "HRS for " +
+                                //         groupObject.groupName +
+                                //         "\n" +
+                                //         "https://bit.ly/3GkX3lM ");
                                 //Share.shareFiles([convertWidgetToImage().path]);
                               },
                             ),

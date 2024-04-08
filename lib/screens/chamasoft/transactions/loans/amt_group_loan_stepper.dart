@@ -40,17 +40,17 @@ class _AmtStepperState extends State<AmtStepper> {
       "loan_product_id": "2441",
       "loan_amount": loanAmount.toString(),
       "name": widget.selectedLoanProduct['name'],
-      "minAmount": "40",
-      "maxAmount": "1000067",
+      "minAmount": widget.selectedLoanProduct['minAmount'],
+      "maxAmount": widget.selectedLoanProduct['maxAmount'],
       "times": '',
       //'4000',
       "repayment_period": 2,
       "enabled": 0,
-      "interestType": "1",
-      "interestRate": "1",
-      "interestCharge": "3",
-      "repaymentPeriodType": "1",
-      "repaymentPeriod": "5",
+      "interestType": widget.selectedLoanProduct['interestType'],
+      "interestRate": widget.selectedLoanProduct['interestRate'],
+      "interestCharge": widget.selectedLoanProduct['interestCharge'],
+      "repaymentPeriodType": widget.selectedLoanProduct['repaymentPeriodType'],
+      "repaymentPeriod": widget.selectedLoanProduct['repaymentPeriod'],
       "maxRepaymentPeriod": "",
       "minRepaymentPeriod": "",
       "enableFinesForLateInstallments": "1",
@@ -92,7 +92,6 @@ class _AmtStepperState extends State<AmtStepper> {
       "type": "2",
       "comments": ["test", "test"],
       "metadata": _data,
-   
     };
     print(_data);
     print('form data is: $formData');

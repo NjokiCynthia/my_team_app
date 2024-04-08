@@ -17,7 +17,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:share_plus/share_plus.dart';
+//import 'package:share_plus/share_plus.dart';
 
 class RecentTransactionReciept extends StatefulWidget {
   final RecentTransactionSummary data;
@@ -41,7 +41,7 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
     //final subject = "${widget.title}";
 
     // await Share.share([image.path] );
-    await Share.shareFiles([image.path], text: text);
+    //await Share.shareFiles([image.path], text: text);
 
     // Share.share(imageFile);
   }
@@ -243,21 +243,21 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
                     children: [
                       InkWell(
                         onTap: () async {
-                          await Share.share(auth.userName +
-                              " " +
-                              'paid ' +
-                              groupObject.groupCurrency +
-                              " " +
-                              currencyFormat.format(widget.data.paymentAmount) +
-                              " " +
-                              "on " +
-                              widget.data.paymentDate +
-                              " for " +
-                              widget.data.description.toLowerCase() +
-                              " to " +
-                              groupObject.groupName +
-                              "\n" +
-                              "https://bit.ly/3GkX3lM ");
+                          // await Share.share(auth.userName +
+                          //     " " +
+                          //     'paid ' +
+                          //     groupObject.groupCurrency +
+                          //     " " +
+                          //     currencyFormat.format(widget.data.paymentAmount) +
+                          //     " " +
+                          //     "on " +
+                          //     widget.data.paymentDate +
+                          //     " for " +
+                          //     widget.data.description.toLowerCase() +
+                          //     " to " +
+                          //     groupObject.groupName +
+                          //     "\n" +
+                          //     "https://bit.ly/3GkX3lM ");
                         },
                         child: Row(
                           children: [
@@ -267,22 +267,22 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
                               ),
                               iconSize: 20.0,
                               onPressed: () async {
-                                await Share.share(auth.userName +
-                                    " " +
-                                    'paid ' +
-                                    groupObject.groupCurrency +
-                                    " " +
-                                    currencyFormat
-                                        .format(widget.data.paymentAmount) +
-                                    " " +
-                                    "on " +
-                                    widget.data.paymentDate +
-                                    " for " +
-                                    widget.data.description.toLowerCase() +
-                                    " to " +
-                                    groupObject.groupName +
-                                    "\n" +
-                                    "https://bit.ly/3GkX3lM ");
+                                // await Share.share(auth.userName +
+                                //     " " +
+                                //     'paid ' +
+                                //     groupObject.groupCurrency +
+                                //     " " +
+                                //     currencyFormat
+                                //         .format(widget.data.paymentAmount) +
+                                //     " " +
+                                //     "on " +
+                                //     widget.data.paymentDate +
+                                //     " for " +
+                                //     widget.data.description.toLowerCase() +
+                                //     " to " +
+                                //     groupObject.groupName +
+                                //     "\n" +
+                                //     "https://bit.ly/3GkX3lM ");
                                 //Share.shareFiles([convertWidgetToImage().path]);
                               },
                             ),
