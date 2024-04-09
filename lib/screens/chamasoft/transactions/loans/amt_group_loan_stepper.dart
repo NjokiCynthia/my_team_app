@@ -6,6 +6,7 @@ import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/group-loan-applications.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:platform_file/platform_file.dart';
@@ -25,8 +26,6 @@ class _AmtStepperState extends State<AmtStepper> {
   List<Map<String, dynamic>> additionalDocumentFields = [];
   List<Step> steps = [];
   List<Map<String, dynamic>> _data = [];
-
-  PlatformFile selectedProofOfPayment;
 
   Auth _user;
   Group _group;
@@ -205,9 +204,13 @@ class _AmtStepperState extends State<AmtStepper> {
       );
     });
 
-    // Handle additional document fields if any
-    void _handleFileUpload(String fieldSlug) {
-      print('Uploading file for field: $fieldSlug');
+    void _handleFileUpload(String slug) async {
+      // Open file picker
+      FilePickerResult filePath = await FilePicker.platform.pickFiles();
+
+      if (filePath != null) {
+        print('File path: ${filePath.files.single.path}');
+      }
     }
 
     if (additionalDocumentFields.isNotEmpty) {
