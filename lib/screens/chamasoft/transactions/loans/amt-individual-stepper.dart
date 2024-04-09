@@ -7,7 +7,9 @@ import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/group-loan-applications.dart';
+import 'package:chamasoft/screens/chamasoft/reports/loan-applications.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:platform_file/platform_file.dart';
@@ -29,8 +31,6 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
   List<Step> steps = [];
   List<Map<String, dynamic>> _data = [];
 
-  PlatformFile selectedProofOfPayment;
-
   Auth _user;
   Group _group;
   String loanAmount;
@@ -41,18 +41,18 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
       "group_id": _group.groupId,
       "member_id": _group.memberId,
       "loan_amount": loanAmount.toString(),
-      "name": "Tester",
-      "minAmount": "40",
-      "maxAmount": "1000067",
+      "name": widget.selectedLoanProduct['name'],
+      "minAmount": widget.selectedLoanProduct['minAmount'],
+      "maxAmount": widget.selectedLoanProduct['maxAmount'],
       "loan_product_id": "2441",
       //'4000',
       "repayment_period": 2,
       "enabled": 0,
-      "interestType": "1",
-      "interestRate": "1",
-      "interestCharge": "3",
-      "repaymentPeriodType": "1",
-      "repaymentPeriod": "5",
+      "interestType": widget.selectedLoanProduct['interestType'],
+      "interestRate": widget.selectedLoanProduct['interestRate'],
+      "interestCharge": widget.selectedLoanProduct['interestCharge'],
+      "repaymentPeriodType": widget.selectedLoanProduct['repaymentPeriodType'],
+      "repaymentPeriod": widget.selectedLoanProduct['repaymentPeriod'],
       "maxRepaymentPeriod": "",
       "minRepaymentPeriod": "",
       "enableFinesForLateInstallments": "1",
@@ -95,18 +95,6 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
       "type": "2",
       "comments": ["test", "test"],
       "metadata": _data,
-      //  [
-      //   {
-      //     "what is the reason for applying  this_loan": "Car Purchase",
-      //     "slug": "what_is_the_reason_for_applying_this_loan",
-      //     "section": "Financial"
-      //   },
-      //   {
-      //     "How Much do you make": "20000",
-      //     "slug": "how_much_do_you_make",
-      //     "section": "value c"
-      //   }
-      // ]
     };
     print(_data);
     print('form data is here: $formData');
@@ -129,7 +117,7 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
       StatusHandler().showSuccessSnackBar(context, "Good news: $response");
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => GroupLoanApplications()),
+        MaterialPageRoute(builder: (context) => ListLoanApplications()),
       );
     } on CustomException catch (error) {
       StatusHandler().showDialogWithAction(
@@ -205,8 +193,13 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
         ),
       );
     });
-    void _handleFileUpload(String fieldSlug) {
-      print('Uploading file for field: $fieldSlug');
+    void _handleFileUpload(String slug) async {
+      // Open file picker
+      FilePickerResult filePath = await FilePicker.platform.pickFiles();
+
+      if (filePath != null) {
+        print('File path: ${filePath.files.single.path}');
+      }
     }
 
     if (additionalDocumentFields.isNotEmpty) {
@@ -252,7 +245,7 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
           onStepContinue: () {
             setState(() {
               if (currentStep < steps.length - 1) {
-                currentStep += 1; 
+                currentStep += 1;
               } else {
                 submitGroupLoanApplication(context);
                 // saveData();
@@ -262,7 +255,7 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
           onStepCancel: () {
             setState(() {
               if (currentStep > 0) {
-                currentStep -= 1; 
+                currentStep -= 1;
               }
             });
           },

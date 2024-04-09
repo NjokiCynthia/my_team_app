@@ -181,7 +181,6 @@ class AmtLoanProduct extends StatelessWidget {
             if (onProductSelected != null) {
               onProductSelected(loanProduct);
 
-              // Navigate to StepperPage with loan product data
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) =>

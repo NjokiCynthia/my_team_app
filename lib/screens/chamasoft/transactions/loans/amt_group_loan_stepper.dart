@@ -5,6 +5,7 @@ import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/group-loan-applications.dart';
+import 'package:chamasoft/screens/chamasoft/reports/loan-applications.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -113,7 +114,7 @@ class _AmtStepperState extends State<AmtStepper> {
       StatusHandler().showSuccessSnackBar(context, "Good news: $response");
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => GroupLoanApplications()),
+        MaterialPageRoute(builder: (context) => ListLoanApplications()),
       );
     } on CustomException catch (error) {
       StatusHandler().showDialogWithAction(
@@ -153,7 +154,7 @@ class _AmtStepperState extends State<AmtStepper> {
     // Insert the loan amount field in the first step
     steps.add(
       Step(
-        title: Text('Enter Loan Amount'),
+        title: Text('Enter amount you want to apply for.'),
         content: Column(
           children: firstStepContent,
         ),

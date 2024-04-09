@@ -13,12 +13,12 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 // import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-class ListLoanApplications extends StatefulWidget {
+class MyLoanApplications extends StatefulWidget {
   @override
-  _ListLoanApplicationsState createState() => _ListLoanApplicationsState();
+  _MyLoanApplicationsState createState() => _MyLoanApplicationsState();
 }
 
-class _ListLoanApplicationsState extends State<ListLoanApplications> {
+class _MyLoanApplicationsState extends State<MyLoanApplications> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
@@ -80,54 +80,51 @@ class _ListLoanApplicationsState extends State<ListLoanApplications> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      
-      child: Scaffold(
-          appBar: secondaryPageAppbar(
-              context: context,
-              title: "My Loan Applications",
-              action: () => Navigator.of(context).pop(),
-              elevation: _appBarElevation,
-              leadingIcon: LineAwesomeIcons.arrow_left),
-          backgroundColor: Colors.transparent,
-          body: Container(
-            decoration: primaryGradient(context),
-            width: double.infinity,
-            height: double.infinity,
-            child: _isLoading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Consumer<Groups>(builder: (context, groupData, child) {
-                    return groupData.loanApplications.length > 0
-                        ? ListView.builder(
-                            itemBuilder: (context, index) {
-                              LoanApplications applications =
-                                  groupData.loanApplications[index];
-    
-                              return MyLoansCard(
-                                application: applications,
-                                onPressed: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          ReviewLoan(
-                                              loanApplication: applications),
-                                      settings: RouteSettings(
-                                          arguments: VIEW_APPLICATION_STATUS),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                            itemCount: groupData.loanApplications.length,
-                          )
-                        : betterEmptyList(
-                            message:
-                                "Sorry, you have not added any loan applications");
-                  }),
-          )),
-    );
+    return Scaffold(
+        appBar: secondaryPageAppbar(
+            context: context,
+            title: "My Loan Applications",
+            action: () => Navigator.of(context).pop(),
+            elevation: _appBarElevation,
+            leadingIcon: LineAwesomeIcons.arrow_left),
+        backgroundColor: Colors.transparent,
+        body: Container(
+          decoration: primaryGradient(context),
+          width: double.infinity,
+          height: double.infinity,
+          child: _isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Consumer<Groups>(builder: (context, groupData, child) {
+                  return groupData.loanApplications.length > 0
+                      ? ListView.builder(
+                          itemBuilder: (context, index) {
+                            LoanApplications applications =
+                                groupData.loanApplications[index];
+
+                            return MyLoansCard(
+                              application: applications,
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        ReviewLoan(
+                                            loanApplication: applications),
+                                    settings: RouteSettings(
+                                        arguments: VIEW_APPLICATION_STATUS),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          itemCount: groupData.loanApplications.length,
+                        )
+                      : betterEmptyList(
+                          message:
+                              "Sorry, you have not added any loan applications");
+                }),
+        ));
   }
 }
 

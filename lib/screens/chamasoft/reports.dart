@@ -8,6 +8,7 @@ import 'package:chamasoft/screens/chamasoft/reports/loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member-statement.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/loan-summary.dart';
+import 'package:chamasoft/screens/chamasoft/reports/my-loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/reports/withdrawal_receipts.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/svg-icons.dart';
@@ -271,7 +272,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                         : Theme.of(context).primaryColor,
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => ListLoanApplications(),
+                        builder: (BuildContext context) => MyLoanApplications(),
                         settings: RouteSettings(arguments: 0))),
                     margin: 0,
                     imageHeight: 100.0)),
@@ -526,31 +527,28 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
               width: 16.0,
             ),
           if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
-            
-               Container(
-                  width: 132.0,
-                  child: svgGridButton(
-                      context: context,
-                      icon: customIcons['refund'],
-                      title: 'LOAN',
-                      subtitle: currentLanguage == 'English'
-                          ? 'APPLICATIONS'
-                          : Provider.of<TranslationProvider>(context,
-                                      listen: false)
-                                  .translate('APPLICATIONS') ??
-                              'APPLICATIONS',
-                      //'STATEMENT',
-                      color: Config.appName.toLowerCase() == "chamasoft"
-                          ? Colors.blue[400]
-                          : Theme.of(context).primaryColor,
-                      isHighlighted: false,
-                      action: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  GroupLoanApplications())),
-                      margin: 0,
-                      imageHeight: 100.0)),
-            
+            Container(
+                width: 132.0,
+                child: svgGridButton(
+                    context: context,
+                    icon: customIcons['refund'],
+                    title: 'LOAN',
+                    subtitle: currentLanguage == 'English'
+                        ? 'APPLICATIONS'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('APPLICATIONS') ??
+                            'APPLICATIONS',
+                    //'STATEMENT',
+                    color: Config.appName.toLowerCase() == "chamasoft"
+                        ? Colors.blue[400]
+                        : Theme.of(context).primaryColor,
+                    isHighlighted: false,
+                    action: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            GroupLoanApplications())),
+                    margin: 0,
+                    imageHeight: 100.0)),
           if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
             SizedBox(
               width: 16.0,
