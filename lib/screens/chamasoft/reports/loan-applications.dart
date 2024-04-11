@@ -20,7 +20,7 @@ class ListLoanApplications extends StatefulWidget {
 
 class _ListLoanApplicationsState extends State<ListLoanApplications> {
   double _appBarElevation = 0;
-  ScrollController _scrollController;
+  ScrollController _scrollController = ScrollController();
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -41,8 +41,8 @@ class _ListLoanApplicationsState extends State<ListLoanApplications> {
 
   @override
   void dispose() {
-    _scrollController?.removeListener(_scrollListener);
-    _scrollController?.dispose();
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -81,12 +81,21 @@ class _ListLoanApplicationsState extends State<ListLoanApplications> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      
+      onWillPop: () async {
+        int count = 0;
+        Navigator.of(context).popUntil((_) => count++ >= 4);
+
+        return false;
+      },
       child: Scaffold(
           appBar: secondaryPageAppbar(
               context: context,
               title: "My Loan Applications",
-              action: () => Navigator.of(context).pop(),
+              action: () {
+                int count = 0;
+                Navigator.of(context).popUntil(
+                    (_) => count++ >= 4); // Pop back to the previous screen
+              },
               elevation: _appBarElevation,
               leadingIcon: LineAwesomeIcons.arrow_left),
           backgroundColor: Colors.transparent,
@@ -104,7 +113,7 @@ class _ListLoanApplicationsState extends State<ListLoanApplications> {
                             itemBuilder: (context, index) {
                               LoanApplications applications =
                                   groupData.loanApplications[index];
-    
+
                               return MyLoansCard(
                                 application: applications,
                                 onPressed: () {

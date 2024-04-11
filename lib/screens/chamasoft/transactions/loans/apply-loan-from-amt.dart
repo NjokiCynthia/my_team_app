@@ -5,8 +5,10 @@ import 'package:chamasoft/providers/access_token.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/amt_group_loan_stepper.dart';
+import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -28,7 +30,7 @@ class _ApplyLoanFromAmtState extends State<ApplyLoanFromAmt> {
 
     if (accessToken != null) {
       final url =
-          'https://ngo-api.sandbox.co.ke:8631/api/loans/get-mobile-loan-applications';
+          'https://ngo-api.sandbox.co.ke:8631/api/loans/get-mobile-loan-products';
       final headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken',
@@ -71,37 +73,54 @@ class _ApplyLoanFromAmtState extends State<ApplyLoanFromAmt> {
     super.initState();
   }
 
+  double _appBarElevation = 0;
+
   List<Map<String, dynamic>> loanProducts = [];
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.8,
-      child: Column(
+    return Scaffold(
+      appBar: secondaryPageAppbar(
+        context: context,
+        action: () => Navigator.pop(context),
+        // Navigator.of(context)
+        //     .popUntil((Route<dynamic> route) => route.isFirst),
+        elevation: _appBarElevation,
+        leadingIcon: LineAwesomeIcons.arrow_left,
+        title: "Apply AMT Loan",
+      ),
+      body: Column(
         children: [
-          toolTip(
-            context: context,
-            title: "Note that...",
-            message:
-                "Apply quick loan from Amt guaranteed by your savings and fellow group members.",
-          ),
-          loanProducts.isEmpty
-              ? CircularProgressIndicator() // Or your custom loading widget
-              : Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: loanProducts.length,
-                    itemBuilder: (context, index) {
-                      final loanProduct = loanProducts[index];
-                      return AmtLoanProduct(
-                        loanProduct: loanProduct,
-                        onProductSelected: (selectedOption) {
-                          // Handle selected option
-                          print('Selected option: $selectedOption');
-                        },
-                      );
-                    },
-                  ),
+          Container(
+            height: MediaQuery.of(context).size.height * 0.8,
+            child: Column(
+              children: [
+                toolTip(
+                  context: context,
+                  title: "Note that...",
+                  message:
+                      "Apply quick loan from Amt guaranteed by your savings and fellow group members.",
                 ),
+                loanProducts.isEmpty
+                    ? CircularProgressIndicator() // Or your custom loading widget
+                    : Expanded(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: loanProducts.length,
+                          itemBuilder: (context, index) {
+                            final loanProduct = loanProducts[index];
+                            return AmtLoanProduct(
+                              loanProduct: loanProduct,
+                              onProductSelected: (selectedOption) {
+                                // Handle selected option
+                                print('Selected option: $selectedOption');
+                              },
+                            );
+                          },
+                        ),
+                      ),
+              ],
+            ),
+          ),
         ],
       ),
     );

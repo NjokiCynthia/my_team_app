@@ -27,10 +27,11 @@ class _AmtStepperState extends State<AmtStepper> {
   List<Map<String, dynamic>> additionalDocumentFields = [];
   List<Step> steps = [];
   List<Map<String, dynamic>> _data = [];
-
+  Map<String, String> filePaths = {};
   Auth _user;
   Group _group;
   String loanAmount;
+  Map<String, String> selectedFilePath = {};
 
   void submitGroupLoanApplication(BuildContext context) async {
     Map<String, dynamic> formData = {
@@ -92,7 +93,14 @@ class _AmtStepperState extends State<AmtStepper> {
       "type": "2",
       "comments": ["test", "test"],
       "metadata": _data,
+      "requireDocuments": "1"
     };
+    additionalDocumentFields.forEach((docField) {
+      String slug = docField['slug'];
+      if (filePaths.containsKey(slug)) {
+        formData[slug] = "@${filePaths[slug]}";
+      }
+    });
     print(_data);
     print('form data is: $formData');
     // Show the loader
@@ -204,36 +212,70 @@ class _AmtStepperState extends State<AmtStepper> {
         ),
       );
     });
-
     void _handleFileUpload(String slug) async {
       // Open file picker
-      FilePickerResult filePath = await FilePicker.platform.pickFiles();
+      FilePickerResult result = await FilePicker.platform.pickFiles();
 
-      if (filePath != null) {
-        print('File path: ${filePath.files.single.path}');
+      if (result != null) {
+        String path = result.files.single.path;
+        filePaths[slug] = path;
+        print('File path for $slug: $path');
+        // Update UI to display file path
+        // print('File path for $slug: $path');
+
+        // Update selectedFilePath
+        selectedFilePath[slug] = path;
+        setState(() {
+          // Update selectedFilePath
+        });
       }
     }
 
     if (additionalDocumentFields.isNotEmpty) {
       List<Widget> uploadFields = [];
       for (var docField in additionalDocumentFields) {
-        uploadFields.add(ElevatedButton(
-          onPressed: () {
-            _handleFileUpload(docField['slug']);
-          },
-          child: Text('Upload ${docField['title']}'),
+        String slug = docField['slug'];
+        //String filePath = selectedFilePath;
+        uploadFields.add(Column(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _handleFileUpload(slug);
+                });
+              },
+              child: Text('Upload ${docField['title']}'),
+            ),
+            // Display path if available
+            Text('File path: $slug '),
+            //${selectedFilePath[slug]}
+            // Text(
+            //     'Selected file path: $selectedFilePath'), // Display selected file path
+          ],
         ));
       }
-      steps.add(
-        Step(
-          title: Text('Upload Documents'),
-          content: Column(
-            children: uploadFields,
+      setState(() {
+        steps.add(
+          Step(
+            title: Text('Upload Documents'),
+            content: Column(
+              children: uploadFields,
+            ),
+            isActive: true, // Set active for all steps initially
           ),
-          isActive: true, // Set active for all steps initially
-        ),
-      );
+        );
+      });
     }
+  }
+
+  List<Step> _getSteps() {
+    List<Step> allSteps = [];
+    steps.forEach((element) {
+      allSteps.add(element);
+      print('label of element: ${element.title}');
+    });
+
+    return allSteps;
   }
 
   int currentStep = 0;
@@ -244,43 +286,38 @@ class _AmtStepperState extends State<AmtStepper> {
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.pop(context),
-        // Navigator.of(context)
-        //     .popUntil((Route<dynamic> route) => route.isFirst),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
         title: "Apply Loan",
       ),
-      body: SingleChildScrollView(
-        child: Stepper(
-          steps: steps,
-          currentStep: currentStep,
-          onStepContinue: () {
-            setState(() {
-              if (currentStep < steps.length - 1) {
-                currentStep += 1; // Move to the next step
-              } else {
-                submitGroupLoanApplication(context);
-                // saveData();
-              }
-            });
-          },
-          onStepCancel: () {
-            setState(() {
-              if (currentStep > 0) {
-                currentStep -= 1; // Move to the previous step
-              }
-            });
-          },
-        ),
+      body: Stepper(
+        steps: _getSteps(),
+        currentStep: currentStep,
+        onStepContinue: () {
+          setState(() {
+            if (currentStep < steps.length - 1) {
+              currentStep += 1; // Move to the next step
+            } else {
+              submitGroupLoanApplication(context);
+              // saveData();
+            }
+          });
+        },
+        onStepCancel: () {
+          setState(() {
+            if (currentStep > 0) {
+              currentStep -= 1; // Move to the previous step
+            }
+          });
+        },
       ),
     );
   }
-
-  void saveData() {
-    // Implement your save data logic here
-    print('I WANT TO SEE TEH DATA:');
-    print(_data);
-    // Reset form data if needed
-    _data.clear();
-  }
+  // void saveData() {
+  //   // Implement your save data logic here
+  //   print('I WANT TO SEE TEH DATA:');
+  //   print(_data);
+  //   // Reset form data if needed
+  //   _data.clear();
+  // }
 }

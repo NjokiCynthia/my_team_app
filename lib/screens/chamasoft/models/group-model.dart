@@ -27,6 +27,7 @@ class Group {
   final bool isGroupAdmin;
   final String groupCurrency;
   final String memberId;
+  dynamic offerLoans;
   dynamic enablehidegroupbalancestoMembers;
 
   Group(
@@ -39,6 +40,7 @@ class Group {
       @required this.accountNumber,
       this.referralCode,
       this.isCollective,
+      this.offerLoans,
       this.enableMemberInformationPrivacy,
       this.enableSendMonthlyEmailStatements,
       this.disableArrears,

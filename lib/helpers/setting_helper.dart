@@ -96,6 +96,7 @@ Group parseSingleGroup(dynamic groupJSON) {
         groupJSON['disable_member_edit_profile'].toString() == "1"
             ? true
             : false,
+    offerLoans: groupJSON['group_offer_loans'].toString() == "1" ? true : false,
     isGroupAdmin: groupJSON['is_admin'].toString() == "1" ? true : false,
     isCollective: groupJSON['is_collective'].toString() == '1' ? true : false,
     referralCode: groupJSON['referral_code'].toString(),

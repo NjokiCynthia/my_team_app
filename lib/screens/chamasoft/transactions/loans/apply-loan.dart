@@ -10,6 +10,7 @@ import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/access_token.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-for-individual-amt-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-amt.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-group.dart';
@@ -17,6 +18,7 @@ import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-g
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
+import 'package:get/get.dart';
 // import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -92,9 +94,12 @@ class ApplyLoanState extends State<ApplyLoan> {
     super.dispose();
   }
 
+  Group _currentGroup;
   @override
   void didChangeDependencies() {
     // get the loan types
+    _currentGroup =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     if (_isInit)
       WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
     super.didChangeDependencies();
@@ -220,116 +225,58 @@ class ApplyLoanState extends State<ApplyLoan> {
                     //     : SizedBox(
                     //         height: 0.0,
                     //       ),
-                    Padding(
-                        padding: const EdgeInsets.only(
-                            top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
-                        child:
-                            // ValueListenableBuilder(
-                            //     valueListenable: _tabIndexBasicToggle,
-                            //     builder: (context, currentIndex, _) {
-                            //       return
-                            FlutterToggleTab(
-                          //width: 55.0,
-                          height: MediaQuery.of(context).size.height * 0.04,
-                          borderRadius: 10.0,
-
-                          labels: [
-                            'From Group',
-                            'From AMT',
-                            'AMT Individual Loans'
-                          ],
-                          selectedIndex: _tabIndexBasicToggle.value,
-                          selectedLabelIndex: (index) {
-                            _tabIndexBasicToggle.value = index;
-                            setState(() {
-                              if (index == 0) {
-                                _isFromGroupActive = true;
-                                _isFromAmt = false;
-                                _isFromAmtIndividual = false;
-                              }
-                              if (index == 1) {
-                                _isFromAmt = true;
-                                _isFromGroupActive = false;
-                                _isFromAmtIndividual = false;
-                              }
-                              if (index == 2) {
-                                _isFromAmtIndividual = true;
-                                _isFromAmt = false;
-                                _isFromGroupActive = false;
-                              }
-                            });
-                          },
-                          selectedBackgroundColors: [Colors.grey],
-                          unSelectedBackgroundColors: [Colors.white70],
-                          selectedTextStyle: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w600),
-                          unSelectedTextStyle: TextStyle(
-                              color: Colors.black,
-                              fontSize: 10.0,
-                              fontWeight: FontWeight.w400),
-                        )
-                        //  }
-                        ),
+                    // Padding(
+                    //     padding: const EdgeInsets.only(
+                    //         top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
+                    //     child: FlutterToggleTab(
+                    //       height: MediaQuery.of(context).size.height * 0.04,
+                    //       borderRadius: 10.0,
+                    //       labels: [
+                    //         'Group Loans',
+                    //         'Others'
+                    //         // Show 'From Group' if user is an admin
+                    //         // if (_currentGroup.referralCode != null &&
+                    //         //     _currentGroup.isCollective != '1')
+                    //         //   'AMT group Loan',
+                    //         // if (_currentGroup.referralCode != null &&
+                    //         //     _currentGroup.isCollective == '1')
+                    //         //   'AMT Individual', // Show 'From AMT' if group has a referral code
+                    //       ],
+                    //       selectedIndex: _tabIndexBasicToggle.value,
+                    //       selectedLabelIndex: (index) {
+                    //         _tabIndexBasicToggle.value = index;
+                    //         setState(() {
+                    //           if (index == 0) {
+                    //             _isFromGroupActive = true;
+                    //             _isFromAmt = false;
+                    //             _isFromAmtIndividual = false;
+                    //           }
+                    //           if (index == 1) {
+                    //             _isFromAmt = true;
+                    //             _isFromGroupActive = false;
+                    //             _isFromAmtIndividual = false;
+                    //           }
+                    //           if (index == 2) {
+                    //             _isFromAmtIndividual = true;
+                    //             _isFromAmt = false;
+                    //             _isFromGroupActive = false;
+                    //           }
+                    //         });
+                    //       },
+                    //       selectedBackgroundColors: [Colors.grey],
+                    //       unSelectedBackgroundColors: [Colors.grey],
+                    //       selectedTextStyle: TextStyle(
+                    //           color: Colors.white,
+                    //           fontSize: 12.0,
+                    //           fontWeight: FontWeight.w600),
+                    //       unSelectedTextStyle: TextStyle(
+                    //           color: Colors.white,
+                    //           fontSize: 10.0,
+                    //           fontWeight: FontWeight.w400),
+                    //     )
+                    //     //  }
+                    //     ),
                   ]),
-
-//                     Padding(
-//   padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-//   child: isAdmin
-//       ? FlutterToggleTab(
-//           width: 55.0,
-//           height: MediaQuery.of(context).size.height * 0.04,
-//           borderRadius: 10.0,
-//           labels: ['From Group', 'From AMT'],
-//           selectedIndex: 0,
-//           selectedLabelIndex: (index) {
-//             setState(() {
-//               if (index == 0) {
-//                 _isFromGroupActive = true;
-//                 _isFromChamasoftActive = false;
-//               }
-//               if (index == 1) {
-//                 _isFromChamasoftActive = true;
-//                 _isFromGroupActive = false;
-//               }
-//             });
-//           },
-//           selectedBackgroundColors: [Colors.grey],
-//           unSelectedBackgroundColors: [Colors.white70],
-//           selectedTextStyle: TextStyle(
-//               color: Colors.white,
-//               fontSize: 12.0,
-//               fontWeight: FontWeight.w600),
-//           unSelectedTextStyle: TextStyle(
-//               color: Colors.black,
-//               fontSize: 10.0,
-//               fontWeight: FontWeight.w400),
-//         )
-//       : FlutterToggleTab(
-//           width: 55.0,
-//           height: MediaQuery.of(context).size.height * 0.04,
-//           borderRadius: 10.0,
-//           labels: ['From AMT'],
-//           selectedIndex: 0,
-//           selectedLabelIndex: (index) {
-//             setState(() {
-//               // Handle selected index for members
-//             });
-//           },
-//           selectedBackgroundColors: [Colors.grey],
-//           unSelectedBackgroundColors: [Colors.white70],
-//           selectedTextStyle: TextStyle(
-//               color: Colors.white,
-//               fontSize: 12.0,
-//               fontWeight: FontWeight.w600),
-//           unSelectedTextStyle: TextStyle(
-//               color: Colors.black,
-//               fontSize: 10.0,
-//               fontWeight: FontWeight.w400),
-//         ),
-// ),
-
                   //Group loans
                   Container(
                     child: SingleChildScrollView(

@@ -30,6 +30,9 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
   List<Map<String, dynamic>> additionalDocumentFields = [];
   List<Step> steps = [];
   List<Map<String, dynamic>> _data = [];
+  Map<String, String> fileNames = {};
+  Map<String, String> filePaths = {};
+  String selectedFilePath = '';
 
   Auth _user;
   Group _group;
@@ -96,6 +99,12 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
       "comments": ["test", "test"],
       "metadata": _data,
     };
+    additionalDocumentFields.forEach((docField) {
+      String slug = docField['slug'];
+      if (filePaths.containsKey(slug)) {
+        formData[slug] = "@${filePaths[slug]}";
+      }
+    });
     print(_data);
     print('form data is here: $formData');
     // Show the loader
@@ -195,21 +204,35 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
     });
     void _handleFileUpload(String slug) async {
       // Open file picker
-      FilePickerResult filePath = await FilePicker.platform.pickFiles();
+      FilePickerResult result = await FilePicker.platform.pickFiles();
 
-      if (filePath != null) {
-        print('File path: ${filePath.files.single.path}');
+      if (result != null) {
+        String path = result.files.single.path;
+        filePaths[slug] = path;
+        print('File path for $slug: $path');
+        // Update UI to display file path
+        setState(() {
+          selectedFilePath =
+              path; // Assuming selectedFilePath is a state variable
+        });
       }
     }
 
     if (additionalDocumentFields.isNotEmpty) {
       List<Widget> uploadFields = [];
       for (var docField in additionalDocumentFields) {
-        uploadFields.add(ElevatedButton(
-          onPressed: () {
-            _handleFileUpload(docField['slug']);
-          },
-          child: Text('Upload ${docField['title']}'),
+        String slug = docField['slug'];
+        uploadFields.add(Column(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                _handleFileUpload(slug);
+              },
+              child: Text('Upload ${docField['title']}'),
+            ),
+            if (filePaths.containsKey(slug)) // Display path if available
+              Text('File path: ${filePaths[slug]}'),
+          ],
         ));
       }
       steps.add(
