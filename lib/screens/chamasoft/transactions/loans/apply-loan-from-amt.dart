@@ -46,7 +46,6 @@ class _ApplyLoanFromAmtState extends State<ApplyLoanFromAmt> {
       try {
         final response = await http.post(Uri.parse(url),
             headers: headers, body: json.encode(body));
-
         if (response.statusCode == 200) {
           final Map<String, dynamic> responseData = json.decode(response.body);
           print('These are my loan products');
