@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:platform_file/platform_file.dart';
 import 'package:provider/provider.dart';
+import 'package:path/path.dart' as p;
 
 class AmtStepper extends StatefulWidget {
   const AmtStepper({Key key, this.selectedLoanProduct}) : super(key: key);
@@ -103,7 +104,7 @@ class _AmtStepperState extends State<AmtStepper> {
     additionalDocumentFields.forEach((docField) {
       String slug = docField['slug'];
       if (filePaths.containsKey(slug)) {
-        formData[slug] = "@${filePaths[slug]}";
+        formData[slug] = p.basename(filePaths[slug]);
       }
     });
     print(_data);

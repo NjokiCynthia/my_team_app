@@ -9,11 +9,13 @@ import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/group-loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/reports/loan-applications.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:platform_file/platform_file.dart';
+import 'package:platform_file/platform_file.dart' as File;
 import 'package:provider/provider.dart';
+import 'package:path/path.dart' as p;
 
 class IndividualLoanStepper extends StatefulWidget {
   const IndividualLoanStepper({Key key, this.selectedLoanProduct})
@@ -33,83 +35,117 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
   Map<String, String> fileNames = {};
   Map<String, String> filePaths = {};
   String selectedFilePath = '';
+  PlatformFile selectedFile;
 
   Auth _user;
   Group _group;
   String loanAmount;
+  FormData formData = FormData();
 
   void submitGroupLoanApplication(BuildContext context) async {
-    Map<String, dynamic> formData = {
-      "user_id": _user.id,
-      "group_id": _group.groupId,
-      "member_id": _group.memberId,
-      "loan_amount": loanAmount.toString(),
-      "name": widget.selectedLoanProduct['name'],
-      "minAmount": widget.selectedLoanProduct['minAmount'],
-      "maxAmount": widget.selectedLoanProduct['maxAmount'],
-      "loan_product_id": "2441",
-      //'4000',
-      "repayment_period": widget.selectedLoanProduct['repayment_period'],
-      "enabled": widget.selectedLoanProduct['enabled'],
-      "interestType": widget.selectedLoanProduct['interestType'],
-      "interestRate": widget.selectedLoanProduct['interestRate'],
-      "interestCharge": widget.selectedLoanProduct['interestCharge'],
-      "repaymentPeriodType": widget.selectedLoanProduct['repaymentPeriodType'],
-      "repaymentPeriod": widget.selectedLoanProduct['repaymentPeriod'],
-      "maxRepaymentPeriod": "",
-      "minRepaymentPeriod": "",
-      "enableFinesForLateInstallments":
-          widget.selectedLoanProduct['enableFinesForLateInstallments'],
-      "lateLoanPaymentFineType":
-          widget.selectedLoanProduct['lateLoanPaymentFineType'],
-      "oneOffPercentageOn": "",
-      "percentageFineRate": "",
-      "fineFrequency": "",
-      "outstandingBalOneOffAmount": "",
-      "outstandingBalFixedFineAmount": "",
-      "outstandingBalFineFrequency": "",
-      "outstandingBalPercentageFineRate": "",
-      "outstandingBalFineChargeFactor": "",
-      "fineChargeFactor": "",
-      "enableGuarantors": widget.selectedLoanProduct['enableGuarantors'],
-      "enableLoanProfitFee": "",
-      "loanProfitFeeType": "",
-      "percentageLoanProfitFee": "",
-      "eventToEnableGuarantors":
-          widget.selectedLoanProduct['eventToEnableGuarantors'],
-      "minGuarantors": widget.selectedLoanProduct['minGuarantors'],
-      "loanProcessingFeeType": "",
-      "loanProcessingFeeAmount": "",
-      "loanProcessingFeePercentage": "",
-      "loanProcessingFeePercentageFactor": "",
-      "fixedLoanProfitFeeAmount": "",
-      "oneOffFineType": "",
-      "oneOffFixedAmount": "",
-      "enableFinesForOutstandingBalances": "",
-      "outstandingBalanceFineType": "",
-      "enableLoanProcessingFee":
-          widget.selectedLoanProduct['enableLoanProcessingFee'],
-      "disableAutomatedLoanProcessingIncome": "",
-      "requireOfficialsApproval":
-          widget.selectedLoanProduct['requireOfficialsApproval'],
-      "requirePurposeOfLoan": "",
-      "loanProductNature": widget.selectedLoanProduct['loanProductNature'],
-      "loanProductMode": widget.selectedLoanProduct['loanProductMode'],
-      "gracePeriod": widget.selectedLoanProduct['gracePeriod'],
-      "groupId": "",
-      "times": '',
-      "guarantors": ["59070", "59072"],
-      "amounts": ["3000", "4310"],
-      "type": widget.selectedLoanProduct['type'],
-      "comments": ["test", "test"],
-      "metadata": _data,
-    };
-    additionalDocumentFields.forEach((docField) {
+    formData.fields.add(MapEntry('user_id', _user.id));
+    formData.fields.add(MapEntry('group_id', _group.groupId));
+    formData.fields.add(MapEntry('member_id', _group.memberId));
+    formData.fields.add(MapEntry('loan_amount', loanAmount.toString()));
+    formData.fields
+        .add(MapEntry('name', widget.selectedLoanProduct['name'].toString()));
+    formData.fields.add(MapEntry(
+        'minAmount', widget.selectedLoanProduct['minAmount'].toString()));
+    formData.fields.add(MapEntry(
+        'maxAmount', widget.selectedLoanProduct['maxAmount'].toString()));
+    formData.fields.add(MapEntry('loan_product_id', '2441'));
+    formData.fields.add(MapEntry('repayment_period',
+        widget.selectedLoanProduct['repayment_period'].toString()));
+    formData.fields.add(
+        MapEntry('enabled', widget.selectedLoanProduct['enabled'].toString()));
+    formData.fields.add(MapEntry(
+        'interestType', widget.selectedLoanProduct['interestType'].toString()));
+    formData.fields.add(MapEntry(
+        'interestRate', widget.selectedLoanProduct['interestRate'].toString()));
+    formData.fields.add(MapEntry('interestCharge',
+        widget.selectedLoanProduct['interestCharge'].toString()));
+    formData.fields.add(MapEntry(
+        'repaymentPeriodType',
+        widget.selectedLoanProduct['repaymentPeriodType']
+            .toString()
+            .toString()));
+    formData.fields.add(MapEntry('repaymentPeriod',
+        widget.selectedLoanProduct['repaymentPeriod'].toString()));
+    formData.fields.add(MapEntry('maxRepaymentPeriod', ''));
+    formData.fields.add(MapEntry('minRepaymentPeriod', ''));
+    formData.fields.add(MapEntry(
+        'enableFinesForLateInstallments',
+        widget.selectedLoanProduct['enableFinesForLateInstallments']
+            .toString()));
+    formData.fields.add(MapEntry('lateLoanPaymentFineType',
+        widget.selectedLoanProduct['lateLoanPaymentFineType'].toString()));
+    formData.fields.add(MapEntry('oneOffPercentageOn', ''));
+    formData.fields.add(MapEntry('percentageFineRate', ''));
+    formData.fields.add(MapEntry('fineFrequency', ''));
+    formData.fields.add(MapEntry('outstandingBalOneOffAmount', ''));
+    formData.fields.add(MapEntry('outstandingBalFixedFineAmount', ''));
+    formData.fields.add(MapEntry('outstandingBalFineFrequency', ''));
+    formData.fields.add(MapEntry('outstandingBalPercentageFineRate', ''));
+    formData.fields.add(MapEntry('outstandingBalFineChargeFactor', ''));
+    formData.fields.add(MapEntry('fineChargeFactor', ''));
+    formData.fields.add(MapEntry('enableGuarantors',
+        widget.selectedLoanProduct['enableGuarantors'].toString()));
+    formData.fields.add(MapEntry('enableLoanProfitFee', ''));
+    formData.fields.add(MapEntry('loanProfitFeeType', ''));
+    formData.fields.add(MapEntry('percentageLoanProfitFee', ''));
+    formData.fields.add(MapEntry('eventToEnableGuarantors',
+        widget.selectedLoanProduct['eventToEnableGuarantors']));
+    formData.fields.add(MapEntry('minGuarantors',
+        widget.selectedLoanProduct['minGuarantors'].toString()));
+    formData.fields.add(MapEntry('loanProcessingFeeType', ''));
+    formData.fields.add(MapEntry('loanProcessingFeeAmount', ''));
+    formData.fields.add(MapEntry('loanProcessingFeePercentage', ''));
+    formData.fields.add(MapEntry('loanProcessingFeePercentageFactor', ''));
+    formData.fields.add(MapEntry('fixedLoanProfitFeeAmount', ''));
+    formData.fields.add(MapEntry('oneOffFineType', ''));
+    formData.fields.add(MapEntry('oneOffFixedAmount', ''));
+    formData.fields.add(MapEntry('enableFinesForOutstandingBalances', ''));
+    formData.fields.add(MapEntry('outstandingBalanceFineType', ''));
+    formData.fields.add(MapEntry('enableLoanProcessingFee',
+        widget.selectedLoanProduct['enableLoanProcessingFee'].toString()));
+    formData.fields.add(MapEntry('disableAutomatedLoanProcessingIncome', ''));
+    formData.fields.add(MapEntry('requireOfficialsApproval',
+        widget.selectedLoanProduct['requireOfficialsApproval'].toString()));
+    formData.fields.add(MapEntry('requirePurposeOfLoan', ''));
+    formData.fields.add(MapEntry('loanProductNature',
+        widget.selectedLoanProduct['loanProductNature'].toString()));
+    formData.fields.add(MapEntry('loanProductMode',
+        widget.selectedLoanProduct['loanProductMode'].toString()));
+    formData.fields.add(MapEntry(
+        'gracePeriod', widget.selectedLoanProduct['gracePeriod'].toString()));
+    formData.fields.add(MapEntry('groupId', ''));
+    formData.fields.add(MapEntry('times', ''));
+    formData.fields.add(MapEntry('guarantors', ['59070', '59072'].toString()));
+    formData.fields.add(MapEntry('amounts', ['3000', '4310'].toString()));
+    formData.fields
+        .add(MapEntry('type', widget.selectedLoanProduct['type'].toString()));
+    formData.fields.add(MapEntry('comments', ['test', 'test'].toString()));
+    formData.fields.add(MapEntry('metadata', _data.toString()));
+
+    // additionalDocumentFields.forEach((docField) {
+    //   String slug = docField['slug'];
+    //   if (filePaths.containsKey(slug)) {
+    //     // formData[slug] = "@${filePaths[slug]}";
+    //     formData[slug] = p.basename(filePaths[slug]);
+    //   }
+    // });
+    // formdata.fields.addAll(formData as Iterable<MapEntry<String, String>>);
+    additionalDocumentFields.forEach((docField) async {
       String slug = docField['slug'];
-      if (filePaths.containsKey(slug)) {
-        formData[slug] = "@${filePaths[slug]}";
-      }
+      formData.files.add(MapEntry(
+          slug,
+          //'file',
+          await MultipartFile.fromFile(
+            selectedFile.path.toString(),
+            filename: selectedFile.name,
+          )));
     });
+
     print(_data);
     print('form data is here: $formData');
     // Show the loader
@@ -213,12 +249,14 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
 
       if (result != null) {
         String path = result.files.single.path;
+        PlatformFile fl = result.files.first;
+
         filePaths[slug] = path;
         print('File path for $slug: $path');
         // Update UI to display file path
         setState(() {
-          selectedFilePath =
-              path; // Assuming selectedFilePath is a state variable
+          selectedFilePath = path;
+          selectedFile = fl;
         });
       }
     }

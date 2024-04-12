@@ -27,6 +27,7 @@ import 'package:chamasoft/helpers/endpoint-url.dart';
 import 'package:chamasoft/helpers/post-to-server.dart';
 import 'package:chamasoft/helpers/report_helper.dart';
 import 'package:chamasoft/helpers/setting_helper.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6195,15 +6196,15 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<String> submitAMTLoanApplication(Map<String, dynamic> formData) async {
+  Future<String> submitAMTLoanApplication(formData) async {
     final url = EndpointUrl.CREATE_AMT_LOAN_APPLICATION;
     try {
       try {
-        formData['user_id'] = _userId;
+        // formData['user_id'] = _userId;
+        // final dio = Dio();
+        //final postRequest = json.encode(formData);
 
-        final postRequest = json.encode(formData);
-
-        final response = await PostToServer.post(postRequest, url);
+        final response = await PostToServer.postDio(formData, url);
 
         return response['message'];
       } catch (error) {
