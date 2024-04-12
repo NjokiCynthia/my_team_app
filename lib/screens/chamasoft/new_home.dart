@@ -1524,24 +1524,21 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
 
                                             if (_currentGroup.referralCode !=
                                                     "" &&
-                                                _currentGroup.isCollective !=
-                                                    '1')
+                                                !_currentGroup.isCollective)
                                               Navigator.of(context).push(
                                                   MaterialPageRoute(
                                                       builder: (BuildContext
                                                               context) =>
                                                           ApplyLoanFromAmt()));
                                             if (_currentGroup.referralCode !=
-                                                    null &&
-                                                _currentGroup.isCollective ==
-                                                    '1')
+                                                    "" &&
+                                                _currentGroup.isCollective)
                                               Navigator.of(context).push(
                                                   MaterialPageRoute(
                                                       builder: (BuildContext
                                                               context) =>
                                                           ApplyIndividualAmtLoan()));
-                                          }
-                                          ),
+                                          }),
                                     ),
                                   ),
                                 ),

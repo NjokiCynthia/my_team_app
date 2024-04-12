@@ -45,10 +45,14 @@ class _ApplyIndividualAmtLoanState extends State<ApplyIndividualAmtLoan> {
       };
       final body = {
         "referral_code": group.referralCode,
-        "is_collective": group.isCollective
+        "is_collective": 1,
+        //group.isCollective
         //1
       };
       // final body = {"referral_code": "VTW1633", "is_collective": 1};
+      print('fOR AN INDIVIDUAL GROUP');
+      print(body);
+      print(group.referralCode);
 
       try {
         final response = await http.post(Uri.parse(url),

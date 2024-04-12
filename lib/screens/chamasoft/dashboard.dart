@@ -396,9 +396,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             automaticallyImplyLeading: false,
             actions: <Widget>[
               Visibility(
-                // visible:
-                // true,
-                visible: _currentGroup.isGroupAdmin,
+                visible: true,
+                // visible: _currentGroup.isGroupAdmin,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -442,8 +441,6 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                       title: 'Chamasoft Notifications',
                       description:
                           "View all your Transactions Notification from Here",
-
-                     
                       textColor: Theme.of(context)
                           .textSelectionTheme
                           .selectionHandleColor,
@@ -451,9 +448,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                         icon: Icon(
                           Icons.notifications,
                           color: Config.appName.toLowerCase() == 'chamasoft'
-                              ?
-                             
-                              Theme.of(context)
+                              ? Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor
                               : primaryColor,
@@ -509,17 +504,13 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 title: 'Chamasoft Settings',
                 description:
                     "Personalize your Chama Settings, Personal Settings,Help and Assistance , Preferences and Terms and Conditions",
-
-               
                 textColor:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                 child: IconButton(
                   icon: Icon(
                     Icons.settings,
                     color: Config.appName.toLowerCase() == 'chamasoft'
-                        ?
-                       
-                        Theme.of(context)
+                        ? Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor
                         : primaryColor,
@@ -566,8 +557,6 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   key: homeDashboardKey,
                   title: 'Personal Dashboard',
                   description: "View all your Summarized Transactions",
-
-                 
                   textColor:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                   child: Icon(
@@ -592,7 +581,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               //     description:
               //         "View your Chamas Transaction Summary, Loan balances and Accounts balances",
 
-              //    
+              //
               //     textColor: Theme.of(context).textSelectionHandleColor,
               //     child: Icon(
               //       Feather.users,
@@ -603,7 +592,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               //               : Colors.blueGrey[300].withOpacity(0.5),
               //     ),
               //   ),
-              //  
+              //
               //   title: Text(
               //     toBeginningOfSentenceCase(
               //         getUserName((_group.groupName).replaceAll(" ", "-"))),
@@ -624,7 +613,6 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   description:
                       "Manually Record chama Transactions, Create withdrawals form E-Walet and Invoice Transfers",
 
-                 
                   textColor: Colors.black,
                   // Theme.of(context).textSelectionTheme.selectionHandleColor,
                   child: Icon(
@@ -636,7 +624,6 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                             : Colors.blueGrey[300].withOpacity(1.0),
                   ),
                 ),
-               
                 label: "Transactions",
               ),
               //),
@@ -646,7 +633,6 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   title: 'Chamasoft Reports',
                   description:
                       "View well summarized Transactions reports and Reciepts, You can down load and share.",
-                 
                   textColor:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                   child: Icon(
@@ -658,7 +644,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                             : Colors.blueGrey[300].withOpacity(0.5),
                   ),
                 ),
-               
+
                 label: 'Reports',
                 // style: TextStyle(
                 //   color: _currentPage == /*3*/ 2
@@ -677,7 +663,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               //     title: 'Chamasoft MarketPlace',
               //     description: "View Chamasoft Post Ads",
 
-              //    
+              //
               //     textColor: Theme.of(context).textSelectionHandleColor,
               //     child: Icon(
               //       Feather.shopping_cart,
@@ -688,7 +674,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               //               : Colors.blueGrey[300].withOpacity(0.5),
               //     ),
               //   ),
-              //  
+              //
               //   title: Text(
               //     "Market",
               //     style: TextStyle(

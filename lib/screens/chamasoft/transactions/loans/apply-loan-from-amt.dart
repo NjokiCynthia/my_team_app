@@ -37,8 +37,10 @@ class _ApplyLoanFromAmtState extends State<ApplyLoanFromAmt> {
       };
       final body = {
         "referral_code": group.referralCode,
-        "is_collective": group.isCollective
+        "is_collective": 0,
+        //group.isCollective
       };
+      print(body);
       print('I want to see the referral code');
       print(group.referralCode);
       print('I want to see whether the group is collective');
@@ -85,7 +87,7 @@ class _ApplyLoanFromAmtState extends State<ApplyLoanFromAmt> {
         //     .popUntil((Route<dynamic> route) => route.isFirst),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
-        title: "Apply AMT Loan",
+        title: "Apply AMT Group Loan",
       ),
       body: Column(
         children: [
@@ -147,7 +149,7 @@ class AmtLoanProduct extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Loan Product name:',
+                'Loan name:',
                 style: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w500,

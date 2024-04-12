@@ -98,10 +98,9 @@ class ReviewLoanState extends State<ReviewLoan> {
     setState(() {
       _isLoading = true;
     });
-
     _formData["loan_application_id"] = widget.loanApplication.id.toString();
     _formData["action"] = "0";
-
+    _formData['decline_message'] = rejectReason.toString();
     try {
       await Provider.of<Groups>(context, listen: false)
           .cancelLoanRequest(_formData);
@@ -139,11 +138,12 @@ class ReviewLoanState extends State<ReviewLoan> {
                 positiveActionDialogButton(
                     text: "Yes",
                     color: primaryColor,
-                    action: () {
+                    action: () async {
                       _formData["action"] = "1";
                       // Navigator.of(context).pop();
-                      submit();
+                      await submit();
                       fetchApprovalRequests(context);
+                      Navigator.of(context).pop();
                     })
               ],
             ));
@@ -194,6 +194,7 @@ class ReviewLoanState extends State<ReviewLoan> {
               onPressed: () async {
                 await reject();
                 fetchApprovalRequests(context);
+                Navigator.of(context).pop();
               },
             ),
           ],
