@@ -162,6 +162,12 @@ class ReviewLoanState extends State<ReviewLoan> {
             onChanged: (reason) {
               rejectReason = reason;
             },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a reason for rejecting the loan application';
+              }
+              return null; // Return null if validation succeeds
+            },
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.auto,
               enabledBorder: UnderlineInputBorder(
@@ -192,9 +198,11 @@ class ReviewLoanState extends State<ReviewLoan> {
                 style: new TextStyle(color: primaryColor),
               ),
               onPressed: () async {
-                await reject();
-                fetchApprovalRequests(context);
-                Navigator.of(context).pop();
+                if (Form.of(context).validate()) {
+                  await reject();
+                  fetchApprovalRequests(context);
+                  Navigator.of(context).pop();
+                }
               },
             ),
           ],
@@ -203,6 +211,7 @@ class ReviewLoanState extends State<ReviewLoan> {
     );
   }
 
+  bool isAnyDeclined = false;
   @override
   Widget build(BuildContext context) {
     final groupObject =
@@ -257,13 +266,6 @@ class ReviewLoanState extends State<ReviewLoan> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    // heading2(
-                                    //   text: "${widget.loanApplication.active}",
-                                    //   color: Theme.of(context)
-                                    //       .textSelectionTheme
-                                    //       .selectionHandleColor,
-                                    //   textAlign: TextAlign.start,
-                                    // ),
                                     Visibility(
                                         visible: flag == REVIEW_LOAN,
                                         child: customTitle(
@@ -386,6 +388,21 @@ class ReviewLoanState extends State<ReviewLoan> {
                                     )
                                   : Consumer<Groups>(
                                       builder: (context, groupData, child) {
+                                      bool isAnyDeclined =
+                                          false; // Variable to track if any request is declined
+                                      for (var approvalRequests
+                                          in groupData.loanApprovalrequests) {
+                                        // Check if any request is declined
+                                        if (approvalRequests.isDeclined ==
+                                            '1') {
+                                          isAnyDeclined = true;
+                                          break; // No need to continue loop if one declined request is found
+                                        }
+                                      }
+
+                                      if (isAnyDeclined) {
+                                        print("I am here");
+                                      }
                                       return groupData
                                                   .loanApprovalrequests.length >
                                               0
@@ -404,8 +421,6 @@ class ReviewLoanState extends State<ReviewLoan> {
                                                     approvalRequests = groupData
                                                             .loanApprovalrequests[
                                                         index];
-//approvalRequests
-                                                // .signatoryName,
                                                 return Container(
                                                   child: Row(
                                                     mainAxisAlignment:
@@ -475,6 +490,9 @@ class ReviewLoanState extends State<ReviewLoan> {
               ),
               Visibility(
                 visible: flag == REVIEW_LOAN,
+                //&&
+                //!isAnyDeclined &&
+                // widget.loanApplication.declineReason == null,
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

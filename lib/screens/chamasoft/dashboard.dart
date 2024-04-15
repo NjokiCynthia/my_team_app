@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:chamasoft/config.dart';
-import 'package:chamasoft/main.dart';
+//import 'package:chamasoft/main.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
@@ -32,7 +32,6 @@ import 'meetings/meetings.dart';
 
 import 'package:timezone/timezone.dart' as tz;
 
-// ignore: must_be_immutable
 class ChamasoftDashboard extends StatefulWidget {
   static const namedRoute = "/dashboard";
   static const PREFERENCES_IS_FIRST_LAUNCH_STRING_DASHBOARDS =

@@ -134,6 +134,8 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
   static Future<dynamic> generateResponse(String jsonObjectResponse) async {
     try {
       final response = json.decode(jsonObjectResponse);
+
+      print(response);
       final String secretKey = response["secret"] ?? "";
       final String body = response["body"] ?? "";
       try {
@@ -341,7 +343,33 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
     }
   }
 
-  static Future<dynamic> postDio(formData, String url) async {
+  static Future<dynamic> ResponseGenerate(jsonObjectResponse) async {
+    try {
+      print('See this');
+      print(jsonObjectResponse);
+      final response = jsonObjectResponse;
+      //json.decode(jsonObjectResponse.toString());
+      print('my response');
+      print(response);
+
+      final String secretKey = response["secret"] ?? "";
+      final String body = response["body"] ?? "";
+      try {
+        if (body.isEmpty || secretKey.isEmpty) {
+          return;
+        }
+        final secretKeyString = await _decryptSecretKey(secretKey);
+        var response = _decryptAESCryptoJS(body, secretKeyString);
+        return json.decode(response);
+      } catch (error) {
+        throw (error.toString());
+      }
+    } catch (error) {
+      throw (error.toString());
+    }
+  }
+
+  static Future<dynamic> postDio(FormData formData, String url) async {
     try {
       final result = await InternetAddress.lookup("example.com")
           .timeout(const Duration(seconds: 10), onTimeout: () {
@@ -363,27 +391,24 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
           final String userAccessTokenKey = await Auth.getAccessToken();
           final String userAccessToken =
               userAccessTokenKey ?? _defaultAuthenticationToken;
-          final Map<String, String> headers = {
-            "Secret": secretKey,
-            "Versioncode": versionCode,
-            "Authorization": userAccessToken,
-          };
-          print("Request >>>>>>> $formData");
+          print("Request >>>>>>> ${formData.fields} ${formData.files}");
           // final String postRequest = _encryptAESCryptoJS(formData, randomKey);
           // print("_encryptAESCryptoJS: $postRequest");
-          dio.options.headers['Secret'] = secretKey;
-          dio.options.headers['Versioncode'] = versionCode;
-          dio.options.headers['Authorization'] = userAccessToken;
-
-          try {
-            final response = await dio.post(
-              url.toString(),
-              data: formData,
-            );
-          } catch (error) {
-            print("2: ${error.toString()}");
-            throw error;
-          }
+          Map<String, dynamic> headers = {
+            'Secret': secretKey,
+            'VersionCode': versionCode,
+            'Authorization': userAccessToken,
+          };
+          final response = await dio.post(
+            url.toString(),
+            options: Options(headers: headers),
+            data: formData,
+          );
+          print('Show response');
+          print(response.data);
+          final responseBody = await ResponseGenerate(response.data);
+          print("Server Response >>>>>>>> $responseBody");
+          return responseBody;
         } catch (error) {
           print("3: ${error.toString()}");
           throw (error);

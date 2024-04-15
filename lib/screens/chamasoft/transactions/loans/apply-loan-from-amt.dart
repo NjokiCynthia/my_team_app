@@ -102,7 +102,7 @@ class _ApplyLoanFromAmtState extends State<ApplyLoanFromAmt> {
                       "Apply quick loan from Amt guaranteed by your savings and fellow group members.",
                 ),
                 loanProducts.isEmpty
-                    ? CircularProgressIndicator() // Or your custom loading widget
+                    ? CircularProgressIndicator()
                     : Expanded(
                         child: ListView.builder(
                           shrinkWrap: true,

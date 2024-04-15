@@ -1,21 +1,15 @@
-import 'dart:convert';
-
-import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
-import 'package:chamasoft/screens/chamasoft/reports/group/group-loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/reports/loan-applications.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:platform_file/platform_file.dart' as File;
 import 'package:provider/provider.dart';
-import 'package:path/path.dart' as p;
 
 class IndividualLoanStepper extends StatefulWidget {
   const IndividualLoanStepper({Key key, this.selectedLoanProduct})
@@ -53,7 +47,8 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
         'minAmount', widget.selectedLoanProduct['minAmount'].toString()));
     formData.fields.add(MapEntry(
         'maxAmount', widget.selectedLoanProduct['maxAmount'].toString()));
-    formData.fields.add(MapEntry('loan_product_id', '2441'));
+    formData.fields.add(MapEntry(
+        'loan_product_id', widget.selectedLoanProduct['_id'].toString()));
     formData.fields.add(MapEntry('repayment_period',
         widget.selectedLoanProduct['repayment_period'].toString()));
     formData.fields.add(
@@ -126,15 +121,9 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
         .add(MapEntry('type', widget.selectedLoanProduct['type'].toString()));
     formData.fields.add(MapEntry('comments', ['test', 'test'].toString()));
     formData.fields.add(MapEntry('metadata', _data.toString()));
+    formData.fields.add(MapEntry('requireDocuments',
+        widget.selectedLoanProduct['requireDocuments'].toString()));
 
-    // additionalDocumentFields.forEach((docField) {
-    //   String slug = docField['slug'];
-    //   if (filePaths.containsKey(slug)) {
-    //     // formData[slug] = "@${filePaths[slug]}";
-    //     formData[slug] = p.basename(filePaths[slug]);
-    //   }
-    // });
-    // formdata.fields.addAll(formData as Iterable<MapEntry<String, String>>);
     additionalDocumentFields.forEach((docField) async {
       String slug = docField['slug'];
       formData.files.add(MapEntry(

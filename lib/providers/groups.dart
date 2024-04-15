@@ -6196,6 +6196,24 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<String> submitAmtGroupLoanApplication(
+      Map<String, dynamic> formData) async {
+    final url = EndpointUrl.CREATE_AMT_LOAN_APPLICATION;
+    print('I want to see myself at this point');
+    try {
+      try {
+        formData['user_id'] = _userId;
+        final postRequest = json.encode(formData);
+        final response = await PostToServer.post(postRequest, url);
+        return response['message'];
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   Future<String> submitAMTLoanApplication(formData) async {
     final url = EndpointUrl.CREATE_AMT_LOAN_APPLICATION;
     try {
@@ -6207,6 +6225,7 @@ class Groups with ChangeNotifier {
         final response = await PostToServer.postDio(formData, url);
 
         return response['message'];
+        
       } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
       }
