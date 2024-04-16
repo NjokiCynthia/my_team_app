@@ -18,7 +18,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:share_plus/share_plus.dart';
+//import 'package:share_plus/share_plus.dart';
 // import 'package:share/share.dart';
 
 class DetailReciept extends StatefulWidget {
@@ -43,7 +43,7 @@ class _DetailRecieptState extends State<DetailReciept> {
     final text =
         "Shared from Chamasoft Mobile. " + "\n" + "https://bit.ly/3GkX3lM";
 
-    await Share.shareFiles([image.path], text: text);
+   // await Share.shareFiles([image.path], text: text);
   }
 
   @override
@@ -241,17 +241,17 @@ class _DetailRecieptState extends State<DetailReciept> {
                     children: [
                       InkWell(
                         onTap: () async {
-                          await Share.share(widget.deposit.depositor +
-                              " " +
-                              'deposited ' +
-                              widget.deposit.narration +
-                              " " +
-                              "on " +
-                              widget.deposit.date +
-                              "\n" +
-                              group.groupName +
-                              "\n" +
-                              "https://bit.ly/3GkX3lM ");
+                          // await Share.share(widget.deposit.depositor +
+                          //     " " +
+                          //     'deposited ' +
+                          //     widget.deposit.narration +
+                          //     " " +
+                          //     "on " +
+                          //     widget.deposit.date +
+                          //     "\n" +
+                          //     group.groupName +
+                          //     "\n" +
+                          //     "https://bit.ly/3GkX3lM ");
                         },
                         child: Row(
                           children: [

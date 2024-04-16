@@ -51,7 +51,7 @@ class _ResetPinState extends State<ResetPin> {
                       SizedBox(
                         height: 30.0,
                       ),
-                      // ignore: deprecated_member_use
+                     
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
@@ -62,7 +62,7 @@ class _ResetPinState extends State<ResetPin> {
                                       content: Text(
                                           "Are you sure you want to Reset your pin?"),
                                       actions: [
-                                        // ignore: deprecated_member_use
+                                       
                                         TextButton(
                                           // FlatButton widget is used to make a text to work like a button
 
@@ -76,7 +76,7 @@ class _ResetPinState extends State<ResetPin> {
                                                 TextStyle(color: Colors.black),
                                           ),
                                         ),
-                                        // ignore: deprecated_member_use
+                                       
                                         TextButton(
                                           //textColor: Colors.black,
                                           onPressed: () {

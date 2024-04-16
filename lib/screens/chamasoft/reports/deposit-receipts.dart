@@ -7,6 +7,7 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
 import 'package:chamasoft/screens/chamasoft/reports/deposit-reciepts-detail.dart';
 import 'package:chamasoft/screens/chamasoft/reports/filter_container.dart';
@@ -150,12 +151,19 @@ class _DepositReceiptsState extends State<DepositReceipts> {
   @override
   Widget build(BuildContext context) {
     _deposits = Provider.of<Groups>(context, listen: true).getDeposits;
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
 
     return Scaffold(
         key: _scaffoldKey,
         appBar: secondaryPageAppbar(
             context: context,
-            title: "Deposit Receipts",
+            title: currentLanguage == 'English'
+                ? 'Deposit Receipts'
+                : Provider.of<TranslationProvider>(context, listen: false)
+                        .translate('Deposit Receipts') ??
+                    'Deposit Receipts',
             action: () => Navigator.of(context).pop(),
             elevation: 1,
             leadingIcon: LineAwesomeIcons.arrow_left),
@@ -205,13 +213,17 @@ class _DepositReceiptsState extends State<DepositReceipts> {
                                       children: [
                                         Icon(LineAwesomeIcons.sort,
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
                                                 .textSelectionTheme
                                                 .selectionHandleColor),
                                         subtitle1(
-                                            text: "Sort",
+                                            text: currentLanguage == 'English'
+                                                ? 'Sort'
+                                                : Provider.of<TranslationProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .translate('Sort') ??
+                                                    'Sort',
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
                                                 .textSelectionTheme
                                                 .selectionHandleColor)
                                       ],
@@ -248,13 +260,17 @@ class _DepositReceiptsState extends State<DepositReceipts> {
                                       children: [
                                         Icon(LineAwesomeIcons.filter,
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
                                                 .textSelectionTheme
                                                 .selectionHandleColor),
                                         subtitle1(
-                                            text: "Filter",
+                                            text: currentLanguage == 'English'
+                                                ? 'Filter'
+                                                : Provider.of<TranslationProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .translate('Filter') ??
+                                                    'Filter',
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
                                                 .textSelectionTheme
                                                 .selectionHandleColor)
                                       ],
@@ -298,7 +314,12 @@ class _DepositReceiptsState extends State<DepositReceipts> {
                           : emptyList(
                               color: Colors.blue[400],
                               iconData: LineAwesomeIcons.angle_double_down,
-                              text: "There are no deposits to display"),
+                              text: currentLanguage == 'English'
+                                ? 'There are no deposits to display'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('There are no deposits to display') ??
+                                    'There are no deposits to display',),
                     )
                   ],
                 ))));
@@ -320,6 +341,9 @@ class DepositCard extends StatelessWidget {
   GlobalKey _containerKey = GlobalKey();
 
   void _voidTransaction(String id) async {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(bodyContext, listen: false)
+            .currentLanguage;
     Navigator.of(bodyContext).pop();
     showDialog<String>(
         context: bodyContext,
@@ -334,7 +358,13 @@ class DepositCard extends StatelessWidget {
           .voidDepositTransaction(id, position, bodyContext);
       Navigator.of(bodyContext).pop();
       StatusHandler().showSuccessSnackBar(
-          bodyContext, "Good news: Deposit successfully voided");
+        bodyContext,
+        currentLanguage == 'English'
+            ? 'Good news: Deposit successfully voided'
+            : Provider.of<TranslationProvider>(bodyContext, listen: false)
+                    .translate('Good news: Deposit successfully voided') ??
+                'Good news: Deposit successfully voided',
+      );
     } on CustomException catch (error) {
       Navigator.of(bodyContext).pop();
       StatusHandler().handleStatus(
@@ -380,6 +410,9 @@ class DepositCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Padding(
@@ -411,23 +444,17 @@ class DepositCard extends StatelessWidget {
                               customTitle1(
                                 text: deposit.type,
                                 fontSize: 16.0,
-                                // ignore: deprecated_member_use
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context)
-                                        .textSelectionTheme
-                                        .selectionHandleColor,
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                                 textAlign: TextAlign.start,
                               ),
                               subtitle2(
                                 text: deposit.name,
                                 textAlign: TextAlign.start,
-                                // ignore: deprecated_member_use
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context)
-                                        .textSelectionTheme
-                                        .selectionHandleColor,
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                               )
                             ],
                           ),
@@ -442,7 +469,6 @@ class DepositCard extends StatelessWidget {
                             customTitle(
                               text: "${groupObject.groupCurrency} ",
                               fontSize: 18.0,
-                              // ignore: deprecated_member_use
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -450,7 +476,6 @@ class DepositCard extends StatelessWidget {
                             ),
                             heading2(
                               text: currencyFormat.format(deposit.amount),
-                              // ignore: deprecated_member_use
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -474,24 +499,24 @@ class DepositCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               subtitle2(
-                                  text: "Paid By",
-                                  color:
-                                      // ignore: deprecated_member_use
-                                      Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionTheme
-                                          .selectionHandleColor,
+                                  text: currentLanguage == 'English'
+                                      ? 'Paid By'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('Paid By') ??
+                                          'Paid By',
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.start),
                               customTitle1(
                                   text: deposit.depositor,
                                   fontSize: 15.0,
                                   fontWeight: FontWeight.w600,
-                                  color:
-                                      // ignore: deprecated_member_use
-                                      Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionTheme
-                                          .selectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.start),
                             ],
                           ),
@@ -499,23 +524,23 @@ class DepositCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
                               subtitle2(
-                                  text: "Paid On",
-                                  color:
-                                      // ignore: deprecated_member_use
-                                      Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionTheme
-                                          .selectionHandleColor,
+                                  text: currentLanguage == 'English'
+                                      ? 'Paid On'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('Paid On') ??
+                                          'Paid On',
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.end),
                               customTitle1(
                                   text: deposit.date,
                                   fontSize: 16,
-                                  color:
-                                      // ignore: deprecated_member_use
-                                      Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionTheme
-                                          .selectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.end)
                             ],
                           ),
@@ -531,24 +556,23 @@ class DepositCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         subtitle2(
-                            text: "Narration: ",
-                            color:
-                                // ignore: deprecated_member_use
-                                Theme.of(context)
-                                    // ignore: deprecated_member_use
-                                    .textSelectionTheme
-                                    .selectionHandleColor,
+                            text: currentLanguage == 'English'
+                                ? 'Narration:'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Narration:') ??
+                                    'Narration:',
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             textAlign: TextAlign.start),
                         subtitle2(
                             text:
                                 "${deposit.narration} -- ${deposit.reconciliation}",
                             fontSize: 12.0,
-                            color:
-                                // ignore: deprecated_member_use
-                                Theme.of(context)
-                                    // ignore: deprecated_member_use
-                                    .textSelectionTheme
-                                    .selectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             textAlign: TextAlign.start),
                       ],
                     ),
@@ -577,7 +601,12 @@ class DepositCard extends StatelessWidget {
                               ? Row(
                                   children: <Widget>[
                                     plainButtonWithIcon(
-                                        text: "VOID",
+                                        text: currentLanguage == 'English'
+                                ? 'VOID'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('VOID') ??
+                                    'VOID',
                                         size: 14.0,
                                         spacing: 2.0,
                                         color: Colors.red,
@@ -590,7 +619,12 @@ class DepositCard extends StatelessWidget {
                                             context: context,
                                             message:
                                                 "Are you sure you want to void ${deposit.type} of ${groupObject.groupCurrency} ${currencyFormat.format(deposit.amount)} by ${deposit.depositor}?",
-                                            title: "Confirm Action",
+                                            title: currentLanguage == 'English'
+                                ? 'Confirm Action'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Confirm Action') ??
+                                    'Confirm Action',
                                           );
                                         }),
                                   ],
@@ -616,7 +650,12 @@ class DepositCard extends StatelessWidget {
                           Row(
                             children: <Widget>[
                               plainButtonWithArrow(
-                                  text: "VIEW",
+                                  text: currentLanguage == 'English'
+                                ? 'VIEW'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('VIEW') ??
+                                    'VIEW',
                                   size: 14.0,
                                   spacing: 2.0,
                                   color: Colors.blue,

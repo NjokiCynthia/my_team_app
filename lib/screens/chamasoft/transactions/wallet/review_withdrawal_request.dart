@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/withdrawal-request.dart';
 import 'package:chamasoft/screens/chamasoft/reports/filter_container.dart';
 import 'package:chamasoft/screens/chamasoft/reports/sort-container.dart';
@@ -135,6 +136,9 @@ class _ReviewWithdrawalRequestState extends State<ReviewWithdrawalRequest> {
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage; //get current language
     return WillPopScope(
       onWillPop: () {
         Navigator.of(context).pop();
@@ -150,7 +154,11 @@ class _ReviewWithdrawalRequestState extends State<ReviewWithdrawalRequest> {
             //Navigator.of(context).pop(),
             elevation: 1,
             leadingIcon: LineAwesomeIcons.arrow_left,
-            title: "Review Withdrawal Requests",
+            title: currentLanguage == 'English'
+                ? 'Review Withdrawal Requests'
+                : Provider.of<TranslationProvider>(context, listen: false)
+                        .translate('Review Withdrawal Requests') ??
+                    'Review Withdrawal Requests',
           ),
           backgroundColor: Colors.transparent,
           body: RefreshIndicator(
@@ -195,7 +203,13 @@ class _ReviewWithdrawalRequestState extends State<ReviewWithdrawalRequest> {
                                             .textSelectionTheme
                                             .selectionHandleColor),
                                     subtitle1(
-                                        text: "Sort",
+                                        text: currentLanguage == 'English'
+                                            ? 'Sort'
+                                            : Provider.of<TranslationProvider>(
+                                                        context,
+                                                        listen: false)
+                                                    .translate('Sort') ??
+                                                'Sort',
                                         color: Theme.of(context)
                                             .textSelectionTheme
                                             .selectionHandleColor)
@@ -232,7 +246,13 @@ class _ReviewWithdrawalRequestState extends State<ReviewWithdrawalRequest> {
                                             .textSelectionTheme
                                             .selectionHandleColor),
                                     subtitle1(
-                                        text: "Filter",
+                                        text: currentLanguage == 'English'
+                                            ? 'Filter'
+                                            : Provider.of<TranslationProvider>(
+                                                        context,
+                                                        listen: false)
+                                                    .translate('Filter') ??
+                                                'Filter',
                                         color: Theme.of(context)
                                             .textSelectionTheme
                                             .selectionHandleColor)
@@ -275,8 +295,14 @@ class _ReviewWithdrawalRequestState extends State<ReviewWithdrawalRequest> {
                         : emptyList(
                             color: Colors.blue[400],
                             iconData: LineAwesomeIcons.angle_double_down,
-                            text:
-                                "There are no withdrawal requests to display"),
+                            text: currentLanguage == 'English'
+                                ? 'There are no withdrawal requests to display'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate(
+                                            'There are no withdrawal requests to display') ??
+                                    'There are no withdrawal requests to display',
+                          ),
                   ),
                 ],
               ),
@@ -311,6 +337,9 @@ class WithdrawalRequestCard extends StatelessWidget {
       iconData = LineAwesomeIcons.times;
       color = Colors.red;
     }
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage; //get current language
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
       child: Card(
@@ -379,7 +408,12 @@ class WithdrawalRequestCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             subtitle2(
-                                text: "Requested On",
+                                text: currentLanguage == 'English'
+                                    ? 'Requested On'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate('Requested On') ??
+                                        'Requested On',
                                 color: Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,
@@ -404,7 +438,12 @@ class WithdrawalRequestCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
                             subtitle2(
-                                text: "Initiate By",
+                                text: currentLanguage == 'English'
+                                    ? 'Initiate By'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate('Initiate By') ??
+                                        'Initiate By',
                                 color: Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,
@@ -425,7 +464,12 @@ class WithdrawalRequestCard extends StatelessWidget {
                   height: 5,
                 ),
                 subtitle2(
-                    text: "Recipient",
+                    text: currentLanguage == 'English'
+                        ? 'Recipient'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate('Recipient') ??
+                            'Recipient',
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor,
@@ -447,8 +491,18 @@ class WithdrawalRequestCard extends StatelessWidget {
                     children: [
                       subtitle2(
                           text: request.statusCode == 5
-                              ? "Disbursed To"
-                              : "Disbursement Status",
+                              ? currentLanguage == 'English'
+                                  ? 'Disbursed To'
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate('Disbursed To') ??
+                                      'Disbursed To'
+                              : currentLanguage == 'English'
+                                  ? 'Disbursement Status'
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate('Disbursement Status') ??
+                                      'Disbursement Status',
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -499,10 +553,25 @@ class WithdrawalRequestCard extends StatelessWidget {
                     ),
                     plainButtonWithArrow(
                         text: request.isOwner == 1
-                            ? "VIEW"
+                            ? currentLanguage == 'English'
+                                ? 'VIEW'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('VIEW') ??
+                                    'VIEW'
                             : request.hasResponded == 0
-                                ? "RESPOND"
-                                : "VIEW",
+                                ? currentLanguage == 'English'
+                                    ? 'RESPOND'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate('RESPOND') ??
+                                        'RESPOND'
+                                : currentLanguage == 'English'
+                                    ? 'VIEW'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate('VIEW') ??
+                                        'VIEW',
                         // ignore: todo
                         //TODO: Admin Restrictions
                         size: 16.0,

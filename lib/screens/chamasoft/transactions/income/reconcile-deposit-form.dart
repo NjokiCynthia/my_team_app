@@ -192,7 +192,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
                 onPressed: () => _newReconcileDepositDialog(),
                 icon: Icon(
                   Icons.add,
-                  // ignore: deprecated_member_use
+                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
@@ -272,7 +272,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
                             text: "Total amount reconciled",
                             textAlign: TextAlign.start,
                             color:
-                                // ignore: deprecated_member_use
+                               
                                 Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor),
@@ -280,7 +280,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
                             text:
                                 "${groupObject.groupCurrency} ${currencyFormat.format(totalReconciled)}",
                             textAlign: TextAlign.start,
-                            // ignore: deprecated_member_use
+                           
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor),

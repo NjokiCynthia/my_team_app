@@ -3,6 +3,7 @@
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/reconcile-withdrawal-form.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -140,6 +141,9 @@ class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
   // Provider.of<Groups>(context, listen: false).getCurrentGroup();
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     _unreconciledWithdrawal =
         Provider.of<Groups>(context, listen: true).getUnreconciledWithdrawals;
@@ -155,7 +159,11 @@ class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
                       : Navigator.of(context).pop(),
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
-          title: "Reconcile Withdrawals",
+          title: currentLanguage == 'English'
+              ? 'Reconcile Withdrawals'
+              : Provider.of<TranslationProvider>(context, listen: false)
+                      .translate('Reconcile Withdrawals') ??
+                  'Reconcile Withdrawals',
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
@@ -187,8 +195,14 @@ class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
                         : emptyList(
                             color: Colors.blue[400],
                             iconData: LineAwesomeIcons.angle_double_down,
-                            text:
-                                "There are no unreconciled withdrawals to display"),
+                            text: currentLanguage == 'English'
+                                ? 'There are no unreconciled withdrawals to display'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate(
+                                            'There are no unreconciled withdrawals to display') ??
+                                    'There are no unreconciled withdrawals to display',
+                          ),
                   ),
                 ]))));
   }
@@ -217,6 +231,9 @@ class _UnreconciledWithdrawalCardState
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
       child: Card(
@@ -258,7 +275,7 @@ class _UnreconciledWithdrawalCardState
                             customTitle(
                               text: "${widget.groupObject.groupCurrency} ",
                               fontSize: 18.0,
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -267,7 +284,7 @@ class _UnreconciledWithdrawalCardState
                             heading2(
                               text: currencyFormat
                                   .format(widget.withdrawal.amount),
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -324,7 +341,7 @@ class _UnreconciledWithdrawalCardState
                 padding: const EdgeInsets.all(4.0),
                 child: Row(
                   children: [
-                    // ignore: deprecated_member_use
+                   
                     TextButton(
                       onPressed: () {
                         setState(() {
@@ -333,9 +350,25 @@ class _UnreconciledWithdrawalCardState
                       },
                       child: Row(
                         children: [
-                          Text(_isExpanded ? "View less" : "View more",
+                          Text(
+                              _isExpanded
+                                  ? currentLanguage == 'English'
+                                      ? 'View less'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('View less') ??
+                                          'View less'
+                                  : currentLanguage == 'English'
+                                      ? 'View more'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('View more') ??
+                                          'View more',
                               style: TextStyle(
-                                  color: Theme.of(context).colorScheme.secondary)),
+                                  color:
+                                      Theme.of(context).colorScheme.secondary)),
                           Icon(
                             _isExpanded ? Icons.expand_less : Icons.expand_more,
                             color: Theme.of(context).colorScheme.secondary,
@@ -344,7 +377,7 @@ class _UnreconciledWithdrawalCardState
                       ),
                     ),
                     Spacer(),
-                    // ignore: deprecated_member_use
+                   
                     TextButton(
                       onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute(
@@ -358,9 +391,14 @@ class _UnreconciledWithdrawalCardState
                       child: Row(
                         children: [
                           Text(
-                            "Reconcile",
-                            style:
-                                TextStyle(color: Theme.of(context).colorScheme.secondary),
+                            currentLanguage == 'English'
+                                ? 'Reconcile'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Reconcile') ??
+                                    'Reconcile',
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.secondary),
                           ),
                           Icon(
                             Icons.arrow_right_rounded,

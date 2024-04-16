@@ -139,7 +139,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                       subtitle1(
                           text: widget.groupLoanName,
                           /*widget.typeLoan.loanName*/
-                          // ignore: deprecated_member_use
+
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -148,8 +148,6 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                       subtitle2(
                           text:
                               "${groupObject.groupCurrency} ${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}",
-
-                          // ignore: deprecated_member_use
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -167,7 +165,6 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                         children: <Widget>[
                           subtitle1(
                             text: "Interest Rate: ",
-                            // ignore: deprecated_member_use
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -175,7 +172,6 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                           subtitle2(
                             textAlign: TextAlign.start,
                             text: widget.loanInterestRate.toString() + " %",
-                            // ignore: deprecated_member_use
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -187,7 +183,6 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                         children: <Widget>[
                           subtitle1(
                             text: "Repayment Period: ",
-                            // ignore: deprecated_member_use
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -195,7 +190,6 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                           subtitle2(
                             textAlign: TextAlign.start,
                             text: "${widget.repayementPeriod}  Month(s)",
-                            // ignore: deprecated_member_use
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -207,7 +201,6 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                         children: <Widget>[
                           subtitle1(
                             text: "Application Date: ",
-                            // ignore: deprecated_member_use
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -215,7 +208,6 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                           subtitle2(
                             textAlign: TextAlign.start,
                             text: formate2,
-                            // ignore: deprecated_member_use
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -224,11 +216,6 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                       ),
                     ],
                   ),
-                  Column(
-                    //crossAxisAlignment: CrossAxisAlignment.,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[],
-                  )
                 ],
               ),
             ),
@@ -241,7 +228,8 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
               child: Column(
                 children: [
                   Container(
-                    // width: double.infinity, _loanCalculator['breakdown']
+                    width: double.infinity,
+                    //_loanCalculator['breakdown'],
 
                     child: CustomDataTable(
                       rowItems: generateTableRows(),
@@ -252,30 +240,33 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        DataTable(
-                            headingRowColor: MaterialStateColor.resolveWith(
-                              (states) => (themeChangeProvider.darkTheme)
-                                  ? Colors.blueGrey[800]
-                                  : Color(0xffededfe),
-                            ),
-                            columnSpacing: 45.0,
-                            columns: [
-                              DataColumn(label: subtitle3(text: 'Total:')),
-                              DataColumn(
-                                  label: subtitle3(
-                                      text:
-                                          "${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}")),
-                              DataColumn(
-                                  label: subtitle3(
-                                      text:
-                                          "${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPrinciple'])}")), //totalPrinciple
-                              DataColumn(
-                                  label: subtitle3(
-                                      text:
-                                          "${currencyFormat.format(_loanCalculator['amortizationTotals']['totalInterest'])}")), //totalInterest
-                              DataColumn(label: subtitle3(text: '0      '))
-                            ],
-                            rows: <DataRow>[]),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: DataTable(
+                              headingRowColor: MaterialStateColor.resolveWith(
+                                (states) => (themeChangeProvider.darkTheme)
+                                    ? Colors.blueGrey[800]
+                                    : Color(0xffededfe),
+                              ),
+                              columnSpacing: 45.0,
+                              columns: [
+                                DataColumn(label: subtitle3(text: 'Total:')),
+                                DataColumn(
+                                    label: subtitle3(
+                                        text:
+                                            "${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}")),
+                                DataColumn(
+                                    label: subtitle3(
+                                        text:
+                                            "${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPrinciple'])}")), //totalPrinciple
+                                DataColumn(
+                                    label: subtitle3(
+                                        text:
+                                            "${currencyFormat.format(_loanCalculator['amortizationTotals']['totalInterest'])}")), //totalInterest
+                                DataColumn(label: subtitle3(text: '0      '))
+                              ],
+                              rows: <DataRow>[]),
+                        ),
                       ],
                     ),
                   )
@@ -294,7 +285,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
         .map((breakdown) => rows.add(DataRow(
               cells: <DataCell>[
                 DataCell(subtitle3(
-                  text: breakdown['dueDate'],
+                  text: '${breakdown['dueDate']}',
                 )),
                 DataCell(subtitle3(
                     text: currencyFormat.format(breakdown['amountPayable']),

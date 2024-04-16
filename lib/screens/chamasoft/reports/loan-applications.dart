@@ -1,24 +1,26 @@
+import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/models/loan-application.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 // import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-class LoanApplications extends StatefulWidget {
+class ListLoanApplications extends StatefulWidget {
   @override
-  _LoanApplicationsState createState() => _LoanApplicationsState();
+  _ListLoanApplicationsState createState() => _ListLoanApplicationsState();
 }
 
-class _LoanApplicationsState extends State<LoanApplications> {
+class _ListLoanApplicationsState extends State<ListLoanApplications> {
   double _appBarElevation = 0;
-  ScrollController _scrollController;
+  ScrollController _scrollController = ScrollController();
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -33,82 +35,107 @@ class _LoanApplicationsState extends State<LoanApplications> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    fetchLoanApplications(context);
     super.initState();
   }
 
   @override
   void dispose() {
-    _scrollController?.removeListener(_scrollListener);
-    _scrollController?.dispose();
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
     super.dispose();
+  }
+
+  bool _isLoading = false;
+  Group _currentGroup;
+
+  Future<void> fetchLoanApplications(BuildContext context) async {
+    _currentGroup =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      await Provider.of<Groups>(context, listen: false)
+          .fetchMemberLoanApplications(memberId: _currentGroup.memberId);
+      setState(() {});
+    } on CustomException catch (error) {
+      print(error.message);
+      final snackBar = SnackBar(
+        content: Text('Network Error occurred: could not fetch invoices'),
+        action: SnackBarAction(
+          label: 'Retry',
+          onPressed: () async {
+            fetchLoanApplications(context);
+          },
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    List<LoanApplication> list = [
-      LoanApplication(
-          loanApplicationId: 1,
-          requestDate: DateTime.now(),
-          amount: 2000,
-          loanName: 'Emergency Loan',
-          status: 1),
-      LoanApplication(
-          loanApplicationId: 2,
-          requestDate: DateTime.now(),
-          amount: 6000,
-          loanName: 'Chama Loan',
-          status: 2),
-      LoanApplication(
-          loanApplicationId: 3,
-          requestDate: DateTime.now(),
-          amount: 15000,
-          loanName: 'Education Loan',
-          status: 3),
-      LoanApplication(
-          loanApplicationId: 4,
-          requestDate: DateTime.now(),
-          amount: 6000,
-          loanName: 'Shamba Loan',
-          status: 1),
-      LoanApplication(
-          loanApplicationId: 5,
-          requestDate: DateTime.now(),
-          amount: 8000,
-          loanName: 'Vacation Loan',
-          status: 1),
-    ];
+    return WillPopScope(
+      onWillPop: () async {
+        int count = 0;
+        Navigator.of(context).popUntil((_) => count++ >= 4);
 
-    return Scaffold(
-      appBar: secondaryPageAppbar(
-          context: context,
-          title: "My Loan Applications",
-          action: () => Navigator.of(context).pop(),
-          elevation: _appBarElevation,
-          leadingIcon: LineAwesomeIcons.arrow_left),
-      backgroundColor: Colors.transparent,
-      body: Container(
-        decoration: primaryGradient(context),
-        width: double.infinity,
-        height: double.infinity,
-        child: ListView.builder(
-            itemBuilder: (context, index) {
-              LoanApplication application = list[index];
-              return MyLoansCard(
-                application: application,
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          ReviewLoan(loanApplication: application),
-                      settings:
-                          RouteSettings(arguments: VIEW_APPLICATION_STATUS),
-                    ),
-                  );
-                },
-              );
-            },
-            itemCount: list.length),
-      ),
+        return false;
+      },
+      child: Scaffold(
+          appBar: secondaryPageAppbar(
+              context: context,
+              title: "My Loan Applications",
+              action: () {
+                int count = 0;
+                Navigator.of(context).popUntil(
+                    (_) => count++ >= 4); // Pop back to the previous screen
+              },
+              elevation: _appBarElevation,
+              leadingIcon: LineAwesomeIcons.arrow_left),
+          backgroundColor: Colors.transparent,
+          body: Container(
+            decoration: primaryGradient(context),
+            width: double.infinity,
+            height: double.infinity,
+            child: _isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Consumer<Groups>(builder: (context, groupData, child) {
+                    return groupData.loanApplications.length > 0
+                        ? ListView.builder(
+                            itemBuilder: (context, index) {
+                              LoanApplications applications =
+                                  groupData.loanApplications[index];
+
+                              return MyLoansCard(
+                                application: applications,
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          ReviewLoan(
+                                              loanApplication: applications),
+                                      settings: RouteSettings(
+                                          arguments: VIEW_APPLICATION_STATUS),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            itemCount: groupData.loanApplications.length,
+                          )
+                        : betterEmptyList(
+                            message:
+                                "Sorry, you have not added any loan applications");
+                  }),
+          )),
     );
   }
 }
@@ -117,7 +144,7 @@ class MyLoansCard extends StatelessWidget {
   const MyLoansCard({Key key, @required this.application, this.onPressed})
       : super(key: key);
 
-  final LoanApplication application;
+  final LoanApplications application;
   final Function onPressed;
 
   @override
@@ -146,12 +173,13 @@ class MyLoansCard extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: Text(
-                          application.loanName,
+                          application.applicationName,
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16.0,
-                            // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           ),
                           textAlign: TextAlign.start,
                           maxLines: 2,
@@ -179,16 +207,15 @@ class MyLoansCard extends StatelessWidget {
                           children: <Widget>[
                             subtitle2(
                                 text: "Applied On",
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                                 textAlign: TextAlign.start),
                             subtitle1(
-                                text: defaultDateFormat
-                                    .format(application.requestDate),
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                text: application.createdOn,
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                                 textAlign: TextAlign.start)
                           ],
                         ),
@@ -200,20 +227,21 @@ class MyLoansCard extends StatelessWidget {
                               "${groupObject.groupCurrency} ",
                               style: TextStyle(
                                 fontSize: 16.0,
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
                             Text(
-                              currencyFormat.format(application.amount),
+                              currencyFormat.format(
+                                  double.tryParse(application.loanAmount)),
                               textAlign: TextAlign.end,
                               style: TextStyle(
                                 fontSize: 20.0,
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionTheme.selectionHandleColor,
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -231,14 +259,29 @@ class MyLoansCard extends StatelessWidget {
   }
 
   Widget getStatus() {
-    if (application.status == 2) {
+    if (application.status == 0) {
+      return statusChip(
+          text: "PENDING",
+          textColor: Colors.blueGrey,
+          backgroundColor: Colors.blueGrey.withOpacity(.2));
+    } else if (application.status == 1) {
       return statusChip(
           text: "APPROVED",
           textColor: Colors.lightBlueAccent,
           backgroundColor: Colors.lightBlueAccent.withOpacity(.2));
-    } else if (application.status == 3) {
+    } else if (application.status == 6) {
       return statusChip(
-          text: "REJECTED",
+          text: "DISBURSED",
+          textColor: Colors.lightBlueAccent,
+          backgroundColor: Colors.lightBlueAccent.withOpacity(.2));
+    } else if (application.status == 7) {
+      return statusChip(
+          text: "FAILED",
+          textColor: Colors.red,
+          backgroundColor: Colors.red.withOpacity(.2));
+    } else if (application.status == 8) {
+      return statusChip(
+          text: "DECLINED",
           textColor: Colors.red,
           backgroundColor: Colors.red.withOpacity(.2));
     } else {

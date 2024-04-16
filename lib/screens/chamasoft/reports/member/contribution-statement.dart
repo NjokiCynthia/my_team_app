@@ -267,7 +267,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                                                 +
                                                 defaultTitle,
                                     color: Theme.of(context)
-                                        // ignore: deprecated_member_use
+                                       
                                         .textSelectionTheme
                                         .selectionHandleColor,
                                     textAlign: TextAlign.start),
@@ -280,7 +280,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                                     subtitle2(
                                         text: "Total amount due ",
                                         color: Theme.of(context)
-                                            // ignore: deprecated_member_use
+                                           
                                             .textSelectionTheme
                                             .selectionHandleColor,
                                         textAlign: TextAlign.start),
@@ -289,7 +289,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                                             " " +
                                             currencyFormat.format(_totalDue),
                                         color: Theme.of(context)
-                                            // ignore: deprecated_member_use
+                                           
                                             .textSelectionTheme
                                             .selectionHandleColor,
                                         fontSize: 14,
@@ -306,7 +306,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                                     subtitle2(
                                         text: "Balance ",
                                         color: Theme.of(context)
-                                            // ignore: deprecated_member_use
+                                           
                                             .textSelectionTheme
                                             .selectionHandleColor,
                                         textAlign: TextAlign.start),
@@ -317,7 +317,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                       textAlign: TextAlign.start,
@@ -331,7 +331,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                               text: groupObject.groupCurrency +
                                   " " +
                                   currencyFormat.format(_totalContributions),
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -363,7 +363,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                           subtitle2(
                             text: "Statement as At",
                             color:
-                                // ignore: deprecated_member_use
+                               
                                 Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,
@@ -374,7 +374,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             color:
-                                // ignore: deprecated_member_use
+                               
                                 Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,
@@ -389,7 +389,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                             subtitle2(
                               text: "Statement Period",
                               color: Theme.of(context)
-                                  // ignore: deprecated_member_use
+                                 
                                   .textSelectionTheme
                                   .selectionHandleColor,
                               textAlign: TextAlign.end,
@@ -401,7 +401,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                                   ? "$_statementFrom to $_statementTo"
                                   : "",
                               color: Theme.of(context)
-                                  // ignore: deprecated_member_use
+                                 
                                   .textSelectionTheme
                                   .selectionHandleColor,
                               textAlign: TextAlign.end,
@@ -524,9 +524,9 @@ class _ContributionStatementState extends State<ContributionStatement> {
                                 ? Colors.red
                                 : (_balance < 0
                                     ? Colors.green
-                                    // ignore: deprecated_member_use
+                                   
                                     : Theme.of(context)
-                                        // ignore: deprecated_member_use
+                                       
                                         .textSelectionTheme
                                         .selectionHandleColor),
                             textAlign: TextAlign.end),
@@ -544,9 +544,9 @@ class _ContributionStatementState extends State<ContributionStatement> {
                               : "You have an Underpayment of ${groupObject.groupCurrency + " " + currencyFormat.format(_balance.abs())}",
                           textAlign: TextAlign.start,
                           // fontSize: 14.0,
-                          // ignore: deprecated_member_use
+                         
                           color:
-                              // ignore: deprecated_member_use
+                             
                               Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,

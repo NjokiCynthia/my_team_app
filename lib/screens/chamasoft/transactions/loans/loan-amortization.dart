@@ -87,7 +87,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
         generalAmount * interest * int.parse(monthsOfRepayment);
 
     final amountToRefund = generalAmount + totalInterestAmount;
-    // ignore: unused_local_variable
+    // : unused_local_variable
     final interestAmount = amountToRefund - generalAmount;
 
     return Scaffold(
@@ -112,7 +112,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                     Expanded(
                       child: heading2(
                           text: _loanProduct.name /*widget.typeLoan.loanName*/,
-                          // ignore: deprecated_member_use
+                      
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -122,7 +122,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                         text:
                             "${groupObject.groupCurrency}${currencyFormat.format(amountToRefund)}",
                         //generalAmount.toString(),
-                        // ignore: deprecated_member_use
+                    
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor,
@@ -140,7 +140,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                       children: <Widget>[
                         subtitle1(
                           text: "Interest Rate: ",
-                          // ignore: deprecated_member_use
+                      
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -148,7 +148,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                         customTitle(
                           textAlign: TextAlign.start,
                           text: _loanProduct.description,
-                          // ignore: deprecated_member_use
+                      
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -161,7 +161,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                       children: <Widget>[
                         subtitle1(
                           text: "Repayment Period: ",
-                          // ignore: deprecated_member_use
+                      
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -169,7 +169,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                         customTitle(
                           textAlign: TextAlign.start,
                           text: monthsOfRepayment + " Month(s)",
-                          // ignore: deprecated_member_use
+                      
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -182,7 +182,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                       children: <Widget>[
                         subtitle1(
                           text: "Application Date: ",
-                          // ignore: deprecated_member_use
+                      
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -190,7 +190,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                         customTitle(
                           textAlign: TextAlign.start,
                           text: formate2,
-                          // ignore: deprecated_member_use
+                      
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -275,7 +275,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
       newInterest = double.parse((newAmount * newRate).toStringAsFixed(2));
       newCapital = double.parse((payment - newInterest).toStringAsFixed(2));
       newAmount = double.parse((newAmount - newCapital).toStringAsFixed(2));
-      // ignore: unused_local_variable
+      // : unused_local_variable
       DateTime date = new DateTime(now.year, now.month + (i + 1), now.day);
       var formate2 =
           "${dateTime.year}-${dateTime.month + (i + 1)}-${dateTime.day}";

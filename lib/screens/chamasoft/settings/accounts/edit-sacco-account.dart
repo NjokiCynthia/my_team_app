@@ -149,7 +149,7 @@ class _EditSaccoAccountState extends State<EditSaccoAccount> {
       );
 
       Navigator.pop(context);
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully updated the Sacco Account",
@@ -161,7 +161,7 @@ class _EditSaccoAccountState extends State<EditSaccoAccount> {
     } on CustomException catch (error) {
       Navigator.pop(context);
 
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error updating the Sacco Account. ${error.message} ",

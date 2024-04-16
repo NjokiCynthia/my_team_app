@@ -2,13 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:chamasoft/helpers/get_path.dart';
 import 'package:chamasoft/providers/auth.dart';
+import 'package:dio/dio.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:http/http.dart' as http;
 
 import '../helpers/custom-helper.dart';
 import 'common.dart';
-// ignore: duplicate_import
-import 'dart:io';
 
 class PostToServer {
   static const String _defaultAuthenticationToken =
@@ -62,7 +61,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
     var begin = '-----BEGIN PUBLIC KEY-----\n';
     var end = '\n-----END PUBLIC KEY-----';
     int splitCount = str.length ~/ 64;
-    // ignore: deprecated_member_use
+
     List<String> strList = [];
 
     for (int i = 0; i < splitCount; i++) {
@@ -79,7 +78,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
     var begin = '-----BEGIN PRIVATE KEY-----\n';
     var end = '\n-----END PRIVATE KEY-----';
     int splitCount = str.length ~/ 64;
-    // ignore: deprecated_member_use
+
     List<String> strList = [];
 
     for (int i = 0; i < splitCount; i++) {
@@ -135,6 +134,8 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
   static Future<dynamic> generateResponse(String jsonObjectResponse) async {
     try {
       final response = json.decode(jsonObjectResponse);
+
+      print(response);
       final String secretKey = response["secret"] ?? "";
       final String body = response["body"] ?? "";
       try {
@@ -324,6 +325,90 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
             print("2: ${error.toString()}");
             throw error;
           }
+        } catch (error) {
+          print("3: ${error.toString()}");
+          throw (error);
+        }
+      } else {
+        throw CustomException(
+          message: ERROR_MESSAGE_INTERNET,
+          status: ErrorStatusCode.statusNoInternet,
+        );
+      }
+    } on SocketException catch (_) {
+      throw CustomException(
+        message: ERROR_MESSAGE_INTERNET,
+        status: ErrorStatusCode.statusNoInternet,
+      );
+    }
+  }
+
+  static Future<dynamic> ResponseGenerate(jsonObjectResponse) async {
+    try {
+      print('See this');
+      print(jsonObjectResponse);
+      final response = jsonObjectResponse;
+      //json.decode(jsonObjectResponse.toString());
+      print('my response');
+      print(response);
+
+      final String secretKey = response["secret"] ?? "";
+      final String body = response["body"] ?? "";
+      try {
+        if (body.isEmpty || secretKey.isEmpty) {
+          return;
+        }
+        final secretKeyString = await _decryptSecretKey(secretKey);
+        var response = _decryptAESCryptoJS(body, secretKeyString);
+        return json.decode(response);
+      } catch (error) {
+        throw (error.toString());
+      }
+    } catch (error) {
+      throw (error.toString());
+    }
+  }
+
+  static Future<dynamic> postDio(FormData formData, String url) async {
+    try {
+      final result = await InternetAddress.lookup("example.com")
+          .timeout(const Duration(seconds: 10), onTimeout: () {
+        throw CustomException(
+          message: ERROR_MESSAGE_INTERNET,
+          status: ErrorStatusCode.statusNoInternet,
+        );
+      });
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        final String randomKey = CustomHelper.generateRandomString(16);
+        // print(url);
+        var newrequestDate = DateTime.now().millisecondsSinceEpoch;
+        print("$newrequestDate $url");
+        try {
+          final dio = Dio();
+          final String secretKey = await _encryptSecretKey(randomKey);
+          final String versionCode =
+              await CustomHelper.getApplicationBuildNumber();
+          final String userAccessTokenKey = await Auth.getAccessToken();
+          final String userAccessToken =
+              userAccessTokenKey ?? _defaultAuthenticationToken;
+          print("Request >>>>>>> ${formData.fields} ${formData.files}");
+          // final String postRequest = _encryptAESCryptoJS(formData, randomKey);
+          // print("_encryptAESCryptoJS: $postRequest");
+          Map<String, dynamic> headers = {
+            'Secret': secretKey,
+            'VersionCode': versionCode,
+            'Authorization': userAccessToken,
+          };
+          final response = await dio.post(
+            url.toString(),
+            options: Options(headers: headers),
+            data: formData,
+          );
+          print('Show response');
+          print(response.data);
+          final responseBody = await ResponseGenerate(response.data);
+          print("Server Response >>>>>>>> $responseBody");
+          return responseBody;
         } catch (error) {
           print("3: ${error.toString()}");
           throw (error);

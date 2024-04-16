@@ -1,47 +1,19 @@
+import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-application.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 //import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-
-List<LoanApplication> loanApplications = [
-  LoanApplication(
-      loanApplicationId: 1,
-      requestDate: DateTime.now(),
-      amount: 2000,
-      loanName: 'Emergency Loan',
-      borrowerName: 'SAMUEL WAHOME'),
-  LoanApplication(
-      loanApplicationId: 2,
-      requestDate: DateTime.now(),
-      amount: 6000,
-      loanName: 'Chama Loan',
-      borrowerName: 'EDWIN KAPKEI'),
-  LoanApplication(
-      loanApplicationId: 3,
-      requestDate: DateTime.now(),
-      amount: 15000,
-      loanName: 'Education Loan',
-      borrowerName: 'MARTIN NZUKI'),
-  LoanApplication(
-      loanApplicationId: 4,
-      requestDate: DateTime.now(),
-      amount: 6000,
-      loanName: 'Shamba Loan',
-      borrowerName: 'PETER KIMUTAI'),
-  LoanApplication(
-      loanApplicationId: 5,
-      requestDate: DateTime.now(),
-      amount: 8000,
-      loanName: 'Vacation Loan',
-      borrowerName: 'BEN CARSON'),
-];
+import 'package:provider/provider.dart';
 
 class ReviewLoanApplications extends StatefulWidget {
   @override
@@ -55,8 +27,45 @@ class ReviewLoanApplicationsState extends State<ReviewLoanApplications> {
   var numberFormat = new NumberFormat("#,###.00");
   var dateFormat = new DateFormat("d MMMM y");
 
+  bool _isLoading = false;
+  Future<void> fetchLoanApplications(BuildContext context) async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      await Provider.of<Groups>(context, listen: false)
+          .fetchGroupLoanApplications();
+      setState(() {});
+    } on CustomException catch (error) {
+      print(error.message);
+      final snackBar = SnackBar(
+        content: Text('Network Error occurred: could not fetch invoices'),
+        action: SnackBarAction(
+          label: 'Retry',
+          onPressed: () async {
+            fetchLoanApplications(context);
+          },
+        ),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  Auth user;
+  @override
+  void initState() {
+    fetchLoanApplications(context);
+    user = Provider.of<Auth>(context, listen: false);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<Auth>(context, listen: false);
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
@@ -70,173 +79,213 @@ class ReviewLoanApplicationsState extends State<ReviewLoanApplications> {
         decoration: primaryGradient(context),
         width: double.infinity,
         height: double.infinity,
-        child: loanApplications.length > 0
-            ? ListView.builder(
-                itemCount: loanApplications.length,
-                itemBuilder: (context, int index) {
-                  LoanApplication loanApplication = loanApplications[index];
-                  return LoanApplicationCard(
-                    loanName: loanApplication.loanName,
-                    amount: numberFormat.format(loanApplication.amount),
-                    borrowerName: loanApplication.borrowerName,
-                    requestDate: dateFormat.format(loanApplication.requestDate),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              ReviewLoan(loanApplication: loanApplication),
-                          settings: RouteSettings(arguments: REVIEW_LOAN),
-                        ),
-                      );
-                    },
-                  );
-                })
-            : Center(child: Text('No Loans at the moment')),
+        child: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Consumer<Groups>(builder: (context, groupData, child) {
+                // Filter loan applications based on created_by field
+                List<LoanApplications> filteredApplications = groupData
+                    .loanApplications
+                    .where((application) => application.createdBy != user.id)
+                    .toList();
+
+                return filteredApplications.length > 0
+                    ? ListView.builder(
+                        itemBuilder: (context, index) {
+                          LoanApplications application =
+                              filteredApplications[index];
+                          return GroupApplicationCard(
+                            application: application,
+                            onPressed: () {
+                              print('This is pressed');
+                            },
+                          );
+                        },
+                        itemCount: filteredApplications.length,
+                      )
+                    : betterEmptyList(
+                        message:
+                            "Sorry, you have not added any loan applications");
+              }),
       ),
     );
   }
 }
 
-class LoanApplicationCard extends StatelessWidget {
-  final String loanName;
-  final String amount;
-  final String borrowerName;
-  final String requestDate;
-  final Function onPressed;
+class GroupApplicationCard extends StatelessWidget {
+  const GroupApplicationCard(
+      {Key key, @required this.application, this.onPressed})
+      : super(key: key);
 
-  const LoanApplicationCard({
-    this.loanName,
-    this.amount,
-    this.borrowerName,
-    this.requestDate,
-    this.onPressed,
-  });
+  final LoanApplications application;
+  final Function onPressed;
 
   @override
   Widget build(BuildContext context) {
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
+
+    final DateFormat formatter = DateFormat('dd-MM-yyyy');
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-      child: Card(
-        elevation: 3.0,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-        borderOnForeground: false,
-        child: Container(
-          padding: EdgeInsets.all(16.0),
-          decoration: cardDecoration(
-              gradient: plainCardGradient(context), context: context),
-          child: Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: InkWell(
+        onTap: () {
+          print('This is pressed here');
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) =>
+                  ReviewLoan(loanApplication: application),
+              settings: RouteSettings(arguments: REVIEW_LOAN),
+            ),
+          );
+        },
+        child: Card(
+          elevation: 0.0,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+          borderOnForeground: false,
+          child: Container(
+              padding: EdgeInsets.all(12.0),
+              decoration: cardDecoration(
+                  gradient: plainCardGradient(context), context: context),
+              child: Column(
                 children: <Widget>[
-                  customTitle(
-                    text: "$loanName",
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16.0,
-                    // ignore: deprecated_member_use
-                    color: Theme.of(context)
-                        .textSelectionTheme
-                        .selectionHandleColor,
-                    textAlign: TextAlign.start,
-                  ),
-                  SizedBox(
-                    height: 22,
-                  ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      customTitle(
-                        text: "Ksh ",
-                        fontSize: 16.0,
-                        // ignore: deprecated_member_use
-                        color: Theme.of(context)
-                            .textSelectionTheme
-                            .selectionHandleColor,
+                      Expanded(
+                        flex: 1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            customTitle(
+                              text: "${application.applicationName}",
+                              fontWeight: FontWeight.w700,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
+                              textAlign: TextAlign.start,
+                            ),
+                            // subtitle2(
+                            //     text:
+                            //         "Applied By ${application.applicationName}",
+                            //     color: Theme.of(context)
+                            //         .textSelectionTheme
+                            //         .selectionHandleColor,
+                            //     textAlign: TextAlign.start),
+                          ],
+                        ),
                       ),
-                      customTitle(
-                        text: "$amount",
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16.0,
-                        // ignore: deprecated_member_use
-                        color: Theme.of(context)
-                            .textSelectionTheme
-                            .selectionHandleColor,
-                        textAlign: TextAlign.start,
+                      SizedBox(
+                        width: 10,
                       ),
+                      getStatus()
                     ],
                   ),
-                ],
-              ),
-              SizedBox(
-                height: 8.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  subtitle2(
-                      text: "Applied By",
-                      // ignore: deprecated_member_use
-                      color: Theme.of(context)
-                          .textSelectionTheme
-                          .selectionHandleColor,
-                      textAlign: TextAlign.start),
-                  SizedBox(height: 22),
-                  subtitle2(
-                      text: "Applied On",
-                      // ignore: deprecated_member_use
-                      color: Theme.of(context)
-                          .textSelectionTheme
-                          .selectionHandleColor,
-                      textAlign: TextAlign.start),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  customTitle(
-                    text: "$borrowerName",
-                    // ignore: deprecated_member_use
-                    color: Theme.of(context)
-                        .textSelectionTheme
-                        .selectionHandleColor,
-                    textAlign: TextAlign.start,
+                  Divider(
+                    color: Theme.of(context).dividerColor,
                   ),
-                  SizedBox(height: 22),
-                  customTitle(
-                    text: "$requestDate",
-                    // ignore: deprecated_member_use
-                    color: Theme.of(context)
-                        .textSelectionTheme
-                        .selectionHandleColor,
-                    textAlign: TextAlign.start,
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            subtitle2(
+                                text: "Applied On",
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
+                                textAlign: TextAlign.start),
+                            subtitle1(
+                                text: application.createdOn,
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
+                                textAlign: TextAlign.start)
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            subtitle1(
+                              text: "${groupObject.groupCurrency} ",
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
+                            ),
+                            customTitle(
+                              text: currencyFormat.format(
+                                  double.tryParse(application.loanAmount)),
+                              textAlign: TextAlign.end,
+                              fontSize: 20.0,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ],
+                        ),
+                      ]),
+                  SizedBox(
+                    height: 10,
                   ),
                 ],
-              ),
-              SizedBox(
-                height: 4.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "",
-                  ),
-                  plainButtonWithArrow(
-                      text: "Respond",
-                      size: 16.0,
-                      spacing: 2.0,
-                      color: Theme.of(context)
-                          // ignore: deprecated_member_use
-                          .textSelectionTheme
-                          .selectionHandleColor
-                          .withOpacity(.8),
-                      action: onPressed),
-                ],
-              ),
-            ],
-          ),
+              )),
         ),
       ),
     );
+  }
+
+// {
+//     "0" : "Pending Approval",
+//     "1" : "Approved",
+//     "2" : "Pending Guarantors Approval",
+//     "3" : "Pending Signatories Approval",
+//     "4" : "Pending Disbursement",
+//     "5" : "Disbursing",
+//     "6" : "Disbursed",
+//     "7" : "Disbursement Failed",
+//     "8" : "Declined"
+// }
+  Widget getStatus() {
+    if (application.status == 0) {
+      return statusChip(
+          text: "PENDING",
+          textColor: Colors.blueGrey,
+          backgroundColor: Colors.blueGrey.withOpacity(.2));
+    } else if (application.status == 1) {
+      return statusChip(
+          text: "APPROVED",
+          textColor: Colors.lightBlueAccent,
+          backgroundColor: Colors.lightBlueAccent.withOpacity(.2));
+    } else if (application.status == 6) {
+      return statusChip(
+          text: "DISBURSED",
+          textColor: Colors.lightBlueAccent,
+          backgroundColor: Colors.lightBlueAccent.withOpacity(.2));
+    } else if (application.status == 7) {
+      return statusChip(
+          text: "FAILED",
+          textColor: Colors.red,
+          backgroundColor: Colors.red.withOpacity(.2));
+    } else if (application.status == 8) {
+      return statusChip(
+          text: "DECLINED",
+          textColor: Colors.red,
+          backgroundColor: Colors.red.withOpacity(.2));
+    } else {
+      return statusChip(
+          text: "PENDING",
+          textColor: Colors.blueGrey,
+          backgroundColor: Colors.blueGrey.withOpacity(.2));
+    }
   }
 }

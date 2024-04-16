@@ -249,7 +249,7 @@ class _TempolaryPinState extends State<TempolaryPin> {
     return subtitle1(
       text: "Please enter the code that you recieved via sms. ",
       color: Theme.of(context)
-          // ignore: deprecated_member_use
+    
           .textSelectionTheme
           .selectionHandleColor
           .withOpacity(0.6),

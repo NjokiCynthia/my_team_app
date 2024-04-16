@@ -22,6 +22,8 @@ class InvestmentGroup {
   int isOnFreePlan;
   int isAdmin;
   int groupRoleId;
+  dynamic referralCode;
+  int isCollective;
   int isValidated;
   double smsBalance;
   String avatar;
@@ -59,6 +61,8 @@ class InvestmentGroup {
       this.billingPackageId,
       this.billingCycle,
       this.isOnFreePlan,
+      this.referralCode,
+      this.isCollective,
       this.isAdmin,
       this.groupRoleId,
       this.isValidated,
@@ -111,6 +115,8 @@ class InvestmentGroup {
         billingCycle = CustomHelper.parseInt(json['billing_cycle']),
 //        isOnFreePlan = CustomHelper.parseInt(json['is_on_free_plan']),
         isAdmin = CustomHelper.parseInt(json['is_admin']),
+        referralCode = CustomHelper.parseInt((json['referral_code'])),
+        isCollective = CustomHelper.parseInt((json['is_collective'])),
         groupRoleId = CustomHelper.parseInt(json['group_role_id']),
         isValidated = CustomHelper.parseInt(json['is_validated']),
         smsBalance = CustomHelper.parseDouble(json['sms_balance']),
@@ -153,6 +159,8 @@ class InvestmentGroup {
         'billing_cycle': billingCycle,
         'is_on_free_plan': isOnFreePlan,
         'is_admin': isAdmin,
+        'is_collective': isCollective,
+        'referral_code': referralCode,
         'enable_hide_group_balances_to_members':
             enablehidegroupbalancestoMembers,
         'group_role_id': groupRoleId,

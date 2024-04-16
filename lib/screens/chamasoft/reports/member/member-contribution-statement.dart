@@ -162,21 +162,21 @@ class _MemberContributionStatementState
                             subtitle1(
                                 text: "Contribution Statement for:  ",
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionHandleColor,
                                 textAlign: TextAlign.start),
                             subtitle1(
                                 text: widget.memberName,
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionHandleColor,
                                 textAlign: TextAlign.start),
                             // customTitle(
                             //     text: widget.memberName,
                             //     color: Theme.of(context)
-                            //         // ignore: deprecated_member_use
+                            //        
                             //         .textSelectionTheme.selectionHandleColor,
                             //     fontSize: 14,
                             //     fontWeight: FontWeight.w500,
@@ -209,7 +209,7 @@ class _MemberContributionStatementState
                                                 "Total Contributions",
                                         //"Total Contibution",
                                         color: Theme.of(context)
-                                            // ignore: deprecated_member_use
+                                           
                                             .textSelectionTheme
                                             .selectionHandleColor,
                                         textAlign: TextAlign.start),
@@ -223,7 +223,7 @@ class _MemberContributionStatementState
                                         subtitle2(
                                             text: "Total amount due ",
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
+                                               
                                                 .textSelectionTheme
                                                 .selectionHandleColor,
                                             textAlign: TextAlign.start),
@@ -233,7 +233,7 @@ class _MemberContributionStatementState
                                                 currencyFormat
                                                     .format(_totalDue),
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
+                                               
                                                 .textSelectionTheme
                                                 .selectionHandleColor,
                                             fontSize: 14,
@@ -251,7 +251,7 @@ class _MemberContributionStatementState
                                         subtitle2(
                                             text: "Balance ",
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
+                                               
                                                 .textSelectionTheme
                                                 .selectionHandleColor,
                                             textAlign: TextAlign.start),
@@ -262,7 +262,7 @@ class _MemberContributionStatementState
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500,
                                           color: Theme.of(context)
-                                              // ignore: deprecated_member_use
+                                             
                                               .textSelectionTheme
                                               .selectionHandleColor,
                                           textAlign: TextAlign.start,
@@ -278,7 +278,7 @@ class _MemberContributionStatementState
                               text: groupObject.groupCurrency +
                                   " " +
                                   currencyFormat.format(_totalContributions),
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -297,7 +297,7 @@ class _MemberContributionStatementState
                               subtitle2(
                                 text: "Statement as At",
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context)
                                         .textSelectionTheme
                                         .selectionHandleColor,
@@ -308,7 +308,7 @@ class _MemberContributionStatementState
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context)
                                         .textSelectionTheme
                                         .selectionHandleColor,
@@ -323,7 +323,7 @@ class _MemberContributionStatementState
                                 subtitle2(
                                   text: "Statement Period",
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                   textAlign: TextAlign.end,
@@ -335,7 +335,7 @@ class _MemberContributionStatementState
                                       ? "$_statementFrom to $_statementTo"
                                       : "",
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                   textAlign: TextAlign.end,

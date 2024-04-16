@@ -164,7 +164,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
                 onPressed: () => _newReconcileWithdrawalDialog(),
                 icon: Icon(
                   Icons.add,
-                  // ignore: deprecated_member_use
+                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
@@ -232,7 +232,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
                               text: "Total amount reconciled",
                               textAlign: TextAlign.start,
                               color:
-                                  // ignore: deprecated_member_use
+                                 
                                   Theme.of(context)
                                       .textSelectionTheme
                                       .selectionHandleColor),
@@ -241,7 +241,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
                                   "${groupObject.groupCurrency} ${currencyFormat.format(totalReconciled)}",
                               textAlign: TextAlign.start,
                               color:
-                                  // ignore: deprecated_member_use
+                                 
                                   Theme.of(context)
                                       .textSelectionTheme
                                       .selectionHandleColor)))

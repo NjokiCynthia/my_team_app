@@ -171,7 +171,7 @@ class _LoginPasswordState extends State<LoginPassword> {
                   ),
                   heading1(
                       text: Config.appName,
-                      // ignore: deprecated_member_use
+                    
                       color: Theme.of(context).primaryColor),
                   SizedBox(
                     height: 10,

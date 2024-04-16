@@ -1,12 +1,11 @@
 import 'dart:convert';
-
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/database-helper.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/edit-collections.dart';
-
 // import 'package:chamasoft/screens/chamasoft/meetings/select-members.dart';
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/select-member.dart';
@@ -107,30 +106,45 @@ class _EditMeetingState extends State<EditMeeting> {
   }
 
   _showSnackbar(String msg, int duration) {
-    // ignore: deprecated_member_use
     ScaffoldMessenger.of(_scaffoldKey.currentState.context)
         .hideCurrentSnackBar();
     final snackBar = SnackBar(
       content: Text(msg),
       duration: Duration(seconds: duration),
     );
-    // ignore: deprecated_member_use
+
     ScaffoldMessenger.of(_scaffoldKey.currentState.context)
         .showSnackBar(snackBar);
   }
 
   next() {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     if (currentStep + 1 != steps.length) {
       if (currentStep == 0) {
         if (_stepOneFormKey.currentState.validate()) {
           if (_data['date'] == '') {
             _showSnackbar(
-                "You need to select the meeting date to continue.", 4);
+                currentLanguage == 'English'
+                    ? 'You need to select the meeting date to continue.'
+                    : Provider.of<TranslationProvider>(context, listen: false)
+                            .translate(
+                                'You need to select the meeting date to continue.') ??
+                        'You need to select the meeting date to continue.',
+                4);
           } else {
             goTo(1);
           }
         } else {
-          _showSnackbar("Fill in the required fields to continue.", 4);
+          _showSnackbar(
+              currentLanguage == 'English'
+                  ? 'Fill in the required fields to continue.'
+                  : Provider.of<TranslationProvider>(context, listen: false)
+                          .translate(
+                              'Fill in the required fields to continue.') ??
+                      'Fill in the required fields to continue.',
+              4);
         }
       } else {
         if (currentStep == 1) {
@@ -198,7 +212,6 @@ class _EditMeetingState extends State<EditMeeting> {
       style: TextStyle(
         color: currentStep >= step
             ? primaryColor
-            // ignore: deprecated_member_use
             : Theme.of(context).textSelectionTheme.selectionHandleColor,
         fontFamily: 'SegoeUI',
         fontWeight: currentStep >= step ? FontWeight.bold : FontWeight.normal,
@@ -244,7 +257,6 @@ class _EditMeetingState extends State<EditMeeting> {
 
   Widget agendaItem({String agenda, Function action}) {
     return Container(
-      // ignore: deprecated_member_use
       color: Theme.of(context)
           .textSelectionTheme
           .selectionHandleColor
@@ -262,7 +274,6 @@ class _EditMeetingState extends State<EditMeeting> {
                 Text(
                   agenda,
                   style: TextStyle(
-                    // ignore: deprecated_member_use
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor,
@@ -292,7 +303,6 @@ class _EditMeetingState extends State<EditMeeting> {
     return Text(
       text,
       style: TextStyle(
-        // ignore: deprecated_member_use
         color: Theme.of(context).textSelectionTheme.selectionHandleColor,
         fontSize: 12.0,
       ),
@@ -303,7 +313,6 @@ class _EditMeetingState extends State<EditMeeting> {
 
   TextStyle summaryContentFormat() {
     return TextStyle(
-      // ignore: deprecated_member_use
       color: Theme.of(context).textSelectionTheme.selectionHandleColor,
       fontSize: 16.0,
       fontWeight: FontWeight.bold,
@@ -346,29 +355,37 @@ class _EditMeetingState extends State<EditMeeting> {
         },
       ));
     });
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: (_list.length > 0)
           ? _list
           : [
               subtitle1(
-                color:
-                    // ignore: deprecated_member_use
-                    Theme.of(context)
-                        .textSelectionTheme
-                        .selectionHandleColor
-                        .withOpacity(0.7),
-                text: "No agenda added",
+                color: Theme.of(context)
+                    .textSelectionTheme
+                    .selectionHandleColor
+                    .withOpacity(0.7),
+                text: currentLanguage == 'English'
+                    ? 'No agenda added'
+                    : Provider.of<TranslationProvider>(context, listen: false)
+                            .translate('No agenda added') ??
+                        'No agenda added',
                 textAlign: TextAlign.left,
               ),
               subtitle2(
-                color:
-                    // ignore: deprecated_member_use
-                    Theme.of(context)
-                        .textSelectionTheme
-                        .selectionHandleColor
-                        .withOpacity(0.7),
-                text: "Added agenda items will be displayed here",
+                color: Theme.of(context)
+                    .textSelectionTheme
+                    .selectionHandleColor
+                    .withOpacity(0.7),
+                text: currentLanguage == 'English'
+                    ? 'Added agenda items will be displayed here'
+                    : Provider.of<TranslationProvider>(context, listen: false)
+                            .translate(
+                                'Added agenda items will be displayed here') ??
+                        'Added agenda items will be displayed here',
                 textAlign: TextAlign.left,
               ),
               SizedBox(height: 20.0),
@@ -396,22 +413,18 @@ class _EditMeetingState extends State<EditMeeting> {
           ? _list
           : [
               subtitle1(
-                color:
-                    // ignore: deprecated_member_use
-                    Theme.of(context)
-                        .textSelectionTheme
-                        .selectionHandleColor
-                        .withOpacity(0.7),
+                color: Theme.of(context)
+                    .textSelectionTheme
+                    .selectionHandleColor
+                    .withOpacity(0.7),
                 text: "No AOB added",
                 textAlign: TextAlign.left,
               ),
               subtitle2(
-                color:
-                    // ignore: deprecated_member_use
-                    Theme.of(context)
-                        .textSelectionTheme
-                        .selectionHandleColor
-                        .withOpacity(0.7),
+                color: Theme.of(context)
+                    .textSelectionTheme
+                    .selectionHandleColor
+                    .withOpacity(0.7),
                 text: "Added AOB items will be displayed here",
                 textAlign: TextAlign.left,
               ),
@@ -436,6 +449,9 @@ class _EditMeetingState extends State<EditMeeting> {
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     final group = Provider.of<Groups>(context, listen: false);
     final auth = Provider.of<Auth>(context, listen: false);
     final currentGroup = group.getCurrentGroup();
@@ -459,7 +475,11 @@ class _EditMeetingState extends State<EditMeeting> {
             (_mbrs.length - 1).toString() +
             " other members";
       else
-        return "Tap to select members";
+        return currentLanguage == 'English'
+            ? 'Tap to select members'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Tap to select members') ??
+                'Tap to select members';
     }
 
     String _renderCollectionsText(String type) {
@@ -489,7 +509,14 @@ class _EditMeetingState extends State<EditMeeting> {
 
     steps = [
       Step(
-        title: formatStep(0, "Name & Venue"),
+        title: formatStep(
+          0,
+          currentLanguage == 'English'
+              ? 'Name & Venue'
+              : Provider.of<TranslationProvider>(context, listen: false)
+                      .translate('Name & Venue') ??
+                  'Name & Venue',
+        ),
         isActive: currentStep >= 0 ? true : false,
         state: currentStep > 0 ? StepState.complete : StepState.disabled,
         content: Form(
@@ -499,23 +526,43 @@ class _EditMeetingState extends State<EditMeeting> {
               TextFormField(
                 validator: (val) => validateMeeting('title', val),
                 decoration: InputDecoration(
-                  labelText: 'Meeting Title',
-                  hintText: 'The title for this meeting',
+                  labelText: currentLanguage == 'English'
+                      ? 'Meeting Title'
+                      : Provider.of<TranslationProvider>(context, listen: false)
+                              .translate('Meeting Title') ??
+                          'Meeting Title',
+                  hintText: currentLanguage == 'English'
+                      ? 'The title for this meeting'
+                      : Provider.of<TranslationProvider>(context, listen: false)
+                              .translate('The title for this meeting') ??
+                          'The title for this meeting',
                   // contentPadding: EdgeInsets.only(bottom: 0.0),
                 ),
               ),
               TextFormField(
                 validator: (val) => validateMeeting('venue', val),
                 decoration: InputDecoration(
-                  labelText: 'Venue',
-                  hintText: 'The venue for this meeting',
+                  labelText: currentLanguage == 'English'
+                      ? 'Venue'
+                      : Provider.of<TranslationProvider>(context, listen: false)
+                              .translate('Venue') ??
+                          'Venue',
+                  hintText: currentLanguage == 'English'
+                      ? 'The venue for this meeting'
+                      : Provider.of<TranslationProvider>(context, listen: false)
+                              .translate('The venue for this meeting') ??
+                          'The venue for this meeting',
                   // contentPadding: EdgeInsets.only(bottom: 0.0),
                 ),
               ),
               TextFormField(
                 validator: (val) => validateMeeting('purpose', val),
                 decoration: InputDecoration(
-                  labelText: 'Meeting Purpose (Optional)',
+                  labelText: currentLanguage == 'English'
+                      ? 'Meeting Purpose (Optional)'
+                      : Provider.of<TranslationProvider>(context, listen: false)
+                              .translate('Meeting Purpose (Optional)') ??
+                          'Meeting Purpose (Optional)',
                   // contentPadding: EdgeInsets.only(bottom: 0.0),
                 ),
               ),
@@ -524,7 +571,11 @@ class _EditMeetingState extends State<EditMeeting> {
                 initialValue: '',
                 firstDate: DateTime(2020),
                 lastDate: DateTime(2030),
-                dateLabelText: 'Meeting Date & Time',
+                dateLabelText: currentLanguage == 'English'
+                    ? 'Meeting Date & Time'
+                    : Provider.of<TranslationProvider>(context, listen: false)
+                            .translate('Meeting Date & Time') ??
+                        'Meeting Date & Time',
                 onChanged: (val) => _data['date'] = val,
                 validator: (val) {
                   _data['date'] = val;
@@ -537,7 +588,14 @@ class _EditMeetingState extends State<EditMeeting> {
         ),
       ),
       Step(
-        title: formatStep(1, "Members"),
+        title: formatStep(
+          1,
+          currentLanguage == 'English'
+              ? 'Members'
+              : Provider.of<TranslationProvider>(context, listen: false)
+                      .translate('Members') ??
+                  'Members',
+        ),
         isActive: currentStep >= 1 ? true : false,
         state: currentStep > 1 ? StepState.complete : StepState.disabled,
         content: Column(
@@ -552,13 +610,22 @@ class _EditMeetingState extends State<EditMeeting> {
                       MaterialPageRoute(
                         builder: (BuildContext context) => SelectMember(
                           initialMembersList: _setSelectedMembers("present"),
-                          pageTitle: "Select Present Members",
+                          pageTitle: currentLanguage == 'English'
+                              ? 'Select Present Members'
+                              : Provider.of<TranslationProvider>(context,
+                                          listen: false)
+                                      .translate('Select Present Members') ??
+                                  'Select Present Members',
                           hideFromList: [],
                         ),
                       ),
                     )
                     .then((value) => {_setMembers('present', value)}),
-                title: "Members present",
+                title: currentLanguage == 'English'
+                    ? 'Members present'
+                    : Provider.of<TranslationProvider>(context, listen: false)
+                            .translate('Members present') ??
+                        'Members present',
                 subtitle: _renderMembersText("present"),
                 icon: Icons.edit,
                 color: Colors.green,
@@ -575,13 +642,22 @@ class _EditMeetingState extends State<EditMeeting> {
                       MaterialPageRoute(
                         builder: (BuildContext context) => SelectMember(
                           initialMembersList: _setSelectedMembers("late"),
-                          pageTitle: "Select Members Late",
+                          pageTitle: currentLanguage == 'English'
+                              ? 'Select Members Late'
+                              : Provider.of<TranslationProvider>(context,
+                                          listen: false)
+                                      .translate('Select Members Late') ??
+                                  'Select Members Late',
                           hideFromList: _setSelectedMembers("present"),
                         ),
                       ),
                     )
                     .then((value) => {_setMembers('late', value)}),
-                title: "Members late",
+                title: currentLanguage == 'English'
+                    ? 'Members late'
+                    : Provider.of<TranslationProvider>(context, listen: false)
+                            .translate('Members late') ??
+                        'Members late',
                 subtitle: _renderMembersText("late"),
                 icon: Icons.edit,
                 color: Colors.cyan,
@@ -599,14 +675,23 @@ class _EditMeetingState extends State<EditMeeting> {
                         builder: (BuildContext context) => SelectMember(
                           initialMembersList:
                               _setSelectedMembers("withApology"),
-                          pageTitle: "Members Late With Apology",
+                          pageTitle: currentLanguage == 'English'
+                              ? 'Members Late With Apology'
+                              : Provider.of<TranslationProvider>(context,
+                                          listen: false)
+                                      .translate('Members Late With Apology') ??
+                                  'Members Late With Apology',
                           hideFromList: _setSelectedMembers("present") +
                               _setSelectedMembers("late"),
                         ),
                       ),
                     )
                     .then((value) => {_setMembers('withApology', value)}),
-                title: "Absent with apology",
+                title: currentLanguage == 'English'
+                    ? 'Absent with apology'
+                    : Provider.of<TranslationProvider>(context, listen: false)
+                            .translate('Absent with apology') ??
+                        'Absent with apology',
                 subtitle: _renderMembersText("withApology"),
                 icon: Icons.edit,
                 color: Colors.orange[700],
@@ -624,7 +709,13 @@ class _EditMeetingState extends State<EditMeeting> {
                         builder: (BuildContext context) => SelectMember(
                           initialMembersList:
                               _setSelectedMembers("withoutApology"),
-                          pageTitle: "Members Absent Without Apology",
+                          pageTitle: currentLanguage == 'English'
+                              ? 'Members Absent Without Apology'
+                              : Provider.of<TranslationProvider>(context,
+                                          listen: false)
+                                      .translate(
+                                          'Members Absent Without Apology') ??
+                                  'Members Absent Without Apology',
                           hideFromList: _setSelectedMembers("present") +
                               _setSelectedMembers("late") +
                               _setSelectedMembers("withApology"),
@@ -632,7 +723,11 @@ class _EditMeetingState extends State<EditMeeting> {
                       ),
                     )
                     .then((value) => {_setMembers('withoutApology', value)}),
-                title: "Absent without apology",
+                title: currentLanguage == 'English'
+                    ? 'Absent without apology'
+                    : Provider.of<TranslationProvider>(context, listen: false)
+                            .translate('Absent without apology') ??
+                        'Absent without apology',
                 subtitle: _renderMembersText("withoutApology"),
                 icon: Icons.edit,
                 color: Colors.red[400],
@@ -642,7 +737,13 @@ class _EditMeetingState extends State<EditMeeting> {
         ),
       ),
       Step(
-        title: formatStep(2, "Agenda"),
+        title: formatStep(
+            2,
+            currentLanguage == 'English'
+                ? 'Agenda'
+                : Provider.of<TranslationProvider>(context, listen: false)
+                        .translate('Agenda') ??
+                    'Agenda'),
         isActive: currentStep >= 2 ? true : false,
         state: currentStep > 2 ? StepState.complete : StepState.disabled,
         content: Column(
@@ -667,7 +768,12 @@ class _EditMeetingState extends State<EditMeeting> {
                       }
                     },
                     decoration: InputDecoration(
-                      labelText: 'Add agenda item...',
+                      labelText: currentLanguage == 'English'
+                          ? 'Add agenda item...'
+                          : Provider.of<TranslationProvider>(context,
+                                      listen: false)
+                                  .translate('Add agenda item...') ??
+                              'Add agenda item...',
                       contentPadding: EdgeInsets.only(bottom: 0.0),
                     ),
                   ),
@@ -695,7 +801,13 @@ class _EditMeetingState extends State<EditMeeting> {
         ),
       ),
       Step(
-        title: formatStep(3, "Collections"),
+        title: formatStep(
+            3,
+            currentLanguage == 'English'
+                ? 'Collections'
+                : Provider.of<TranslationProvider>(context, listen: false)
+                        .translate('Collections') ??
+                    'Collections'),
         isActive: currentStep >= 3 ? true : false,
         state: currentStep > 3 ? StepState.complete : StepState.disabled,
         content: Column(
@@ -717,7 +829,11 @@ class _EditMeetingState extends State<EditMeeting> {
                     ),
                   );
                 },
-                title: "Group Contributions",
+                title: currentLanguage == 'English'
+                    ? 'Group Contributions'
+                    : Provider.of<TranslationProvider>(context, listen: false)
+                            .translate('Group Contributions') ??
+                        'Group Contributions',
                 subtitle: _renderCollectionsText('contributions'),
                 icon: Icons.edit,
                 color: Colors.green[700],
@@ -741,7 +857,11 @@ class _EditMeetingState extends State<EditMeeting> {
                     ),
                   ),
                 ),
-                title: "Loan Repayments",
+                title: currentLanguage == 'English'
+                    ? 'Loan Repayments'
+                    : Provider.of<TranslationProvider>(context, listen: false)
+                            .translate('Loan Repayments') ??
+                        'Loan Repayments',
                 subtitle: _renderCollectionsText('repayments'),
                 icon: Icons.edit,
                 color: Colors.cyan[700],
@@ -765,7 +885,11 @@ class _EditMeetingState extends State<EditMeeting> {
                     ),
                   ),
                 ),
-                title: "Fine Payments",
+                title: currentLanguage == 'English'
+                    ? 'Fine Payments'
+                    : Provider.of<TranslationProvider>(context, listen: false)
+                            .translate('Fine Payments') ??
+                        'Fine Payments',
                 subtitle: _renderCollectionsText('fines'),
                 icon: Icons.edit,
                 color: Colors.red[700],
@@ -789,7 +913,11 @@ class _EditMeetingState extends State<EditMeeting> {
                     ),
                   ),
                 ),
-                title: "Loan Disbursements",
+                title: currentLanguage == 'English'
+                    ? 'Loan Disbursements'
+                    : Provider.of<TranslationProvider>(context, listen: false)
+                            .translate('Loan Disbursements') ??
+                        'Loan Disbursements',
                 subtitle: _renderCollectionsText('disbursements'),
                 icon: Icons.edit,
                 color: Colors.brown,
@@ -855,7 +983,13 @@ class _EditMeetingState extends State<EditMeeting> {
         ),
       ),
       Step(
-        title: formatStep(5, "Summary"),
+        title: formatStep(
+            5,
+            currentLanguage == 'English'
+                ? 'Summary'
+                : Provider.of<TranslationProvider>(context, listen: false)
+                        .translate('Summary') ??
+                    'Summary'),
         isActive: currentStep >= 5 ? true : false,
         state: currentStep > 5 ? StepState.complete : StepState.disabled,
         content: Container(
@@ -944,7 +1078,11 @@ class _EditMeetingState extends State<EditMeeting> {
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
-        title: "New Meeting",
+        title: currentLanguage == 'English'
+            ? 'New Meeting'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('New Meeting') ??
+                'New Meeting',
       ),
       body: Builder(
         builder: (BuildContext context) {
@@ -963,12 +1101,16 @@ class _EditMeetingState extends State<EditMeeting> {
                     children: <Widget>[
                       Icon(
                         Icons.lightbulb_outline,
-                        // ignore: deprecated_member_use
                         color: Theme.of(context)
                             .textSelectionTheme
                             .selectionHandleColor,
                         size: 24.0,
-                        semanticLabel: 'About new meeting...',
+                        semanticLabel: currentLanguage == 'English'
+                            ? 'About new meeting...'
+                            : Provider.of<TranslationProvider>(context,
+                                        listen: false)
+                                    .translate('About new meeting...') ??
+                                'About new meeting...',
                       ),
                       SizedBox(
                         width: 10,
@@ -977,15 +1119,26 @@ class _EditMeetingState extends State<EditMeeting> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            // subtitle1(
-                            //   text: "About new meeting...",
-                            //   textAlign: TextAlign.start,
-                            //   color: Theme.of(context).textSelectionTheme.selectionHandleColor,
-                            // ),
+                            subtitle1(
+                              text: currentLanguage == 'English'
+                                  ? 'About new meeting...'
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate('About new meeting...') ??
+                                      'About new meeting...',
+                              textAlign: TextAlign.start,
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor,
+                            ),
                             subtitle2(
-                              text:
-                                  "Follow all the steps and provide all required data about this meeting. You'll be able to preview a summary of the meeting before you submit.",
-                              // ignore: deprecated_member_use
+                              text: currentLanguage == 'English'
+                                  ? 'Follow all the steps and provide all required data about this meeting. You\'ll be able to preview a summary of the meeting before you submit.'
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate(
+                                              'Follow all the steps and provide all required data about this meeting. You\'ll be able to preview a summary of the meeting before you submit.') ??
+                                      'Follow all the steps and provide all required data about this meeting. You\'ll be able to preview a summary of the meeting before you submit.',
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -1014,7 +1167,6 @@ class _EditMeetingState extends State<EditMeeting> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          // ignore: deprecated_member_use
                           // RaisedButton(
                           //   color: primaryColor,
                           //   child: Padding(
@@ -1064,8 +1216,22 @@ class _EditMeetingState extends State<EditMeeting> {
                                 children: [
                                   Text(
                                     currentStep == 5
-                                        ? "Confirm & Submit"
-                                        : "Save & Continue",
+                                        ? currentLanguage == 'English'
+                                            ? 'Confirm & Submit'
+                                            : Provider.of<TranslationProvider>(
+                                                        context,
+                                                        listen: false)
+                                                    .translate(
+                                                        'Confirm & Submit') ??
+                                                'Confirm & Submit'
+                                        : currentLanguage == 'English'
+                                            ? 'Save & Continue'
+                                            : Provider.of<TranslationProvider>(
+                                                        context,
+                                                        listen: false)
+                                                    .translate(
+                                                        'Save & Continue') ??
+                                                'Save & Continue',
                                     style: TextStyle(
                                       fontFamily: 'SegoeUI',
                                       fontWeight: FontWeight.w700,
@@ -1089,48 +1255,50 @@ class _EditMeetingState extends State<EditMeeting> {
                                 ],
                               ),
                             ),
-                            onPressed: !_saving ? controlDetails.onStepContinue : null,
+                            onPressed:
+                                !_saving ? controlDetails.onStepContinue : null,
                           ),
 
                           SizedBox(
                             width: 20.0,
                           ),
                           currentStep > 0
-                              // ignore: deprecated_member_use
+
                               // ? OutlineButton(
                               //     color: Colors.white,
                               //     child: Text(
                               //       "Go Back",
                               //       style: TextStyle(
                               //         color: Theme.of(context)
-                              //             // ignore: deprecated_member_use
+                              //
                               //             .textSelectionTheme.selectionHandleColor,
                               //       ),
                               //     ),
                               //     borderSide: BorderSide(
                               //       width: 2.0,
                               //       color: Theme.of(context)
-                              //           // ignore: deprecated_member_use
+                              //
                               //           .textSelectionTheme.selectionHandleColor
                               //           .withOpacity(0.5),
                               //     ),
                               //     highlightColor: Theme.of(context)
-                              //         // ignore: deprecated_member_use
+                              //
                               //         .textSelectionTheme.selectionHandleColor
                               //         .withOpacity(0.1),
                               //     highlightedBorderColor: Theme.of(context)
-                              //         // ignore: deprecated_member_use
+                              //
                               //         .textSelectionTheme.selectionHandleColor
                               //         .withOpacity(0.6),
                               //     onPressed: (!_saving) ? onStepCancel : null,
                               //   )
                               ? OutlinedButton(
                                   style: OutlinedButton.styleFrom(
-                                    foregroundColor: Colors.white, side: BorderSide(
+                                    foregroundColor: Colors.white,
+                                    side: BorderSide(
                                       width: 2.0,
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionTheme.selectionHandleColor
+                                          .textSelectionTheme
+                                          .selectionHandleColor
                                           .withOpacity(0.5),
                                     ),
                                     shape: RoundedRectangleBorder(
@@ -1138,14 +1306,22 @@ class _EditMeetingState extends State<EditMeeting> {
                                     ),
                                   ),
                                   child: Text(
-                                    "Go Back",
+                                    currentLanguage == 'English'
+                                        ? 'Go Back'
+                                        : Provider.of<TranslationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .translate('Go Back') ??
+                                            'Go Back',
                                     style: TextStyle(
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionTheme.selectionHandleColor,
+                                          .textSelectionTheme
+                                          .selectionHandleColor,
                                     ),
                                   ),
-                                  onPressed: !_saving ? controlDetails.onStepCancel : null,
+                                  onPressed: !_saving
+                                      ? controlDetails.onStepCancel
+                                      : null,
                                 )
                               : SizedBox(),
                         ],

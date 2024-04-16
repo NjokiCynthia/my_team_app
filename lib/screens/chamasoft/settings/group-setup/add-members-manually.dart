@@ -170,7 +170,7 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                                 text: groupRole.roleName,
                                 textAlign: TextAlign.center,
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context)
                                         .textSelectionTheme
                                         .selectionHandleColor),
@@ -194,7 +194,7 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
               title: heading2(
                   text: "Set Role",
                   textAlign: TextAlign.center,
-                  // ignore: deprecated_member_use
+                 
                   color: Theme.of(context)
                       .textSelectionTheme
                       .selectionHandleColor),
@@ -284,7 +284,7 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                 Container(
                   margin:
                       const EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
-                  // ignore: deprecated_member_use
+                 
                   // child: FlatButton(
                   //   onPressed: () async {
                   //     //addMember(context);
@@ -322,7 +322,7 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                   //       customTitle(
                   //           text: "ADD MEMBER",
                   //           fontSize: 12,
-                  //           // ignore: deprecated_member_use
+                  //          
                   //           color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                   //     ],
                   //   ),
@@ -478,9 +478,9 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                           padding: const EdgeInsets.all(16.0),
                           child: customTitleWithWrap(
                               text:
-                                  "Start adding members by clicking on the button above", // ignore: deprecated_member_use
+                                  "Start adding members by clicking on the button above",
                               color:
-                                  // ignore: deprecated_member_use
+                                 
                                   Theme.of(context)
                                       .textSelectionTheme
                                       .selectionHandleColor),

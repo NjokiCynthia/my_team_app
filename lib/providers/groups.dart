@@ -11,8 +11,10 @@ import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
 import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
 import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/screens/chamasoft/models/guarantor.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
+import 'package:chamasoft/screens/chamasoft/models/loan_requests.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/transaction-statement-model.dart';
@@ -25,6 +27,7 @@ import 'package:chamasoft/helpers/endpoint-url.dart';
 import 'package:chamasoft/helpers/post-to-server.dart';
 import 'package:chamasoft/helpers/report_helper.dart';
 import 'package:chamasoft/helpers/setting_helper.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -341,6 +344,7 @@ class LoanType {
   final String id;
   final String name;
   final String repaymentPeriod;
+  final String repaymentPeriodType;
   final String loanAmount;
   final String interestRate;
   final String loanProcessing;
@@ -354,6 +358,7 @@ class LoanType {
     this.id,
     this.name,
     this.repaymentPeriod,
+    this.repaymentPeriodType,
     this.loanAmount,
     this.interestRate,
     this.loanProcessing,
@@ -432,6 +437,109 @@ class OngoingMemberLoanOptions {
       this.balance,
       this.isSelected,
       this.loanType});
+}
+
+class LoanApplications {
+  String id;
+  String memberId;
+  String groupId;
+  String loanTypeId;
+  String loanAmount;
+  String repaymentPeriod;
+  String isApproved;
+  String description;
+  String active;
+  String createdBy;
+  String createdOn;
+  String modifiedOn;
+  String modifiedBy;
+  String status;
+  String agreeToRules;
+  String isDeleted;
+  String accountId;
+  String reviewReport;
+  String declineMessage;
+  String isDeclined;
+  String isLoanDisbursed;
+  String disburseStatus;
+  String memberSupervisorId;
+  String affirmation;
+  String saccoManagerMemberId;
+  String saccoManagerStatus;
+  String saccomManagerMemberId;
+  String saccomManagerStatus;
+  String userId;
+  String declineReason;
+  String declinedBy;
+  String disbursementCharges;
+  String disbursementReceiptNumber;
+  String isDisbursementDeclined;
+  String declinedOn;
+  String disbursementFailedErrorMessage;
+  String referenceNumber;
+  String disbursementResultStatus;
+  String disbursementStatus;
+  String isDisbursed;
+  String disbursedOn;
+  String disbursementResultDescription;
+  String accountSelectedBy;
+  String oldId;
+  String isLoanCreated;
+  String applicationReason;
+  String loanTypeUsesNewWorkflow;
+  String applicationName;
+  String applicantName;
+
+  LoanApplications(
+      {this.id,
+      this.memberId,
+      this.groupId,
+      this.loanTypeId,
+      this.loanAmount,
+      this.repaymentPeriod,
+      this.isApproved,
+      this.description,
+      this.active,
+      this.createdBy,
+      this.createdOn,
+      this.modifiedOn,
+      this.modifiedBy,
+      this.status,
+      this.agreeToRules,
+      this.isDeleted,
+      this.accountId,
+      this.reviewReport,
+      this.declineMessage,
+      this.isDeclined,
+      this.isLoanDisbursed,
+      this.disburseStatus,
+      this.memberSupervisorId,
+      this.affirmation,
+      this.saccoManagerMemberId,
+      this.saccoManagerStatus,
+      this.saccomManagerMemberId,
+      this.saccomManagerStatus,
+      this.userId,
+      this.declineReason,
+      this.declinedBy,
+      this.disbursementCharges,
+      this.disbursementReceiptNumber,
+      this.isDisbursementDeclined,
+      this.declinedOn,
+      this.disbursementFailedErrorMessage,
+      this.referenceNumber,
+      this.disbursementResultStatus,
+      this.disbursementStatus,
+      this.isDisbursed,
+      this.disbursedOn,
+      this.disbursementResultDescription,
+      this.accountSelectedBy,
+      this.oldId,
+      this.isLoanCreated,
+      this.applicationReason,
+      this.loanTypeUsesNewWorkflow,
+      this.applicationName,
+      this.applicantName});
 }
 
 class UnreconciledDeposit {
@@ -525,6 +633,10 @@ class Groups with ChangeNotifier {
 
   List<Account> _accounts = [];
   List<Contribution> _contributions = [];
+  List<GuarantorshipRequests> _guarantorRequests = [];
+  List<LoanApplications> _loanApplications = [];
+  List<LoanApprovalRequests> _loanApprovalRequests = [];
+
   List<Contribution> _payContributions = [];
   List<Expense> _expenses = [];
   List<FineType> _fineTypes = [];
@@ -559,6 +671,7 @@ class Groups with ChangeNotifier {
   List<GroupContributionSummary> _groupContributionSummary = [];
   List<GroupContributionSummary> _groupFinesSummary = [];
   List<Deposit> _depositList = [];
+
   List<Withdrawal> _withdrawalList = [];
   List<WithdrawalRequest> _withdrawalRequests = [];
   List<UnreconciledDeposit> _unreconciledDeposits = [];
@@ -618,6 +731,10 @@ class Groups with ChangeNotifier {
     return [..._contributions];
   }
 
+  List<GuarantorshipRequests> get guarantorRequests {
+    return [..._guarantorRequests];
+  }
+
   List<Contribution> get payContributions {
     return [..._payContributions];
   }
@@ -636,6 +753,14 @@ class Groups with ChangeNotifier {
 
   List<Invoices> get invoices {
     return [..._invoices];
+  }
+
+  List<LoanApplications> get loanApplications {
+    return [..._loanApplications];
+  }
+
+  List<LoanApprovalRequests> get loanApprovalrequests {
+    return [..._loanApprovalRequests];
   }
 
   List<IncomeCategories> get detailedIncomeCategories {
@@ -748,6 +873,10 @@ class Groups with ChangeNotifier {
 
   List<Deposit> get getDeposits {
     return [..._depositList];
+  }
+
+  List<LoanApplications> get getLoanApplications {
+    return [..._loanApplications];
   }
 
   List<Withdrawal> get getWithdrawals {
@@ -978,6 +1107,284 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<void> addApprovalRequests({List<dynamic> loanApprovalRequests}) async {
+    if (loanApprovalRequests.length > 0) {
+      for (var loanApprovalRequestsJSON in loanApprovalRequests) {
+        final newloanApprovals = LoanApprovalRequests(
+            signatoryName:
+                loanApprovalRequestsJSON['signatory_name'].toString(),
+            id: loanApprovalRequestsJSON['id'].toString(),
+            groupId: loanApprovalRequestsJSON['group_id'].toString(),
+            loanTypeId: loanApprovalRequestsJSON['loan_type_id'].toString(),
+            loanAmount: loanApprovalRequestsJSON['loan_amount'].toString(),
+            isApproved: loanApprovalRequestsJSON['is_approved'].toString(),
+            active: loanApprovalRequestsJSON['active'].toString(),
+            createdBy: loanApprovalRequestsJSON['created_by'].toString(),
+            createdOn: loanApprovalRequestsJSON['created_on'].toString(),
+            modifiedOn: loanApprovalRequestsJSON['modified_on'].toString(),
+            modifiedBy: loanApprovalRequestsJSON['modified_by'].toString(),
+            status: loanApprovalRequestsJSON['status'],
+            isDeclined: loanApprovalRequestsJSON['is_declined'].toString(),
+            oldId: loanApprovalRequestsJSON['old_id'].toString(),
+            approveComment:
+                loanApprovalRequestsJSON['approve_comment'].toString(),
+            commiteeMemberId:
+                loanApprovalRequestsJSON['commitee_member_id'].toString(),
+            committeeProgressStatus:
+                loanApprovalRequestsJSON['committee_progress_status']
+                    .toString(),
+            declineComment:
+                loanApprovalRequestsJSON['decline_comment'].toString(),
+            loanRequestMemberName:
+                loanApprovalRequestsJSON['loan_request_member_name'].toString(),
+            loanApplicationId:
+                loanApprovalRequestsJSON['loan_application_id'].toString(),
+            loanRequestApplicantUserId:
+                loanApprovalRequestsJSON['loan_request_applicant_user_id']
+                    .toString(),
+            loanRequestMemberId:
+                loanApprovalRequestsJSON['loan_request_member_id'].toString(),
+            loanSignatoryProgressStatus:
+                loanApprovalRequestsJSON['loan_signatory_progress_status']
+                    .toString(),
+            signatoryMemberId:
+                loanApprovalRequestsJSON['signatory_member_id'].toString(),
+            signatoryUserId:
+                loanApprovalRequestsJSON['signatory_user_id'].toString());
+
+        _loanApprovalRequests.add(newloanApprovals);
+      }
+    }
+    notifyListeners();
+  }
+
+  Future<void> fetchApprovalRequests({String id}) async {
+    final url = EndpointUrl.GET_MEMBER_ACTION_APPROVAL_REQUESTS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+        "loan_application_id": id,
+      });
+
+      final response = await PostToServer.post(postRequest, url);
+
+      _loanApprovalRequests = [];
+
+      final loanApprovalRequests = response['data'] as List<dynamic>;
+      print('here .......');
+      print(loanApprovalRequests);
+      addApprovalRequests(loanApprovalRequests: loanApprovalRequests);
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> addLoanApplications(
+      {List<dynamic> groupLoanApplications}) async {
+    if (groupLoanApplications.length > 0) {
+      for (var groupLoanApplicationsJSON in groupLoanApplications) {
+        final newloanApplications = LoanApplications(
+          id: groupLoanApplicationsJSON['id'].toString(),
+          memberId: groupLoanApplicationsJSON['member_id'].toString(),
+          groupId: groupLoanApplicationsJSON['group_id'].toString(),
+          loanTypeId: groupLoanApplicationsJSON['loan_type_id'].toString(),
+          loanAmount: groupLoanApplicationsJSON['loan_amount'].toString(),
+          repaymentPeriod:
+              groupLoanApplicationsJSON['repayment_period'].toString(),
+          isApproved: groupLoanApplicationsJSON['is_approved'].toString(),
+          description: groupLoanApplicationsJSON['description'].toString(),
+          active: groupLoanApplicationsJSON['active'].toString(),
+          createdBy: groupLoanApplicationsJSON['created_by'].toString(),
+          createdOn: groupLoanApplicationsJSON['created_on'].toString(),
+          modifiedOn: groupLoanApplicationsJSON['modified_on'].toString(),
+          modifiedBy: groupLoanApplicationsJSON['modified_by'].toString(),
+          status: groupLoanApplicationsJSON['status'].toString(),
+          agreeToRules: groupLoanApplicationsJSON['agree_to_rules'].toString(),
+          isDeleted: groupLoanApplicationsJSON['is_deleted'].toString(),
+          accountId: groupLoanApplicationsJSON['account_id'].toString(),
+          reviewReport: groupLoanApplicationsJSON['review_report'].toString(),
+          declineMessage:
+              groupLoanApplicationsJSON['decline_message'].toString(),
+          isDeclined: groupLoanApplicationsJSON['is_declined'].toString(),
+          isLoanDisbursed:
+              groupLoanApplicationsJSON['is_loan_disbursed'].toString(),
+          disburseStatus:
+              groupLoanApplicationsJSON['disburse_status'].toString(),
+          memberSupervisorId:
+              groupLoanApplicationsJSON['member_supervisor_id'].toString(),
+          affirmation: groupLoanApplicationsJSON['affirmation'].toString(),
+          saccoManagerMemberId:
+              groupLoanApplicationsJSON['sacco_manager_member_id'].toString(),
+          saccoManagerStatus:
+              groupLoanApplicationsJSON['sacco_manager_status'].toString(),
+          saccomManagerMemberId:
+              groupLoanApplicationsJSON['saccom_manager_member_id'].toString(),
+          saccomManagerStatus:
+              groupLoanApplicationsJSON['saccom_manager_status'].toString(),
+          userId: groupLoanApplicationsJSON['user_id'].toString(),
+          declineReason: groupLoanApplicationsJSON['decline_reason'].toString(),
+          declinedBy: groupLoanApplicationsJSON['declined_by'].toString(),
+          disbursementCharges:
+              groupLoanApplicationsJSON['disbursement_charges'].toString(),
+          disbursementReceiptNumber:
+              groupLoanApplicationsJSON['disbursement_receipt_number']
+                  .toString(),
+          isDisbursementDeclined:
+              groupLoanApplicationsJSON['is_disbursement_declined'].toString(),
+          declinedOn: groupLoanApplicationsJSON['declined_on'].toString(),
+          disbursedOn: groupLoanApplicationsJSON['disbursed_on'].toString(),
+          disbursementFailedErrorMessage:
+              groupLoanApplicationsJSON['disbursement_failed_error_message']
+                  .toString(),
+          referenceNumber:
+              groupLoanApplicationsJSON['reference_number'].toString(),
+          disbursementResultStatus:
+              groupLoanApplicationsJSON['disbursement_result_status']
+                  .toString(),
+          disbursementResultDescription:
+              groupLoanApplicationsJSON['disbursement_result_description']
+                  .toString(),
+          disbursementStatus:
+              groupLoanApplicationsJSON['disbursement_status'].toString(),
+          isDisbursed: groupLoanApplicationsJSON['is_disbursed'].toString(),
+          accountSelectedBy:
+              groupLoanApplicationsJSON['account_selected_by'].toString(),
+          applicationReason:
+              groupLoanApplicationsJSON['application_reason'].toString(),
+          isLoanCreated:
+              groupLoanApplicationsJSON['is_loan_created'].toString(),
+          loanTypeUsesNewWorkflow:
+              groupLoanApplicationsJSON['loan_type_uses_new_workflow']
+                  .toString(),
+          oldId: groupLoanApplicationsJSON['old_id'].toString(),
+          applicationName:
+              groupLoanApplicationsJSON['ngo_portal_loan_application_name']
+                  .toString(),
+          applicantName: groupLoanApplicationsJSON['member_name'].toString(),
+        );
+        _loanApplications.add(newloanApplications);
+      }
+    }
+    notifyListeners();
+  }
+
+  Future<void> fetchGroupLoanApplications() async {
+    final url = EndpointUrl.GET_GROUP_LOAN_APPLICATIONS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+
+      final response = await PostToServer.post(postRequest, url);
+
+      _loanApplications = [];
+
+      final groupLoanApplications = response['data'] as List<dynamic>;
+      print('here .......');
+      print(groupLoanApplications);
+      addLoanApplications(groupLoanApplications: groupLoanApplications);
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchMemberLoanApplications({String memberId = ""}) async {
+    final url = EndpointUrl.GET_MEMBER_LOAN_APPLICATIONS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+        "member_id": memberId,
+      });
+      final response = await PostToServer.post(postRequest, url);
+      _loanApplications = [];
+
+      final groupLoanApplications = response['data'] as List<dynamic>;
+      addLoanApplications(groupLoanApplications: groupLoanApplications);
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> addGuarantors({List<dynamic> groupGuarantors}) async {
+    if (groupGuarantors.length > 0) {
+      for (var groupGuarantorRequestsJSON in groupGuarantors) {
+        final newGroupGuarantors = GuarantorshipRequests(
+          id: groupGuarantorRequestsJSON['id'].toString(),
+          amount: groupGuarantorRequestsJSON['amount'].toString(),
+          loanTypeId: groupGuarantorRequestsJSON['loan_type_id'].toString(),
+          loanApplicationId:
+              groupGuarantorRequestsJSON['loan_application_id'].toString(),
+          loanRequestApplicantUserId:
+              groupGuarantorRequestsJSON['loan_request_applicant_user_id']
+                  .toString(),
+          loanRequestApplicantMemberId:
+              groupGuarantorRequestsJSON['loan_request_applicant_member_id']
+                  .toString(),
+          guarantorMemberId:
+              groupGuarantorRequestsJSON['guarantor_member_id'].toString(),
+          guarantorUserId:
+              groupGuarantorRequestsJSON['guarantor_user_id'].toString(),
+          groupId: groupGuarantorRequestsJSON['group_id'].toString(),
+          comment: groupGuarantorRequestsJSON['comment'].toString(),
+          loanRequestProgressStatus:
+              groupGuarantorRequestsJSON['loan_request_progress_status']
+                  .toString(),
+          isApproved: groupGuarantorRequestsJSON['is_approved'].toString(),
+          isDeclined: groupGuarantorRequestsJSON['is_declined'].toString(),
+          active: groupGuarantorRequestsJSON['active'].toString(),
+          approveComment:
+              groupGuarantorRequestsJSON['approve_comment'].toString(),
+          approvedOn: groupGuarantorRequestsJSON['approved_on'].toString(),
+          declinedOn: groupGuarantorRequestsJSON['declined_on'].toString(),
+          declineComment:
+              groupGuarantorRequestsJSON['decline_comment'].toString(),
+          createdBy: groupGuarantorRequestsJSON['created_by'].toString(),
+          createdOn: groupGuarantorRequestsJSON['created_on'].toString(),
+          modifiedOn: groupGuarantorRequestsJSON['modified_on'].toString(),
+          modifiedBy: groupGuarantorRequestsJSON['modified_by'].toString(),
+          status: groupGuarantorRequestsJSON['status'].toString(),
+          declineReason:
+              groupGuarantorRequestsJSON['decline_reason'].toString(),
+          loanApplicantMemberId:
+              groupGuarantorRequestsJSON['loan_applicant_member_id'].toString(),
+          loanApplicantUserId:
+              groupGuarantorRequestsJSON['loan_applicant_user_id'].toString(),
+          oldId: groupGuarantorRequestsJSON['old_id'].toString(),
+        );
+        _guarantorRequests.add(newGroupGuarantors);
+      }
+    }
+    notifyListeners();
+  }
+
+  Future<void> fetchGuarantorShipRequests() async {
+    final url = EndpointUrl.GET_MEMBER_ACTION_GUARANTORSHIP_REQUESTS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+
+      final response = await PostToServer.post(postRequest, url);
+      _guarantorRequests = [];
+      final groupGuarantors = response['data'] as List<dynamic>;
+      addGuarantors(groupGuarantors: groupGuarantors);
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   Future<void> addContributions(
       {List<dynamic> groupContributions, isLocal = false}) async {
     if (groupContributions.length > 0) {
@@ -1173,21 +1580,10 @@ class Groups with ChangeNotifier {
             type: groupInvoicesJSON['type'].toString(),
           );
 
-          // var fineTypeMap = {
-          //   "id": int.parse(groupFineTypesJSON['id'].toString()),
-          //   "group_id": int.parse(_currentGroupId),
-          //   "amount": double.parse(groupFineTypesJSON['amount'].toString()),
-          //   "balance": double.parse(groupFineTypesJSON['balance'].toString()),
-          //   "name": groupFineTypesJSON['name'].toString(),
-          //   "modified_on": DateTime.now().millisecondsSinceEpoch,
-          // };
           _invoices.add(newInvoice);
-          // _fineTypesList.add(fineTypeMap);
         }
         await dbHelper.deleteMultiple(
             [int.parse(_currentGroupId)], DatabaseHelper.fineCategories);
-        // await dbHelper.batchInsert(
-        //     _fineTypesList, DatabaseHelper.fineCategories);
       }
     }
     notifyListeners();
@@ -2140,6 +2536,35 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<dynamic> fetchLo(int saccoAccountId) async {
+    final url = EndpointUrl.GET_SACCO_ACCOUNTS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final groupSaccoAccounts = response['saccos'] as List<dynamic>;
+        for (int i = 0; i < groupSaccoAccounts.length; i++) {
+          if (groupSaccoAccounts[i]['id'].toString() ==
+              saccoAccountId.toString()) {
+            return groupSaccoAccounts[i];
+          }
+        }
+        return null;
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   Future<dynamic> fetchSaccoAccount(int saccoAccountId) async {
     final url = EndpointUrl.GET_SACCO_ACCOUNTS;
     try {
@@ -2664,6 +3089,58 @@ class Groups with ChangeNotifier {
         addGroupBorrowerOptions(groupBorrowerOptionsData);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchLoanProducts() async {
+    final url = EndpointUrl.GET_GROUP_LOAN_TYPES;
+    try {
+      final postRequest = json.encode({
+        "referralCode": _userId,
+      });
+
+      try {
+        // ignore: unused_local_variable
+
+        // ignore: todo
+        // TODO: handle reseting of data.
+        // if (_localData.length > 0 &&
+        //     jsonDecode(_localData[0]['value']).length > 0) {
+        //   addLoanTypes(jsonDecode(_localData[0]['value']));
+        // } else {
+        final response = await PostToServer.post(postRequest, url);
+        _loanTypes = []; //clear
+        final groupLoanTypes = response['loan_types'] as List<dynamic>;
+        Map<String, dynamic> loanTypesMap = {
+          "group_id": currentGroupId,
+          "value": jsonEncode(groupLoanTypes),
+          "modified_on": DateTime.now().millisecondsSinceEpoch,
+        };
+        await dbHelper.deleteMultiple(
+            [int.parse(_currentGroupId)], DatabaseHelper.loanTypesTable);
+        await dbHelper.insert(loanTypesMap, DatabaseHelper.loanTypesTable);
+        addLoanTypes(groupLoanTypes);
+        //}
+      } on CustomException catch (error) {
+        if (error.status == ErrorStatusCode.statusNoInternet) {
+          //=== BEGIN: OFFLINE PLUG
+          dynamic _localData = await getLocalData('loanTypes');
+          if (_localData['value'] != null) {
+            List<dynamic> _loanTypesData = jsonDecode(_localData['value']);
+            _loanTypes = []; //clear
+            addLoanTypes(_loanTypesData);
+          }
+          //=== END: OFFLINE PLUG
+        } else {
+          throw CustomException(message: error.message, status: error.status);
+        }
       } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
       }
@@ -4623,8 +5100,7 @@ class Groups with ChangeNotifier {
         "lower_limit": lowerLimit,
         "upper_limit": lowerLimit + 20
       });
-      print('This is teh request i post');
-      print(postRequest);
+
       try {
         final response = await PostToServer.post(postRequest, url);
         final data = response['withdrawals'] as List<dynamic>;
@@ -4716,6 +5192,53 @@ class Groups with ChangeNotifier {
   //     throw CustomException(message: ERROR_MESSAGE);
   //   }
   // }
+  Future<void> respondToLoanRequest(Map<String, String> formData) async {
+    final url = EndpointUrl.RESPOND_TO_LOAN_REQUEST;
+    print('This is where i am sending my approval request');
+
+    try {
+      formData["user_id"] = _userId;
+      formData["group_id"] = _currentGroupId;
+      final postRequest = json.encode(formData);
+      print('This is what i am sending');
+      print(postRequest);
+      try {
+        await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> cancelLoanRequest(Map<String, String> formData) async {
+    final url = EndpointUrl.RESPOND_TO_LOAN_REQUEST;
+    print('This is where i am sending my approval request');
+
+    try {
+      formData["user_id"] = _userId;
+      formData["group_id"] = _currentGroupId;
+      final postRequest = json.encode(formData);
+      print('This is what i am sending');
+      print(postRequest);
+      try {
+        await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
 
   Future<void> respondToWithdrawalRequest(Map<String, String> formData) async {
     final url = EndpointUrl.RESPOND_TO_WITHDRAWAL_REQUEST;
@@ -5673,6 +6196,44 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<String> submitAmtGroupLoanApplication(
+      Map<String, dynamic> formData) async {
+    final url = EndpointUrl.CREATE_AMT_LOAN_APPLICATION;
+    print('I want to see myself at this point');
+    try {
+      try {
+        formData['user_id'] = _userId;
+        final postRequest = json.encode(formData);
+        final response = await PostToServer.post(postRequest, url);
+        return response['message'];
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<String> submitAMTLoanApplication(formData) async {
+    final url = EndpointUrl.CREATE_AMT_LOAN_APPLICATION;
+    try {
+      try {
+        // formData['user_id'] = _userId;
+        // final dio = Dio();
+        //final postRequest = json.encode(formData);
+
+        final response = await PostToServer.postDio(formData, url);
+
+        return response['message'];
+        
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   //Invoice members
   Future<void> createInvoice(Map<String, dynamic> formData) async {
     final url = EndpointUrl.CREATE_INVOICE;
@@ -5703,6 +6264,7 @@ class Groups with ChangeNotifier {
   Future<Map<String, dynamic>> fetchGroupLoanCalculator(
       Map<String, dynamic> formData) async {
     final url = EndpointUrl.GET_GROUP_LOAN_CALCULATOR;
+
     try {
       formData['user_id'] = _userId;
       formData['group_id'] = _currentGroupId;

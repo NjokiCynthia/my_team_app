@@ -151,7 +151,7 @@ class _EditBankAccountState extends State<EditBankAccount> {
       );
 
       Navigator.pop(context);
-      // ignore: deprecated_member_use
+    
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully updated the Bank Account",

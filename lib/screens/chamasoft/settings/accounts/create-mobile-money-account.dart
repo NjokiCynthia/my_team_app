@@ -81,7 +81,7 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
       );
 
       Navigator.pop(context);
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully added a Mobile Money Account",
@@ -94,7 +94,7 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
     } on CustomException catch (error) {
       Navigator.pop(context);
 
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error Adding the Mobile Money Account. ${error.message} ",
@@ -111,7 +111,7 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
             backgroundColor: Theme.of(context).backgroundColor,
             title: heading2(
                 text: "Select Mobile Money Provider",
-                // ignore: deprecated_member_use
+               
                 color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                 textAlign: TextAlign.start),
             content: Container(
@@ -161,7 +161,7 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
                                       mobileMoneyProvider.name,
                                       style: TextStyle(
                                           color: Theme.of(context)
-                                              // ignore: deprecated_member_use
+                                             
                                               .textSelectionTheme.selectionHandleColor,
                                           fontWeight: FontWeight.w500),
                                     ),
@@ -187,7 +187,7 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
                                           mobileMoneyProvider.name,
                                           style: TextStyle(
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme.selectionHandleColor,
                                               fontWeight: FontWeight.w500),
                                         ),
@@ -213,7 +213,7 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
               ),
             ),
             actions: <Widget>[
-              // ignore: deprecated_member_use
+             
               ElevatedButton(
                 child: Text(
                   "Cancel",
@@ -227,7 +227,7 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
                 },
               ),
 
-              // ignore: deprecated_member_use
+             
               ElevatedButton(
                 child: Text(
                   "Continue",

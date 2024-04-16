@@ -99,7 +99,7 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
       if (shouldPopInstead != null && shouldPopInstead) {
         Navigator.of(context).pop(true);
       } else {
-        // ignore: deprecated_member_use
+       
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully added a Bank Account",
@@ -113,7 +113,7 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
     } on CustomException catch (error) {
       Navigator.pop(context);
 
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error Adding the Bank Account. ${error.message} ",

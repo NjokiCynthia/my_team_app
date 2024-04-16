@@ -86,7 +86,7 @@ class _ListFineTypesState extends State<ListFineTypes> {
                                             '${fineType.name}',
                                             style: TextStyle(
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme.selectionHandleColor,
                                               fontWeight: FontWeight.w800,
                                               fontSize: 18.0,
@@ -104,7 +104,7 @@ class _ListFineTypesState extends State<ListFineTypes> {
                                                       fontWeight:
                                                           FontWeight.w600,
                                                       color: Theme.of(context)
-                                                          // ignore: deprecated_member_use
+                                                         
                                                           .textSelectionTheme.selectionHandleColor
                                                           .withOpacity(0.5),
                                                       fontSize: 12.0,
@@ -116,7 +116,7 @@ class _ListFineTypesState extends State<ListFineTypes> {
                                                       fontWeight:
                                                           FontWeight.w700,
                                                       color: Theme.of(context)
-                                                          // ignore: deprecated_member_use
+                                                         
                                                           .textSelectionTheme.selectionHandleColor
                                                           .withOpacity(0.7),
                                                       fontSize: 12.0,

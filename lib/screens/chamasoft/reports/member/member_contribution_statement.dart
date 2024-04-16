@@ -262,9 +262,9 @@ class _MemberContributionStatementState
                             text: _memberName != null ? _memberName : '--',
                             // text: widget.memberName,
                             // fontSize: 16.0,
-                            // ignore: deprecated_member_use
+                           
                             color:
-                                // ignore: deprecated_member_use
+                               
                                 Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,
@@ -277,9 +277,9 @@ class _MemberContributionStatementState
                             text: _role != null ? _role : '--',
                             textAlign: TextAlign.start,
                             fontSize: 16.0,
-                            // ignore: deprecated_member_use
+                           
                             color:
-                                // ignore: deprecated_member_use
+                               
                                 Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,
@@ -290,9 +290,9 @@ class _MemberContributionStatementState
                           subtitle2(
                             text: _phone != null ? _phone : '--',
                             textAlign: TextAlign.start,
-                            // ignore: deprecated_member_use
+                           
                             color:
-                                // ignore: deprecated_member_use
+                               
                                 Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,
@@ -303,9 +303,9 @@ class _MemberContributionStatementState
                           subtitle2(
                             text: _email != null ? _email : '--',
                             textAlign: TextAlign.start,
-                            // ignore: deprecated_member_use
+                           
                             color:
-                                // ignore: deprecated_member_use
+                               
                                 Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,
@@ -341,7 +341,7 @@ class _MemberContributionStatementState
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
                         color:
-                            // ignore: deprecated_member_use
+                           
                             Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -352,7 +352,7 @@ class _MemberContributionStatementState
                         fontSize: 12,
                         // fontWeight: FontWeight.w500,
                         color:
-                            // ignore: deprecated_member_use
+                           
                             Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -369,7 +369,7 @@ class _MemberContributionStatementState
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
                           color: Theme.of(context)
-                              // ignore: deprecated_member_use
+                             
                               .textSelectionTheme
                               .selectionHandleColor,
                           textAlign: TextAlign.end,
@@ -381,7 +381,7 @@ class _MemberContributionStatementState
                               ? "$_statementFrom to $_statementTo"
                               : "",
                           color: Theme.of(context)
-                              // ignore: deprecated_member_use
+                             
                               .textSelectionTheme
                               .selectionHandleColor,
                           textAlign: TextAlign.end,
@@ -530,7 +530,7 @@ class _MemberContributionStatementState
                             ? Colors.red
                             : (_balance < 0
                                 ? Colors.green
-                                // ignore: deprecated_member_use
+                               
                                 : Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor),
@@ -549,9 +549,9 @@ class _MemberContributionStatementState
             //               : "You have an Underpayment of ${groupObject.groupCurrency + " " + currencyFormat.format(_balance.abs())}",
             //           textAlign: TextAlign.start,
             //           // fontSize: 14.0,
-            //           // ignore: deprecated_member_use
+            //          
             //           color:
-            //               // ignore: deprecated_member_use
+            //              
             //               Theme.of(context).textSelectionTheme.selectionHandleColor,
             //         ),
             //       )

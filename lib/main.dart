@@ -1,4 +1,5 @@
 import 'package:chamasoft/config.dart';
+import 'package:chamasoft/providers/access_token.dart';
 import 'package:chamasoft/providers/bankBalancesSummary.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
 import 'package:chamasoft/providers/chatmessage.dart';
@@ -114,8 +115,10 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider<AccessTokenProvider>(
+            create: (_) => AccessTokenProvider()),
         ChangeNotifierProvider<TranslationProvider>(
-          create: (context) => TranslationProvider(initialLanguage: 'English'),
+          create: (context) => TranslationProvider(),
         ),
         ChangeNotifierProvider(
           create: (_) => ChatMessage(),

@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/reports/deposit-receipts.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
@@ -128,10 +129,17 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
-        title: "Record Bank Loan",
+        title: currentLanguage == 'English'
+            ? 'Record Bank Loan'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Record Bank Loan') ??
+                'Record Bank Loan',
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.times_circle,
@@ -149,8 +157,13 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
                 children: <Widget>[
                   toolTip(
                     context: context,
-                    title:
-                        "Manually record loans received from financial institutions",
+                    title: currentLanguage == 'English'
+                        ? 'Manually record loans received from financial institutions'
+                        : Provider.of<TranslationProvider>(context,
+                                    listen: false)
+                                .translate(
+                                    'Manually record loans received from financial institutions') ??
+                            'Manually record loans received from financial institutions',
                     showTitle: true,
                     message: "",
                   ),
@@ -164,12 +177,31 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
                         children: <Widget>[
                           simpleTextInputField(
                               context: context,
-                              labelText: "Bank loan description",
+                              labelText: currentLanguage == 'English'
+                                  ? 'Bank loan description'
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate('Bank loan description') ??
+                                      'Bank loan description',
                               validator: (value) {
                                 if (value == "" || value == null) {
-                                  return "This field is required";
+                                  return currentLanguage == 'English'
+                                      ? 'This field is required'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  'This field is required') ??
+                                          'This field is required';
                                 } else if (value.toString().length < 8) {
-                                  return "Description is too short";
+                                  return currentLanguage == 'English'
+                                      ? 'Description is too short'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  'Description is too short') ??
+                                          'Description is too short';
                                 }
                                 return null;
                               },
@@ -184,12 +216,24 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
                               validator: (value) {
                                 if (value == null || value == "") {
                                   print("Empty value2");
-                                  return "Field is required";
+                                  return currentLanguage == 'English'
+                                      ? 'This field is required'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  'This field is required') ??
+                                          'This field is required';
                                 }
                                 return null;
                               },
                               enabled: _isFormInputEnabled,
-                              labelText: "Total amount received",
+                              labelText: currentLanguage == 'English'
+                                  ? 'Total amount received'
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate('Total amount received') ??
+                                      'Total amount received',
                               onChanged: (value) {
                                 setState(() {
                                   amountLoaned = value;
@@ -199,12 +243,24 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
                               context: context,
                               validator: (value) {
                                 if (value == null || value == "") {
-                                  return "Field is required";
+                                  return currentLanguage == 'English'
+                                      ? 'This field is required'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  'This field is required') ??
+                                          'This field is required';
                                 }
                                 return null;
                               },
                               enabled: _isFormInputEnabled,
-                              labelText: "Total amount payable",
+                              labelText: currentLanguage == 'English'
+                                  ? 'Total amount payable'
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate('Total amount payable') ??
+                                      'Total amount payable',
                               onChanged: (value) {
                                 setState(() {
                                   totalLoanAmountPayable = value;
@@ -214,11 +270,24 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
                               context: context,
                               validator: (value) {
                                 if (value == null || value == "") {
-                                  return "Field is required";
+                                  return currentLanguage == 'English'
+                                      ? 'This field is required'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  'This field is required') ??
+                                          'This field is required';
                                 }
                                 return null;
                               },
-                              labelText: "Total loan balance as at date",
+                              labelText: currentLanguage == 'English'
+                                  ? 'Total loan balance as at date'
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate(
+                                              'Total loan balance as at date') ??
+                                      'Total loan balance as at date',
                               enabled: _isFormInputEnabled,
                               onChanged: (value) {
                                 setState(() {
@@ -231,7 +300,14 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
                               Expanded(
                                   flex: 1,
                                   child: DatePicker(
-                                    labelText: 'Select Deposit Date',
+                                    labelText: currentLanguage == 'English'
+                                        ? 'Select Deposit Date'
+                                        : Provider.of<TranslationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .translate(
+                                                    'Select Deposit Date') ??
+                                            'Select Deposit Date',
                                     lastDate: DateTime.now(),
                                     selectedDate: loanFromDate == null
                                         ? new DateTime(now.year, now.month,
@@ -249,7 +325,13 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
                               Expanded(
                                 flex: 1,
                                 child: DatePicker(
-                                  labelText: 'Loan To',
+                                  labelText: currentLanguage == 'English'
+                                      ? 'Loan To'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('Loan To') ??
+                                          'Loan To',
                                   firstDate: loanFromDate == null
                                       ? new DateTime(now.year, now.month,
                                           now.day - 1, 6, 30)
@@ -270,7 +352,13 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
                           ),
                           CustomDropDownButton(
                             enabled: _isFormInputEnabled,
-                            labelText: "Account loan deposited to",
+                            labelText: currentLanguage == 'English'
+                                ? 'Account loan deposited to'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate(
+                                            'Account loan deposited to') ??
+                                    'Account loan deposited to',
                             listItems:
                                 formLoadData.containsKey("accountOptions")
                                     ? formLoadData["accountOptions"]
@@ -283,7 +371,13 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
                             },
                             validator: (value) {
                               if (value == "" || value == null) {
-                                return "This field is required";
+                                return currentLanguage == 'English'
+                                    ? 'This field is required'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate(
+                                                'This field is required') ??
+                                        'This field is required';
                               }
                               return null;
                             },
@@ -299,7 +393,13 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
                                 )
                               : defaultButton(
                                   context: context,
-                                  text: "SAVE",
+                                  text: currentLanguage == 'English'
+                                      ? 'SAVE'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('SAVE') ??
+                                          'SAVE',
                                   onPressed: () {
                                     print("this is clicked");
                                     _submit(context);

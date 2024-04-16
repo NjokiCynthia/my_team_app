@@ -2,6 +2,7 @@
 
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/providers/notification_summary.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-deposit-form.dart';
 import 'package:chamasoft/helpers/common.dart';
@@ -144,6 +145,9 @@ class _ReconcileDepositListState extends State<ReconcileDepositList> {
         "Unreconciled Deposit Count is : $unreconciledDepositCountfromDepositList");
     print(
         "Unreconciled Withdrawal Count is : $unreconciledWithdrawalCountDepositList");
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
 
     return Scaffold(
         key: _scaffoldKey,
@@ -161,7 +165,11 @@ class _ReconcileDepositListState extends State<ReconcileDepositList> {
                       context, unreconciledDepositCountfromDepositList), */
           elevation: 1,
           leadingIcon: LineAwesomeIcons.arrow_left,
-          title: "Reconcile deposits",
+          title: currentLanguage == 'English'
+              ? 'Reconcile deposits'
+              : Provider.of<TranslationProvider>(context, listen: false)
+                      .translate('Reconcile deposits') ??
+                  'Reconcile deposits',
         ),
         backgroundColor: Colors.transparent,
         body: RefreshIndicator(
@@ -194,8 +202,14 @@ class _ReconcileDepositListState extends State<ReconcileDepositList> {
                       : emptyList(
                           color: Colors.blue[400],
                           iconData: LineAwesomeIcons.angle_double_down,
-                          text:
-                              "There are no unreconciled deposits to display"),
+                          text: currentLanguage == 'English'
+                              ? 'There are no unreconciled deposits to display'
+                              : Provider.of<TranslationProvider>(context,
+                                          listen: false)
+                                      .translate(
+                                          'There are no unreconciled deposits to display') ??
+                                  'There are no unreconciled deposits to display',
+                        ),
                 ),
               ],
             ),
@@ -226,6 +240,9 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
       child: Card(
@@ -267,7 +284,7 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                             customTitle(
                               text: "${widget.groupObject.groupCurrency} ",
                               fontSize: 18.0,
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -276,7 +293,7 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                             heading2(
                               text:
                                   currencyFormat.format(widget.deposit.amount),
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -328,7 +345,7 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                 padding: const EdgeInsets.all(4.0),
                 child: Row(
                   children: [
-                    // ignore: deprecated_member_use
+                   
                     TextButton(
                       onPressed: () {
                         setState(() {
@@ -337,7 +354,22 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                       },
                       child: Row(
                         children: [
-                          Text(_isExpanded ? "View less" : "View more",
+                          Text(
+                              _isExpanded
+                                  ? currentLanguage == 'English'
+                                      ? 'View less'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('View less') ??
+                                          'View less'
+                                  : currentLanguage == 'English'
+                                      ? 'View more'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('View more') ??
+                                          'View more',
                               style: TextStyle(
                                   color:
                                       Theme.of(context).colorScheme.secondary)),
@@ -349,7 +381,7 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                       ),
                     ),
                     Spacer(),
-                    // ignore: deprecated_member_use
+                   
                     TextButton(
                       onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute(
@@ -363,7 +395,12 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                       child: Row(
                         children: [
                           Text(
-                            "Reconcile",
+                            currentLanguage == 'English'
+                                ? 'Reconcile'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Reconcile') ??
+                                    'Reconcile',
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.secondary),
                           ),

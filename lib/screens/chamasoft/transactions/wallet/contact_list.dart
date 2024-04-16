@@ -30,10 +30,10 @@ class _ContactListState extends State<ContactList> {
   final Permission _permission = Permission.contacts;
   PermissionStatus _permissionStatus = PermissionStatus.denied;
   // initially permissionstatus was undetermined
-  // ignore: deprecated_member_use
+ 
 //  List<CustomContact> _contacts = new List<CustomContact>();
   List<CustomContact> _contacts = <CustomContact>[];
-  // ignore: deprecated_member_use
+ 
   // List<CustomContact> _selectedContacts = List<CustomContact>();
   List<CustomContact> _selectedContacts = <CustomContact>[];
   bool _isLoading = false;

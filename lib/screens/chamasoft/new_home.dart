@@ -11,6 +11,7 @@ import 'package:chamasoft/helpers/get_path.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/svg-icons.dart';
 import 'package:chamasoft/helpers/theme.dart';
+import 'package:chamasoft/providers/access_token.dart';
 import 'package:chamasoft/providers/bankBalancesSummary.dart';
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/expenses-summaries.dart';
@@ -31,6 +32,9 @@ import 'package:chamasoft/screens/chamasoft/reports/group/contribution-summary.d
 import 'package:chamasoft/screens/chamasoft/reports/group/expense-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/group-loans-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-for-individual-amt-loan.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-amt.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-group.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/pay-now-sheet.dart';
 import 'package:chamasoft/screens/my-groups.dart';
@@ -53,6 +57,7 @@ import 'package:provider/provider.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:pie_chart/pie_chart.dart' as chart;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 import 'meetings/meetings.dart';
 
@@ -126,10 +131,51 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     widget.appBarElevation(_scrollController.offset);
   }
 
+  Future<Map<String, dynamic>> amtAuth() async {
+    print('I am here');
+    final url = 'https://api-accounts.sandbox.co.ke:8627/api/users/login';
+    final Map<String, String> headers = {
+      'Content-Type': 'application/json',
+    };
+    try {
+      final postRequest =
+          json.encode({"phone": "254797181989", "password": "p@ssword_5"});
+
+      final response =
+          await http.post(Uri.parse(url), headers: headers, body: postRequest);
+      print('I want to see my resposne');
+      print(response);
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        // Handle the response data according to your needs\\
+        print('I want to see my response data');
+
+        print(responseData);
+
+        final accessToken = responseData['user']['access_token'];
+
+        // Update access token using Provider
+        Provider.of<AccessTokenProvider>(context, listen: false)
+            .updateAccessToken(accessToken);
+
+        print('access token');
+
+        return responseData;
+      } else {
+        throw Exception(
+            'Failed to authenticate. Status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      throw Exception('Error during authentication: $error');
+    }
+  }
+
   @override
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    amtAuth();
     // _scrollChartToEnd();
     super.initState();
   }
@@ -545,10 +591,10 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
 
     final _myFile = File('$_dirPath/data.txt');
 
-    print("File size is : ${await _myFile.length()}");
+    // print("File size is : ${await _myFile.length()}");
 
     if (await logfilePath.length() >= 10000) {
-      print("Hello, its more than 10kb");
+      //print("Hello, its more than 10kb");
 
       // _formData['data'] = logDataSaved;
       try {
@@ -558,11 +604,11 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         StatusHandler()
             .handleStatus(context: context, error: error, callback: () {});
       }
-      print("Data saved to the server");
+      // print("Data saved to the server");
       await _myFile.delete();
       // readFileData();
     } else {
-      print("Hello, its less than 10kb");
+      // print("Hello, its less than 10kb");
       // readFileData();
     }
   }
@@ -651,6 +697,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   }
 
   Iterable<Widget> get contributionsSummary sync* {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     int i = 0;
     print(_itableContributionSummary.length);
     for (var data in _itableContributionSummary) {
@@ -711,7 +760,13 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                     height: 12.0,
                   ),
                   customTitleWithWrap(
-                      text: "More contributions will be displayed here",
+                      text: currentLanguage == 'English'
+                          ? 'More contributions will be displayed here'
+                          : Provider.of<TranslationProvider>(context,
+                                      listen: false)
+                                  .translate(
+                                      'More contributions will be displayed here') ??
+                              'More contributions will be displayed here',
                       //fontWeight: FontWeight.w500,
                       fontSize: 12.0,
                       textAlign: TextAlign.center,
@@ -891,9 +946,19 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                         // visible: _currentGroup.isGroupAdmin,
                         child: customShowCase(
                           key: meetingsBannarKey,
-                          title: "Chamasoft Meetings Banner",
-                          description:
-                              "Schedule,View and Manage Chama Meetings",
+                          title: currentLanguage == 'English'
+                              ? 'Chamasoft Meetings Banner'
+                              : Provider.of<TranslationProvider>(context,
+                                          listen: false)
+                                      .translate('Chamasoft Meetings Banner') ??
+                                  'Chamasoft Meetings Banner',
+                          description: currentLanguage == 'English'
+                              ? 'Schedule,View and Manage Chama Meetings'
+                              : Provider.of<TranslationProvider>(context,
+                                          listen: false)
+                                      .translate(
+                                          'Schedule,View and Manage Chama Meetings') ??
+                                  'Schedule,View and Manage Chama Meetings',
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(
                               16.0,
@@ -956,8 +1021,15 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                                 subtitle2(
                                                   color: Colors.white
                                                       .withOpacity(0.9),
-                                                  text:
-                                                      "Manage group meetings, easily.",
+                                                  text: currentLanguage ==
+                                                          'English'
+                                                      ? 'Manage group meetings, easily.'
+                                                      : Provider.of<TranslationProvider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .translate(
+                                                                  'Manage group meetings, easily.') ??
+                                                          'Manage group meetings, easily.',
                                                   textAlign: TextAlign.right,
                                                 ),
                                               ],
@@ -972,7 +1044,14 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                                 ),
                                               ),
                                               child: Text(
-                                                "Get Started",
+                                                currentLanguage == 'English'
+                                                    ? 'Get Started'
+                                                    : Provider.of<TranslationProvider>(
+                                                                context,
+                                                                listen: false)
+                                                            .translate(
+                                                                'Get Started') ??
+                                                        'Get Started',
                                                 // "Our meetings",
                                                 style: TextStyle(
                                                   color: Colors.white,
@@ -992,7 +1071,14 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                                 print("dont show 2");
                                               },
                                               child: Text(
-                                                "Don't show this again",
+                                                currentLanguage == 'English'
+                                                    ? "Don't show this again"
+                                                    : Provider.of<TranslationProvider>(
+                                                                context,
+                                                                listen: false)
+                                                            .translate(
+                                                                "Don't show this again") ??
+                                                        "Don't show this again",
                                                 style: TextStyle(
                                                   color: Colors.white
                                                       .withOpacity(0.8),
@@ -1039,7 +1125,13 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 ),
                               ),
                               plainButtonWithArrow(
-                                  text: "View All",
+                                  text: currentLanguage == 'English'
+                                      ? 'View All'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('View All') ??
+                                          'View All',
                                   size: 16.0,
                                   spacing: 2.0,
                                   color: Colors.blue,
@@ -1124,7 +1216,13 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                           balancesDashboardSummary
                                               .bankAccountBalance),
                                       currency: _groupCurrency,
-                                      accountName: "Cash at Bank",
+                                      accountName: currentLanguage == 'English'
+                                          ? 'Cash at Bank'
+                                          : Provider.of<TranslationProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .translate('Cash at Bank') ??
+                                              'Cash at Bank',
                                     ),
                                   ),
                                   SizedBox(
@@ -1145,7 +1243,13 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                           balancesDashboardSummary
                                               .cashAccounBalance),
                                       currency: _groupCurrency,
-                                      accountName: "Cash at Hand",
+                                      accountName: currentLanguage == 'English'
+                                          ? 'Cash at Hand'
+                                          : Provider.of<TranslationProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .translate('Cash at Hand') ??
+                                              'Cash at Hand',
                                     ),
                                   )
                                 ]),
@@ -1181,8 +1285,22 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                               "Fine Summary"
                                       //"Fine Summary"
                                       : _currentIndex == 2
-                                          ? "Loan Summary"
-                                          : "Expenses Summary",
+                                          ? currentLanguage == 'English'
+                                              ? "Loan Summary"
+                                              : Provider.of<TranslationProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .translate(
+                                                          "Loan Summary") ??
+                                                  "Loan Summary"
+                                          : currentLanguage == 'English'
+                                              ? "Expense Summary"
+                                              : Provider.of<TranslationProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .translate(
+                                                          "Expense Summary") ??
+                                                  "Expense Summary",
                               style: TextStyle(
                                 color: Colors.blueGrey[400],
                                 fontFamily: 'SegoeUI',
@@ -1191,18 +1309,21 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               ),
                             ),
                             plainButtonWithArrow(
-                                text: "View All",
+                                text: currentLanguage == 'English'
+                                    ? 'View All'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate('View All') ??
+                                        'View All',
                                 size: 16.0,
                                 spacing: 2.0,
                                 color: Colors.blue,
                                 action: () => _currentIndex == 0
-                                    ? Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                ContributionSummary(),
-                                            settings: RouteSettings(
-                                                arguments:
-                                                    CONTRIBUTION_STATEMENT)))
+                                    ? Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            ContributionSummary(),
+                                        settings: RouteSettings(
+                                            arguments: CONTRIBUTION_STATEMENT)))
                                     : _currentIndex == 1
                                         ? Navigator.of(context).push(
                                             MaterialPageRoute(
@@ -1308,7 +1429,13 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
-                                  "Make Payments",
+                                  currentLanguage == 'English'
+                                      ? 'Make Payments'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('Make Payments') ??
+                                          'Make Payments',
                                   style: TextStyle(
                                     color: Colors.blueGrey[400],
                                     fontSize: 16.0,
@@ -1350,39 +1477,72 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                       textColor: primaryColor,
                                       icon: FontAwesome.chevron_right,
                                       isFlat: false,
-                                      text: "PAY NOW",
+                                      text: currentLanguage == 'English'
+                                          ? 'PAY NOW'
+                                          : Provider.of<TranslationProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .translate('PAY NOW') ??
+                                              'PAY NOW',
                                       iconSize: 12.0,
                                       action: () => _openPayNowTray(context),
                                     ),
                                   ),
                                 ),
                                 Visibility(
-                                  visible: false,
+                                  visible: true,
                                   child: Expanded(
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(
                                         horizontal: 16.0,
                                       ),
                                       child: paymentActionButton(
-                                        color: primaryColor,
-                                        textColor: Colors.white,
-                                        icon: FontAwesome.chevron_right,
-                                        isFlat: true,
-                                        text: "APPLY LOAN",
-                                        iconSize: 12.0,
-                                        action: () =>
+                                          color: primaryColor,
+                                          textColor: Colors.white,
+                                          icon: FontAwesome.chevron_right,
+                                          isFlat: true,
+                                          text: currentLanguage == 'English'
+                                              ? 'APPLY LOAN'
+                                              : Provider.of<TranslationProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .translate(
+                                                          'APPLY LOAN') ??
+                                                  'APPLY LOAN',
+                                          iconSize: 12.0,
+                                          action: () {
                                             // () {} /* =>
-                                            Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  ApplyLoan()
-                                              //(){},
-                                              ),
-                                        ),
-                                      ),
+
+                                            if (_currentGroup.offerLoans &&
+                                                _currentGroup.referralCode ==
+                                                    "")
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          ApplyLoan()));
+
+                                            if (_currentGroup.referralCode !=
+                                                    "" &&
+                                                !_currentGroup.isCollective)
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          ApplyLoanFromAmt()));
+                                            if (_currentGroup.referralCode !=
+                                                    "" &&
+                                                _currentGroup.isCollective)
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          ApplyIndividualAmtLoan()));
+                                          }),
                                     ),
                                   ),
                                 ),
+
                                 // /*  Expanded(
                                 //   child: */
                                 // Column(
@@ -1401,7 +1561,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 //     customTitle1(
                                 //       text: 'Make Payment',
                                 //       color: Theme.of(context)
-                                //           // ignore: deprecated_member_use
+                                //
                                 //           .textSelectionHandleColor,
                                 //       textAlign: TextAlign.start,
                                 //       fontSize: 16,
@@ -1430,7 +1590,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 //       customTitle1(
                                 //         text: 'Apply Loan',
                                 //         color: Theme.of(context)
-                                //             // ignore: deprecated_member_use
+                                //
                                 //             .textSelectionHandleColor,
                                 //         textAlign: TextAlign.start,
                                 //         fontSize: 16,
@@ -1443,13 +1603,19 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             ),
                           ),
                       SizedBox(height: 5),
-                      Padding(
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Recent Transactions",
+                              currentLanguage == 'English'
+                                  ? 'Recent Transactions'
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate('Recent Transactions') ??
+                                      'Recent Transactions',
                               style: TextStyle(
                                 color: Colors.blueGrey[400],
                                 fontFamily: 'SegoeUI',
@@ -1457,8 +1623,16 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
+                            SizedBox(
+                              width: 50,
+                            ),
                             plainButtonWithArrow(
-                                text: "View All",
+                                text: currentLanguage == 'English'
+                                    ? 'View All'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate('View All') ??
+                                        'View All',
                                 size: 16.0,
                                 spacing: 2.0,
                                 color: Colors.blue,
@@ -1476,15 +1650,22 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                               child: customShowCase(
                                 key: recentTransactionKey,
-                                title: 'Recent Summary',
-                                description:
-                                    'Scroll Horizontal to View all your recent Transactions',
-                                textColor:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context)
-                                        // ignore: deprecated_member_use
-                                        .textSelectionTheme
-                                        .selectionHandleColor,
+                                title: currentLanguage == 'English'
+                                    ? 'Recent Summary'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate('Recent Summary') ??
+                                        'Recent Summary',
+                                description: currentLanguage == 'English'
+                                    ? 'Scroll Horizontal to View all your recent Transactions'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate(
+                                                'Scroll Horizontal to View all your recent Transactions') ??
+                                        'Scroll Horizontal to View all your recent Transactions',
+                                textColor: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                                 child: Container(
                                   height: 185.0,
                                   child: ListView(
@@ -1513,14 +1694,27 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                             height: 120.0,
                                           ),
                                           customTitleWithWrap(
-                                              text: "Nothing to display!",
+                                              text: currentLanguage == 'English'
+                                                  ? "Nothing to display!"
+                                                  : Provider.of<TranslationProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .translate(
+                                                              "Nothing to display!") ??
+                                                      "Nothing to display!",
                                               fontWeight: FontWeight.w700,
                                               fontSize: 14.0,
                                               textAlign: TextAlign.center,
                                               color: Colors.blueGrey[400]),
                                           customTitleWithWrap(
-                                              text:
-                                                  "Sorry, you haven't made any transactions",
+                                              text: currentLanguage == 'English'
+                                                  ? "Sorry, you haven't made any transactions"
+                                                  : Provider.of<TranslationProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .translate(
+                                                              "Sorry, you haven't made any transactions") ??
+                                                      "Sorry, you haven't made any transactions",
                                               //fontWeight: FontWeight.w500,
                                               fontSize: 12.0,
                                               textAlign: TextAlign.center,
@@ -1543,14 +1737,27 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                             height: 120.0,
                                           ),
                                           customTitleWithWrap(
-                                              text: "Nothing to display!",
+                                              text: currentLanguage == 'English'
+                                                  ? "Nothing to display!"
+                                                  : Provider.of<TranslationProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .translate(
+                                                              "Nothing to display!") ??
+                                                      "Nothing to display!",
                                               fontWeight: FontWeight.w700,
                                               fontSize: 14.0,
                                               textAlign: TextAlign.center,
                                               color: Colors.blueGrey[400]),
                                           customTitleWithWrap(
-                                              text:
-                                                  "Sorry, you haven't made any transactions",
+                                              text: currentLanguage == 'English'
+                                                  ? "Sorry, you haven't made any transactions"
+                                                  : Provider.of<TranslationProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .translate(
+                                                              "Sorry, you haven't made any transactions") ??
+                                                      "Sorry, you haven't made any transactions",
                                               //fontWeight: FontWeight.w500,
                                               fontSize: 12.0,
                                               textAlign: TextAlign.center,
@@ -1701,7 +1908,12 @@ class _ContrubutionsState extends State<Contrubutions> {
                     Navigator.of(context).pop();
                   },
                   child: customTitle1(
-                      text: "Ok",
+                      text: currentLanguage == 'English'
+                          ? "Ok"
+                          : Provider.of<TranslationProvider>(context,
+                                      listen: false)
+                                  .translate("Ok") ??
+                              "Ok",
                       fontSize: 14,
                       color: Theme.of(context).primaryColor))
             ],
@@ -1716,7 +1928,12 @@ class _ContrubutionsState extends State<Contrubutions> {
                         Expanded(
                           flex: 2,
                           child: subtitle3(
-                              text: "Date",
+                              text: currentLanguage == 'English'
+                                  ? "Date"
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate("Date") ??
+                                      "Date",
                               color: Theme.of(context).primaryColor,
                               textAlign: TextAlign.start),
                         ),
@@ -1804,7 +2021,13 @@ class _ContrubutionsState extends State<Contrubutions> {
                                   );
                                 })
                             : customTitle(
-                                text: "No Contributions yet",
+                                text: currentLanguage == 'English'
+                                    ? "No Contributions yet"
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate(
+                                                "No Contributions yet") ??
+                                        "No Contributions yet",
                                 fontSize: 16,
                                 color: Theme.of(context)
                                     .textSelectionTheme
@@ -1815,7 +2038,12 @@ class _ContrubutionsState extends State<Contrubutions> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           customTitle1(
-                              text: "Total Amount",
+                              text: currentLanguage == 'English'
+                                  ? 'Total Amount'
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate('Total Amount') ??
+                                      'Total Amount',
                               fontSize: 14,
                               textAlign: TextAlign.start),
                           customTitle1(
@@ -1836,6 +2064,9 @@ class _ContrubutionsState extends State<Contrubutions> {
   }
 
   void _displayContributionSummaryDialog(BuildContext context) async {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     showDialog(
         context: context,
         builder: (_) {
@@ -1850,7 +2081,14 @@ class _ContrubutionsState extends State<Contrubutions> {
                     SizedBox(
                       height: 15,
                     ),
-                    customTitle1(text: "Loading", fontSize: 14)
+                    customTitle1(
+                        text: currentLanguage == 'English'
+                            ? 'Loading'
+                            : Provider.of<TranslationProvider>(context,
+                                        listen: false)
+                                    .translate('Loading') ??
+                                'Loading',
+                        fontSize: 14)
                   ],
                 )),
           );
@@ -1965,7 +2203,7 @@ class _ContrubutionsState extends State<Contrubutions> {
       [Color(0xFF00ABF2), Color(/* 0xFF008CC5 */ 0xFF00ABF2)],
     ];
 
-    print("Current state is $_isLoading ");
+    // print("Current state is $_isLoading ");
 
     return /* dashboardContributionSummary.groupContributionAmount.abs() > 0 */ !_isLoading
         ? Container(
@@ -2003,7 +2241,6 @@ class _ContrubutionsState extends State<Contrubutions> {
                                     showLegends: false,
                                     legendTextStyle: TextStyle(
                                         fontWeight: FontWeight.w500,
-                                        // ignore: deprecated_member_use
                                         color: Theme.of(context)
                                             .textSelectionTheme
                                             .selectionHandleColor),
@@ -2018,11 +2255,9 @@ class _ContrubutionsState extends State<Contrubutions> {
                                       fontFamily: 'SegoeUI',
                                       fontSize: 14.0,
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
                                           .textSelectionTheme
                                           .selectionColor,
                                       fontWeight: FontWeight.w500,
-                                      // ignore: deprecated_member_use
                                       /* color: Colors.black */
                                     ),
                                   ),
@@ -2033,11 +2268,17 @@ class _ContrubutionsState extends State<Contrubutions> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   customTitle(
-                                    text: "Your Total Contribution",
+                                    text: currentLanguage == 'English'
+                                        ? 'Your Total Contribution'
+                                        : Provider.of<TranslationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .translate(
+                                                    'Your Total Contribution') ??
+                                            'Your Total Contribution',
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
                                     color: Theme.of(context)
-                                        // ignore: deprecated_member_use
                                         .textSelectionTheme
                                         .selectionHandleColor,
                                   ),
@@ -2083,7 +2324,6 @@ class _ContrubutionsState extends State<Contrubutions> {
                                                                                   ? Colors.red[400]
                                                                                   : */
                                                   Theme.of(context)
-                                                      // ignore: deprecated_member_use
                                                       .textSelectionTheme
                                                       .selectionHandleColor,
                                               textAlign: TextAlign.start,
@@ -2114,7 +2354,6 @@ class _ContrubutionsState extends State<Contrubutions> {
                                           ? Colors.red[400]
                                           : */
                                               Theme.of(context)
-                                                  // ignore: deprecated_member_use
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                           textAlign: TextAlign.start,
@@ -2130,11 +2369,17 @@ class _ContrubutionsState extends State<Contrubutions> {
                                             !_currentGroup
                                                 .enablehidegroupbalancestoMembers,
                                     child: customTitle(
-                                      text: "Group Total Contribution",
+                                      text: currentLanguage == 'English'
+                                          ? 'Group Total Contribution'
+                                          : Provider.of<TranslationProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .translate(
+                                                      'Group Total Contribution') ??
+                                              'Group Total Contribution',
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                     ),
@@ -2162,7 +2407,6 @@ class _ContrubutionsState extends State<Contrubutions> {
                                             ),
                                             customTitle1(
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               text: _currentGroup
@@ -2195,7 +2439,6 @@ class _ContrubutionsState extends State<Contrubutions> {
                                               //   ),
                                               customTitle1(
                                                 color: Theme.of(context)
-                                                    // ignore: deprecated_member_use
                                                     .textSelectionTheme
                                                     .selectionHandleColor,
                                                 text: _currentGroup
@@ -2223,7 +2466,14 @@ class _ContrubutionsState extends State<Contrubutions> {
                                           context);
                                     },
                                     child: customTitle(
-                                        text: "View your Contributions",
+                                        text: currentLanguage == 'English'
+                                            ? 'View your Contributions'
+                                            : Provider.of<TranslationProvider>(
+                                                        context,
+                                                        listen: false)
+                                                    .translate(
+                                                        'View your Contributions') ??
+                                                'View your Contributions',
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                         color: Colors.green),
@@ -2265,13 +2515,26 @@ class _ContrubutionsState extends State<Contrubutions> {
                                           text: (/* dashboardData.memberContributionArrears */ dashboardContributionSummary
                                                       .memberContributionArrears) <
                                                   0
-                                              ? "Your Contribution overpayment"
-                                              : "Your Contribution Arrears",
+                                              ? currentLanguage == 'English'
+                                                  ? 'Your Contribution overpayment'
+                                                  : Provider.of<TranslationProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .translate(
+                                                              'Your Contribution overpayment') ??
+                                                      'Your Contribution overpayment'
+                                              : currentLanguage == 'English'
+                                                  ? 'Your Contribution Arrears'
+                                                  : Provider.of<TranslationProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .translate(
+                                                              'Your Contribution Arrears') ??
+                                                      'Your Contribution Arrears',
                                           fontSize: 12,
                                           textAlign: TextAlign.start,
                                           fontWeight: FontWeight.w400,
                                           color: Theme.of(context)
-                                              // ignore: deprecated_member_use
                                               .textSelectionTheme
                                               .selectionHandleColor,
                                         ),
@@ -2309,7 +2572,6 @@ class _ContrubutionsState extends State<Contrubutions> {
                                                           0
                                                       ? Colors.green
                                                       : Theme.of(context)
-                                                          // ignore: deprecated_member_use
                                                           .textSelectionTheme
                                                           .selectionHandleColor,
                                           textAlign: TextAlign.start,
@@ -2324,12 +2586,18 @@ class _ContrubutionsState extends State<Contrubutions> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       customTitle(
-                                        text: "Next Contribution Date",
+                                        text: currentLanguage == 'English'
+                                            ? 'Next Contribution Date'
+                                            : Provider.of<TranslationProvider>(
+                                                        context,
+                                                        listen: false)
+                                                    .translate(
+                                                        'Next Contribution Date') ??
+                                                'Next Contribution Date',
                                         fontSize: 12,
                                         textAlign: TextAlign.start,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
-                                            // ignore: deprecated_member_use
                                             .textSelectionTheme
                                             .selectionHandleColor,
                                       ),
@@ -2345,7 +2613,6 @@ class _ContrubutionsState extends State<Contrubutions> {
                                                 "${/* defaultDateFormat.format */ (nextContributionDateFormatted)} (${dashboardContributionSummary.contributionDateDaysleft == "0 days" ? "today" : dashboardContributionSummary.contributionDateDaysleft != null ? "${dashboardContributionSummary.contributionDateDaysleft} left" : "--"})",
                                             // "${dashboardData.nextcontributionDate} (${(dashboardData.contributionDateDaysleft == "0 days" ? "today" : dashboardData.contributionDateDaysleft != null ? '${dashboardData.contributionDateDaysleft} left' : "--")})",
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
                                                 .textSelectionTheme
                                                 .selectionHandleColor,
                                             textAlign: TextAlign.start,
@@ -2375,7 +2642,12 @@ class _ContrubutionsState extends State<Contrubutions> {
                               height: 120.0,
                             ),
                             customTitleWithWrap(
-                                text: "Nothing to display!",
+                                text: currentLanguage == 'English'
+                                    ? "Nothing to display!"
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate("Nothing to display!") ??
+                                        "Nothing to display!",
                                 fontWeight: FontWeight.w700,
                                 fontSize: 14.0,
                                 textAlign: TextAlign.center,
@@ -2403,13 +2675,24 @@ class _ContrubutionsState extends State<Contrubutions> {
                       height: 120.0,
                     ),
                     customTitleWithWrap(
-                        text: "Fetching Data!",
+                        text: currentLanguage == 'English'
+                            ? 'Fetching Data!'
+                            : Provider.of<TranslationProvider>(context,
+                                        listen: false)
+                                    .translate('Fetching Data!') ??
+                                'Fetching Data!',
                         fontWeight: FontWeight.w700,
                         fontSize: 14.0,
                         textAlign: TextAlign.center,
                         color: Colors.blueGrey[400]),
                     customTitleWithWrap(
-                        text: "Fetching Contribution Summary, Please wait...",
+                        text: currentLanguage == 'English'
+                            ? 'Fetching Contribution Summary, Please wait...'
+                            : Provider.of<TranslationProvider>(context,
+                                        listen: false)
+                                    .translate(
+                                        'Fetching Contribution Summary, Please wait...') ??
+                                'Fetching Contribution Summary, Please wait...',
                         //fontWeight: FontWeight.w500,
                         fontSize: 12.0,
                         textAlign: TextAlign.center,
@@ -2469,6 +2752,9 @@ class Fines extends StatefulWidget {
 class _FinesState extends State<Fines> {
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     // Dashboard dashboardData = Provider.of<Dashboard>(context);
     DashboardFineSummary dashboardFineSummary =
         Provider.of<DashboardFineSummary>(context);
@@ -2565,7 +2851,6 @@ class _FinesState extends State<Fines> {
                                   showLegends: false,
                                   legendTextStyle: TextStyle(
                                       fontWeight: FontWeight.w500,
-                                      // ignore: deprecated_member_use
                                       color: Theme.of(context)
                                           .textSelectionTheme
                                           .selectionHandleColor),
@@ -2580,9 +2865,7 @@ class _FinesState extends State<Fines> {
                                         fontFamily: 'SegoeUI',
                                         fontSize: 14.0,
                                         fontWeight: FontWeight.w500,
-                                        // ignore: deprecated_member_use
                                         color: Theme.of(context)
-                                            // ignore: deprecated_member_use
                                             .textSelectionTheme
                                             .selectionHandleColor)),
                               ),
@@ -2592,11 +2875,17 @@ class _FinesState extends State<Fines> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 customTitle(
-                                  text: "Your Total Fines Paid",
+                                  text: currentLanguage == 'English'
+                                      ? "Your Total Fines Paid"
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  "Your Total Fines Paid") ??
+                                          "Your Total Fines Paid",
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionColor,
                                 ),
@@ -2638,7 +2927,6 @@ class _FinesState extends State<Fines> {
                                         ? Colors.red[400]
                                         : */
                                                 Theme.of(context)
-                                                    // ignore: deprecated_member_use
                                                     .textSelectionTheme
                                                     .selectionHandleColor,
                                             textAlign: TextAlign.start,
@@ -2665,7 +2953,6 @@ class _FinesState extends State<Fines> {
                                     ? Colors.red[400]
                                     :  */
                                             Theme.of(context)
-                                                // ignore: deprecated_member_use
                                                 .textSelectionTheme
                                                 .selectionHandleColor,
                                         textAlign: TextAlign.start,
@@ -2681,11 +2968,17 @@ class _FinesState extends State<Fines> {
                                           !_currentGroup
                                               .enablehidegroupbalancestoMembers,
                                   child: customTitle(
-                                    text: "Group Total Fines Paid",
+                                    text: currentLanguage == 'English'
+                                        ? "Group Total Fines Paid"
+                                        : Provider.of<TranslationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .translate(
+                                                    "Group Total Fines Paid") ??
+                                            "Group Total Fines Paid",
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
                                     color: Theme.of(context)
-                                        // ignore: deprecated_member_use
                                         .textSelectionTheme
                                         .selectionHandleColor,
                                   ),
@@ -2708,7 +3001,6 @@ class _FinesState extends State<Fines> {
                                             ),
                                             customTitle1(
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               text: _currentGroup
@@ -2726,7 +3018,6 @@ class _FinesState extends State<Fines> {
                                         )
                                       : customTitle1(
                                           color: Theme.of(context)
-                                              // ignore: deprecated_member_use
                                               .textSelectionTheme
                                               .selectionHandleColor,
                                           text: _currentGroup.groupCurrency +
@@ -2767,17 +3058,29 @@ class _FinesState extends State<Fines> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       customTitle(
-                                        text:
-                                            (/* dashboardData.memberFineArrears */ dashboardFineSummary
-                                                        .memberFineArrears) <
-                                                    0
-                                                ? "Your Fine overpayment"
-                                                : "Your Fine Arrears",
+                                        text: (/* dashboardData.memberFineArrears */ dashboardFineSummary
+                                                    .memberFineArrears) <
+                                                0
+                                            ? currentLanguage == 'English'
+                                                ? "Your Fine Overpayment"
+                                                : Provider.of<TranslationProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .translate(
+                                                            "Your Fine Overpayment") ??
+                                                    "Your Fine Overpayment"
+                                            : currentLanguage == 'English'
+                                                ? "Your Fine Arrears"
+                                                : Provider.of<TranslationProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .translate(
+                                                            "Your Fine Arrears") ??
+                                                    "Your Fine Arrears",
                                         fontSize: 15,
                                         textAlign: TextAlign.start,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
-                                            // ignore: deprecated_member_use
                                             .textSelectionTheme
                                             .selectionHandleColor,
                                       ),
@@ -2809,7 +3112,6 @@ class _FinesState extends State<Fines> {
                                                     0
                                                 ? Colors.green
                                                 : Theme.of(context)
-                                                    // ignore: deprecated_member_use
                                                     .textSelectionTheme
                                                     .selectionHandleColor,
                                         textAlign: TextAlign.start,
@@ -2834,13 +3136,24 @@ class _FinesState extends State<Fines> {
                             height: 120.0,
                           ),
                           customTitleWithWrap(
-                              text: "Nothing to display!",
+                              text: currentLanguage == 'English'
+                                  ? "Nothing to display!"
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate("Nothing to display!") ??
+                                      "Nothing to display!",
                               fontWeight: FontWeight.w700,
                               fontSize: 14.0,
                               textAlign: TextAlign.center,
                               color: Colors.blueGrey[400]),
                           customTitleWithWrap(
-                              text: "Sorry, There are no Fines available",
+                              text: currentLanguage == 'English'
+                                  ? "Sorry, There are no fines available"
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate(
+                                              "Sorry, There are no fines available") ??
+                                      "Sorry, There are no fines available",
                               //fontWeight: FontWeight.w500,
                               fontSize: 12.0,
                               textAlign: TextAlign.center,
@@ -2862,13 +3175,24 @@ class _FinesState extends State<Fines> {
                       height: 120.0,
                     ),
                     customTitleWithWrap(
-                        text: "Fetching Data!",
+                        text: currentLanguage == 'English'
+                            ? 'Fetching Data!'
+                            : Provider.of<TranslationProvider>(context,
+                                        listen: false)
+                                    .translate('Fetching Data!') ??
+                                'Fetching Data!',
                         fontWeight: FontWeight.w700,
                         fontSize: 14.0,
                         textAlign: TextAlign.center,
                         color: Colors.blueGrey[400]),
                     customTitleWithWrap(
-                        text: "Fetching Fine Summary, Please wait...",
+                        text: currentLanguage == 'English'
+                            ? 'Fetching Fine Summary, Please wait...'
+                            : Provider.of<TranslationProvider>(context,
+                                        listen: false)
+                                    .translate(
+                                        'Fetching Fine Summary, Please wait...') ??
+                                'Fetching Fine Summary, Please wait...',
                         //fontWeight: FontWeight.w500,
                         fontSize: 12.0,
                         textAlign: TextAlign.center,
@@ -2891,6 +3215,9 @@ class Balances extends StatefulWidget {
 class _BalancesState extends State<Balances> {
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     // Dashboard dashboardData = Provider.of<Dashboard>(context);
     LoanDashboardSummary loanDashboardSummary =
         Provider.of<LoanDashboardSummary>(context);
@@ -2997,26 +3324,24 @@ class _BalancesState extends State<Balances> {
                                       showLegends: false,
                                       legendTextStyle: TextStyle(
                                           fontWeight: FontWeight.w500,
-                                          // ignore: deprecated_member_use
                                           color: Theme.of(context)
                                               .textSelectionTheme
                                               .selectionHandleColor),
                                     ),
-                                    chartValuesOptions: chart.ChartValuesOptions(
-                                        showChartValueBackground: false,
-                                        showChartValues: true,
-                                        showChartValuesInPercentage: true,
-                                        showChartValuesOutside: false,
-                                        decimalPlaces: 0,
-                                        chartValueStyle: TextStyle(
-                                            fontFamily: 'SegoeUI',
-                                            fontSize: 14.0,
-                                            fontWeight: FontWeight.w500,
-                                            // ignore: deprecated_member_use
-                                            color: Theme.of(context)
-                                                // ignore: deprecated_member_use
-                                                .textSelectionTheme
-                                                .selectionColor)),
+                                    chartValuesOptions:
+                                        chart.ChartValuesOptions(
+                                            showChartValueBackground: false,
+                                            showChartValues: true,
+                                            showChartValuesInPercentage: true,
+                                            showChartValuesOutside: false,
+                                            decimalPlaces: 0,
+                                            chartValueStyle: TextStyle(
+                                                fontFamily: 'SegoeUI',
+                                                fontSize: 14.0,
+                                                fontWeight: FontWeight.w500,
+                                                color: Theme.of(context)
+                                                    .textSelectionTheme
+                                                    .selectionColor)),
                                   ),
                                 ),
                                 Column(
@@ -3024,11 +3349,17 @@ class _BalancesState extends State<Balances> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     customTitle(
-                                      text: "Your Total Loan",
+                                      text: currentLanguage == 'English'
+                                          ? 'Your Total Loan'
+                                          : Provider.of<TranslationProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .translate(
+                                                      'Your Total Loan') ??
+                                              'Your Total Loan',
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                     ),
@@ -3074,7 +3405,6 @@ class _BalancesState extends State<Balances> {
                                                             loanDashboardSummary
                                                                 .totalLoanAmount),
                                                 color: Theme.of(context)
-                                                    // ignore: deprecated_member_use
                                                     .textSelectionTheme
                                                     .selectionHandleColor,
                                                 textAlign: TextAlign.start,
@@ -3098,7 +3428,6 @@ class _BalancesState extends State<Balances> {
                                                         loanDashboardSummary
                                                             .totalLoanAmount),
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
                                                 .textSelectionTheme
                                                 .selectionHandleColor,
                                             textAlign: TextAlign.start,
@@ -3114,11 +3443,17 @@ class _BalancesState extends State<Balances> {
                                               !_currentGroup
                                                   .enablehidegroupbalancestoMembers,
                                       child: customTitle(
-                                        text: "Group Loan Balances",
+                                        text: currentLanguage == 'English'
+                                            ? 'Group Loan Balances'
+                                            : Provider.of<TranslationProvider>(
+                                                        context,
+                                                        listen: false)
+                                                    .translate(
+                                                        'Group Loan Balances') ??
+                                                'Group Loan Balances',
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context)
-                                            // ignore: deprecated_member_use
                                             .textSelectionTheme
                                             .selectionHandleColor,
                                       ),
@@ -3149,7 +3484,6 @@ class _BalancesState extends State<Balances> {
                                                 ),
                                                 customTitle1(
                                                   color: Theme.of(context)
-                                                      // ignore: deprecated_member_use
                                                       .textSelectionTheme
                                                       .selectionHandleColor,
                                                   text: _currentGroup
@@ -3167,7 +3501,6 @@ class _BalancesState extends State<Balances> {
                                             )
                                           : customTitle1(
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               text: _currentGroup
@@ -3218,13 +3551,19 @@ class _BalancesState extends State<Balances> {
                                                 .loanBalance) <
                                             0
                                         ?*/
-                                                "Your Loan Balance",
+                                                currentLanguage == 'English'
+                                                    ? 'Your Loan Balance'
+                                                    : Provider.of<TranslationProvider>(
+                                                                context,
+                                                                listen: false)
+                                                            .translate(
+                                                                'Your Loan Balance') ??
+                                                        'Your Loan Balance',
                                             /*: "Your Loan Overpayment",*/
                                             fontSize: 12,
                                             textAlign: TextAlign.start,
                                             fontWeight: FontWeight.w400,
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
                                                 .textSelectionTheme
                                                 .selectionHandleColor,
                                           ),
@@ -3258,7 +3597,6 @@ class _BalancesState extends State<Balances> {
                                                         0
                                                     ? Colors.green
                                                     : Theme.of(context)
-                                                        // ignore: deprecated_member_use
                                                         .textSelectionTheme
                                                         .selectionHandleColor,
                                             textAlign: TextAlign.start,
@@ -3273,12 +3611,18 @@ class _BalancesState extends State<Balances> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         customTitle(
-                                          text: "Next instalment",
+                                          text: currentLanguage == 'English'
+                                              ? 'Next installment'
+                                              : Provider.of<TranslationProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .translate(
+                                                          'Next installment') ??
+                                                  'Next installment',
                                           fontSize: 12,
                                           textAlign: TextAlign.start,
                                           fontWeight: FontWeight.w400,
                                           color: Theme.of(context)
-                                              // ignore: deprecated_member_use
                                               .textSelectionTheme
                                               .selectionHandleColor,
                                         ),
@@ -3300,7 +3644,6 @@ class _BalancesState extends State<Balances> {
                                                               .abs()),
                                               // "${dashboardData.nextcontributionDate} (${(dashboardData.contributionDateDaysleft == "0 days" ? "today" : dashboardData.contributionDateDaysleft != null ? '${dashboardData.contributionDateDaysleft} left' : "--")})",
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               textAlign: TextAlign.start,
@@ -3316,12 +3659,18 @@ class _BalancesState extends State<Balances> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         customTitle(
-                                          text: "Next Repayment Date",
+                                          text: currentLanguage == 'English'
+                                              ? 'Next Repayment Date'
+                                              : Provider.of<TranslationProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .translate(
+                                                          'Next Repayment Date') ??
+                                                  'Next Repayment Date',
                                           fontSize: 12,
                                           textAlign: TextAlign.start,
                                           fontWeight: FontWeight.w400,
                                           color: Theme.of(context)
-                                              // ignore: deprecated_member_use
                                               .textSelectionTheme
                                               .selectionHandleColor,
                                         ),
@@ -3336,7 +3685,6 @@ class _BalancesState extends State<Balances> {
 
                                               // "${dashboardData.nextcontributionDate} (${(dashboardData.contributionDateDaysleft == "0 days" ? "today" : dashboardData.contributionDateDaysleft != null ? '${dashboardData.contributionDateDaysleft} left' : "--")})",
                                               color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               textAlign: TextAlign.start,
@@ -3362,13 +3710,27 @@ class _BalancesState extends State<Balances> {
                                 height: 120.0,
                               ),
                               customTitleWithWrap(
-                                  text: "Nothing to display!",
+                                  text: currentLanguage == 'English'
+                                      ? "Nothing to display!"
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  "Nothing to display!") ??
+                                          "Nothing to display!",
                                   fontWeight: FontWeight.w700,
                                   fontSize: 14.0,
                                   textAlign: TextAlign.center,
                                   color: Colors.blueGrey[400]),
                               customTitleWithWrap(
-                                  text: "Sorry, There are no Loans available",
+                                  text: currentLanguage == 'English'
+                                      ? 'Sorry, There are no Loans available'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate(
+                                                  'Sorry, There are no Loans available') ??
+                                          'Sorry, There are no Loans available',
                                   //fontWeight: FontWeight.w500,
                                   fontSize: 12.0,
                                   textAlign: TextAlign.center,
@@ -3390,13 +3752,24 @@ class _BalancesState extends State<Balances> {
                       height: 120.0,
                     ),
                     customTitleWithWrap(
-                        text: "Fetching Data!",
+                        text: currentLanguage == 'English'
+                            ? 'Fetching Data!'
+                            : Provider.of<TranslationProvider>(context,
+                                        listen: false)
+                                    .translate('Fetching Data!') ??
+                                'Fetching Data!',
                         fontWeight: FontWeight.w700,
                         fontSize: 14.0,
                         textAlign: TextAlign.center,
                         color: Colors.blueGrey[400]),
                     customTitleWithWrap(
-                        text: "Fetching Loan Summary, Please wait...",
+                        text: currentLanguage == 'English'
+                            ? 'Fetching Loan Summary, Please wait...'
+                            : Provider.of<TranslationProvider>(context,
+                                        listen: false)
+                                    .translate(
+                                        'Fetching Loan Summary, Please wait...') ??
+                                'Fetching Loan Summary, Please wait...',
                         //fontWeight: FontWeight.w500,
                         fontSize: 12.0,
                         textAlign: TextAlign.center,
@@ -3417,6 +3790,9 @@ class Expenses extends StatefulWidget {
 class _ExpensesState extends State<Expenses> {
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     Dashboard dashboardData = Provider.of<Dashboard>(context);
 
     // ExpenseSummaryList _expenseSummaryList;
@@ -3508,16 +3884,16 @@ class _ExpensesState extends State<Expenses> {
     //     _expenseRows[0].paid ?? 0*/
     //     );
 
-    print("Total Expenses will be ${_expenseSummary.totalExpensesSummaries}");
-    print("Some of the three items will be $sumOfThreeItems");
-    print("object Other Expenses will be $otherExpenses");
-    print("new other Expenses amount will be $newOtherExpenses");
-    print(
-        "Item1 will be ${(_expenseSummary.newExpensesSummariesList.length > 0 ? _expenseSummary.newExpensesSummariesList[0].expenseAmount : 0)}");
-    print(
-        "Item2 will be ${(_expenseSummary.newExpensesSummariesList.length > 1 ? _expenseSummary.newExpensesSummariesList[1].expenseAmount : 0)}");
-    print(
-        "Item3 will be ${(_expenseSummary.newExpensesSummariesList.length > 2 ? _expenseSummary.newExpensesSummariesList[2].expenseAmount : 0)}");
+    // print("Total Expenses will be ${_expenseSummary.totalExpensesSummaries}");
+    // print("Some of the three items will be $sumOfThreeItems");
+    // print("object Other Expenses will be $otherExpenses");
+    // print("new other Expenses amount will be $newOtherExpenses");
+    // print(
+    //     "Item1 will be ${(_expenseSummary.newExpensesSummariesList.length > 0 ? _expenseSummary.newExpensesSummariesList[0].expenseAmount : 0)}");
+    // print(
+    //     "Item2 will be ${(_expenseSummary.newExpensesSummariesList.length > 1 ? _expenseSummary.newExpensesSummariesList[1].expenseAmount : 0)}");
+    // print(
+    //     "Item3 will be ${(_expenseSummary.newExpensesSummariesList.length > 2 ? _expenseSummary.newExpensesSummariesList[2].expenseAmount : 0)}");
 
     /*Map<String, double> dataMaptest = {
       "Item1": (_expenseRows?.length > 0 ? _expenseRows[0].paid : 0),
@@ -3581,7 +3957,6 @@ class _ExpensesState extends State<Expenses> {
                             showLegends: false,
                             legendTextStyle: TextStyle(
                                 fontWeight: FontWeight.w500,
-                                // ignore: deprecated_member_use
                                 color: Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor),
@@ -3596,9 +3971,7 @@ class _ExpensesState extends State<Expenses> {
                                   fontFamily: 'SegoeUI',
                                   fontSize: 14.0,
                                   fontWeight: FontWeight.w500,
-                                  // ignore: deprecated_member_use
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionColor)),
                         ),
@@ -3623,7 +3996,6 @@ class _ExpensesState extends State<Expenses> {
                             fontSize: 13,
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context)
-                                // ignore: deprecated_member_use
                                 .textSelectionTheme
                                 .selectionHandleColor,
                           ),
@@ -3663,7 +4035,6 @@ class _ExpensesState extends State<Expenses> {
                                         " " +
                                         ("(${(((_expenseSummary.newExpensesSummariesList.length > 0 ? _expenseSummary.newExpensesSummariesList[0].expenseAmount : 0) / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
                                     .textSelectionTheme
                                     .selectionHandleColor,
                                 textAlign: TextAlign.start,
@@ -3697,7 +4068,6 @@ class _ExpensesState extends State<Expenses> {
                                   fontSize: 13,
                                   fontWeight: FontWeight.w400,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 )
@@ -3728,7 +4098,6 @@ class _ExpensesState extends State<Expenses> {
                                     ),
                                     customTitle1(
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                       text: _currentGroup.groupCurrency +
@@ -3780,7 +4149,6 @@ class _ExpensesState extends State<Expenses> {
                                   fontSize: 13,
                                   fontWeight: FontWeight.w400,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 )
@@ -3810,7 +4178,6 @@ class _ExpensesState extends State<Expenses> {
                                     ),
                                     customTitle1(
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                       text: _currentGroup.groupCurrency +
@@ -3845,7 +4212,7 @@ class _ExpensesState extends State<Expenses> {
                           //   fontSize: 13,
                           //   fontWeight: FontWeight.w400,
                           //   color: Theme.of(context)
-                          //       // ignore: deprecated_member_use
+                          //
                           //       .textSelectionHandleColor,
                           // ),
                           // SizedBox(height: 5),
@@ -3866,7 +4233,7 @@ class _ExpensesState extends State<Expenses> {
                           //     ),
                           //     customTitle1(
                           //       color: Theme.of(context)
-                          //           // ignore: deprecated_member_use
+                          //
                           //           .textSelectionHandleColor,
                           //       text: _currentGroup.groupCurrency +
                           //           " " +
@@ -3884,11 +4251,16 @@ class _ExpensesState extends State<Expenses> {
 
                           newOtherExpenses > 0
                               ? customTitle(
-                                  text: "Others",
+                                  text: currentLanguage == 'English'
+                                      ? 'Others'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('Others') ??
+                                          'Others',
                                   fontSize: 13,
                                   fontWeight: FontWeight.w400,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 )
@@ -3914,7 +4286,6 @@ class _ExpensesState extends State<Expenses> {
                                     ),
                                     customTitle1(
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                       text: _currentGroup.groupCurrency +
@@ -3948,13 +4319,24 @@ class _ExpensesState extends State<Expenses> {
                           height: 120.0,
                         ),
                         customTitleWithWrap(
-                            text: "Nothing to display!",
+                            text: currentLanguage == 'English'
+                                ? "Nothing to display!"
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate("Nothing to display!") ??
+                                    "Nothing to display!",
                             fontWeight: FontWeight.w700,
                             fontSize: 14.0,
                             textAlign: TextAlign.center,
                             color: Colors.blueGrey[400]),
                         customTitleWithWrap(
-                            text: "Sorry, there are no expenses to display",
+                            text: currentLanguage == 'English'
+                                ? 'Sorry, there are no expenses to display'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate(
+                                            'Sorry, there are no expenses to display') ??
+                                    'Sorry, there are no expenses to display',
                             //fontWeight: FontWeight.w500,
                             fontSize: 12.0,
                             textAlign: TextAlign.center,

@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use, duplicate_ignore
+// ignore_for_file: , duplicate_ignore
 
 import 'dart:async';
 
@@ -322,28 +322,26 @@ class _AppSwitcherState extends State<AppSwitcher> {
 
   Widget groupSwitcherButton(
       {BuildContext context, String title, String role}) {
-    // ignore: deprecated_member_use
     return Container(
       decoration: BoxDecoration(
-        // borderRadius: new BorderRadius.only(
-        //   topRight: Radius.circular(31.0),
-        //   topLeft: Radius.circular(31.0),
-        // ),
+          // borderRadius: new BorderRadius.only(
+          //   topRight: Radius.circular(31.0),
+          //   topLeft: Radius.circular(31.0),
+          // ),
 
-      ),
+          ),
       child: TextButton(
-
         style: TextButton.styleFrom(
           padding: EdgeInsets.fromLTRB(20.0, 0.0, 2.0, 0.0),
           splashFactory: NoSplash.splashFactory,
           shape: RoundedRectangleBorder(
             borderRadius: _entryIsVisible
                 ? BorderRadius.only(
-              topRight: Radius.circular(20.0),
-              topLeft: Radius.circular(20.0),)
+                    topRight: Radius.circular(20.0),
+                    topLeft: Radius.circular(20.0),
+                  )
                 : BorderRadius.circular(40.0),
           ),
-
 
           // backgroundColor: Theme.of(context).textButtonTheme.style.backgroundColor ,
         ),

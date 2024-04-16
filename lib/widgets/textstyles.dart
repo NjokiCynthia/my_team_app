@@ -680,7 +680,7 @@ Widget transactionToolTip(
           children: <Widget>[
             Icon(
               Icons.lightbulb_outline,
-              // ignore: deprecated_member_use
+             
               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               size: 24.0,
               semanticLabel: 'Text to announce in accessibility modes',
@@ -695,7 +695,7 @@ Widget transactionToolTip(
                   subtitle1(
                     text: title,
                     textAlign: TextAlign.start,
-                    // ignore: deprecated_member_use
+                   
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor,
@@ -705,7 +705,7 @@ Widget transactionToolTip(
                       ? subtitle2(
                           text: date,
                           textAlign: TextAlign.start,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -714,7 +714,7 @@ Widget transactionToolTip(
                   (message.length > 0)
                       ? subtitle2(
                           text: message,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -727,7 +727,7 @@ Widget transactionToolTip(
               visible: false,
               child: screenActionButton(
                   icon: LineAwesomeIcons.times_circle,
-                  // ignore: deprecated_member_use
+                 
                   textColor:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                   action: toggleToolTip),
@@ -756,7 +756,7 @@ Widget toolTip(
           children: <Widget>[
             Icon(
               Icons.lightbulb_outline,
-              // ignore: deprecated_member_use
+             
               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               size: 24.0,
               semanticLabel: 'Text to announce in accessibility modes',
@@ -772,7 +772,7 @@ Widget toolTip(
                       ? subtitle1(
                           text: title,
                           textAlign: TextAlign.start,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -781,7 +781,7 @@ Widget toolTip(
                   (message.length > 0)
                       ? subtitle2(
                           text: message,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -794,7 +794,7 @@ Widget toolTip(
               visible: false,
               child: screenActionButton(
                   icon: LineAwesomeIcons.times_circle,
-                  // ignore: deprecated_member_use
+                 
                   textColor:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                   action: toggleToolTip),

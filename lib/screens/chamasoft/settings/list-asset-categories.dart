@@ -63,7 +63,7 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
         message = "${incomeCategory.name} has been deleted";
       }
 
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         message,
@@ -140,7 +140,7 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                           text: "Edit",
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor),
@@ -169,7 +169,7 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                           text: incomeCategory.isHidden ? "UnHide" : "Hide",
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor),
@@ -273,7 +273,7 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                                                 text: '${incomeCategory.name}',
                                                 textAlign: TextAlign.start,
                                                 color: Theme.of(context)
-                                                    // ignore: deprecated_member_use
+                                                   
                                                     .textSelectionTheme
                                                     .selectionHandleColor,
                                               ),
@@ -284,7 +284,7 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                                                   text:
                                                       '${incomeCategory.description}',
                                                   color: Theme.of(context)
-                                                      // ignore: deprecated_member_use
+                                                     
                                                       .textSelectionTheme
                                                       .selectionHandleColor,
                                                   fontWeight: FontWeight.w400,

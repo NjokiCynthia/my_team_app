@@ -15,7 +15,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 // import 'package:share/share.dart';
-import 'package:share_plus/share_plus.dart';
+//import 'package:share_plus/share_plus.dart';
 
 class MemberDetailStatement extends StatefulWidget {
   final String groupName, groupEmail, groupPhone, date, title, description;
@@ -66,8 +66,8 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
     //final subject = "${widget.title}";
 
     // await Share.share([image.path] );
-    // ignore: deprecated_member_use
-    await Share.shareFiles([image.path], text: text);
+   
+   // await Share.shareFiles([image.path], text: text);
 
     // Share.share(imageFile);
   }
@@ -116,15 +116,15 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                             SizedBox(
                               height: 10,
                             ),
-                            // ignore: deprecated_member_use
+                           
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: heading2(
                                   text: widget.title,
                                   color:
-                                      // ignore: deprecated_member_use
+                                     
                                       Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionHandleColor),
                             ),
@@ -139,7 +139,7 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                               fontSize: 22,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
-                                  // ignore: deprecated_member_use
+                                 
                                   .textSelectionTheme
                                   .selectionHandleColor,
                             ),
@@ -165,7 +165,7 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -176,7 +176,7 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -187,7 +187,7 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -219,7 +219,7 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -234,7 +234,7 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -250,7 +250,7 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -262,7 +262,7 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -276,9 +276,9 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                   text: "${widget.title.toLowerCase()}",
                                   fontSize: 14.0,
                                   color:
-                                      // ignore: deprecated_member_use
+                                     
                                       Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme
                                           .selectionHandleColor,
                                   textAlign: TextAlign.center),
@@ -307,21 +307,21 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                     children: [
                       InkWell(
                         onTap: () async {
-                          await Share.share(widget.memberName +
-                              " " +
-                              'paid ' +
-                              widget.group.groupCurrency +
-                              " " +
-                              currencyFormat.format(widget.amount) +
-                              " " +
-                              "on " +
-                              widget.date +
-                              " for " +
-                              widget.title.toLowerCase() +
-                              " to " +
-                              widget.groupName +
-                              "\n" +
-                              "https://bit.ly/3GkX3lM ");
+                          // await Share.share(widget.memberName +
+                          //     " " +
+                          //     'paid ' +
+                          //     widget.group.groupCurrency +
+                          //     " " +
+                          //     currencyFormat.format(widget.amount) +
+                          //     " " +
+                          //     "on " +
+                          //     widget.date +
+                          //     " for " +
+                          //     widget.title.toLowerCase() +
+                          //     " to " +
+                          //     widget.groupName +
+                          //     "\n" +
+                          //     "https://bit.ly/3GkX3lM ");
                         },
                         child: Row(
                           children: [
@@ -331,21 +331,21 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                               ),
                               iconSize: 20.0,
                               onPressed: () async {
-                                await Share.share(widget.memberName +
-                                    " " +
-                                    'paid ' +
-                                    widget.group.groupCurrency +
-                                    " " +
-                                    currencyFormat.format(widget.amount) +
-                                    " " +
-                                    "on " +
-                                    widget.date +
-                                    " for " +
-                                    widget.title.toLowerCase() +
-                                    " to " +
-                                    widget.groupName +
-                                    "\n" +
-                                    "https://bit.ly/3GkX3lM ");
+                                // await Share.share(widget.memberName +
+                                //     " " +
+                                //     'paid ' +
+                                //     widget.group.groupCurrency +
+                                //     " " +
+                                //     currencyFormat.format(widget.amount) +
+                                //     " " +
+                                //     "on " +
+                                //     widget.date +
+                                //     " for " +
+                                //     widget.title.toLowerCase() +
+                                //     " to " +
+                                //     widget.groupName +
+                                //     "\n" +
+                                //     "https://bit.ly/3GkX3lM ");
                                 //Share.shareFiles([convertWidgetToImage().path]);
                               },
                             ),
@@ -354,7 +354,7 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                               fontSize: 18,
                               fontWeight: FontWeight.w300,
                               color: Theme.of(context)
-                                  // ignore: deprecated_member_use
+                                 
                                   .textSelectionTheme
                                   .selectionHandleColor,
                             ),
@@ -393,7 +393,7 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionHandleColor,
                               ),
@@ -434,7 +434,7 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionHandleColor,
                               ),

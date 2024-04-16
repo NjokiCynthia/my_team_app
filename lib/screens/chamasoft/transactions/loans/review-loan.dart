@@ -1,51 +1,22 @@
+import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-application.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-signatory.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/theme.dart';
+import 'package:chamasoft/screens/chamasoft/models/loan_requests.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-//import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-
-List<String> approvalStatuses = ['UNKNOWN', 'WAITING RESPONSE', 'APPROVED'];
-
-List<LoanSignatory> loanSignatories = [
-  LoanSignatory(
-    userId: 1,
-    approvalStatus: 1,
-    isCurrentUser: true,
-    userName: 'John Doe',
-    userRole: 'Chairman',
-  ),
-  LoanSignatory(
-    userId: 4,
-    approvalStatus: 2,
-    isCurrentUser: false,
-    userName: 'Peter Kimutai',
-    userRole: 'Vice Chairman',
-  ),
-  LoanSignatory(
-    userId: 2,
-    approvalStatus: 2,
-    isCurrentUser: false,
-    userName: 'Jane Doe',
-    userRole: 'Secretary',
-  ),
-  LoanSignatory(
-    userId: 3,
-    approvalStatus: 2,
-    isCurrentUser: false,
-    userName: 'Martin Nzuki',
-    userRole: 'Treasurer',
-  ),
-];
+import 'package:provider/provider.dart';
 
 class ReviewLoan extends StatefulWidget {
-  final LoanApplication loanApplication;
+  final LoanApplications loanApplication;
 
   ReviewLoan({this.loanApplication});
 
@@ -62,6 +33,124 @@ class ReviewLoanState extends State<ReviewLoan> {
   String rejectReason = "";
   TextEditingController controller;
 
+  bool _isLoading = false;
+  Future<void> fetchApprovalRequests(BuildContext context) async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      await Provider.of<Groups>(context, listen: false)
+          .fetchApprovalRequests(id: widget.loanApplication.id);
+      setState(() {});
+    } on CustomException catch (error) {
+      print(error.message);
+      final snackBar = SnackBar(
+        content: Text('Network Error occurred: could not fetch invoices'),
+        action: SnackBarAction(
+          label: 'Retry',
+          onPressed: () async {
+            fetchApprovalRequests(context);
+          },
+        ),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    fetchApprovalRequests(context);
+    super.initState();
+  }
+
+  Map<String, String> _formData = {};
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  Future<void> submit() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    _formData["loan_application_id"] = widget.loanApplication.id.toString();
+
+    try {
+      await Provider.of<Groups>(context, listen: false)
+          .respondToLoanRequest(_formData);
+    } on CustomException catch (error) {
+      setState(() {
+        _isLoading = false;
+      });
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            submit();
+          },
+          scaffoldState: _scaffoldKey.currentState);
+    }
+  }
+
+  Future<void> reject() async {
+    setState(() {
+      _isLoading = true;
+    });
+    _formData["loan_application_id"] = widget.loanApplication.id.toString();
+    _formData["action"] = "0";
+    _formData['decline_message'] = rejectReason.toString();
+    try {
+      await Provider.of<Groups>(context, listen: false)
+          .cancelLoanRequest(_formData);
+    } on CustomException catch (error) {
+      setState(() {
+        _isLoading = false;
+      });
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            submit();
+          },
+          scaffoldState: _scaffoldKey.currentState);
+    }
+  }
+
+  void approvalDialog(String currency) {
+    String message =
+        "Are you sure you want to approve ${widget.loanApplication.applicationName} loan of $currency ${currencyFormat.format(double.tryParse(widget.loanApplication.loanAmount))}";
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              content: customTitleWithWrap(
+                  text: message, textAlign: TextAlign.start, maxLines: null),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              actions: <Widget>[
+                negativeActionDialogButton(
+                    text: "Cancel",
+                    color: Theme.of(context)
+                        .textSelectionTheme
+                        .selectionHandleColor,
+                    action: () => Navigator.of(context).pop()),
+                positiveActionDialogButton(
+                    text: "Yes",
+                    color: primaryColor,
+                    action: () async {
+                      _formData["action"] = "1";
+                      // Navigator.of(context).pop();
+                      await submit();
+                      fetchApprovalRequests(context);
+                      Navigator.of(context).pop();
+                    })
+              ],
+            ));
+  }
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String _rejectReasonError;
   void _rejectActionPrompt() {
     showDialog(
       context: context,
@@ -69,30 +158,53 @@ class ReviewLoanState extends State<ReviewLoan> {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
           title: new Text("Reason for Rejecting"),
-          content: TextFormField(
-            controller: controller,
-            keyboardType: TextInputType.text,
-            onChanged: (reason) {
-              rejectReason = reason;
-            },
-            decoration: InputDecoration(
-              floatingLabelBehavior: FloatingLabelBehavior.auto,
-              enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                color: Theme.of(context).hintColor,
-                width: 2.0,
-              )),
-              hintText: 'Reason for Rejecting the Loan Application',
-              labelText: "Enter Reason",
+          content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: controller,
+                  keyboardType: TextInputType.text,
+                  onChanged: (reason) {
+                    setState(() {
+                      _rejectReasonError = null;
+                    });
+                    rejectReason = reason;
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a reason for rejecting the loan application';
+                    }
+                    return null; // Return null if validation succeeds
+                  },
+                  decoration: InputDecoration(
+                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Theme.of(context).hintColor,
+                      width: 2.0,
+                    )),
+                    hintText: 'Reason for Rejecting the Loan Application',
+                    labelText: "Enter Reason",
+                  ),
+                ),
+                if (_rejectReasonError != null)
+                  Padding(
+                    padding: EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      _rejectReasonError,
+                      style: TextStyle(color: Theme.of(context).errorColor),
+                    ),
+                  ),
+              ],
             ),
           ),
           actions: <Widget>[
-            // ignore: deprecated_member_use
             new TextButton(
               child: new Text(
                 "Cancel",
                 style: TextStyle(
-                    // ignore: deprecated_member_use
                     color: Theme.of(context)
                         .textSelectionTheme
                         .selectionHandleColor),
@@ -101,14 +213,22 @@ class ReviewLoanState extends State<ReviewLoan> {
                 Navigator.of(context).pop();
               },
             ),
-            // ignore: deprecated_member_use
             new TextButton(
               child: new Text(
                 "Save",
                 style: new TextStyle(color: primaryColor),
               ),
-              onPressed: () {
-                Navigator.of(context).pop();
+              onPressed: () async {
+                if (_formKey.currentState.validate()) {
+                  await reject();
+                  fetchApprovalRequests(context);
+                  Navigator.of(context).pop();
+                  //    } else {
+                  // setState(() {
+                  //   _rejectReasonError =
+                  //       'Please enter a reason for rejecting the loan application';
+                  // });
+                }
               },
             ),
           ],
@@ -117,13 +237,17 @@ class ReviewLoanState extends State<ReviewLoan> {
     );
   }
 
+  bool isAnyDeclined = false;
   @override
   Widget build(BuildContext context) {
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     int flag = ModalRoute.of(context).settings.arguments;
     String appbarTitle = "Review Loan";
     if (flag == VIEW_APPLICATION_STATUS) {
       appbarTitle = "Loan Application Status";
     }
+
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
@@ -168,20 +292,11 @@ class ReviewLoanState extends State<ReviewLoan> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    heading2(
-                                      text:
-                                          "${widget.loanApplication.loanName}",
-                                      color: Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionTheme
-                                          .selectionHandleColor,
-                                      textAlign: TextAlign.start,
-                                    ),
                                     Visibility(
                                         visible: flag == REVIEW_LOAN,
                                         child: customTitle(
                                           text:
-                                              "Applied By ${widget.loanApplication.borrowerName}",
+                                              "Applied By ${widget.loanApplication.applicantName}",
                                           fontSize: 12.0,
                                           color: primaryColor,
                                           textAlign: TextAlign.start,
@@ -195,16 +310,14 @@ class ReviewLoanState extends State<ReviewLoan> {
                                     text: "Ksh ",
                                     fontSize: 18.0,
                                     color: Theme.of(context)
-                                        // ignore: deprecated_member_use
                                         .textSelectionTheme
                                         .selectionHandleColor,
                                     fontWeight: FontWeight.w400,
                                   ),
                                   heading2(
                                     text:
-                                        "${numberFormat.format(widget.loanApplication.amount)}",
+                                        "${numberFormat.format(double.tryParse(widget.loanApplication.loanAmount))}",
                                     color: Theme.of(context)
-                                        // ignore: deprecated_member_use
                                         .textSelectionTheme
                                         .selectionHandleColor,
                                     textAlign: TextAlign.end,
@@ -216,48 +329,41 @@ class ReviewLoanState extends State<ReviewLoan> {
                           SizedBox(
                             height: 8.0,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              subtitle1(
-                                text: "Interest Rate: ",
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context)
-                                        .textSelectionTheme
-                                        .selectionHandleColor,
-                              ),
-                              customTitle(
-                                textAlign: TextAlign.start,
-                                text: "12%",
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context)
-                                        .textSelectionTheme
-                                        .selectionHandleColor,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.start,
+                          //   children: <Widget>[
+                          //     subtitle1(
+                          //       text: "Interest Rate: ",
+                          //       color: Theme.of(context)
+                          //           .textSelectionTheme
+                          //           .selectionHandleColor,
+                          //     ),
+                          //     customTitle(
+                          //       textAlign: TextAlign.start,
+                          //       text: "12%",
+                          //       color: Theme.of(context)
+                          //           .textSelectionTheme
+                          //           .selectionHandleColor,
+                          //       fontWeight: FontWeight.w600,
+                          //     ),
+                          //   ],
+                          // ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               subtitle1(
                                 text: "Repayment Period: ",
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context)
-                                        .textSelectionTheme
-                                        .selectionHandleColor,
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                               ),
                               customTitle(
                                 textAlign: TextAlign.start,
-                                text: "1 Month",
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context)
-                                        .textSelectionTheme
-                                        .selectionHandleColor,
+                                text:
+                                    '${widget.loanApplication.repaymentPeriod} months',
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                                 fontWeight: FontWeight.w600,
                               ),
                             ],
@@ -267,21 +373,18 @@ class ReviewLoanState extends State<ReviewLoan> {
                             children: <Widget>[
                               subtitle1(
                                 text: "Applied On: ",
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context)
-                                        .textSelectionTheme
-                                        .selectionHandleColor,
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                               ),
                               customTitle(
                                 textAlign: TextAlign.start,
-                                text:
-                                    "${dateFormat.format(widget.loanApplication.requestDate)}",
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context)
-                                        .textSelectionTheme
-                                        .selectionHandleColor,
+                                text: widget.loanApplication.createdOn,
+                                // "${dateFormat.format(widget.loanApplication.create)}",
+                                //'3 April 2024',
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                                 fontWeight: FontWeight.w600,
                               ),
                             ],
@@ -297,37 +400,113 @@ class ReviewLoanState extends State<ReviewLoan> {
                           children: <Widget>[
                             heading2(
                                 text: "Signatories",
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context)
-                                        .textSelectionTheme
-                                        .selectionHandleColor,
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor,
                                 textAlign: TextAlign.start),
                             SizedBox(
                               height: 10,
                             ),
                             Expanded(
-                              child: ListView.separated(
-                                  scrollDirection: Axis.vertical,
-                                  shrinkWrap: true,
-                                  separatorBuilder:
-                                      (BuildContext context, int index) =>
-                                          const Divider(),
-                                  itemCount: loanSignatories.length,
-                                  itemBuilder: (context, int index) {
-                                    LoanSignatory loanSignatory =
-                                        loanSignatories[index];
-                                    return LoanSignatoryCard(
-                                      userName: loanSignatory.userName,
-                                      userRole: loanSignatory.userRole,
-                                      approvalStatus:
-                                          loanSignatory.approvalStatus,
-                                      isCurrentUser:
-                                          loanSignatory.isCurrentUser,
-                                      onPressed: () {},
-                                    );
-                                  }),
-                            ),
+                              child: _isLoading
+                                  ? Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : Consumer<Groups>(
+                                      builder: (context, groupData, child) {
+                                      bool isAnyDeclined =
+                                          false; // Variable to track if any request is declined
+                                      for (var approvalRequests
+                                          in groupData.loanApprovalrequests) {
+                                        // Check if any request is declined
+                                        if (approvalRequests.isDeclined ==
+                                            '1') {
+                                          isAnyDeclined = true;
+                                          break; // No need to continue loop if one declined request is found
+                                        }
+                                      }
+
+                                      if (isAnyDeclined) {
+                                        print("I am here IF");
+                                      }
+                                      return groupData
+                                                  .loanApprovalrequests.length >
+                                              0
+                                          ? ListView.separated(
+                                              scrollDirection: Axis.vertical,
+                                              shrinkWrap: true,
+                                              separatorBuilder:
+                                                  (BuildContext context,
+                                                          int index) =>
+                                                      const Divider(),
+                                              itemCount: groupData
+                                                  .loanApprovalrequests.length,
+                                              itemBuilder:
+                                                  (context, int index) {
+                                                LoanApprovalRequests
+                                                    approvalRequests = groupData
+                                                            .loanApprovalrequests[
+                                                        index];
+                                                return Container(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: <Widget>[
+                                                      Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: <Widget>[
+                                                          subtitle1(
+                                                            text: approvalRequests
+                                                                .signatoryName,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .textSelectionTheme
+                                                                .selectionHandleColor,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      statusChip(
+                                                          text: approvalRequests
+                                                                      .isDeclined ==
+                                                                  "1"
+                                                              ? 'Declined'
+                                                              : approvalRequests
+                                                                          .isApproved ==
+                                                                      "1"
+                                                                  ? 'Approved'
+                                                                  : 'Pending',
+                                                          textColor: approvalRequests
+                                                                      .isApproved ==
+                                                                  '1'
+                                                              ? Colors.blue
+                                                              : approvalRequests
+                                                                          .isDeclined ==
+                                                                      "1"
+                                                                  ? Colors.red
+                                                                  : Colors
+                                                                      .black,
+                                                          backgroundColor:
+                                                              Theme.of(context)
+                                                                  .hintColor
+                                                                  .withOpacity(
+                                                                      0.1))
+                                                    ],
+                                                  ),
+                                                );
+                                              })
+                                          : betterEmptyList(
+                                              message: 'No loan approval');
+                                    }),
+                            )
                           ],
                         ),
                       ),
@@ -337,16 +516,22 @@ class ReviewLoanState extends State<ReviewLoan> {
               ),
               Visibility(
                 visible: flag == REVIEW_LOAN,
+                // &&
+                // widget.loanApplication.declineReason.toString().isEmpty,
+                //&& !isAnyDeclined,
+                //!isAnyDeclined &&
+
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    // ignore: deprecated_member_use
                     TextButton(
                       style: TextButton.styleFrom(
                         backgroundColor: Colors.blueAccent.withOpacity(.2),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        approvalDialog(groupObject.groupCurrency);
+                      },
                       child: Padding(
                         padding: EdgeInsets.all(12.0),
                         child: Text(
@@ -358,7 +543,6 @@ class ReviewLoanState extends State<ReviewLoan> {
                         ),
                       ),
                     ),
-                    // ignore: deprecated_member_use
                     TextButton(
                       style: TextButton.styleFrom(
                         backgroundColor: Colors.redAccent.withOpacity(.2),
@@ -383,7 +567,6 @@ class ReviewLoanState extends State<ReviewLoan> {
               Visibility(
                 visible: flag == VIEW_APPLICATION_STATUS,
                 child: Center(
-                  // ignore: deprecated_member_use
                   child: TextButton(
                     style: TextButton.styleFrom(
                       backgroundColor: Colors.redAccent.withOpacity(.2),
@@ -408,65 +591,6 @@ class ReviewLoanState extends State<ReviewLoan> {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class LoanSignatoryCard extends StatelessWidget {
-  final String userName;
-  final String userRole;
-  final int approvalStatus;
-  final bool isCurrentUser;
-  final Function onPressed;
-
-  const LoanSignatoryCard({
-    this.userName,
-    this.userRole,
-    this.approvalStatus,
-    this.isCurrentUser,
-    this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              subtitle1(
-                text: isCurrentUser ? "$userName (You)" : "$userName",
-                // ignore: deprecated_member_use
-                color:
-                    Theme.of(context).textSelectionTheme.selectionHandleColor,
-              ),
-              subtitle2(
-                text: "$userRole",
-                color:
-                    // ignore: deprecated_member_use
-                    Theme.of(context)
-                        .textSelectionTheme
-                        .selectionHandleColor
-                        .withOpacity(0.5),
-              ),
-            ],
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          statusChip(
-              text:
-                  "${approvalStatus <= (approvalStatuses.length - 1) ? approvalStatuses[this.approvalStatus] : ''}",
-              textColor: approvalStatus == 2
-                  ? primaryColor
-                  // ignore: deprecated_member_use
-                  : Theme.of(context).textSelectionTheme.selectionHandleColor,
-              backgroundColor: Theme.of(context).hintColor.withOpacity(0.1)),
-        ],
       ),
     );
   }

@@ -296,10 +296,10 @@ class MemberCard extends StatelessWidget {
                               ),
                               heading3(
                                 text: member.name,
-                                // fontSize: 16.0,
-                                // ignore: deprecated_member_use
+                                //fontSize: 16.0,
+                               
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context)
                                         .textSelectionTheme
                                         .selectionHandleColor,
@@ -312,9 +312,9 @@ class MemberCard extends StatelessWidget {
                                 text: member.identity,
                                 textAlign: TextAlign.start,
                                 fontSize: 12.0,
-                                // ignore: deprecated_member_use
+                               
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context)
                                         .textSelectionTheme
                                         .selectionHandleColor,
@@ -325,9 +325,9 @@ class MemberCard extends StatelessWidget {
                               subtitle2(
                                 text: " ",
                                 textAlign: TextAlign.start,
-                                // ignore: deprecated_member_use
+                               
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context)
                                         .textSelectionTheme
                                         .selectionHandleColor,

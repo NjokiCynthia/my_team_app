@@ -62,7 +62,7 @@ class _NumberKeyBoardState extends State<NumberKeyBoard> {
                   // Disable the default soft keybaord
                   keyboardType: TextInputType.none,
                   inputFormatters: <TextInputFormatter>[
-                    // ignore: deprecated_member_use
+                   
                     FilteringTextInputFormatter.digitsOnly
                   ],
                   decoration: InputDecoration(

@@ -151,7 +151,7 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
                                 text: groupRole.roleName,
                                 textAlign: TextAlign.center,
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context).textSelectionTheme.selectionHandleColor),
                             onPressed: () {
                               print(groupRole.roleName + " tapped");
@@ -176,7 +176,7 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
               title: heading2(
                   text: "Select Role",
                   textAlign: TextAlign.center,
-                  // ignore: deprecated_member_use
+                 
                   color: Theme.of(context).textSelectionTheme.selectionHandleColor),
               actions: <Widget>[
                 CupertinoDialogAction(
@@ -311,7 +311,7 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
                   Icon(
                     Icons.lightbulb_outline,
                     color: Theme.of(context)
-                        // ignore: deprecated_member_use
+                       
                         .textSelectionTheme.selectionHandleColor,
                     size: 24.0,
                     semanticLabel: 'Group roles...',
@@ -327,13 +327,13 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
                           text: "Group roles",
                           textAlign: TextAlign.start,
                           color: Theme.of(context)
-                              // ignore: deprecated_member_use
+                             
                               .textSelectionTheme.selectionHandleColor,
                         ),
                         subtitle2(
                           text: "Tap on the respective role to update it.",
                           color: Theme.of(context)
-                              // ignore: deprecated_member_use
+                             
                               .textSelectionTheme.selectionHandleColor,
                           textAlign: TextAlign.start,
                         ),
@@ -378,7 +378,7 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
                                 text: displayName ?? "",
                                 textAlign: TextAlign.start,
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme.selectionHandleColor,
                               ),
                               phoneList.length >= 1 &&
@@ -387,7 +387,7 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
                                       text: phoneList[0].value,
                                       textAlign: TextAlign.start,
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
+                                         
                                           .textSelectionTheme.selectionHandleColor,
                                     )
                                   : Text(''),

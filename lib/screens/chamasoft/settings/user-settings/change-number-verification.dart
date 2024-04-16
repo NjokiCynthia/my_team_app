@@ -90,7 +90,7 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
     final snackBar = SnackBar(
         content: subtitle2(
             text: "Resending verification code", textAlign: TextAlign.start));
-    // ignore: deprecated_member_use
+   
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
     try {
       await Provider.of<Auth>(context, listen: false)
@@ -99,7 +99,7 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
           content: subtitle2(
               text: "Verification code has been sent",
               textAlign: TextAlign.start));
-      // ignore: deprecated_member_use
+     
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -145,7 +145,7 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
                           heading2(
                               text: "Change Phone Number",
                               color:
-                                  // ignore: deprecated_member_use
+                                 
                                   Theme.of(context).textSelectionTheme.selectionHandleColor),
                           SizedBox(
                             height: 10,
@@ -153,12 +153,12 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
                           subtitle1(
                               text: "A verification code has been sent to",
                               color:
-                                  // ignore: deprecated_member_use
+                                 
                                   Theme.of(context).textSelectionTheme.selectionHandleColor),
                           customTitle(
                               text: _identity,
                               color:
-                                  // ignore: deprecated_member_use
+                                 
                                   Theme.of(context).textSelectionTheme.selectionHandleColor),
                           SizedBox(
                             height: 12,
@@ -166,7 +166,7 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
                           subtitle2(
                               text: "Enter your code here",
                               color:
-                                  // ignore: deprecated_member_use
+                                 
                                   Theme.of(context).textSelectionTheme.selectionHandleColor),
                           Padding(
                             padding: EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 0.0),
@@ -175,7 +175,7 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
                               decoration: UnderlineDecoration(
                                 colorBuilder: PinListenColorBuilder(
                                     primaryColor,
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context).textSelectionTheme.selectionHandleColor),
                                 lineHeight: 2.0,
                                 textStyle: TextStyle(
@@ -226,7 +226,7 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
                               customTitle(
                                   text: "Didn't receive verification code? ",
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme.selectionHandleColor,
                                   fontSize: 13.0),
                               InkWell(

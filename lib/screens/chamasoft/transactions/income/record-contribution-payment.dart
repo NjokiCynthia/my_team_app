@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
 import 'package:chamasoft/screens/chamasoft/reports/deposit-receipts.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/fine-member.dart';
@@ -135,6 +136,9 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
   }
 
   Iterable<Widget> get memberWidgets sync* {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     for (MembersFilterEntry member in selectedMembersList) {
       yield ListTile(
         title: Container(
@@ -154,7 +158,12 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
               Expanded(
                   flex: 5,
                   child: amountTextInputField(
-                      labelText: "Enter Amount",
+                      labelText: currentLanguage == 'English'
+                          ? 'Enter Amount'
+                          : Provider.of<TranslationProvider>(context,
+                                      listen: false)
+                                  .translate('Enter Amount') ??
+                              'Enter Amount',
                       enabled: _isFormInputEnabled,
                       context: context,
                       onChanged: (value) {
@@ -162,7 +171,12 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                       },
                       validator: (value) {
                         if (value == null || value == "") {
-                          return "Field is required";
+                          return currentLanguage == 'English'
+                              ? 'This field is required'
+                              : Provider.of<TranslationProvider>(context,
+                                          listen: false)
+                                      .translate('This field is required') ??
+                                  'This field is required';
                         }
                         return null;
                       })),
@@ -197,10 +211,17 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
-        title: "Record Contribution Payment",
+        title: currentLanguage == 'English'
+            ? 'Record Contribution Payment'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Record Contribution Payment') ??
+                'Record Contribution Payment',
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
@@ -220,7 +241,13 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                   children: <Widget>[
                     toolTip(
                         context: context,
-                        title: "Manually record contribution payments",
+                        title: currentLanguage == 'English'
+                            ? 'Manually record contribution payments'
+                            : Provider.of<TranslationProvider>(context,
+                                        listen: false)
+                                    .translate(
+                                        'Manually record contribution payments') ??
+                                'Manually record contribution payments',
                         message: "",
                         showTitle: true),
                     Padding(
@@ -237,7 +264,14 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                   Expanded(
                                     flex: 2,
                                     child: DatePicker(
-                                      labelText: 'Select Deposit Date',
+                                      labelText: currentLanguage == 'English'
+                                          ? 'Manually record contribution payments'
+                                          : Provider.of<TranslationProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .translate(
+                                                      'Manually record contribution payments') ??
+                                              'Manually record contribution payments',
                                       lastDate: DateTime.now(),
                                       selectedDate: contributionDate == null
                                           ? new DateTime(now.year, now.month,
@@ -257,12 +291,26 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                     flex: 3,
                                     child: CustomDropDownButton(
                                       enabled: _isFormInputEnabled,
-                                      labelText: "Select Deposit Method",
+                                      labelText: currentLanguage == 'English'
+                                          ? 'Select Deposit Method'
+                                          : Provider.of<TranslationProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .translate(
+                                                      'Select Deposit Method') ??
+                                              'Select Deposit Method',
                                       listItems: depositMethods,
                                       selectedItem: depositMethod,
                                       validator: (value) {
                                         if (value == null) {
-                                          return "This field is required";
+                                          return currentLanguage == 'English'
+                                              ? 'This field is required'
+                                              : Provider.of<TranslationProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .translate(
+                                                          'This field is required') ??
+                                                  'This field is required';
                                         }
                                         return null;
                                       },
@@ -279,7 +327,12 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                 height: 10,
                               ),
                               CustomDropDownButton(
-                                labelText: "Select Contribution",
+                                labelText: currentLanguage == 'English'
+                                    ? 'Select Contribution'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate('Select Contribution') ??
+                                        'Select Contribution',
                                 enabled: _isFormInputEnabled,
                                 listItems: formLoadData
                                         .containsKey("contributionOptions")
@@ -288,7 +341,14 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                 selectedItem: contributionId,
                                 validator: (value) {
                                   if (value == null) {
-                                    return "This field is required";
+                                    return currentLanguage == 'English'
+                                        ? 'This field is required'
+                                        : Provider.of<TranslationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .translate(
+                                                    'This field is required') ??
+                                            'This field is required';
                                   }
                                   return null;
                                 },
@@ -302,7 +362,12 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                 height: 10,
                               ),
                               CustomDropDownButton(
-                                labelText: "Select Account",
+                                labelText: currentLanguage == 'English'
+                                    ? 'Select Account'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate('Select Account') ??
+                                        'Select Account',
                                 enabled: _isFormInputEnabled,
                                 listItems:
                                     formLoadData.containsKey("accountOptions")
@@ -316,7 +381,14 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                 },
                                 validator: (value) {
                                   if (value == null) {
-                                    return "This field is required";
+                                    return currentLanguage == 'English'
+                                        ? 'This field is required'
+                                        : Provider.of<TranslationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .translate(
+                                                    'This field is required') ??
+                                            'This field is required';
                                   }
                                   return null;
                                 },
@@ -325,7 +397,12 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                 height: 10,
                               ),
                               CustomDropDownButton(
-                                labelText: 'Select Member',
+                                labelText: currentLanguage == 'English'
+                                    ? 'Select Member'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate('Select Member') ??
+                                        'Select Member',
                                 enabled: _isFormInputEnabled,
                                 listItems: memberTypes,
                                 selectedItem: memberTypeId,
@@ -352,7 +429,14 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                 },
                                 validator: (value) {
                                   if (value == null) {
-                                    return "This field is required";
+                                    return currentLanguage == 'English'
+                                        ? 'This field is required'
+                                        : Provider.of<TranslationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .translate(
+                                                    'This field is required') ??
+                                            'This field is required';
                                   }
                                   return null;
                                 },
@@ -368,7 +452,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                       Column(
                                         children: memberWidgets.toList(),
                                       ),
-                                      // ignore: deprecated_member_use
+                                 
                                       TextButton(
                                         onPressed: () async {
                                           //open select members dialog
@@ -387,7 +471,14 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                           });
                                         },
                                         child: Text(
-                                          'Select members',
+                                          currentLanguage == 'English'
+                                              ? 'Select members'
+                                              : Provider.of<TranslationProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .translate(
+                                                          'Select members') ??
+                                                  'Select members',
                                           style: TextStyle(
                                             color: Colors.blueAccent,
                                             fontSize: 15.0,
@@ -406,13 +497,27 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                 child: amountTextInputField(
                                     enabled: _isFormInputEnabled,
                                     context: context,
-                                    labelText: 'Enter Amount for Each Member',
+                                    labelText: currentLanguage == 'English'
+                                        ? 'Enter Amount for Each Member'
+                                        : Provider.of<TranslationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .translate(
+                                                    'Enter Amount for Each Member') ??
+                                            'Enter Amount for Each Member',
                                     onChanged: (value) {
                                       contributionAmount = value;
                                     },
                                     validator: (value) {
                                       if (value == null || value == "") {
-                                        return "Field is required";
+                                        return currentLanguage == 'English'
+                                            ? 'This field is required'
+                                            : Provider.of<TranslationProvider>(
+                                                        context,
+                                                        listen: false)
+                                                    .translate(
+                                                        'This field is required') ??
+                                                'This field is required';
                                       }
                                       return null;
                                     }),
@@ -428,7 +533,13 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                     )
                                   : defaultButton(
                                       context: context,
-                                      text: "SAVE",
+                                      text: currentLanguage == 'English'
+                                          ? 'SAVE'
+                                          : Provider.of<TranslationProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .translate('SAVE') ??
+                                              'SAVE',
                                       onPressed: () {
                                         _submit(context);
                                       },

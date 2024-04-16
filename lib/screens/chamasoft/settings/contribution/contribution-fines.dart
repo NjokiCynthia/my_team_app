@@ -180,7 +180,7 @@ class _ContributionFineSettingsState extends State<ContributionFineSettings> {
             children: <Widget>[
               customTitle(
                   text: "Fines",
-                  // ignore: deprecated_member_use
+                 
                   color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                   fontWeight: FontWeight.w400,
                   textAlign: TextAlign.start),

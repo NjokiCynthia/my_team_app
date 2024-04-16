@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/helpers/common.dart';
@@ -43,20 +44,119 @@ class _FilterContainerState extends State<FilterContainer> {
   String title = "Deposit Options";
 
   void _prepareDepositList() {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
+    title = currentLanguage == 'English'
+        ? 'Deposit Options'
+        : Provider.of<TranslationProvider>(context, listen: false)
+                .translate('Deposit Options') ??
+            'Deposit Options';
     _list = [
-      NamesListItem(id: 1, name: "Contribution Payments"),
-      NamesListItem(id: 2, name: "Fine Payments"),
-      NamesListItem(id: 3, name: "Loan Repayments"),
-      NamesListItem(id: 4, name: "Miscellaneous Payments"),
-      NamesListItem(id: 5, name: "Income Receipts"),
-      NamesListItem(id: 6, name: "Bank Loan Disbursement"),
-      NamesListItem(id: 7, name: "Stock Sales"),
-      NamesListItem(id: 8, name: "Money Markets"),
-      NamesListItem(id: 9, name: "Asset Sales"),
-      NamesListItem(id: 10, name: "Funds Transfer"),
-      NamesListItem(id: 11, name: "Loan Processing"),
-      NamesListItem(id: 12, name: "External Lending Processing Income"),
-      NamesListItem(id: 13, name: "External Lending Loa Repayment"),
+      NamesListItem(
+        id: 1,
+        name: currentLanguage == 'English'
+            ? 'Contribution Payments'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Contribution Payments') ??
+                'Contribution Payments',
+      ),
+      NamesListItem(
+        id: 2,
+        name: currentLanguage == 'English'
+            ? 'Fine Payments'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Fine Payments') ??
+                'Fine Payments',
+      ),
+      NamesListItem(
+        id: 3,
+        name: currentLanguage == 'English'
+            ? 'Loan Repayments'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Loan Repayments') ??
+                'Loan Repayments',
+      ),
+      NamesListItem(
+        id: 4,
+        name: currentLanguage == 'English'
+            ? 'Miscellaneous Payments'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Miscellaneous Payments') ??
+                'Miscellaneous Payments',
+      ),
+      NamesListItem(
+        id: 5,
+        name: currentLanguage == 'English'
+            ? 'Income Receipts'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Income Receipts') ??
+                'Income Receipts',
+      ),
+      NamesListItem(
+        id: 6,
+        name: currentLanguage == 'English'
+            ? 'Bank Loan Disbursement'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Bank Loan Disbursement') ??
+                'Bank Loan Disbursement',
+      ),
+      NamesListItem(
+        id: 7,
+        name: currentLanguage == 'English'
+            ? 'Stock Sales'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Stock Sales') ??
+                'Stock Sales',
+      ),
+      NamesListItem(
+        id: 8,
+        name: currentLanguage == 'English'
+            ? 'Money Markets'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Money Markets') ??
+                'Money Markets',
+      ),
+      NamesListItem(
+        id: 9,
+        name: currentLanguage == 'English'
+            ? 'Asset Sales'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Asset Sales') ??
+                'Asset Sales',
+      ),
+      NamesListItem(
+        id: 10,
+        name: currentLanguage == 'English'
+            ? 'Funds Transfer'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Funds Transfer') ??
+                'Funds Transfer',
+      ),
+      NamesListItem(
+        id: 11,
+        name: currentLanguage == 'English'
+            ? 'Loan Processing'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Loan Processing') ??
+                'Loan Processing',
+      ),
+      NamesListItem(
+        id: 12,
+        name: currentLanguage == 'English'
+            ? 'External Lending Processing Income'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('External Lending Processing Income') ??
+                'External Lending Processing Income',
+      ),
+      NamesListItem(
+        id: 13,
+        name: currentLanguage == 'English'
+            ? 'External Lending Loan Repayment'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('External Lending Loan Repayment') ??
+                'External Lending Loan Repayment',
+      ),
     ];
 
     if (widget.currentFilters.isEmpty ||
@@ -75,17 +175,87 @@ class _FilterContainerState extends State<FilterContainer> {
   }
 
   void _prepareWithdrawalList() {
-    title = "Withdrawal Options";
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
+    title = currentLanguage == 'English'
+        ? 'Withdrawal Options'
+        : Provider.of<TranslationProvider>(context, listen: false)
+                .translate('Withdrawal Options') ??
+            'Withdrawal Options';
     _list = [
-      NamesListItem(id: 1, name: "Expense Payments"),
-      NamesListItem(id: 2, name: "Asset Purchase Payments"),
-      NamesListItem(id: 3, name: "Loan Disbursement"),
-      NamesListItem(id: 4, name: "Stock Purchases"),
-      NamesListItem(id: 5, name: "Money Market Investments"),
-      NamesListItem(id: 6, name: "Contribution Refunds"),
-      NamesListItem(id: 7, name: "Bank Loan Repayments"),
-      NamesListItem(id: 8, name: "Funds Transfer"),
-      NamesListItem(id: 9, name: "External Loan Disbursement"),
+      NamesListItem(
+        id: 1,
+        name: currentLanguage == 'English'
+            ? 'Expense Payments'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Expense Payments') ??
+                'Expense Payments',
+      ),
+      NamesListItem(
+        id: 2,
+        name: currentLanguage == 'English'
+            ? 'Asset Purchase Payments'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Asset Purchase Payments') ??
+                'Asset Purchase Payments',
+      ),
+      NamesListItem(
+        id: 3,
+        name: currentLanguage == 'English'
+            ? 'Loan Disbursement'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Loan Disbursement') ??
+                'Loan Disbursement',
+      ),
+      NamesListItem(
+        id: 4,
+        name: currentLanguage == 'English'
+            ? 'Stock Purchases'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Stock Purchases') ??
+                'Stock Purchases',
+      ),
+      NamesListItem(
+        id: 5,
+        name: currentLanguage == 'English'
+            ? 'Money Market Investments'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Money Market Investments') ??
+                'Money Market Investments',
+      ),
+      NamesListItem(
+        id: 6,
+        name: currentLanguage == 'English'
+            ? 'Contribution Refunds'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Contribution Refunds') ??
+                'Contribution Refunds',
+      ),
+      NamesListItem(
+        id: 7,
+        name: currentLanguage == 'English'
+            ? 'Bank Loan Repayments'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Bank Loan Repayments') ??
+                'Bank Loan Repayments',
+      ),
+      NamesListItem(
+        id: 8,
+        name: currentLanguage == 'English'
+            ? 'Funds Transfer'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Funds Transfer') ??
+                'Funds Transfer',
+      ),
+      NamesListItem(
+        id: 9,
+        name: currentLanguage == 'English'
+            ? 'External Loan Disbursement'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('External Loan Disbursement') ??
+                'External Loan Disbursement',
+      ),
     ];
 
     if (widget.currentFilters.isEmpty ||
@@ -104,15 +274,71 @@ class _FilterContainerState extends State<FilterContainer> {
   }
 
   void _prepareWithdrawalRequestList() {
-    title = "Approval Status";
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
+    title = currentLanguage == 'English'
+        ? 'Approval Status'
+        : Provider.of<TranslationProvider>(context, listen: false)
+                .translate('Approval Status') ??
+            'Approval Status';
     _list = [
-      NamesListItem(id: 1, name: "Pending Requests"),
-      NamesListItem(id: 2, name: "Approved Requests"),
-      NamesListItem(id: 3, name: "Declined Requests"),
-      NamesListItem(id: -1, name: "Disbursement Status"),
-      NamesListItem(id: 14, name: "Pending Disbursement"),
-      NamesListItem(id: 15, name: "Successful Disbursement"),
-      NamesListItem(id: 16, name: "Failed Disbursement"),
+      NamesListItem(
+        id: 1,
+        name: currentLanguage == 'English'
+            ? 'Pending Requests'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Pending Requests') ??
+                'Pending Requests',
+      ),
+      NamesListItem(
+        id: 2,
+        name: currentLanguage == 'English'
+            ? 'Approved Requests'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Approved Requests') ??
+                'Approved Requests',
+      ),
+      NamesListItem(
+        id: 3,
+        name: currentLanguage == 'English'
+            ? 'Declined Requests'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Declined Requests') ??
+                'Declined Requests',
+      ),
+      NamesListItem(
+        id: -1,
+        name: currentLanguage == 'English'
+            ? 'Disbursement Status'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Disbursement Status') ??
+                'Disbursement Status',
+      ),
+      NamesListItem(
+        id: 14,
+        name: currentLanguage == 'English'
+            ? 'Pending Disbursement'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Pending Disbursement') ??
+                'Pending Disbursement',
+      ),
+      NamesListItem(
+        id: 15,
+        name: currentLanguage == 'English'
+            ? 'Successful Disbursement'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Successful Disbursement') ??
+                'Successful Disbursement',
+      ),
+      NamesListItem(
+        id: 16,
+        name: currentLanguage == 'English'
+            ? 'Failed Disbursement'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Failed Disbursement') ??
+                'Failed Disbursement',
+      ),
     ];
 
     for (var item in _list) {
@@ -190,13 +416,20 @@ class _FilterContainerState extends State<FilterContainer> {
   Group _currentGroup;
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     _currentGroup =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
       key: _scaffoldKey,
       appBar: tertiaryPageAppbar(
           context: context,
-          title: "Filter By",
+          title: currentLanguage == 'English'
+              ? 'Filter By'
+              : Provider.of<TranslationProvider>(context, listen: false)
+                      .translate('Filter By') ??
+                  'Filter By',
           action: () => Navigator.of(context).pop(),
           elevation: 1,
           leadingIcon: LineAwesomeIcons.times,
@@ -233,21 +466,23 @@ class _FilterContainerState extends State<FilterContainer> {
                         child: Row(
                           children: [
                             customTitle(
-                                text: "Status",
+                                text: currentLanguage == 'English'
+                                    ? 'Status'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate('Status') ??
+                                        'Status',
                                 textAlign: TextAlign.start,
                                 fontSize: 12.0,
                                 fontWeight: FontWeight.w600,
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context)
-                                        .textSelectionTheme
-                                        .selectionHandleColor),
+                                color: Theme.of(context)
+                                    .textSelectionTheme
+                                    .selectionHandleColor),
                             Visibility(
                                 visible: _showStatusFilter,
                                 child: Icon(LineAwesomeIcons.chevron_right,
                                     size: 12,
                                     color: Theme.of(context)
-                                        // ignore: deprecated_member_use
                                         .textSelectionTheme
                                         .selectionHandleColor))
                           ],
@@ -274,21 +509,24 @@ class _FilterContainerState extends State<FilterContainer> {
                           child: Row(
                             children: [
                               customTitle(
-                                  text: "Members",
+                                  text: currentLanguage == 'English'
+                                      ? 'Members'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('Members') ??
+                                          'Members',
                                   textAlign: TextAlign.start,
                                   fontSize: 12.0,
                                   fontWeight: FontWeight.w600,
-                                  color:
-                                      // ignore: deprecated_member_use
-                                      Theme.of(context)
-                                          .textSelectionTheme
-                                          .selectionHandleColor),
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor),
                               Visibility(
                                   visible: _showMemberFilter,
                                   child: Icon(LineAwesomeIcons.chevron_right,
                                       size: 12,
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
                                           .textSelectionTheme
                                           .selectionHandleColor))
                             ],
@@ -312,7 +550,6 @@ class _FilterContainerState extends State<FilterContainer> {
                           text: title,
                           textAlign: TextAlign.center,
                           fontWeight: FontWeight.w600,
-                          // ignore: deprecated_member_use
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor),
@@ -322,13 +559,16 @@ class _FilterContainerState extends State<FilterContainer> {
                         child: CheckboxListTile(
                           dense: true,
                           title: subtitle1(
-                              text: "Select All",
+                              text: currentLanguage == 'English'
+                                  ? 'Select All'
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate('Select All') ??
+                                      'Select All',
                               textAlign: TextAlign.start,
-                              color:
-                                  // ignore: deprecated_member_use
-                                  Theme.of(context)
-                                      .textSelectionTheme
-                                      .selectionHandleColor),
+                              color: Theme.of(context)
+                                  .textSelectionTheme
+                                  .selectionHandleColor),
                           value: _selectAll,
                           onChanged: (value) {
                             _selectedItems.clear();
@@ -355,7 +595,6 @@ class _FilterContainerState extends State<FilterContainer> {
                                     textAlign: TextAlign.center,
                                     fontWeight: FontWeight.w600,
                                     color: Theme.of(context)
-                                        // ignore: deprecated_member_use
                                         .textSelectionTheme
                                         .selectionHandleColor);
                               } else
@@ -392,7 +631,6 @@ class _FilterContainerState extends State<FilterContainer> {
                                       text: item.name,
                                       textAlign: TextAlign.start,
                                       color: Theme.of(context)
-                                          // ignore: deprecated_member_use
                                           .textSelectionTheme
                                           .selectionHandleColor),
                                   activeColor: primaryColor,
@@ -414,7 +652,6 @@ class _FilterContainerState extends State<FilterContainer> {
                                     text: item.name,
                                     textAlign: TextAlign.start,
                                     color: Theme.of(context)
-                                        // ignore: deprecated_member_use
                                         .textSelectionTheme
                                         .selectionHandleColor),
                                 activeColor: primaryColor,
@@ -444,9 +681,13 @@ class _FilterContainerState extends State<FilterContainer> {
                       CheckboxListTile(
                         dense: true,
                         title: subtitle1(
-                            text: "Select All",
+                            text: currentLanguage == 'English'
+                                ? 'Select All'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Select All') ??
+                                    'Select All',
                             textAlign: TextAlign.start,
-                            // ignore: deprecated_member_use
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor),
@@ -483,14 +724,12 @@ class _FilterContainerState extends State<FilterContainer> {
                               title: subtitle1(
                                   text: member.name,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                   textAlign: TextAlign.start),
                               subtitle: subtitle2(
                                   text: member.identity,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                   textAlign: TextAlign.start),

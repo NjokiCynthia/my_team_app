@@ -70,7 +70,7 @@ class _ListMembersState extends State<ListMembers> {
                           text: "Select From Contacts",
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
@@ -97,7 +97,7 @@ class _ListMembersState extends State<ListMembers> {
                           text: "Add Manually",
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
@@ -143,7 +143,7 @@ class _ListMembersState extends State<ListMembers> {
                           text: "View",
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
@@ -154,7 +154,7 @@ class _ListMembersState extends State<ListMembers> {
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
                       Navigator.of(context).pop();
-                      // ignore: deprecated_member_use
+                     
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           duration: Duration(milliseconds: 4000),
                           content: Text(
@@ -170,7 +170,7 @@ class _ListMembersState extends State<ListMembers> {
                           text: "Edit",
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                     ),
                   ),
@@ -198,7 +198,7 @@ class _ListMembersState extends State<ListMembers> {
                 //           text: /* incomeCategory.isHidden ? "UnSuspend" :  */ "Suspend",
                 //           fontWeight: FontWeight.w600,
                 //           textAlign: TextAlign.start,
-                //           // ignore: deprecated_member_use
+                //          
                 //           color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                 //     ),
                 //   ),
@@ -221,7 +221,7 @@ class _ListMembersState extends State<ListMembers> {
                 //           text: "Delete",
                 //           fontWeight: FontWeight.w600,
                 //           textAlign: TextAlign.start,
-                //           // ignore: deprecated_member_use
+                //          
                 //           color: Theme.of(context).textSelectionTheme.selectionHandleColor),
                 //     ),
                 //   ),
@@ -454,7 +454,7 @@ class _ListMembersState extends State<ListMembers> {
                                               customTitle(
                                                 text: '${member.name}',
                                                 color: Theme.of(context)
-                                                    // ignore: deprecated_member_use
+                                                   
                                                     .textSelectionTheme.selectionHandleColor,
                                                 fontWeight: FontWeight.w800,
                                                 fontSize: 18.0,
@@ -470,7 +470,7 @@ class _ListMembersState extends State<ListMembers> {
                                                         fontWeight:
                                                             FontWeight.w700,
                                                         color: Theme.of(context)
-                                                            // ignore: deprecated_member_use
+                                                           
                                                             .textSelectionTheme.selectionHandleColor
                                                             .withOpacity(0.7),
                                                         fontSize: 12.0,

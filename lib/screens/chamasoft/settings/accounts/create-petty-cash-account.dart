@@ -62,7 +62,7 @@ class _CreatePettyCashAccountState extends State<CreatePettyCashAccount> {
       );
 
       Navigator.pop(context);
-      // ignore: deprecated_member_use
+
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully added a Petty Cash Account",
@@ -75,7 +75,6 @@ class _CreatePettyCashAccountState extends State<CreatePettyCashAccount> {
     } on CustomException catch (error) {
       Navigator.pop(context);
 
-      // ignore: deprecated_member_use
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error Adding the Petty Cash Account. ${error.message} ",

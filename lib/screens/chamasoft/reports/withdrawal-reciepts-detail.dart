@@ -63,11 +63,11 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                           SizedBox(
                             height: 10,
                           ),
-                          // ignore: deprecated_member_use
+                         
                           heading2(
                               text: widget.withdrawal.name.toUpperCase(),
                               color:
-                                  // ignore: deprecated_member_use
+                                 
                                   Theme.of(context)
                                       .textSelectionTheme
                                       .selectionHandleColor),
@@ -82,7 +82,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                             fontSize: 22,
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context)
-                                // ignore: deprecated_member_use
+                               
                                 .textSelectionTheme
                                 .selectionHandleColor,
                           ),
@@ -108,7 +108,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionHandleColor,
                               ),
@@ -119,7 +119,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionHandleColor,
                               ),
@@ -130,7 +130,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionHandleColor,
                               ),
@@ -163,7 +163,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionHandleColor,
                               ),
@@ -175,7 +175,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionHandleColor,
                               ),
@@ -189,7 +189,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                 textAlign: TextAlign.center,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
+                                   
                                     .textSelectionTheme
                                     .selectionHandleColor,
                               ),
@@ -203,9 +203,9 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
                                 text: "${widget.withdrawal.narration} ",
                                 fontSize: 14.0,
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context)
-                                        // ignore: deprecated_member_use
+                                       
                                         .textSelectionTheme
                                         .selectionHandleColor,
                                 textAlign: TextAlign.center),
@@ -309,7 +309,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
     //                             fontSize: 14,
     //                             fontWeight: FontWeight.w400,
     //                             color: Theme.of(context)
-    //                                 // ignore: deprecated_member_use
+    //                                
     //                                 .textSelectionTheme.selectionHandleColor,
     //                           ),
     //                           customTitle(
@@ -317,7 +317,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
     //                             fontSize: 14,
     //                             fontWeight: FontWeight.w400,
     //                             color: Theme.of(context)
-    //                                 // ignore: deprecated_member_use
+    //                                
     //                                 .textSelectionTheme.selectionHandleColor,
     //                           ),
     //                           customTitle(
@@ -325,7 +325,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
     //                             fontSize: 14,
     //                             fontWeight: FontWeight.w400,
     //                             color: Theme.of(context)
-    //                                 // ignore: deprecated_member_use
+    //                                
     //                                 .textSelectionTheme.selectionHandleColor,
     //                           ),
     //                           customTitle(
@@ -333,7 +333,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
     //                             fontSize: 14,
     //                             fontWeight: FontWeight.w400,
     //                             color: Theme.of(context)
-    //                                 // ignore: deprecated_member_use
+    //                                
     //                                 .textSelectionTheme.selectionHandleColor,
     //                           ),
     //                         ],
@@ -355,7 +355,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
     //                         fontSize: 18,
     //                         fontWeight: FontWeight.normal,
     //                         color: Theme.of(context)
-    //                             // ignore: deprecated_member_use
+    //                            
     //                             .textSelectionTheme.selectionHandleColor,
     //                         textAlign: TextAlign.center,
     //                       ),
@@ -367,7 +367,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
     //                         fontSize: 14,
     //                         fontWeight: FontWeight.normal,
     //                         color: Theme.of(context)
-    //                             // ignore: deprecated_member_use
+    //                            
     //                             .textSelectionTheme.selectionHandleColor,
     //                         textAlign: TextAlign.left,
     //                       ),
@@ -379,7 +379,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
     //                         fontSize: 14,
     //                         fontWeight: FontWeight.normal,
     //                         color: Theme.of(context)
-    //                             // ignore: deprecated_member_use
+    //                            
     //                             .textSelectionTheme.selectionHandleColor,
     //                         textAlign: TextAlign.left,
     //                       ),
@@ -394,7 +394,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
     //                         fontSize: 14,
     //                         fontWeight: FontWeight.normal,
     //                         color: Theme.of(context)
-    //                             // ignore: deprecated_member_use
+    //                            
     //                             .textSelectionTheme.selectionHandleColor,
     //                         textAlign: TextAlign.left,
     //                       ),
@@ -406,7 +406,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
     //                         fontSize: 14,
     //                         fontWeight: FontWeight.normal,
     //                         color: Theme.of(context)
-    //                             // ignore: deprecated_member_use
+    //                            
     //                             .textSelectionTheme.selectionHandleColor,
     //                         textAlign: TextAlign.left,
     //                       ),
@@ -418,14 +418,14 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
     //             SizedBox(
     //               height: 20.0,
     //             ),
-    //             // ignore: deprecated_member_use
+    //            
     //             Column(
-    //               // ignore: deprecated_member_use
+    //              
     //               crossAxisAlignment: CrossAxisAlignment.center,
     //               children: [
-    //                 // ignore: deprecated_member_use
+    //                
 
-    //                 // ignore: deprecated_member_use
+    //                
     //                 TextButton.icon(
     //                   style: TextButton.styleFrom(
     //                     textStyle: TextStyle(

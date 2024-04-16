@@ -438,7 +438,7 @@ class _PayNowSheetState extends State<PayNowSheet> {
                                   child: Center(
                                       child: CircularProgressIndicator()),
                                 )
-                              // ignore: deprecated_member_use
+                             
                               : ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: primaryColor),

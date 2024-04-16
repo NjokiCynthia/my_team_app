@@ -188,7 +188,7 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                                                 .translate("Total Expenses") ??
                                             "Total Expenses",
                                     color: Theme.of(context)
-                                        // ignore: deprecated_member_use
+                                       
                                         .textSelectionTheme
                                         .selectionHandleColor,
                                   ),
@@ -197,7 +197,7 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                                         ? "1 Expense"
                                         : "${_expenseRows.length} Expenses",
                                     color: Theme.of(context)
-                                        // ignore: deprecated_member_use
+                                       
                                         .textSelectionTheme
                                         .selectionHandleColor,
                                     textAlign: TextAlign.start,
@@ -212,14 +212,14 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                                   fontWeight: FontWeight.w400,
                                   fontSize: 18.0,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
                                 heading2(
                                   text: currencyFormat.format(_totalExpenses),
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                   textAlign: TextAlign.end,

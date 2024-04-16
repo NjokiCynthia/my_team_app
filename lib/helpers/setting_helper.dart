@@ -96,7 +96,10 @@ Group parseSingleGroup(dynamic groupJSON) {
         groupJSON['disable_member_edit_profile'].toString() == "1"
             ? true
             : false,
+    offerLoans: groupJSON['group_offer_loans'].toString() == "1" ? true : false,
     isGroupAdmin: groupJSON['is_admin'].toString() == "1" ? true : false,
+    isCollective: groupJSON['is_collective'].toString() == '1' ? true : false,
+    referralCode: groupJSON['referral_code'].toString(),
     groupCurrency: groupJSON['group_currency'].toString(),
     groupCurrencyId: groupJSON['country_id'].toString(),
     groupPhone: groupJSON['phone'].toString(),
@@ -152,6 +155,8 @@ List<LoanType> parseLoanTypes(List<dynamic> groupLoanTypes) {
         disbursementDate: groupLoanTypesJSON['disbursement_date'].toString(),
         guarantors: groupLoanTypesJSON['guarantors'].toString(),
         latePaymentFines: groupLoanTypesJSON['late_payment_fines'].toString(),
+        repaymentPeriodType:
+            groupLoanTypesJSON['repayment_period_type'].toString(),
         outstandingPaymentFines:
             groupLoanTypesJSON['outstanding_payment_fines'].toString(),
         isHidden:

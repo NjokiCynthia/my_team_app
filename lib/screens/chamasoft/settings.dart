@@ -41,7 +41,6 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
           title: heading2(
             text: "Logout",
             textAlign: TextAlign.start,
-            // ignore: deprecated_member_use
             color: Theme.of(context).textSelectionTheme.selectionHandleColor,
           ),
           content: customTitleWithWrap(
@@ -95,8 +94,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
   }
 
   String _currentLanguage = 'English';
-  TranslationProvider _translationProvider =
-      TranslationProvider(initialLanguage: 'English');
+  TranslationProvider _translationProvider = TranslationProvider();
   bool _isLoaded = false;
   @override
   void initState() {
@@ -124,6 +122,8 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
     final group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final languageProvider =
+        Provider.of<TranslationProvider>(context, listen: false);
 
     setState(() {
       theme = themeChange.darkTheme ? "Dark" : "Light";
@@ -136,7 +136,11 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
           action: () => Navigator.of(context).pop(),
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
-          title: "Settings",
+          title: languageProvider == 'English'
+              ? "Settings"
+              : Provider.of<TranslationProvider>(context, listen: false)
+                      .translate('Settings') ??
+                  'Settings',
         ),
         body: _isLoaded
             ? SingleChildScrollView(
@@ -198,7 +202,13 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                                   top: 10.0,
                                 ),
                                 child: smallBadgeButton(
-                                  text: "Update Profile",
+                                  text: languageProvider == 'English'
+                                      ? "Update Profile"
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('Update Profile') ??
+                                          'Update Profile',
                                   backgroundColor: primaryColor,
                                   textColor: Colors.white,
                                   buttonHeight: 30.0,
@@ -260,7 +270,13 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                     Visibility(
                       visible: group.isGroupAdmin,
                       child: ListTile(
-                        title: Text("Group Settings",
+                        title: Text(
+                            languageProvider == 'English'
+                                ? "Group Settings"
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Group Settings') ??
+                                    'Group Settings',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16.0,
@@ -297,7 +313,12 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: heading2(
-                                text: "Preferences",
+                                text: languageProvider == 'English'
+                                    ? "Preferences"
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate("Preferences") ??
+                                        "Preferences",
                                 color: Colors.blueGrey,
                               ),
                             ),
@@ -319,80 +340,90 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                     //     });
                     //   },
                     // ),
-                    //tobe implemented in next phase
-                    // PopupMenuButton(
-                    //   child: ListTile(
-                    //     dense: true,
-                    //     title: Text(
-                    //       "Language",
-                    //       style: TextStyle(
-                    //         color: Theme.of(context)
-                    //             .textSelectionTheme
-                    //             .selectionHandleColor,
-                    //         fontWeight: FontWeight.w500,
-                    //         fontSize: 16.0,
-                    //       ),
-                    //     ),
-                    //     subtitle: Text(
-                    //       _currentLanguage,
-                    //       style: TextStyle(
-                    //           color: Theme.of(context).bottomAppBarColor),
-                    //     ),
-                    //     trailing: Padding(
-                    //       padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
-                    //       child: Icon(
-                    //         Icons.language,
-                    //         color: Theme.of(context)
-                    //             .bottomAppBarColor
-                    //             .withOpacity(0.6),
-                    //       ),
-                    //     ),
-                    //   ),
-                    //   onSelected: (value) {
-                    //     setState(() {
-                    //       _currentLanguage = value;
-                    //       _loadTranslations();
-                    //       final translationProvider =
-                    //           Provider.of<TranslationProvider>(context,
-                    //               listen: false);
-                    //       translationProvider.changeLanguage(value);
-                    //     });
-                    //   },
-                    //   // onSelected: (value) {
-                    //   //   setState(() {
-                    //   //     language = value;
-                    //   //   });
-                    //   // },
-                    //   tooltip: "Language",
-                    //   offset: Offset.fromDirection(1.0),
-                    //   itemBuilder: (context) => [
-                    //     PopupMenuItem(
-                    //         value: "English",
-                    //         child: Row(
-                    //           mainAxisAlignment: MainAxisAlignment.start,
-                    //           children: <Widget>[
-                    //             Text("English",
-                    //                 style: TextStyle(
-                    //                     fontWeight: FontWeight.w600,
-                    //                     color:
-                    //                         Theme.of(context).indicatorColor)),
-                    //           ],
-                    //         )),
-                    //     PopupMenuItem(
-                    //         value: "Oromo",
-                    //         child: Row(
-                    //           mainAxisAlignment: MainAxisAlignment.start,
-                    //           children: <Widget>[
-                    //             Text("Oromo",
-                    //                 style: TextStyle(
-                    //                     fontWeight: FontWeight.w600,
-                    //                     color:
-                    //                         Theme.of(context).indicatorColor)),
-                    //           ],
-                    //         )),
-                    //   ],
-                    //   initialValue: _currentLanguage,
-                    // ),
+
+                    Config.appName.toLowerCase() == 'chamasoft'
+                        ? PopupMenuButton(
+                            child: ListTile(
+                              dense: true,
+                              title: Text(
+                                "Language",
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16.0,
+                                ),
+                              ),
+                              subtitle: Text(
+                                _currentLanguage,
+                                style: TextStyle(
+                                    color: Theme.of(context).bottomAppBarColor),
+                              ),
+                              trailing: Padding(
+                                padding:
+                                    EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
+                                child: Icon(
+                                  Icons.language,
+                                  color: Theme.of(context)
+                                      .bottomAppBarColor
+                                      .withOpacity(0.6),
+                                ),
+                              ),
+                            ),
+                            onSelected: (value) async {
+                              setState(() {
+                                _currentLanguage = value;
+                              });
+                              final translationProvider =
+                                  Provider.of<TranslationProvider>(context,
+                                      listen: false);
+                              await translationProvider.changeLanguage(value);
+                            },
+                            tooltip: "Language",
+                            offset: Offset.fromDirection(1.0),
+                            itemBuilder: (context) => [
+                              PopupMenuItem(
+                                  value: "English",
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text("English",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              color: Theme.of(context)
+                                                  .indicatorColor)),
+                                    ],
+                                  )),
+                              PopupMenuItem(
+                                  value: "Oromo",
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text("Oromo",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              color: Theme.of(context)
+                                                  .indicatorColor)),
+                                    ],
+                                  )),
+                              PopupMenuItem(
+                                  value: "Somali",
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text("Somali",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              color: Theme.of(context)
+                                                  .indicatorColor)),
+                                    ],
+                                  )),
+                            ],
+                            initialValue: _currentLanguage,
+                          )
+                        : SizedBox(),
+
                     Config.appName.toLowerCase() == 'chamasoft'
                         ? PopupMenuButton(
                             child: ListTile(

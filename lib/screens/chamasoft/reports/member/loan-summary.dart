@@ -201,7 +201,7 @@ class ActiveLoanCard extends StatelessWidget {
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16.0,
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               fontFamily: 'SegoeUI'),
                           textAlign: TextAlign.start,
@@ -228,13 +228,13 @@ class ActiveLoanCard extends StatelessWidget {
                             subtitle2(
                                 text: "Disbursed On",
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.start),
                             subtitle1(
                                 text: loan.disbursementDate,
                                 color:
-                                    // ignore: deprecated_member_use
+                                   
                                     Theme.of(context).textSelectionTheme.selectionHandleColor,
                                 textAlign: TextAlign.start)
                           ],
@@ -246,13 +246,13 @@ class ActiveLoanCard extends StatelessWidget {
                             customTitle(
                               text: "${groupObject.groupCurrency} ",
                               fontSize: 18.0,
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               fontWeight: FontWeight.w400,
                             ),
                             heading2(
                               text: currencyFormat.format(loan.amount),
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               textAlign: TextAlign.end,
                             ),

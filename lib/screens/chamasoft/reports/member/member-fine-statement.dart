@@ -249,9 +249,9 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                           heading3(
                             text: _memberName != null ? _memberName : '--',
                             // fontSize: 16.0,
-                            // ignore: deprecated_member_use
+                           
                             color:
-                                // ignore: deprecated_member_use
+                               
                                 Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,
@@ -264,9 +264,9 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                             text: _role != null ? _role : '--',
                             textAlign: TextAlign.start,
                             fontSize: 16.0,
-                            // ignore: deprecated_member_use
+                           
                             color:
-                                // ignore: deprecated_member_use
+                               
                                 Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,
@@ -277,9 +277,9 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                           subtitle2(
                             text: _phone != null ? _phone : '--',
                             textAlign: TextAlign.start,
-                            // ignore: deprecated_member_use
+                           
                             color:
-                                // ignore: deprecated_member_use
+                               
                                 Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,
@@ -290,9 +290,9 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                           subtitle2(
                             text: _email != null ? _email : '--',
                             textAlign: TextAlign.start,
-                            // ignore: deprecated_member_use
+                           
                             color:
-                                // ignore: deprecated_member_use
+                               
                                 Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor,
@@ -328,7 +328,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                         fontWeight: FontWeight.w600,
                         fontSize: 13,
                         color:
-                            // ignore: deprecated_member_use
+                           
                             Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -339,7 +339,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                         fontSize: 12,
                         // fontWeight: FontWeight.w500,
                         color:
-                            // ignore: deprecated_member_use
+                           
                             Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -356,7 +356,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                           fontWeight: FontWeight.w600,
                           fontSize: 13,
                           color: Theme.of(context)
-                              // ignore: deprecated_member_use
+                             
                               .textSelectionTheme
                               .selectionHandleColor,
                           textAlign: TextAlign.end,
@@ -368,7 +368,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                               ? "$_statementFrom to $_statementTo"
                               : "",
                           color: Theme.of(context)
-                              // ignore: deprecated_member_use
+                             
                               .textSelectionTheme
                               .selectionHandleColor,
                           textAlign: TextAlign.end,
@@ -527,7 +527,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                             ? Colors.red
                             : (_balance < 0
                                 ? Colors.green
-                                // ignore: deprecated_member_use
+                               
                                 : Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor),
@@ -549,9 +549,9 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                           : "You have an Underpayment of ${groupObject.groupCurrency + " " + currencyFormat.format(_balance.abs())}",
                       textAlign: TextAlign.start,
                       //fontSize: 14.0,
-                      // ignore: deprecated_member_use
+                     
                       color:
-                          // ignore: deprecated_member_use
+                         
                           Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,

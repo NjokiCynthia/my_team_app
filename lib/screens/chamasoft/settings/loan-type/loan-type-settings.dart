@@ -159,7 +159,7 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
             children: <Widget>[
               customTitle(
                   text: "Loan Details",
-                  // ignore: deprecated_member_use
+                 
                   color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                   fontWeight: FontWeight.w400,
                   textAlign: TextAlign.start),
@@ -170,7 +170,7 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
             children: <Widget>[
               subtitle2(
                   text: "Configure the behaviour of your loan",
-                  // ignore: deprecated_member_use
+                 
                   color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                   textAlign: TextAlign.start),
             ],
@@ -343,7 +343,7 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                         children: <Widget>[
                           customTitle(
                               text: "Enable late loan repayment fines",
-                              // ignore: deprecated_member_use
+                             
                               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
                               fontWeight: FontWeight.w500,
                               textAlign: TextAlign.start),

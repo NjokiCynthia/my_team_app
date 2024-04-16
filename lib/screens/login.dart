@@ -432,10 +432,9 @@ class _LoginState extends State<Login> {
                     //               },
                     //               favorite: ['+254', 'KE'],
                     //               showFlag: true,
-                    //               textStyle: TextStyle(fontFamily: 'SegoeUI', /*fontSize: 16,*/ // ignore: deprecated_member_use
-//  color: Theme.of(context).textSelectionHandleColor),
+                    //               textStyle: TextStyle(fontFamily: 'SegoeUI', /*fontSize: 16,*///  color: Theme.of(context).textSelectionHandleColor),
                     //               showCountryOnly: false,
-                    //               searchStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16, // ignore: deprecated_member_use
+                    //               searchStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16, 
 //  color: Theme.of(context).textSelectionHandleColor),
                     //               showOnlyCountryWhenClosed: false,
                     //               alignLeft: true,
@@ -499,7 +498,7 @@ class _LoginState extends State<Login> {
                       height: 24,
                     ),
                     // textWithExternalLinks(
-                    //     // ignore: deprecated_member_use
+                   
                     //     color: Theme.of(context).textSelectionHandleColor,
                     //     size: 12.0,
                     //     textData: {

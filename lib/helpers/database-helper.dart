@@ -9,13 +9,17 @@ class DatabaseHelper {
   static final dataTable = 'data';
   static final membersTable = 'members';
   static final meetingsTable = 'meetings';
+  static final loansTable = 'loans';
   static final payContributionsTable = 'payContributions';
   static final contributionsTable = 'contributions';
   static final groupAccountsTable = 'groupAccounts';
 
+  static final approvalRequests = 'approvalRequests';
+
   // create databases for the following tables:
   static final fineCategories = 'fineCategories';
   static final invoices = 'invoices';
+  static final loanApplications = 'loanApplications';
   static final memberLoanOptions = 'memberLoanOptions';
   static final loanTypesTable = 'loanTypes';
   static final expenseCategoriesTable = 'expenseCategories';
@@ -95,6 +99,19 @@ class DatabaseHelper {
               modified_on INTEGER NOT NULL
             )
             ''');
+      // Loans table schema
+      batch.execute('''
+  CREATE TABLE IF NOT EXISTS $loansTable (
+    _id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL DEFAULT '',
+    id INTEGER NOT NULL,
+    location TEXT NOT NULL DEFAULT '',
+    houseNumber TEXT NOT NULL DEFAULT '',
+    amount REAL NOT NULL DEFAULT 0,
+    value REAL NOT NULL DEFAULT 0
+  )
+''');
+
       // Meetings table
       batch.execute('''
             CREATE TABLE IF NOT EXISTS $meetingsTable (
@@ -154,6 +171,30 @@ class DatabaseHelper {
                  amount_paid DOUBLE NOT NULL DEFAULT 0    
             )
             ''');
+      // Loan Applications table
+      batch.execute('''
+            CREATE TABLE IF NOT EXISTS $loanApplications (
+              _id INTEGER PRIMARY KEY AUTOINCREMENT,
+              group_id INTEGER NOT NULL,
+              id INTEGER NOT NULL,
+              status INTEGER NOT NULL DEFAULT '',
+              created_on TEXT NOT NULL DEFAULT '',
+              created_by TEXT NOT NULL DEFAULT '',
+               repayment_period INTEGER NOT NULL,
+                loan_amount DOUBLE NOT NULL DEFAULT 0    
+            )
+            ''');
+      //Loan Approvals table
+      batch.execute('''
+            CREATE TABLE IF NOT EXISTS $approvalRequests (
+              _id INTEGER PRIMARY KEY AUTOINCREMENT,
+              group_id INTEGER NOT NULL,
+              id INTEGER NOT NULL,
+              created_by TEXT NOT NULL DEFAULT '',
+                loan_amount DOUBLE NOT NULL DEFAULT 0    
+            )
+            ''');
+
       // Member loans options table
       batch.execute('''
             CREATE TABLE IF NOT EXISTS $memberLoanOptions (

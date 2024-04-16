@@ -1,5 +1,6 @@
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/choose_member.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/list-banks.dart';
@@ -277,6 +278,9 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguage =
+        Provider.of<TranslationProvider>(context, listen: false)
+            .currentLanguage;
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     final List<BankAccountDashboardSummary> accountBalances =
@@ -304,7 +308,11 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
       key: _scaffoldKey,
       appBar: secondaryPageAppbar(
         context: context,
-        title: "Create Withdrawal Request",
+        title: currentLanguage == 'English'
+            ? 'Create Withdrawal Request'
+            : Provider.of<TranslationProvider>(context, listen: false)
+                    .translate('Create Withdrawal Request') ??
+                'Create Withdrawal Request',
         action: () => Navigator.of(context).pop(),
         elevation: 1,
         leadingIcon: LineAwesomeIcons.arrow_left,
@@ -329,7 +337,6 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                           children: [
                             subtitle1(
                               text: accountName,
-                              // ignore: deprecated_member_use
                               color: Theme.of(context)
                                   .textSelectionTheme
                                   .selectionHandleColor,
@@ -343,9 +350,14 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 subtitle1(
-                                  text: "Account Balance ",
+                                  text: currentLanguage == 'English'
+                                      ? 'Account Balance'
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('Account Balance') ??
+                                          'Account Balance',
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                   textAlign: TextAlign.center,
@@ -356,9 +368,7 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                                 heading2(
                                   text:
                                       "${groupObject.groupCurrency} ${currencyFormat.format(balance)}",
-                                  // ignore: deprecated_member_use
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                   textAlign: TextAlign.center,
@@ -371,8 +381,13 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                     : toolTip(
                         context: context,
                         title: "",
-                        message:
-                            "Withdrawal requests will be sent to the group signatories for approval",
+                        message: currentLanguage == 'English'
+                            ? 'Withdrawal requests will be sent to the group signatories for approval'
+                            : Provider.of<TranslationProvider>(context,
+                                        listen: false)
+                                    .translate(
+                                        'Withdrawal requests will be sent to the group signatories for approval') ??
+                                'Withdrawal requests will be sent to the group signatories for approval',
                         showTitle: false),
                 Padding(
                   padding: inputPagePadding,
@@ -384,12 +399,24 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                       children: [
                         CustomDropDownButton(
                           enabled: _isFormInputEnabled,
-                          labelText: "Select Purpose of Withdrawal",
+                          labelText: currentLanguage == 'English'
+                              ? 'Select Purpose of Withdrawal'
+                              : Provider.of<TranslationProvider>(context,
+                                          listen: false)
+                                      .translate(
+                                          'Select Purpose of Withdrawal') ??
+                                  'Select Purpose of Withdrawal',
                           listItems: _withdrawalPurposeList,
                           selectedItem: _withdrawalPurpose,
                           validator: (value) {
                             if (value == null) {
-                              return "This field is required";
+                              return currentLanguage == 'English'
+                                  ? 'This field is required'
+                                  : Provider.of<TranslationProvider>(context,
+                                              listen: false)
+                                          .translate(
+                                              'This field is required') ??
+                                      'This field is required';
                             }
                             return null;
                           },
@@ -406,7 +433,12 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                           visible: _withdrawalPurpose == 1,
                           child: CustomDropDownButton(
                             enabled: _isFormInputEnabled,
-                            labelText: "Select Expense Category",
+                            labelText: currentLanguage == 'English'
+                                ? 'Select Expense Category'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Select Expense Category') ??
+                                    'Select Expense Category',
                             listItems:
                                 _formLoadData.containsKey("expenseCategories")
                                     ? _formLoadData["expenseCategories"]
@@ -414,7 +446,13 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                             selectedItem: _expenseCategoryId,
                             validator: (value) {
                               if (_withdrawalPurpose == 1 && value == null) {
-                                return "This field is required";
+                                return currentLanguage == 'English'
+                                    ? 'This field is required'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate(
+                                                'This field is required') ??
+                                        'This field is required';
                               }
                               return null;
                             },
@@ -430,7 +468,12 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                               _withdrawalPurpose != 1,
                           child: CustomDropDownButton(
                             enabled: _isFormInputEnabled,
-                            labelText: "Select Member",
+                            labelText: currentLanguage == 'English'
+                                ? 'Select Member'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Select Member') ??
+                                    'Select Member',
                             listItems:
                                 _formLoadData.containsKey("memberOptions")
                                     ? _formLoadData["memberOptions"]
@@ -440,7 +483,13 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                               if (_withdrawalPurpose != null &&
                                   _withdrawalPurpose != 1 &&
                                   value == null) {
-                                return "This field is required";
+                                return currentLanguage == 'English'
+                                    ? 'This field is required'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate(
+                                                'This field is required') ??
+                                        'This field is required';
                               }
                               return null;
                             },
@@ -458,7 +507,12 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                           visible: _withdrawalPurpose == 2,
                           child: CustomDropDownButton(
                             enabled: _isFormInputEnabled,
-                            labelText: "Select Contribution",
+                            labelText: currentLanguage == 'English'
+                                ? 'Select Contribution'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Select Contribution') ??
+                                    'Select Contribution',
                             listItems:
                                 _formLoadData.containsKey("contributionOptions")
                                     ? _formLoadData["contributionOptions"]
@@ -466,7 +520,13 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                             selectedItem: _contributionId,
                             validator: (value) {
                               if (_withdrawalPurpose == 2 && value == null) {
-                                return "This field is required";
+                                return currentLanguage == 'English'
+                                    ? 'This field is required'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate(
+                                                'This field is required') ??
+                                        'This field is required';
                               }
                               return null;
                             },
@@ -481,7 +541,12 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                           visible: _withdrawalPurpose == 4,
                           child: CustomDropDownButton(
                             enabled: _isFormInputEnabled,
-                            labelText: "Select Loan Type",
+                            labelText: currentLanguage == 'English'
+                                ? 'Select Loan Type'
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Select Loan Type') ??
+                                    'Select Loan Type',
                             listItems:
                                 _formLoadData.containsKey("loanTypeOptions")
                                     ? _formLoadData["loanTypeOptions"]
@@ -489,7 +554,13 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                             selectedItem: _loanTypeId,
                             validator: (value) {
                               if (_withdrawalPurpose == 4 && value == null) {
-                                return "This field is required";
+                                return currentLanguage == 'English'
+                                    ? 'This field is required'
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate(
+                                                'This field is required') ??
+                                        'This field is required';
                               }
                               return null;
                             },
@@ -526,7 +597,13 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                                     textColor: primaryColor,
                                     icon: FontAwesome.user,
                                     isFlat: false,
-                                    text: "Send To Bank",
+                                    text: currentLanguage == 'English'
+                                        ? 'Send To Bank'
+                                        : Provider.of<TranslationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .translate('Send To Bank') ??
+                                            'Send To Bank',
                                     iconSize: 12.0,
                                     action: () => _prepareSubmission(
                                         context, 1, groupObject.groupId),
@@ -541,7 +618,13 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                                     textColor: Colors.white,
                                     icon: FontAwesome.bank,
                                     isFlat: true,
-                                    text: "Send To Mobile",
+                                    text: currentLanguage == 'English'
+                                        ? 'Send To Mobile'
+                                        : Provider.of<TranslationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .translate('Send To Mobile') ??
+                                            'Send To Mobile',
                                     iconSize: 12.0,
                                     action: () => _prepareSubmission(
                                         context, 2, groupObject.groupId),

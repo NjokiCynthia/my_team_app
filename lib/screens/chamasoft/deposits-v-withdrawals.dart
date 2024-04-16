@@ -63,7 +63,7 @@ class DepositsVWithdrawalsState extends State<DepositsVWithdrawals> {
                             return Text(
                               months[value.toInt()],
                               style: TextStyle(
-                                  // ignore: deprecated_member_use
+                                 
                                   color: Theme.of(context)
                                       .textSelectionTheme
                                       .selectionHandleColor,
@@ -88,7 +88,7 @@ class DepositsVWithdrawalsState extends State<DepositsVWithdrawals> {
                                   ? Text(
                                       value.toInt().toString() + "k",
                                       style: TextStyle(
-                                          // ignore: deprecated_member_use
+                                         
                                           color: Theme.of(context)
                                               .textSelectionTheme
                                               .selectionHandleColor,
@@ -99,7 +99,7 @@ class DepositsVWithdrawalsState extends State<DepositsVWithdrawals> {
                                   : Text(
                                       value.toInt().toString(),
                                       style: TextStyle(
-                                          // ignore: deprecated_member_use
+                                         
                                           color: Theme.of(context)
                                               .textSelectionTheme
                                               .selectionHandleColor,
@@ -110,7 +110,7 @@ class DepositsVWithdrawalsState extends State<DepositsVWithdrawals> {
                               : Text(
                                   value.toInt().toString(),
                                   style: TextStyle(
-                                      // ignore: deprecated_member_use
+                                     
                                       color: Theme.of(context)
                                           .textSelectionTheme
                                           .selectionHandleColor,
@@ -132,7 +132,7 @@ class DepositsVWithdrawalsState extends State<DepositsVWithdrawals> {
                                         value.toInt().toString() + "k",
                                         style: TextStyle(
                                             color:
-                                                // ignore: deprecated_member_use
+                                               
                                                 Theme.of(context)
                                                     .textSelectionTheme
                                                     .selectionHandleColor,
@@ -144,7 +144,7 @@ class DepositsVWithdrawalsState extends State<DepositsVWithdrawals> {
                                         value.toInt().toString(),
                                         style: TextStyle(
                                             color:
-                                                // ignore: deprecated_member_use
+                                               
                                                 Theme.of(context)
                                                     .textSelectionTheme
                                                     .selectionHandleColor,

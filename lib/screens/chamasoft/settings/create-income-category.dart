@@ -82,7 +82,7 @@ class _CreateIncomeCategoryState extends State<CreateIncomeCategory> {
       if (widget.isEdit) {
         message = "You have successfully updated the income category";
       }
-      // ignore: deprecated_member_use
+      
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
         message,

@@ -13,7 +13,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:share_plus/share_plus.dart';
+//import 'package:share_plus/share_plus.dart';
 
 class TotalAccountBalanceReciept extends StatefulWidget {
   final int totalBalance;
@@ -39,8 +39,8 @@ class _TotalAccountBalanceRecieptState
     //final subject = "${widget.title}";
 
     // await Share.share([image.path] );
-    // ignore: deprecated_member_use
-    await Share.shareFiles([image.path], text: text);
+
+    //await Share.shareFiles([image.path], text: text);
 
     // Share.share(imageFile);
   }
@@ -70,7 +70,6 @@ class _TotalAccountBalanceRecieptState
           backgroundColor: (themeChangeProvider.darkTheme)
               ? Colors.blueGrey[800]
               : Colors.white,
-          // ignore: missing_return
           onRefresh: () {},
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -97,30 +96,24 @@ class _TotalAccountBalanceRecieptState
                             SizedBox(
                               height: 10,
                             ),
-                            // ignore: deprecated_member_use
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: heading2(
                                   text: accountName,
-                                  color:
-                                      // ignore: deprecated_member_use
-                                      Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionTheme
-                                          .selectionHandleColor),
+                                  color: Theme.of(context)
+                                      .textSelectionTheme
+                                      .selectionHandleColor),
                             ),
                             Image.asset(
                               'assets/icon/main.png',
                               width: 80.0,
                               height: 90.0,
                             ),
-
                             customTitleWithWrap(
                               text: "Account Balance",
                               fontSize: 22,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
-                                  // ignore: deprecated_member_use
                                   .textSelectionTheme
                                   .selectionHandleColor,
                             ),
@@ -146,7 +139,6 @@ class _TotalAccountBalanceRecieptState
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -157,7 +149,6 @@ class _TotalAccountBalanceRecieptState
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -168,7 +159,6 @@ class _TotalAccountBalanceRecieptState
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -198,7 +188,6 @@ class _TotalAccountBalanceRecieptState
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -213,13 +202,11 @@ class _TotalAccountBalanceRecieptState
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
                               ],
                             ),
-
                             SizedBox(
                               height: 10,
                             )
@@ -244,22 +231,22 @@ class _TotalAccountBalanceRecieptState
                     children: [
                       InkWell(
                         onTap: () async {
-                          await Share.share(
-                              "Confirmed. Your account balance was: " +
-                                  accountName +
-                                  " Account: " +
-                                  groupObject.groupCurrency +
-                                  " " +
-                                  currencyFormat.format(widget.totalBalance) +
-                                  " " +
-                                  "on " +
-                                  formatter +
-                                  " at " +
-                                  actualTime +
-                                  "HRS for " +
-                                  groupObject.groupName +
-                                  "\n" +
-                                  "https://bit.ly/3GkX3lM ");
+                          // await Share.share(
+                          //     "Confirmed. Your account balance was: " +
+                          //         accountName +
+                          //         " Account: " +
+                          //         groupObject.groupCurrency +
+                          //         " " +
+                          //         currencyFormat.format(widget.totalBalance) +
+                          //         " " +
+                          //         "on " +
+                          //         formatter +
+                          //         " at " +
+                          //         actualTime +
+                          //         "HRS for " +
+                          //         groupObject.groupName +
+                          //         "\n" +
+                          //         "https://bit.ly/3GkX3lM ");
                         },
                         child: Row(
                           children: [
@@ -269,23 +256,23 @@ class _TotalAccountBalanceRecieptState
                               ),
                               iconSize: 20.0,
                               onPressed: () async {
-                                await Share.share(
-                                    "Confirmed. Your account balance was: " +
-                                        accountName +
-                                        " Account: " +
-                                        groupObject.groupCurrency +
-                                        " " +
-                                        currencyFormat
-                                            .format(widget.totalBalance) +
-                                        " " +
-                                        "on " +
-                                        formatter +
-                                        " at " +
-                                        actualTime +
-                                        "HRS for " +
-                                        groupObject.groupName +
-                                        "\n" +
-                                        "https://bit.ly/3GkX3lM ");
+                                // await Share.share(
+                                //     "Confirmed. Your account balance was: " +
+                                //         accountName +
+                                //         " Account: " +
+                                //         groupObject.groupCurrency +
+                                //         " " +
+                                //         currencyFormat
+                                //             .format(widget.totalBalance) +
+                                //         " " +
+                                //         "on " +
+                                //         formatter +
+                                //         " at " +
+                                //         actualTime +
+                                //         "HRS for " +
+                                //         groupObject.groupName +
+                                //         "\n" +
+                                //         "https://bit.ly/3GkX3lM ");
                                 //Share.shareFiles([convertWidgetToImage().path]);
                               },
                             ),
@@ -294,7 +281,6 @@ class _TotalAccountBalanceRecieptState
                               fontSize: 18,
                               fontWeight: FontWeight.w300,
                               color: Theme.of(context)
-                                  // ignore: deprecated_member_use
                                   .textSelectionTheme
                                   .selectionHandleColor,
                             ),
@@ -335,7 +321,6 @@ class _TotalAccountBalanceRecieptState
                                   fontSize: 18,
                                   fontWeight: FontWeight.w300,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -377,7 +362,6 @@ class _TotalAccountBalanceRecieptState
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
-                                    // ignore: deprecated_member_use
                                     .textSelectionTheme
                                     .selectionColor,
                               ),

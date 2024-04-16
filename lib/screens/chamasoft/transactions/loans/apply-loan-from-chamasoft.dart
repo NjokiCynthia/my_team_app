@@ -1,26 +1,16 @@
 import 'package:chamasoft/providers/chamasoft-loans.dart';
-// ignore: unused_import
-import 'package:chamasoft/screens/chamasoft/models/loan-type.dart';
+
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-chamasoft-form.dart';
-// ignore: unused_import
-import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
-// ignore: unused_import
-import 'package:chamasoft/helpers/theme.dart';
-// ignore: unused_import
-import 'package:chamasoft/widgets/appbars.dart';
+
+
 import 'package:chamasoft/widgets/backgrounds.dart';
-// ignore: unused_import
-import 'package:chamasoft/widgets/buttons.dart';
+
 import 'package:chamasoft/widgets/empty_screens.dart';
-// ignore: unused_import
-import 'package:chamasoft/widgets/textfields.dart';
+
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-// ignore: unused_import
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
-// ignore: must_be_immutable
 class ApplyLoanFromChamasoft extends StatefulWidget {
   Map<String, dynamic> formLoadData;
   List<LoanProduct> loanProducts;
@@ -106,14 +96,14 @@ class ChamasoftLoanProductCard extends StatelessWidget {
             child: ListTile(
               title: subtitle1(
                   color: Theme.of(context)
-                      // ignore: deprecated_member_use
+                     
                       .textSelectionTheme
                       .selectionHandleColor,
                   text: loanProduct.name,
                   textAlign: TextAlign.start),
               subtitle: subtitle2(
                   color: Theme.of(context)
-                      // ignore: deprecated_member_use
+                     
                       .textSelectionTheme
                       .selectionHandleColor,
                   text: loanProduct.description,

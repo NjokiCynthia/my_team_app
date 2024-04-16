@@ -49,7 +49,7 @@ class _RateAppInitWidgetState extends State<RateAppInitWidget> {
               // ignoreNativeDialog: Platform.isIOS,
               actionsBuilder: (context, stars) {
                 return [
-                  // ignore: deprecated_member_use
+                 
                   defaultButton(
                     context: context,
                     text: 'Rate',

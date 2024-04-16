@@ -137,7 +137,7 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
             child: PopupMenuButton<String>(
               icon: Icon(
                 Icons.add,
-                // ignore: deprecated_member_use
+               
                 color:
                     Theme.of(context).textSelectionTheme.selectionHandleColor,
               ),
@@ -152,7 +152,7 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                         Icon(
                           choice['icon'],
                           size: 22.0,
-                          // ignore: deprecated_member_use
+                         
                           color: Theme.of(context)
                               .textSelectionTheme
                               .selectionHandleColor,
@@ -161,7 +161,7 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                         Text(
                           choice['title'],
                           style: TextStyle(
-                            // ignore: deprecated_member_use
+                           
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor,
@@ -331,7 +331,7 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                           Icon(
                             Icons.lightbulb_outline,
                             color: Theme.of(context)
-                                // ignore: deprecated_member_use
+                               
                                 .textSelectionTheme
                                 .selectionHandleColor,
                             size: 24.0,
@@ -348,7 +348,7 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                                   text: "Group members",
                                   textAlign: TextAlign.start,
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                 ),
@@ -356,7 +356,7 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                                   text:
                                       "Select the members you want to add to the group, you can also update their roles.",
                                   color: Theme.of(context)
-                                      // ignore: deprecated_member_use
+                                     
                                       .textSelectionTheme
                                       .selectionHandleColor,
                                   textAlign: TextAlign.start,
@@ -388,7 +388,7 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                                             text:
                                                 '${_groupMembers[index]['name']}',
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
+                                               
                                                 .textSelectionTheme
                                                 .selectionHandleColor,
                                             fontWeight: FontWeight.w800,
@@ -401,7 +401,7 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                                             fontWeight: FontWeight.w600,
                                             textAlign: TextAlign.start,
                                             color: Theme.of(context)
-                                                // ignore: deprecated_member_use
+                                               
                                                 .textSelectionTheme
                                                 .selectionHandleColor
                                                 .withOpacity(0.5),
@@ -417,7 +417,7 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                                                       ? Colors.blueGrey[900]
                                                       : Colors.white,
                                               backgroundColor: Theme.of(context)
-                                                  // ignore: deprecated_member_use
+                                                 
                                                   .textSelectionTheme
                                                   .selectionHandleColor,
                                               child: Text(

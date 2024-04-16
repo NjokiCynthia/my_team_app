@@ -10,6 +10,8 @@ class Group {
   final String groupEmail;
   final String groupCountryName;
   final String avatar;
+  final dynamic referralCode;
+  final dynamic isCollective;
   final List<GroupRoles> groupRoles;
   final String smsBalance, accountNumber;
   final bool onlineBankingEnabled,
@@ -25,6 +27,7 @@ class Group {
   final bool isGroupAdmin;
   final String groupCurrency;
   final String memberId;
+  dynamic offerLoans;
   dynamic enablehidegroupbalancestoMembers;
 
   Group(
@@ -35,6 +38,9 @@ class Group {
       @required this.smsBalance,
       this.memberListingOrderBy,
       @required this.accountNumber,
+      this.referralCode,
+      this.isCollective,
+      this.offerLoans,
       this.enableMemberInformationPrivacy,
       this.enableSendMonthlyEmailStatements,
       this.disableArrears,
