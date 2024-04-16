@@ -28,7 +28,7 @@ class TranslationProvider extends ChangeNotifier {
     return _translations[textKey] ?? textKey;
   }
 
-  void changeLanguage(String newLanguage) async {
+  Future<void> changeLanguage(String newLanguage) async {
     _currentLanguage = newLanguage;
     await _loadTranslations();
     notifyListeners(); // Notify listeners after changing language

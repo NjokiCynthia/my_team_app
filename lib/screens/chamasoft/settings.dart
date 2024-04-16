@@ -136,7 +136,11 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
           action: () => Navigator.of(context).pop(),
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
-          title: "Settings",
+          title: languageProvider == 'English'
+              ? "Settings"
+              : Provider.of<TranslationProvider>(context, listen: false)
+                      .translate('Settings') ??
+                  'Settings',
         ),
         body: _isLoaded
             ? SingleChildScrollView(
@@ -198,7 +202,13 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                                   top: 10.0,
                                 ),
                                 child: smallBadgeButton(
-                                  text: "Update Profile",
+                                  text: languageProvider == 'English'
+                                      ? "Update Profile"
+                                      : Provider.of<TranslationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .translate('Update Profile') ??
+                                          'Update Profile',
                                   backgroundColor: primaryColor,
                                   textColor: Colors.white,
                                   buttonHeight: 30.0,
@@ -260,7 +270,13 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                     Visibility(
                       visible: group.isGroupAdmin,
                       child: ListTile(
-                        title: Text("Group Settings",
+                        title: Text(
+                            languageProvider == 'English'
+                                ? "Group Settings"
+                                : Provider.of<TranslationProvider>(context,
+                                            listen: false)
+                                        .translate('Group Settings') ??
+                                    'Group Settings',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16.0,
@@ -297,7 +313,12 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: heading2(
-                                text: "Preferences",
+                                text: languageProvider == 'English'
+                                    ? "Preferences"
+                                    : Provider.of<TranslationProvider>(context,
+                                                listen: false)
+                                            .translate("Preferences") ??
+                                        "Preferences",
                                 color: Colors.blueGrey,
                               ),
                             ),
@@ -392,18 +413,6 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[
                                       Text("Somali",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              color: Theme.of(context)
-                                                  .indicatorColor)),
-                                    ],
-                                  )),
-                              PopupMenuItem(
-                                  value: "Swahili",
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text("Swahili",
                                           style: TextStyle(
                                               fontWeight: FontWeight.w600,
                                               color: Theme.of(context)

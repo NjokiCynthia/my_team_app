@@ -1603,7 +1603,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             ),
                           ),
                       SizedBox(height: 5),
-                      Padding(
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1621,6 +1622,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w600,
                               ),
+                            ),
+                            SizedBox(
+                              width: 50,
                             ),
                             plainButtonWithArrow(
                                 text: currentLanguage == 'English'
@@ -2254,7 +2258,6 @@ class _ContrubutionsState extends State<Contrubutions> {
                                           .textSelectionTheme
                                           .selectionColor,
                                       fontWeight: FontWeight.w500,
-
                                       /* color: Colors.black */
                                     ),
                                   ),

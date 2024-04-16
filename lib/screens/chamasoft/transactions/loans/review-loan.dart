@@ -149,6 +149,8 @@ class ReviewLoanState extends State<ReviewLoan> {
             ));
   }
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String _rejectReasonError;
   void _rejectActionPrompt() {
     showDialog(
       context: context,
@@ -156,27 +158,46 @@ class ReviewLoanState extends State<ReviewLoan> {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
           title: new Text("Reason for Rejecting"),
-          content: TextFormField(
-            controller: controller,
-            keyboardType: TextInputType.text,
-            onChanged: (reason) {
-              rejectReason = reason;
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter a reason for rejecting the loan application';
-              }
-              return null; // Return null if validation succeeds
-            },
-            decoration: InputDecoration(
-              floatingLabelBehavior: FloatingLabelBehavior.auto,
-              enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                color: Theme.of(context).hintColor,
-                width: 2.0,
-              )),
-              hintText: 'Reason for Rejecting the Loan Application',
-              labelText: "Enter Reason",
+          content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: controller,
+                  keyboardType: TextInputType.text,
+                  onChanged: (reason) {
+                    setState(() {
+                      _rejectReasonError = null;
+                    });
+                    rejectReason = reason;
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a reason for rejecting the loan application';
+                    }
+                    return null; // Return null if validation succeeds
+                  },
+                  decoration: InputDecoration(
+                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Theme.of(context).hintColor,
+                      width: 2.0,
+                    )),
+                    hintText: 'Reason for Rejecting the Loan Application',
+                    labelText: "Enter Reason",
+                  ),
+                ),
+                if (_rejectReasonError != null)
+                  Padding(
+                    padding: EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      _rejectReasonError,
+                      style: TextStyle(color: Theme.of(context).errorColor),
+                    ),
+                  ),
+              ],
             ),
           ),
           actions: <Widget>[
@@ -198,10 +219,15 @@ class ReviewLoanState extends State<ReviewLoan> {
                 style: new TextStyle(color: primaryColor),
               ),
               onPressed: () async {
-                if (Form.of(context).validate()) {
+                if (_formKey.currentState.validate()) {
                   await reject();
                   fetchApprovalRequests(context);
                   Navigator.of(context).pop();
+                  //    } else {
+                  // setState(() {
+                  //   _rejectReasonError =
+                  //       'Please enter a reason for rejecting the loan application';
+                  // });
                 }
               },
             ),
@@ -401,7 +427,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                                       }
 
                                       if (isAnyDeclined) {
-                                        print("I am here");
+                                        print("I am here IF");
                                       }
                                       return groupData
                                                   .loanApprovalrequests.length >
@@ -490,9 +516,11 @@ class ReviewLoanState extends State<ReviewLoan> {
               ),
               Visibility(
                 visible: flag == REVIEW_LOAN,
-                //&&
+                // &&
+                // widget.loanApplication.declineReason.toString().isEmpty,
+                //&& !isAnyDeclined,
                 //!isAnyDeclined &&
-                // widget.loanApplication.declineReason == null,
+
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

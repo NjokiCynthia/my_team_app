@@ -117,7 +117,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
-     
+
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -140,7 +140,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
-     
+
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -164,7 +164,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
-     
+
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -187,7 +187,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
-     
+
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -211,7 +211,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
-     
+
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -234,7 +234,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
-     
+
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -254,7 +254,6 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
 
-     
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -277,7 +276,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
-     
+
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -323,7 +322,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
-     
+
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -346,7 +345,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
-     
+
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
@@ -413,7 +412,6 @@ class _GroupSettingsState extends State<GroupSettings> {
                       children: <Widget>[
                         heading2(
                             text: currentGroup.groupName,
-                           
                             color: Theme.of(context)
                                 .textSelectionTheme
                                 .selectionHandleColor),
@@ -569,7 +567,6 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Contributions",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
-                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
@@ -610,7 +607,6 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Members",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
-                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
@@ -693,7 +689,6 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Fine Types",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
-                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
@@ -734,7 +729,6 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Loan Types",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
-                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
@@ -775,7 +769,6 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Income Categories",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
-                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
@@ -816,7 +809,6 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Asset Categories",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
-                 
                   color:
                       Theme.of(context).textSelectionTheme.selectionHandleColor,
                 ),
