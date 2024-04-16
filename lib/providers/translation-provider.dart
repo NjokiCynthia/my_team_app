@@ -31,7 +31,7 @@ class TranslationProvider extends ChangeNotifier {
   Future<void> changeLanguage(String newLanguage) async {
     _currentLanguage = newLanguage;
     await _loadTranslations();
-    notifyListeners(); // Notify listeners after changing language
+    notifyListeners(); 
     _saveLanguagePreference(newLanguage);
   }
 
