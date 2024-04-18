@@ -83,8 +83,6 @@ class _ApplyLoanFromAmtState extends State<ApplyLoanFromAmt> {
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.pop(context),
-        // Navigator.of(context)
-        //     .popUntil((Route<dynamic> route) => route.isFirst),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
         title: "Apply AMT Group Loan",
@@ -92,7 +90,7 @@ class _ApplyLoanFromAmtState extends State<ApplyLoanFromAmt> {
       body: Column(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.8,
+            height: MediaQuery.of(context).size.height * 0.9,
             child: Column(
               children: [
                 toolTip(
@@ -142,73 +140,172 @@ class AmtLoanProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(20),
-      child: Card(
-        child: ListTile(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Loan name:',
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12),
+      padding:
+          const EdgeInsets.only(top: 4.0, bottom: 4.0, right: 10.0, left: 10.0),
+      child: InkWell(
+        onTap: () {
+          if (onProductSelected != null) {
+            onProductSelected(loanProduct);
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) =>
+                    AmtStepper(selectedLoanProduct: loanProduct),
               ),
-              Text(
-                loanProduct['name'] ?? '',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16),
-              ),
-            ],
-          ),
-          subtitle: Column(
+            );
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          // height: 182,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.grey.withOpacity(0.1), width: 1),
+              color: const Color.fromRGBO(255, 255, 255, 1.0),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0x00000000).withOpacity(.2),
+                  offset: const Offset(0, 5),
+                  blurRadius: 16,
+                  spreadRadius: -8,
+                )
+              ]),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 10,
-              ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     Text('Minimum amount:'),
-              //     Text(
-              //       'KES ${currencyFormat.format(double.tryParse(loanProduct['minAmount'] ?? ''))}',
-              //       // 'KES ${loanProduct['minAmount'] ?? ''}',
-              //       style: TextStyle(color: Colors.black),
-              //     ),
-              //   ],
-              // ),
-              SizedBox(
-                height: 10,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Text('Minimum amount:'),
-                  // Text(
-                  //   'KES ${currencyFormat.format(double.tryParse(loanProduct['maxAmount'] ?? ""))}',
-                  //   style: TextStyle(color: Colors.black),
-                  // ),
+                  Text(
+                    loanProduct['name'] ?? '',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ),
+                  Text(
+                    '${loanProduct['interestRate']}% interest',
+                    style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12),
+                  ),
                 ],
               ),
+              const SizedBox(
+                height: 5,
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Grace period:',
+                    style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12),
+                  ),
+                  Text(
+                    '${loanProduct['gracePeriod']} months',
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Visibility(
+                visible: loanProduct['times'] != null,
+                child: Row(
+                  children: [
+                    Text(loanProduct['times'].toString()),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text('Times your Saving amount.')
+                  ],
+                ),
+              ),
+              Visibility(
+                visible: loanProduct['times'] == null &&
+                    (loanProduct['minAmount'] != null &&
+                        loanProduct['maxAmount'] != null),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Minimum amount:',
+                          style: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12),
+                        ),
+                        Text(
+                          //'0.0',
+                          'KES ${currencyFormat.format(double.tryParse(loanProduct['minAmount'] ?? ''))}',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Maximum amount:',
+                          style: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12),
+                        ),
+                        Text(
+                          //"0.0",
+                          'KES ${currencyFormat.format(double.tryParse(loanProduct['maxAmount'] ?? ''))}',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Visibility(
+                visible: loanProduct['repaymentPeriodType'] == '2',
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Minimum Repayment Period:'),
+                        Text('${loanProduct['minRepaymentPeriod']} months'),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Maximum Repayment Period:'),
+                        Text('${loanProduct['maxRepaymentPeriod']} months')
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Visibility(
+                visible: loanProduct['repaymentPeriodType'] == '1',
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Maximum Repayment Period:'),
+                    Text('${loanProduct['repaymentPeriod']} months')
+                  ],
+                ),
+              ),
+              // SizedBox(
+              //   height: 5,
+              // ),
             ],
           ),
-          trailing: Icon(Icons.arrow_forward_ios),
-          onTap: () {
-            if (onProductSelected != null) {
-              onProductSelected(loanProduct);
-
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) =>
-                      AmtStepper(selectedLoanProduct: loanProduct),
-                ),
-              );
-            }
-          },
         ),
       ),
     );

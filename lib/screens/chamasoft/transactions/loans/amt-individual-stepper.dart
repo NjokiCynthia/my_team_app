@@ -28,7 +28,7 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
   List<Map<String, dynamic>> _data = [];
   Map<String, String> fileNames = {};
   Map<String, String> filePaths = {};
-  String selectedFilePath = '';
+  Map<String, String> selectedFilePath = {};
   PlatformFile selectedFile;
 
   Auth _user;
@@ -47,6 +47,8 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
         'minAmount', widget.selectedLoanProduct['minAmount'].toString()));
     formData.fields.add(MapEntry(
         'maxAmount', widget.selectedLoanProduct['maxAmount'].toString()));
+    formData.fields.add(MapEntry('loanProductMode',
+        widget.selectedLoanProduct['loanProductMode'].toString()));
     formData.fields.add(MapEntry(
         'loan_product_id', widget.selectedLoanProduct['_id'].toString()));
     formData.fields.add(MapEntry('repayment_period',
@@ -83,8 +85,8 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
     formData.fields.add(MapEntry('outstandingBalPercentageFineRate', ''));
     formData.fields.add(MapEntry('outstandingBalFineChargeFactor', ''));
     formData.fields.add(MapEntry('fineChargeFactor', ''));
-    formData.fields.add(MapEntry('enableGuarantors',
-        widget.selectedLoanProduct['enableGuarantors'].toString()));
+    formData.fields.add(MapEntry('enableGuarantors', "0"));
+    //widget.selectedLoanProduct['enableGuarantors'].toString()));
     formData.fields.add(MapEntry('enableLoanProfitFee', ''));
     formData.fields.add(MapEntry('loanProfitFeeType', ''));
     formData.fields.add(MapEntry('percentageLoanProfitFee', ''));
@@ -109,13 +111,11 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
     formData.fields.add(MapEntry('requirePurposeOfLoan', ''));
     formData.fields.add(MapEntry('loanProductNature',
         widget.selectedLoanProduct['loanProductNature'].toString()));
-    formData.fields.add(MapEntry('loanProductMode',
-        widget.selectedLoanProduct['loanProductMode'].toString()));
     formData.fields.add(MapEntry(
         'gracePeriod', widget.selectedLoanProduct['gracePeriod'].toString()));
     formData.fields.add(MapEntry('groupId', ''));
     formData.fields.add(MapEntry('times', ''));
-    formData.fields.add(MapEntry('guarantors', ['59070', '59072'].toString()));
+    //formData.fields.add(MapEntry('guarantors', ['59070', '59072'].toString()));
     formData.fields.add(MapEntry('amounts', ['3000', '4310'].toString()));
     formData.fields
         .add(MapEntry('type', widget.selectedLoanProduct['type'].toString()));
@@ -183,6 +183,29 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
   void _buildSteps() {
     steps = [];
 
+    List<Widget> firstStepContent = [];
+    firstStepContent.add(TextFormField(
+      decoration:
+          InputDecoration(labelText: "Enter the amount you are applying for"),
+      onChanged: (value) {
+        setState(() {
+          loanAmount = value;
+        });
+      },
+    ));
+
+    // Insert the loan amount field in the first step
+    steps.add(
+      Step(
+        title: Text('Enter amount you want to apply for.'),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: firstStepContent,
+        ),
+        isActive: true,
+      ),
+    );
+
     Map<String, List<Map<String, dynamic>>> groupedFields = {};
 
     // Group fields by their section names
@@ -197,14 +220,7 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
     // Create steps for each grouped section
     groupedFields.forEach((sectionName, fields) {
       List<Widget> stepContent = [];
-      stepContent.add(TextFormField(
-        decoration: InputDecoration(labelText: "Enter Loan Amount"),
-        onChanged: (value) {
-          setState(() {
-            loanAmount = value;
-          });
-        },
-      ));
+
       for (var field in fields) {
         stepContent.add(TextFormField(
           decoration: InputDecoration(labelText: field['question']),
@@ -226,6 +242,7 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
         Step(
           title: Text(sectionName),
           content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: stepContent,
           ),
           isActive: true,
@@ -238,14 +255,15 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
 
       if (result != null) {
         String path = result.files.single.path;
-        PlatformFile fl = result.files.first;
-
         filePaths[slug] = path;
         print('File path for $slug: $path');
         // Update UI to display file path
+        // print('File path for $slug: $path');
+
+        // Update selectedFilePath
+        selectedFilePath[slug] = path;
         setState(() {
-          selectedFilePath = path;
-          selectedFile = fl;
+          // Update selectedFilePath
         });
       }
     }
@@ -254,29 +272,49 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
       List<Widget> uploadFields = [];
       for (var docField in additionalDocumentFields) {
         String slug = docField['slug'];
+        //String filePath = selectedFilePath;
         uploadFields.add(Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ElevatedButton(
               onPressed: () {
-                _handleFileUpload(slug);
+                setState(() {
+                  _handleFileUpload(slug);
+                });
               },
               child: Text('Upload ${docField['title']}'),
             ),
-            if (filePaths.containsKey(slug)) // Display path if available
-              Text('File path: ${filePaths[slug]}'),
+            // Display path if available
+            Text('File path: $slug '),
+            //${selectedFilePath[slug]}
+            // Text(
+            //     'Selected file path: $selectedFilePath'), // Display selected file path
           ],
         ));
       }
-      steps.add(
-        Step(
-          title: Text('Upload Documents'),
-          content: Column(
-            children: uploadFields,
+      setState(() {
+        steps.add(
+          Step(
+            title: Text('Upload Documents'),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: uploadFields,
+            ),
+            isActive: true, // Set active for all steps initially
           ),
-          isActive: true, // Set active for all steps initially
-        ),
-      );
+        );
+      });
     }
+  }
+
+  List<Step> _getSteps() {
+    List<Step> allSteps = [];
+    steps.forEach((element) {
+      allSteps.add(element);
+      print('label of element: ${element.title}');
+    });
+
+    return allSteps;
   }
 
   int currentStep = 0;

@@ -31,108 +31,6 @@ class _AmtStepperState extends State<AmtStepper> {
   String loanAmount;
   Map<String, String> selectedFilePath = {};
 
-  // void submitGroupLoanApplication(BuildContext context) async {
-  //   Map<String, dynamic> formData = {
-  //     "user_id": _user.id,
-  //     "group_id": _group.groupId,
-  //     "member_id": _group.memberId,
-  //     "loan_product_id": widget.selectedLoanProduct['_id'], //"2441",
-  //     "loan_amount": loanAmount.toString(),
-  //     "name": widget.selectedLoanProduct['name'],
-  //     "minAmount": widget.selectedLoanProduct['minAmount'],
-  //     "maxAmount": widget.selectedLoanProduct['maxAmount'],
-  //     "times": '',
-  //     //'4000',
-  //     "repayment_period": widget.selectedLoanProduct['repayment_period'],
-  //     "enabled": widget.selectedLoanProduct['enabled'],
-  //     "interestType": widget.selectedLoanProduct['interestType'],
-  //     "interestRate": widget.selectedLoanProduct['interestRate'],
-  //     "interestCharge": widget.selectedLoanProduct['interestCharge'],
-  //     "repaymentPeriodType": widget.selectedLoanProduct['repaymentPeriodType'],
-  //     "repaymentPeriod": widget.selectedLoanProduct['repaymentPeriod'],
-  //     "maxRepaymentPeriod": "",
-  //     "minRepaymentPeriod": "",
-  //     "enableFinesForLateInstallments":
-  //         widget.selectedLoanProduct['enableFinesForLateInstallments'],
-  //     "lateLoanPaymentFineType":
-  //         widget.selectedLoanProduct['lateLoanPaymentFineType'],
-  //     "oneOffPercentageOn": "",
-  //     "percentageFineRate": "",
-  //     "fineFrequency": "",
-  //     "outstandingBalOneOffAmount": "",
-  //     "outstandingBalFixedFineAmount": "",
-  //     "outstandingBalFineFrequency": "",
-  //     "outstandingBalPercentageFineRate": "",
-  //     "outstandingBalFineChargeFactor": "",
-  //     "fineChargeFactor": "",
-  //     "enableGuarantors": widget.selectedLoanProduct['enableGuarantors'],
-  //     "enableLoanProfitFee": "",
-  //     "loanProfitFeeType": "",
-  //     "percentageLoanProfitFee": "",
-  //     "eventToEnableGuarantors":
-  //         widget.selectedLoanProduct['eventToEnableGuarantors'],
-  //     "minGuarantors": widget.selectedLoanProduct['minGuarantors'],
-  //     "loanProcessingFeeType": "",
-  //     "loanProcessingFeeAmount": "",
-  //     "loanProcessingFeePercentage": "",
-  //     "loanProcessingFeePercentageFactor": "",
-  //     "fixedLoanProfitFeeAmount": "",
-  //     "oneOffFineType": "",
-  //     "oneOffFixedAmount": "",
-  //     "enableFinesForOutstandingBalances": "",
-  //     "outstandingBalanceFineType": "",
-  //     "enableLoanProcessingFee":
-  //         widget.selectedLoanProduct['enableLoanProcessingFee'],
-  //     "disableAutomatedLoanProcessingIncome": "",
-  //     "requireOfficialsApproval":
-  //         widget.selectedLoanProduct['requireOfficialsApproval'],
-  //     "requirePurposeOfLoan": "",
-  //     "loanProductNature": widget.selectedLoanProduct['loanProductNature'],
-  //     "loanProductMode": widget.selectedLoanProduct['loanProductMode'],
-  //     "gracePeriod": widget.selectedLoanProduct['gracePeriod'],
-  //     "groupId": "",
-  //     "guarantors": ["59070", "59072"],
-  //     "amounts": ["3000", "4310"],
-  //     "type": "2",
-  //     "comments": ["test", "test"],
-  //     "metadata": _data,
-  //     "requireDocuments": "1"
-  //   };
-  //   additionalDocumentFields.forEach((docField) {
-  //     String slug = docField['slug'];
-  //     if (filePaths.containsKey(slug)) {
-  //       formData[slug] = p.basename(filePaths[slug]);
-  //     }
-  //   });
-  //   print(_data);
-  //   print('form data is: $formData');
-  //   print('I am here as a group');
-  //   // Show the loader
-  //   WidgetsBinding.instance.addPostFrameCallback((_) async {
-  //     showDialog<String>(
-  //         context: context,
-  //         barrierDismissible: false,
-  //         builder: (_) {
-  //           return Center(
-  //             child: CircularProgressIndicator(),
-  //           );
-  //         });
-  //   });
-
-  //   try {
-  //     String response = await Provider.of<Groups>(context, listen: false)
-  //         .submitAmtGroupLoanApplication(formData);
-
-  //     StatusHandler().showSuccessSnackBar(context, "Good news: $response");
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => ListLoanApplications()),
-  //     );
-  //   } on CustomException catch (error) {
-  //     StatusHandler().showDialogWithAction(
-  //         context: context, message: error.toString(), dismissible: true);
-  //   } finally {}
-  // }
   FormData formData = FormData();
   PlatformFile selectedFile;
   void submitGroupLoanApplication(BuildContext context) async {
@@ -297,6 +195,7 @@ class _AmtStepperState extends State<AmtStepper> {
       Step(
         title: Text('Enter amount you want to apply for.'),
         content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: firstStepContent,
         ),
         isActive: true,
@@ -339,6 +238,7 @@ class _AmtStepperState extends State<AmtStepper> {
         Step(
           title: Text(sectionName),
           content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: stepContent,
           ),
           isActive: true,
@@ -370,6 +270,7 @@ class _AmtStepperState extends State<AmtStepper> {
         String slug = docField['slug'];
         //String filePath = selectedFilePath;
         uploadFields.add(Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ElevatedButton(
               onPressed: () {
