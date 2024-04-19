@@ -343,14 +343,11 @@ class AmtLoanProduct extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Maximum Repayment Period:'),
+                    Text('Repayment Period:'),
                     Text('${loanProduct['repaymentPeriod']} months')
                   ],
                 ),
               ),
-              // SizedBox(
-              //   height: 5,
-              // ),
             ],
           ),
         ),
