@@ -64,13 +64,14 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
         widget.selectedLoanProduct['interestCharge'].toString()));
     formData.fields.add(MapEntry('repaymentPeriodType',
         widget.selectedLoanProduct['repaymentPeriodType'].toString()));
-    if (widget.selectedLoanProduct['repaymentPeriodType' == '2']) {
-      formData.fields
-          .add(MapEntry('repaymentPeriod', repaymentPeriod.toString()));
-    } else {
-      formData.fields.add(MapEntry('repaymentPeriod',
-          widget.selectedLoanProduct['repaymentPeriod'].toString()));
-    }
+    formData.fields.add(
+      MapEntry(
+        'repaymentPeriod',
+        widget.selectedLoanProduct['repaymentPeriodType'] == '2'
+            ? repaymentPeriod.toString()
+            : widget.selectedLoanProduct['repaymentPeriod'].toString(),
+      ),
+    );
     formData.fields.add(MapEntry('maxRepaymentPeriod', ''));
     formData.fields.add(MapEntry('minRepaymentPeriod', ''));
     formData.fields.add(MapEntry(
@@ -89,7 +90,7 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
     formData.fields.add(MapEntry('outstandingBalFineChargeFactor', ''));
     formData.fields.add(MapEntry('fineChargeFactor', ''));
     formData.fields.add(MapEntry('enableGuarantors', "0"));
-    //widget.selectedLoanProduct['enableGuarantors'].toString()));
+   
     formData.fields.add(MapEntry('enableLoanProfitFee', ''));
     formData.fields.add(MapEntry('loanProfitFeeType', ''));
     formData.fields.add(MapEntry('percentageLoanProfitFee', ''));

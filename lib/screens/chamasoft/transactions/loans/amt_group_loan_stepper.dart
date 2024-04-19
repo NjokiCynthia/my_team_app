@@ -57,18 +57,16 @@ class _AmtStepperState extends State<AmtStepper> {
         'interestRate', widget.selectedLoanProduct['interestRate'].toString()));
     formData.fields.add(MapEntry('interestCharge',
         widget.selectedLoanProduct['interestCharge'].toString()));
-    formData.fields.add(MapEntry(
-        'repaymentPeriodType',
-        widget.selectedLoanProduct['repaymentPeriodType']
-            .toString()
-            .toString()));
-    if (widget.selectedLoanProduct['repaymentPeriodType' == '2']) {
-      formData.fields
-          .add(MapEntry('repaymentPeriod', repaymentPeriod.toString()));
-    } else {
-      formData.fields.add(MapEntry('repaymentPeriod',
-          widget.selectedLoanProduct['repaymentPeriod'].toString()));
-    }
+    formData.fields.add(MapEntry('repaymentPeriodType',
+        widget.selectedLoanProduct['repaymentPeriodType'].toString()));
+    formData.fields.add(
+      MapEntry(
+        'repaymentPeriod',
+        widget.selectedLoanProduct['repaymentPeriodType'] == '2'
+            ? repaymentPeriod.toString()
+            : widget.selectedLoanProduct['repaymentPeriod'].toString(),
+      ),
+    );
     formData.fields.add(MapEntry('maxRepaymentPeriod', ''));
     formData.fields.add(MapEntry('minRepaymentPeriod', ''));
     formData.fields.add(MapEntry(
