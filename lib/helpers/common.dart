@@ -120,6 +120,19 @@ const inputPagePadding =
     EdgeInsets.fromLTRB(SPACING_NORMAL, SPACING_NORMAL, SPACING_NORMAL, 0.0);
 
 final currencyFormat = new NumberFormat("#,##0.00", "en_KE");
+String formatCurrency(double inputNumber) {
+  // Check if inputNumber is null
+  if (inputNumber == null) {
+    return "0.00";
+  }
+
+  // Create NumberFormat object
+  final currencyFormat = NumberFormat("#,##0.00", "en_KE");
+
+  // Format the number
+  return currencyFormat.format(inputNumber);
+}
+
 final defaultDateFormat = new DateFormat("d MMM, y");
 
 //Padding and margin

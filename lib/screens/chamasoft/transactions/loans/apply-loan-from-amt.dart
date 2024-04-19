@@ -22,6 +22,46 @@ class ApplyLoanFromAmt extends StatefulWidget {
 class _ApplyLoanFromAmtState extends State<ApplyLoanFromAmt> {
   Group group;
 
+  Future<Map<String, dynamic>> amtAuth() async {
+    print('I am here');
+    final url = 'https://api-accounts.sandbox.co.ke:8627/api/users/login';
+    final Map<String, String> headers = {
+      'Content-Type': 'application/json',
+    };
+    try {
+      final postRequest =
+          json.encode({"phone": "254797181989", "password": "p@ssword_5"});
+
+      final response =
+          await http.post(Uri.parse(url), headers: headers, body: postRequest);
+      print('I want to see my resposne');
+      print(response);
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        // Handle the response data according to your needs\\
+        print('I want to see my response data');
+
+        print(responseData);
+
+        final accessToken = responseData['user']['access_token'];
+
+        // Update access token using Provider
+        Provider.of<AccessTokenProvider>(context, listen: false)
+            .updateAccessToken(accessToken);
+
+        print('access token');
+
+        return responseData;
+      } else {
+        throw Exception(
+            'Failed to authenticate. Status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      throw Exception('Error during authentication: $error');
+    }
+  }
+
   Future<void> fetchLoanProducts() async {
     final accessTokenProvider =
         Provider.of<AccessTokenProvider>(context, listen: false);
@@ -68,9 +108,14 @@ class _ApplyLoanFromAmtState extends State<ApplyLoanFromAmt> {
     }
   }
 
+  Future<void> authAndLoanProducts() async {
+    await amtAuth();
+    await fetchLoanProducts();
+  }
+
   @override
   void initState() {
-    fetchLoanProducts();
+    authAndLoanProducts();
     super.initState();
   }
 
@@ -242,7 +287,8 @@ class AmtLoanProduct extends StatelessWidget {
                         ),
                         Text(
                           //'0.0',
-                          'KES ${currencyFormat.format(double.tryParse(loanProduct['minAmount'] ?? ''))}',
+                          'KES ${formatCurrency(double.tryParse(loanProduct['minAmount']) ?? 0.0)}',
+                          //'KES ${currencyFormat.format(double.tryParse(loanProduct['minAmount'] ?? ''))}',
                           style: TextStyle(color: Colors.black),
                         ),
                       ],
@@ -259,7 +305,8 @@ class AmtLoanProduct extends StatelessWidget {
                         ),
                         Text(
                           //"0.0",
-                          'KES ${currencyFormat.format(double.tryParse(loanProduct['maxAmount'] ?? ''))}',
+                          'KES ${formatCurrency(double.tryParse(loanProduct['maxAmount']) ?? 0.0)}',
+                          // 'KES ${currencyFormat.format(double.tryParse(loanProduct['maxAmount'] ?? ''))}',
                           style: TextStyle(color: Colors.black),
                         ),
                       ],

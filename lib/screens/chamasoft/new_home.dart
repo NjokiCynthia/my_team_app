@@ -1,5 +1,3 @@
-// ignore_for_file: unused_field, null_aware_before_operator, deprecated_member_use, duplicate_ignore, unused_local_variable, unused_element
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -11,7 +9,6 @@ import 'package:chamasoft/helpers/get_path.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/svg-icons.dart';
 import 'package:chamasoft/helpers/theme.dart';
-import 'package:chamasoft/providers/access_token.dart';
 import 'package:chamasoft/providers/bankBalancesSummary.dart';
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/expenses-summaries.dart';
@@ -34,7 +31,6 @@ import 'package:chamasoft/screens/chamasoft/reports/group/group-loans-summary.da
 import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-for-individual-amt-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-amt.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-group.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/pay-now-sheet.dart';
 import 'package:chamasoft/screens/my-groups.dart';
@@ -57,7 +53,6 @@ import 'package:provider/provider.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:pie_chart/pie_chart.dart' as chart;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
 import 'meetings/meetings.dart';
 
@@ -131,51 +126,11 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     widget.appBarElevation(_scrollController.offset);
   }
 
-  Future<Map<String, dynamic>> amtAuth() async {
-    print('I am here');
-    final url = 'https://api-accounts.sandbox.co.ke:8627/api/users/login';
-    final Map<String, String> headers = {
-      'Content-Type': 'application/json',
-    };
-    try {
-      final postRequest =
-          json.encode({"phone": "254797181989", "password": "p@ssword_5"});
-
-      final response =
-          await http.post(Uri.parse(url), headers: headers, body: postRequest);
-      print('I want to see my resposne');
-      print(response);
-
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        // Handle the response data according to your needs\\
-        print('I want to see my response data');
-
-        print(responseData);
-
-        final accessToken = responseData['user']['access_token'];
-
-        // Update access token using Provider
-        Provider.of<AccessTokenProvider>(context, listen: false)
-            .updateAccessToken(accessToken);
-
-        print('access token');
-
-        return responseData;
-      } else {
-        throw Exception(
-            'Failed to authenticate. Status code: ${response.statusCode}');
-      }
-    } catch (error) {
-      throw Exception('Error during authentication: $error');
-    }
-  }
-
   @override
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    amtAuth();
+    //amtAuth();
     // _scrollChartToEnd();
     super.initState();
   }

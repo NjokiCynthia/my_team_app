@@ -29,6 +29,7 @@ class _AmtStepperState extends State<AmtStepper> {
   Auth _user;
   Group _group;
   String loanAmount;
+  String repaymentPeriod;
   Map<String, String> selectedFilePath = {};
 
   FormData formData = FormData();
@@ -61,8 +62,13 @@ class _AmtStepperState extends State<AmtStepper> {
         widget.selectedLoanProduct['repaymentPeriodType']
             .toString()
             .toString()));
-    formData.fields.add(MapEntry('repaymentPeriod',
-        widget.selectedLoanProduct['repaymentPeriod'].toString()));
+    if (widget.selectedLoanProduct['repaymentPeriodType' == '2']) {
+      formData.fields
+          .add(MapEntry('repaymentPeriod', repaymentPeriod.toString()));
+    } else {
+      formData.fields.add(MapEntry('repaymentPeriod',
+          widget.selectedLoanProduct['repaymentPeriod'].toString()));
+    }
     formData.fields.add(MapEntry('maxRepaymentPeriod', ''));
     formData.fields.add(MapEntry('minRepaymentPeriod', ''));
     formData.fields.add(MapEntry(
@@ -180,20 +186,37 @@ class _AmtStepperState extends State<AmtStepper> {
     steps = [];
 
     List<Widget> firstStepContent = [];
-    firstStepContent.add(TextFormField(
-      decoration:
-          InputDecoration(labelText: "Enter the amount you are applying for"),
-      onChanged: (value) {
-        setState(() {
-          loanAmount = value;
-        });
-      },
+    firstStepContent.add(Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextFormField(
+          decoration: InputDecoration(
+              labelText: "Enter the amount you are applying for"),
+          onChanged: (value) {
+            setState(() {
+              loanAmount = value;
+            });
+          },
+        ),
+        Visibility(
+          visible: widget.selectedLoanProduct['repaymentPeriodType'] == "2",
+          child: TextFormField(
+            decoration: InputDecoration(
+                labelText: "Enter your preferred loan repayment period."),
+            onChanged: (value) {
+              setState(() {
+                repaymentPeriod = value;
+              });
+            },
+          ),
+        ),
+      ],
     ));
 
     // Insert the loan amount field in the first step
     steps.add(
       Step(
-        title: Text('Enter amount you want to apply for.'),
+        title: Text('Enter loan details.'),
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: firstStepContent,
@@ -325,6 +348,7 @@ class _AmtStepperState extends State<AmtStepper> {
         title: "Apply Loan",
       ),
       body: Stepper(
+        physics: ClampingScrollPhysics(),
         steps: _getSteps(),
         currentStep: currentStep,
         onStepContinue: () {
