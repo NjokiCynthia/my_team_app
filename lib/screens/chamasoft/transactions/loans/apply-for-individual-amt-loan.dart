@@ -353,9 +353,6 @@ class AmtLoanProduct extends StatelessWidget {
                   ],
                 ),
               ),
-              // SizedBox(
-              //   height: 5,
-              // ),
             ],
           ),
         ),

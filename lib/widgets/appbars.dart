@@ -28,7 +28,6 @@ PreferredSizeWidget secondaryPageAppbar(
     ),
     elevation: elevation,
     backgroundColor: Theme.of(context).backgroundColor,
-    //Theme.of(context).colorScheme.background,
     automaticallyImplyLeading: false,
     actions: actions,
   );
@@ -58,7 +57,6 @@ PreferredSizeWidget secondaryPageTabbedAppbar(
     ),
     elevation: elevation,
     backgroundColor: Theme.of(context).backgroundColor,
-    //Theme.of(context).colorScheme.background,
     automaticallyImplyLeading: false,
     actions: actions,
     bottom: bottom,
@@ -104,7 +102,6 @@ PreferredSizeWidget tertiaryPageAppbar(
     ),
     elevation: elevation,
     backgroundColor: Theme.of(context).backgroundColor,
-    //Theme.of(context).colorScheme.background,
     automaticallyImplyLeading: false,
     actions: actions,
   );

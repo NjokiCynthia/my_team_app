@@ -67,14 +67,12 @@ class _SelectMembersState extends State<SelectMembers> {
         _tmpMbrs.add(subtitle2(
           text: "1 member " + _type,
           textAlign: TextAlign.start,
-         
           color: Theme.of(context).textSelectionTheme.selectionHandleColor,
         ));
       else if (_members[type].length > 1)
         _tmpMbrs.add(subtitle2(
           text: _members[type].length.toString() + " members " + _type,
           textAlign: TextAlign.start,
-         
           color: Theme.of(context).textSelectionTheme.selectionHandleColor,
         ));
     });
@@ -164,24 +162,21 @@ class _SelectMembersState extends State<SelectMembers> {
           title: heading2(
               text: "Clear Selection",
               textAlign: TextAlign.start,
-             
               color: Theme.of(context).textSelectionTheme.selectionHandleColor),
           content: customTitleWithWrap(
               text: "Are you sure you want to clear all selected members?",
               textAlign: TextAlign.start,
-             
               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               maxLines: null),
           actions: <Widget>[
             negativeActionDialogButton(
               text: "Cancel",
-             
               color: Theme.of(context).textSelectionTheme.selectionHandleColor,
               action: () {
                 Navigator.of(context).pop();
               },
             ),
-           
+
             // FlatButton(
             //   padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
             //   child: customTitle(
@@ -207,7 +202,8 @@ class _SelectMembersState extends State<SelectMembers> {
             // )
             TextButton(
               style: TextButton.styleFrom(
-                foregroundColor: Colors.red, padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+                foregroundColor: Colors.red,
+                padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
                 ),
@@ -229,7 +225,6 @@ class _SelectMembersState extends State<SelectMembers> {
                 fontWeight: FontWeight.w600,
               ),
             )
-
           ],
         );
       },
@@ -298,16 +293,16 @@ class _SelectMembersState extends State<SelectMembers> {
                               ? Icon(
                                   Icons.lightbulb_outline,
                                   color: Theme.of(context)
-                                     
-                                      .textSelectionTheme.selectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   size: 24.0,
                                   semanticLabel: 'Select members...',
                                 )
                               : Icon(
                                   Icons.group,
                                   color: Theme.of(context)
-                                     
-                                      .textSelectionTheme.selectionHandleColor
+                                      .textSelectionTheme
+                                      .selectionHandleColor
                                       .withOpacity(0.7),
                                   size: 24.0,
                                   semanticLabel: 'Selected members...',
@@ -324,8 +319,8 @@ class _SelectMembersState extends State<SelectMembers> {
                                         text: "Select members",
                                         textAlign: TextAlign.start,
                                         color: Theme.of(context)
-                                           
-                                            .textSelectionTheme.selectionHandleColor,
+                                            .textSelectionTheme
+                                            .selectionHandleColor,
                                       )
                                     : subtitle1(
                                         text: _selectedMembers()['count']
@@ -333,16 +328,16 @@ class _SelectMembersState extends State<SelectMembers> {
                                             " other members selected",
                                         textAlign: TextAlign.start,
                                         color: Theme.of(context)
-                                           
-                                            .textSelectionTheme.selectionHandleColor,
+                                            .textSelectionTheme
+                                            .selectionHandleColor,
                                       ),
                                 _selectedMembers()['count'] == 0
                                     ? subtitle2(
                                         text:
                                             "Select the members you want to add and save.",
                                         color: Theme.of(context)
-                                           
-                                            .textSelectionTheme.selectionHandleColor,
+                                            .textSelectionTheme
+                                            .selectionHandleColor,
                                         textAlign: TextAlign.start,
                                       )
                                     : _selectedMembers()['render'],
@@ -392,8 +387,8 @@ class _SelectMembersState extends State<SelectMembers> {
                                                     ['isCheck']
                                                 ? primaryColor
                                                 : Theme.of(context)
-                                                   
-                                                    .textSelectionTheme.selectionHandleColor,
+                                                    .textSelectionTheme
+                                                    .selectionHandleColor,
                                           ),
                                         ),
                                         subtitle: Text(
@@ -404,8 +399,8 @@ class _SelectMembersState extends State<SelectMembers> {
                                                     ['isCheck']
                                                 ? primaryColor
                                                 : Theme.of(context)
-                                                   
-                                                    .textSelectionTheme.selectionHandleColor,
+                                                    .textSelectionTheme
+                                                    .selectionHandleColor,
                                           ),
                                         ),
                                         value: _groupMembers[index]['isCheck'],
@@ -420,12 +415,12 @@ class _SelectMembersState extends State<SelectMembers> {
                                                             .darkTheme)
                                                         ? Colors.blueGrey[900]
                                                         : Colors.white,
-                                            backgroundColor: _groupMembers[
-                                                    index]['isCheck']
-                                                ? primaryColor
-                                                : Theme.of(context)
-                                                   
-                                                    .textSelectionTheme.selectionHandleColor,
+                                            backgroundColor:
+                                                _groupMembers[index]['isCheck']
+                                                    ? primaryColor
+                                                    : Theme.of(context)
+                                                        .textSelectionTheme
+                                                        .selectionHandleColor,
                                             child: Text(
                                               getInitials(
                                                 _groupMembers[index]['name'],

@@ -20,10 +20,8 @@ import 'package:chamasoft/providers/recent-transactions.dart';
 import 'package:chamasoft/providers/summaries.dart';
 import 'package:chamasoft/providers/translation-provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
-import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
-import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/account-balances.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/contribution-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/expense-summary.dart';
@@ -86,9 +84,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   // List<BankAccountDashboardSummary> _iteratableData = [];
   List<NewRecentTransactionSummary> _iteratableRecentTransactionSummary = [];
 
-  ExpenseSummaryList _expenseSummaryList;
-  double _totalExpenses = 0;
-  List<SummaryRow> _expenseRows = [];
+ 
 
   int _currentIndex = 0;
   bool _showMeetingsBanner = true;
@@ -120,7 +116,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   final withdrwalDepositKey = GlobalKey();
   BuildContext groupContext;
 
-  ScrollController _chartScrollController;
+  //ScrollController _chartScrollController;
 
   void _scrollListener() {
     widget.appBarElevation(_scrollController.offset);
@@ -2054,18 +2050,18 @@ class _ContrubutionsState extends State<Contrubutions> {
     _contributionSummaryAlertDialog();
   }
 
-  Future<void> _getContributionStatement(BuildContext context) async {
-    try {
-      await Provider.of<Groups>(context, listen: false)
-          .fetchContributionStatement(CONTRIBUTION_STATEMENT);
-    } on CustomException catch (error) {
-      StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () => _fetchContributionBreakDownData(),
-          scaffoldState: _scaffoldKey.currentState);
-    }
-  }
+  // Future<void> _getContributionStatement(BuildContext context) async {
+  //   try {
+  //     await Provider.of<Groups>(context, listen: false)
+  //         .fetchContributionStatement(CONTRIBUTION_STATEMENT);
+  //   } on CustomException catch (error) {
+  //     StatusHandler().handleStatus(
+  //         context: context,
+  //         error: error,
+  //         callback: () => _fetchContributionBreakDownData(),
+  //         scaffoldState: _scaffoldKey.currentState);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

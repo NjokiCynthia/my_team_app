@@ -1,3 +1,4 @@
+import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/auth.dart';
@@ -5,6 +6,7 @@ import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/reports/loan-applications.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -90,7 +92,7 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
     formData.fields.add(MapEntry('outstandingBalFineChargeFactor', ''));
     formData.fields.add(MapEntry('fineChargeFactor', ''));
     formData.fields.add(MapEntry('enableGuarantors', "0"));
-   
+
     formData.fields.add(MapEntry('enableLoanProfitFee', ''));
     formData.fields.add(MapEntry('loanProfitFeeType', ''));
     formData.fields.add(MapEntry('percentageLoanProfitFee', ''));
@@ -202,8 +204,8 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
         Visibility(
           visible: widget.selectedLoanProduct['repaymentPeriodType'] == "2",
           child: TextFormField(
-            decoration: InputDecoration(
-                labelText: "Enter your preferred loan repayment period."),
+            decoration:
+                InputDecoration(labelText: "Enter loan repayment period."),
             onChanged: (value) {
               setState(() {
                 repaymentPeriod = value;
@@ -352,37 +354,48 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
         title: "Apply Loan",
       ),
       body: SingleChildScrollView(
-        child: Stepper(
-          physics: ClampingScrollPhysics(),
-          steps: steps,
-          currentStep: currentStep,
-          onStepContinue: () {
-            setState(() {
-              if (currentStep < steps.length - 1) {
-                currentStep += 1;
-              } else {
-                submitGroupLoanApplication(context);
-                // saveData();
-              }
-            });
-          },
-          onStepCancel: () {
-            setState(() {
-              if (currentStep > 0) {
-                currentStep -= 1;
-              }
-            });
-          },
+        child: Column(
+          children: [
+            toolTip(
+                context: context,
+                title: "Elligible amount",
+                message:
+                    "${widget.selectedLoanProduct['times'] != null ? '${widget.selectedLoanProduct['times']} times your savings amount' : 'Range: KES ${formatCurrency(double.tryParse(widget.selectedLoanProduct['minAmount']))} - KES ${formatCurrency(double.tryParse(widget.selectedLoanProduct['maxAmount']))}'}"
+                //"${widget.selectedLoanProduct['times'] != null}?${"${widget.selectedLoanProduct['times']} your savings amount"}:${"Range: ${widget.selectedLoanProduct['minAmount']} - ${widget.selectedLoanProduct['maxAmount']}"}",
+                ),
+            Stepper(
+              physics: ClampingScrollPhysics(),
+              steps: steps,
+              currentStep: currentStep,
+              onStepContinue: () {
+                setState(() {
+                  if (currentStep < steps.length - 1) {
+                    currentStep += 1;
+                  } else {
+                    submitGroupLoanApplication(context);
+                    // saveData();
+                  }
+                });
+              },
+              onStepCancel: () {
+                setState(() {
+                  if (currentStep > 0) {
+                    currentStep -= 1;
+                  }
+                });
+              },
+            ),
+          ],
         ),
       ),
     );
   }
 
-  void saveData() {
-    // Implement your save data logic here
-    print('I WANT TO SEE TEH DATA:');
-    print(_data);
-    // Reset form data if needed
-    _data.clear();
-  }
+  // void saveData() {
+  //   // Implement your save data logic here
+  //   print('I WANT TO SEE TEH DATA:');
+  //   print(_data);
+  //   // Reset form data if needed
+  //   _data.clear();
+  // }
 }

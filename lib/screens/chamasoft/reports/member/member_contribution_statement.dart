@@ -262,12 +262,10 @@ class _MemberContributionStatementState
                             text: _memberName != null ? _memberName : '--',
                             // text: widget.memberName,
                             // fontSize: 16.0,
-                           
-                            color:
-                               
-                                Theme.of(context)
-                                    .textSelectionTheme
-                                    .selectionHandleColor,
+
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             textAlign: TextAlign.start,
                           ),
                           SizedBox(
@@ -277,12 +275,9 @@ class _MemberContributionStatementState
                             text: _role != null ? _role : '--',
                             textAlign: TextAlign.start,
                             fontSize: 16.0,
-                           
-                            color:
-                               
-                                Theme.of(context)
-                                    .textSelectionTheme
-                                    .selectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           ),
                           SizedBox(
                             height: 10.0,
@@ -290,12 +285,9 @@ class _MemberContributionStatementState
                           subtitle2(
                             text: _phone != null ? _phone : '--',
                             textAlign: TextAlign.start,
-                           
-                            color:
-                               
-                                Theme.of(context)
-                                    .textSelectionTheme
-                                    .selectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           ),
                           SizedBox(
                             height: 3.0,
@@ -303,12 +295,9 @@ class _MemberContributionStatementState
                           subtitle2(
                             text: _email != null ? _email : '--',
                             textAlign: TextAlign.start,
-                           
-                            color:
-                               
-                                Theme.of(context)
-                                    .textSelectionTheme
-                                    .selectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                           )
                         ],
                       ),
@@ -340,22 +329,18 @@ class _MemberContributionStatementState
                         text: "Statement as At",
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
-                        color:
-                           
-                            Theme.of(context)
-                                .textSelectionTheme
-                                .selectionHandleColor,
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor,
                         textAlign: TextAlign.start,
                       ),
                       subtitle2(
                         text: _statementAsAt,
                         fontSize: 12,
                         // fontWeight: FontWeight.w500,
-                        color:
-                           
-                            Theme.of(context)
-                                .textSelectionTheme
-                                .selectionHandleColor,
+                        color: Theme.of(context)
+                            .textSelectionTheme
+                            .selectionHandleColor,
                         textAlign: TextAlign.start,
                       ),
                     ],
@@ -369,7 +354,6 @@ class _MemberContributionStatementState
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
                           color: Theme.of(context)
-                             
                               .textSelectionTheme
                               .selectionHandleColor,
                           textAlign: TextAlign.end,
@@ -381,7 +365,6 @@ class _MemberContributionStatementState
                               ? "$_statementFrom to $_statementTo"
                               : "",
                           color: Theme.of(context)
-                             
                               .textSelectionTheme
                               .selectionHandleColor,
                           textAlign: TextAlign.end,
@@ -530,7 +513,6 @@ class _MemberContributionStatementState
                             ? Colors.red
                             : (_balance < 0
                                 ? Colors.green
-                               
                                 : Theme.of(context)
                                     .textSelectionTheme
                                     .selectionHandleColor),
@@ -549,9 +531,9 @@ class _MemberContributionStatementState
             //               : "You have an Underpayment of ${groupObject.groupCurrency + " " + currencyFormat.format(_balance.abs())}",
             //           textAlign: TextAlign.start,
             //           // fontSize: 14.0,
-            //          
+            //
             //           color:
-            //              
+            //
             //               Theme.of(context).textSelectionTheme.selectionHandleColor,
             //         ),
             //       )

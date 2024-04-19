@@ -155,30 +155,34 @@ class _MeetingsState extends State<Meetings> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon:LineAwesomeIcons.arrow_left,
+        leadingIcon: LineAwesomeIcons.arrow_left,
         title: "Meetings",
         actions: [
-          _isGroupAdmin ? Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: IconButton(
-              icon: Icon(
-                Icons.add,
-               
-                color : Theme.of(context).textSelectionTheme.selectionHandleColor,
-              ),
-              onPressed: _isLoading
-                  ? null
-                  :  () => Navigator.of(context)
-                          .push(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => EditMeeting(),
-                        ),
-                      )
-                          .then((resp) {
-                        fetchData();
-                      }),
-            ),
-          ) : Container(),
+          _isGroupAdmin
+              ? Padding(
+                  padding: EdgeInsets.only(right: 20.0),
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.add,
+                      color: Theme.of(context)
+                          .textSelectionTheme
+                          .selectionHandleColor,
+                    ),
+                    onPressed: _isLoading
+                        ? null
+                        : () => Navigator.of(context)
+                                .push(
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    EditMeeting(),
+                              ),
+                            )
+                                .then((resp) {
+                              fetchData();
+                            }),
+                  ),
+                )
+              : Container(),
         ],
       ),
       body: _isLoading
@@ -335,8 +339,9 @@ class _MeetingsState extends State<Meetings> {
                         children: <Widget>[
                           Icon(
                             Icons.lightbulb_outline,
-                           
-                            color: Theme.of(context).textSelectionTheme.selectionHandleColor,
+                            color: Theme.of(context)
+                                .textSelectionTheme
+                                .selectionHandleColor,
                             size: 24.0,
                             semanticLabel: 'You should know...',
                           ),
@@ -351,15 +356,15 @@ class _MeetingsState extends State<Meetings> {
                                   text: "You should know...",
                                   textAlign: TextAlign.start,
                                   color: Theme.of(context)
-                                     
-                                      .textSelectionTheme.selectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                 ),
                                 subtitle2(
                                   text:
                                       "That everytime you have your regular group meetings, Chamasoft helps you keep minutes for future reference, and also record any transactions.",
                                   color: Theme.of(context)
-                                     
-                                      .textSelectionTheme.selectionHandleColor,
+                                      .textSelectionTheme
+                                      .selectionHandleColor,
                                   textAlign: TextAlign.start,
                                 ),
                               ],
@@ -376,8 +381,8 @@ class _MeetingsState extends State<Meetings> {
                               padding: EdgeInsets.only(bottom: 40.0),
                               separatorBuilder: (context, index) => Divider(
                                 color: Theme.of(context)
-                                   
-                                    .textSelectionTheme.selectionHandleColor
+                                    .textSelectionTheme
+                                    .selectionHandleColor
                                     .withOpacity(0.5),
                                 height: 0.0,
                               ),
@@ -406,8 +411,8 @@ class _MeetingsState extends State<Meetings> {
                                             child: Icon(
                                               Icons.group,
                                               color: Theme.of(context)
-                                                 
-                                                  .textSelectionTheme.selectionHandleColor,
+                                                  .textSelectionTheme
+                                                  .selectionHandleColor,
                                             ),
                                           ),
                                           Column(
@@ -421,15 +426,15 @@ class _MeetingsState extends State<Meetings> {
                                                           ['date']),
                                                 ),
                                                 color: Theme.of(context)
-                                                   
-                                                    .textSelectionTheme.selectionHandleColor,
+                                                    .textSelectionTheme
+                                                    .selectionHandleColor,
                                                 textAlign: TextAlign.start,
                                               ),
                                               subtitle1(
                                                 text: meetings[index]['title'],
                                                 color: Theme.of(context)
-                                                   
-                                                    .textSelectionTheme.selectionHandleColor,
+                                                    .textSelectionTheme
+                                                    .selectionHandleColor,
                                                 textAlign: TextAlign.start,
                                               ),
                                               Row(
@@ -441,8 +446,8 @@ class _MeetingsState extends State<Meetings> {
                                                           FontWeight.w300,
                                                       fontSize: 13.0,
                                                       color: Theme.of(context)
-                                                         
-                                                          .textSelectionTheme.selectionHandleColor,
+                                                          .textSelectionTheme
+                                                          .selectionHandleColor,
                                                       fontFamily: 'SegoeUI',
                                                     ),
                                                     textAlign: TextAlign.start,
@@ -457,8 +462,8 @@ class _MeetingsState extends State<Meetings> {
                                                           FontWeight.w600,
                                                       fontSize: 13.0,
                                                       color: Theme.of(context)
-                                                         
-                                                          .textSelectionTheme.selectionHandleColor,
+                                                          .textSelectionTheme
+                                                          .selectionHandleColor,
                                                       fontFamily: 'SegoeUI',
                                                     ),
                                                     textAlign: TextAlign.start,

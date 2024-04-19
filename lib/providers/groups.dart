@@ -27,7 +27,6 @@ import 'package:chamasoft/helpers/endpoint-url.dart';
 import 'package:chamasoft/helpers/post-to-server.dart';
 import 'package:chamasoft/helpers/report_helper.dart';
 import 'package:chamasoft/helpers/setting_helper.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
