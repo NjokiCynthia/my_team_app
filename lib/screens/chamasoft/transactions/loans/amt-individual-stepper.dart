@@ -127,8 +127,10 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
         .add(MapEntry('type', widget.selectedLoanProduct['type'].toString()));
     formData.fields.add(MapEntry('comments', ['test', 'test'].toString()));
     formData.fields.add(MapEntry('metadata', _data.toString()));
-    formData.fields.add(MapEntry('requireDocuments',
-        widget.selectedLoanProduct['requireDocuments'].toString()));
+    formData.fields.add(MapEntry(
+        'requireDocuments',
+        // widget.selectedLoanProduct['requireDocuments']
+        "1".toString()));
 
     additionalDocumentFields.forEach((docField) async {
       String slug = docField['slug'];
@@ -189,45 +191,6 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
   void _buildSteps() {
     steps = [];
 
-    List<Widget> firstStepContent = [];
-    firstStepContent.add(Column(
-      children: [
-        TextFormField(
-          decoration: InputDecoration(
-              labelText: "Enter the amount you are applying for"),
-          onChanged: (value) {
-            setState(() {
-              loanAmount = value;
-            });
-          },
-        ),
-        Visibility(
-          visible: widget.selectedLoanProduct['repaymentPeriodType'] == "2",
-          child: TextFormField(
-            decoration:
-                InputDecoration(labelText: "Enter loan repayment period."),
-            onChanged: (value) {
-              setState(() {
-                repaymentPeriod = value;
-              });
-            },
-          ),
-        ),
-      ],
-    ));
-
-    // Insert the loan amount field in the first step
-    steps.add(
-      Step(
-        title: Text('Enter loan details.'),
-        content: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: firstStepContent,
-        ),
-        isActive: true,
-      ),
-    );
-
     Map<String, List<Map<String, dynamic>>> groupedFields = {};
 
     // Group fields by their section names
@@ -242,7 +205,14 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
     // Create steps for each grouped section
     groupedFields.forEach((sectionName, fields) {
       List<Widget> stepContent = [];
-
+      stepContent.add(TextFormField(
+        decoration: InputDecoration(labelText: "Enter Loan Amount"),
+        onChanged: (value) {
+          setState(() {
+            loanAmount = value;
+          });
+        },
+      ));
       for (var field in fields) {
         stepContent.add(TextFormField(
           decoration: InputDecoration(labelText: field['question']),
@@ -264,7 +234,6 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
         Step(
           title: Text(sectionName),
           content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: stepContent,
           ),
           isActive: true,
@@ -277,15 +246,14 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
 
       if (result != null) {
         String path = result.files.single.path;
+        PlatformFile fl = result.files.first;
+
         filePaths[slug] = path;
         print('File path for $slug: $path');
         // Update UI to display file path
-        // print('File path for $slug: $path');
-
-        // Update selectedFilePath
-        selectedFilePath[slug] = path;
         setState(() {
-          // Update selectedFilePath
+          selectedFilePath = path as Map<String, String>;
+          selectedFile = fl;
         });
       }
     }
@@ -294,49 +262,29 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
       List<Widget> uploadFields = [];
       for (var docField in additionalDocumentFields) {
         String slug = docField['slug'];
-        //String filePath = selectedFilePath;
         uploadFields.add(Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ElevatedButton(
               onPressed: () {
-                setState(() {
-                  _handleFileUpload(slug);
-                });
+                _handleFileUpload(slug);
               },
               child: Text('Upload ${docField['title']}'),
             ),
-            // Display path if available
-            Text('File path: $slug '),
-            //${selectedFilePath[slug]}
-            // Text(
-            //     'Selected file path: $selectedFilePath'), // Display selected file path
+            if (filePaths.containsKey(slug)) // Display path if available
+              Text('File path: ${filePaths[slug]}'),
           ],
         ));
       }
-      setState(() {
-        steps.add(
-          Step(
-            title: Text('Upload Documents'),
-            content: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: uploadFields,
-            ),
-            isActive: true, // Set active for all steps initially
+      steps.add(
+        Step(
+          title: Text('Upload Documents'),
+          content: Column(
+            children: uploadFields,
           ),
-        );
-      });
+          isActive: true, // Set active for all steps initially
+        ),
+      );
     }
-  }
-
-  List<Step> _getSteps() {
-    List<Step> allSteps = [];
-    steps.forEach((element) {
-      allSteps.add(element);
-      print('label of element: ${element.title}');
-    });
-
-    return allSteps;
   }
 
   int currentStep = 0;
@@ -354,48 +302,36 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
         title: "Apply Loan",
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            toolTip(
-                context: context,
-                title: "Elligible amount",
-                message:
-                    "${widget.selectedLoanProduct['times'] != null ? '${widget.selectedLoanProduct['times']} times your savings amount' : 'Range: KES ${formatCurrency(double.tryParse(widget.selectedLoanProduct['minAmount']))} - KES ${formatCurrency(double.tryParse(widget.selectedLoanProduct['maxAmount']))}'}"
-                //"${widget.selectedLoanProduct['times'] != null}?${"${widget.selectedLoanProduct['times']} your savings amount"}:${"Range: ${widget.selectedLoanProduct['minAmount']} - ${widget.selectedLoanProduct['maxAmount']}"}",
-                ),
-            Stepper(
-              physics: ClampingScrollPhysics(),
-              steps: steps,
-              currentStep: currentStep,
-              onStepContinue: () {
-                setState(() {
-                  if (currentStep < steps.length - 1) {
-                    currentStep += 1;
-                  } else {
-                    submitGroupLoanApplication(context);
-                    // saveData();
-                  }
-                });
-              },
-              onStepCancel: () {
-                setState(() {
-                  if (currentStep > 0) {
-                    currentStep -= 1;
-                  }
-                });
-              },
-            ),
-          ],
+        child: Stepper(
+          steps: steps,
+          currentStep: currentStep,
+          onStepContinue: () {
+            setState(() {
+              if (currentStep < steps.length - 1) {
+                currentStep += 1;
+              } else {
+                submitGroupLoanApplication(context);
+                // saveData();
+              }
+            });
+          },
+          onStepCancel: () {
+            setState(() {
+              if (currentStep > 0) {
+                currentStep -= 1;
+              }
+            });
+          },
         ),
       ),
     );
   }
 
-  // void saveData() {
-  //   // Implement your save data logic here
-  //   print('I WANT TO SEE TEH DATA:');
-  //   print(_data);
-  //   // Reset form data if needed
-  //   _data.clear();
-  // }
+  void saveData() {
+    // Implement your save data logic here
+    print('I WANT TO SEE TEH DATA:');
+    print(_data);
+    // Reset form data if needed
+    _data.clear();
+  }
 }

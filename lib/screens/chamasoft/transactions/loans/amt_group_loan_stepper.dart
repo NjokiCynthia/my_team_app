@@ -124,8 +124,10 @@ class _AmtStepperState extends State<AmtStepper> {
         .add(MapEntry('type', widget.selectedLoanProduct['type'].toString()));
     formData.fields.add(MapEntry('comments', ['test', 'test'].toString()));
     formData.fields.add(MapEntry('metadata', _data.toString()));
-    formData.fields.add(MapEntry('requireDocuments',
-        widget.selectedLoanProduct['requireDocuments'].toString()));
+    formData.fields.add(MapEntry(
+        'requireDocuments',
+        // widget.selectedLoanProduct['requireDocuments']
+        "1".toString()));
 
     additionalDocumentFields.forEach((docField) async {
       String slug = docField['slug'];
@@ -276,9 +278,6 @@ class _AmtStepperState extends State<AmtStepper> {
         String path = result.files.single.path;
         filePaths[slug] = path;
         print('File path for $slug: $path');
-        // Update UI to display file path
-        // print('File path for $slug: $path');
-
         // Update selectedFilePath
         selectedFilePath[slug] = path;
         setState(() {

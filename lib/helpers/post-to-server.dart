@@ -345,13 +345,8 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
 
   static Future<dynamic> ResponseGenerate(jsonObjectResponse) async {
     try {
-      print('See this');
-      print(jsonObjectResponse);
       final response = jsonObjectResponse;
       //json.decode(jsonObjectResponse.toString());
-      print('my response');
-      print(response);
-
       final String secretKey = response["secret"] ?? "";
       final String body = response["body"] ?? "";
       try {

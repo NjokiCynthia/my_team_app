@@ -33,6 +33,8 @@ class Styles {
   static ThemeData themeData(bool isDarkTheme, BuildContext context) {
     return Config.appName.toLowerCase() == 'chamasoft'
         ? ThemeData(
+            primarySwatch: Colors.blue,
+            backgroundColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             splashColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             primaryColor: isDarkTheme ? Colors.blueGrey[100] : primaryColor,
             indicatorColor:
@@ -114,9 +116,10 @@ class Styles {
               selectionColor: isDarkTheme ? Colors.white : Colors.blueGrey[800],
               selectionHandleColor:
                   isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey,
-            ), colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue).copyWith(background: isDarkTheme ? Colors.blueGrey[900] : Colors.white),
+            ),
           )
         : ThemeData(
+            backgroundColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             splashColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             primaryColor: isDarkTheme ? Colors.blueGrey[100] : primaryColor,
             indicatorColor:
@@ -153,9 +156,10 @@ class Styles {
               selectionColor: isDarkTheme ? Colors.white : Colors.blueGrey[800],
               selectionHandleColor:
                   isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey,
-            ), colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.brown)
+            ),
+            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.brown)
                 .copyWith(
-                    secondary: isDarkTheme ? Colors.brown[700] : primaryColor).copyWith(background: isDarkTheme ? Colors.blueGrey[900] : Colors.white),
+                    secondary: isDarkTheme ? Colors.brown[700] : primaryColor),
           );
   }
 }
