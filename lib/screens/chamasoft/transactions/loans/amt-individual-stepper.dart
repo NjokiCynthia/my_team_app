@@ -30,7 +30,7 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
   List<Map<String, dynamic>> _data = [];
   Map<String, String> fileNames = {};
   Map<String, String> filePaths = {};
-  Map<String, String> selectedFilePath = {};
+  String selectedFilePath = '';
   PlatformFile selectedFile;
 
   Auth _user;
@@ -50,22 +50,8 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
         'minAmount', widget.selectedLoanProduct['minAmount'].toString()));
     formData.fields.add(MapEntry(
         'maxAmount', widget.selectedLoanProduct['maxAmount'].toString()));
-    formData.fields.add(MapEntry('loanProductMode',
-        widget.selectedLoanProduct['loanProductMode'].toString()));
     formData.fields.add(MapEntry(
         'loan_product_id', widget.selectedLoanProduct['_id'].toString()));
-    formData.fields.add(MapEntry('repayment_period',
-        widget.selectedLoanProduct['repayment_period'].toString()));
-    formData.fields.add(
-        MapEntry('enabled', widget.selectedLoanProduct['enabled'].toString()));
-    formData.fields.add(MapEntry(
-        'interestType', widget.selectedLoanProduct['interestType'].toString()));
-    formData.fields.add(MapEntry(
-        'interestRate', widget.selectedLoanProduct['interestRate'].toString()));
-    formData.fields.add(MapEntry('interestCharge',
-        widget.selectedLoanProduct['interestCharge'].toString()));
-    formData.fields.add(MapEntry('repaymentPeriodType',
-        widget.selectedLoanProduct['repaymentPeriodType'].toString()));
     formData.fields.add(
       MapEntry(
         'repaymentPeriod',
@@ -74,6 +60,21 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
             : widget.selectedLoanProduct['repaymentPeriod'].toString(),
       ),
     );
+    formData.fields.add(
+        MapEntry('enabled', widget.selectedLoanProduct['enabled'].toString()));
+    formData.fields.add(MapEntry(
+        'interestType', widget.selectedLoanProduct['interestType'].toString()));
+    formData.fields.add(MapEntry(
+        'interestRate', widget.selectedLoanProduct['interestRate'].toString()));
+    formData.fields.add(MapEntry('interestCharge',
+        widget.selectedLoanProduct['interestCharge'].toString()));
+    formData.fields.add(MapEntry(
+        'repaymentPeriodType',
+        widget.selectedLoanProduct['repaymentPeriodType']
+            .toString()
+            .toString()));
+    formData.fields.add(MapEntry('repaymentPeriod',
+        widget.selectedLoanProduct['repaymentPeriod'].toString()));
     formData.fields.add(MapEntry('maxRepaymentPeriod', ''));
     formData.fields.add(MapEntry('minRepaymentPeriod', ''));
     formData.fields.add(MapEntry(
@@ -91,8 +92,10 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
     formData.fields.add(MapEntry('outstandingBalPercentageFineRate', ''));
     formData.fields.add(MapEntry('outstandingBalFineChargeFactor', ''));
     formData.fields.add(MapEntry('fineChargeFactor', ''));
-    formData.fields.add(MapEntry('enableGuarantors', "0"));
-
+    formData.fields.add(MapEntry(
+        'enableGuarantors',
+        // widget.selectedLoanProduct['enableGuarantors']
+        "0".toString()));
     formData.fields.add(MapEntry('enableLoanProfitFee', ''));
     formData.fields.add(MapEntry('loanProfitFeeType', ''));
     formData.fields.add(MapEntry('percentageLoanProfitFee', ''));
@@ -117,20 +120,20 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
     formData.fields.add(MapEntry('requirePurposeOfLoan', ''));
     formData.fields.add(MapEntry('loanProductNature',
         widget.selectedLoanProduct['loanProductNature'].toString()));
+    formData.fields.add(MapEntry('loanProductMode',
+        widget.selectedLoanProduct['loanProductMode'].toString()));
     formData.fields.add(MapEntry(
         'gracePeriod', widget.selectedLoanProduct['gracePeriod'].toString()));
     formData.fields.add(MapEntry('groupId', ''));
     formData.fields.add(MapEntry('times', ''));
-    //formData.fields.add(MapEntry('guarantors', ['59070', '59072'].toString()));
+    formData.fields.add(MapEntry('guarantors', ['59070', '59072'].toString()));
     formData.fields.add(MapEntry('amounts', ['3000', '4310'].toString()));
     formData.fields
         .add(MapEntry('type', widget.selectedLoanProduct['type'].toString()));
     formData.fields.add(MapEntry('comments', ['test', 'test'].toString()));
     formData.fields.add(MapEntry('metadata', _data.toString()));
-    formData.fields.add(MapEntry(
-        'requireDocuments',
-        // widget.selectedLoanProduct['requireDocuments']
-        "1".toString()));
+    formData.fields.add(MapEntry('requireDocuments',
+        widget.selectedLoanProduct['requireDocuments'].toString()));
 
     additionalDocumentFields.forEach((docField) async {
       String slug = docField['slug'];
@@ -191,6 +194,46 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
   void _buildSteps() {
     steps = [];
 
+    List<Widget> firstStepContent = [];
+    firstStepContent.add(Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextFormField(
+          decoration: InputDecoration(
+              labelText: "Enter the amount you are applying for"),
+          onChanged: (value) {
+            setState(() {
+              loanAmount = value;
+            });
+          },
+        ),
+        Visibility(
+          visible: widget.selectedLoanProduct['repaymentPeriodType'] == "2",
+          child: TextFormField(
+            decoration:
+                InputDecoration(labelText: "Enter loan repayment period."),
+            onChanged: (value) {
+              setState(() {
+                repaymentPeriod = value;
+              });
+            },
+          ),
+        ),
+      ],
+    ));
+
+    // Insert the loan amount field in the first step
+    steps.add(
+      Step(
+        title: Text('Enter loan details.'),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: firstStepContent,
+        ),
+        isActive: true,
+      ),
+    );
+
     Map<String, List<Map<String, dynamic>>> groupedFields = {};
 
     // Group fields by their section names
@@ -205,14 +248,7 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
     // Create steps for each grouped section
     groupedFields.forEach((sectionName, fields) {
       List<Widget> stepContent = [];
-      stepContent.add(TextFormField(
-        decoration: InputDecoration(labelText: "Enter Loan Amount"),
-        onChanged: (value) {
-          setState(() {
-            loanAmount = value;
-          });
-        },
-      ));
+
       for (var field in fields) {
         stepContent.add(TextFormField(
           decoration: InputDecoration(labelText: field['question']),
@@ -234,6 +270,7 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
         Step(
           title: Text(sectionName),
           content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: stepContent,
           ),
           isActive: true,
@@ -252,7 +289,7 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
         print('File path for $slug: $path');
         // Update UI to display file path
         setState(() {
-          selectedFilePath = path as Map<String, String>;
+          selectedFilePath = path;
           selectedFile = fl;
         });
       }
@@ -302,36 +339,38 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
         title: "Apply Loan",
       ),
       body: SingleChildScrollView(
-        child: Stepper(
-          steps: steps,
-          currentStep: currentStep,
-          onStepContinue: () {
-            setState(() {
-              if (currentStep < steps.length - 1) {
-                currentStep += 1;
-              } else {
-                submitGroupLoanApplication(context);
-                // saveData();
-              }
-            });
-          },
-          onStepCancel: () {
-            setState(() {
-              if (currentStep > 0) {
-                currentStep -= 1;
-              }
-            });
-          },
+        child: Column(
+          children: [
+            toolTip(
+                context: context,
+                title: "Elligible amount",
+                message:
+                    "${widget.selectedLoanProduct['times'] != null ? '${widget.selectedLoanProduct['times']} times your savings amount' : 'Range: KES ${formatCurrency(double.tryParse(widget.selectedLoanProduct['minAmount']))} - KES ${formatCurrency(double.tryParse(widget.selectedLoanProduct['maxAmount']))}'}"),
+            Stepper(
+              physics: ClampingScrollPhysics(),
+              steps: steps,
+              currentStep: currentStep,
+              onStepContinue: () {
+                setState(() {
+                  if (currentStep < steps.length - 1) {
+                    currentStep += 1; // Move to the next step
+                  } else {
+                    submitGroupLoanApplication(context);
+                    // saveData();
+                  }
+                });
+              },
+              onStepCancel: () {
+                setState(() {
+                  if (currentStep > 0) {
+                    currentStep -= 1;
+                  }
+                });
+              },
+            ),
+          ],
         ),
       ),
     );
-  }
-
-  void saveData() {
-    // Implement your save data logic here
-    print('I WANT TO SEE TEH DATA:');
-    print(_data);
-    // Reset form data if needed
-    _data.clear();
   }
 }

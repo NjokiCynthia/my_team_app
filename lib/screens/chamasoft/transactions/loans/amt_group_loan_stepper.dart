@@ -27,15 +27,17 @@ class _AmtStepperState extends State<AmtStepper> {
   List<Map<String, dynamic>> additionalDocumentFields = [];
   List<Step> steps = [];
   List<Map<String, dynamic>> _data = [];
+  Map<String, String> fileNames = {};
   Map<String, String> filePaths = {};
+  String selectedFilePath = '';
+  PlatformFile selectedFile;
+
   Auth _user;
   Group _group;
   String loanAmount;
   String repaymentPeriod;
-  Map<String, String> selectedFilePath = {};
-
   FormData formData = FormData();
-  PlatformFile selectedFile;
+
   void submitGroupLoanApplication(BuildContext context) async {
     formData.fields.add(MapEntry('user_id', _user.id));
     formData.fields.add(MapEntry('group_id', _group.groupId));
@@ -49,18 +51,6 @@ class _AmtStepperState extends State<AmtStepper> {
         'maxAmount', widget.selectedLoanProduct['maxAmount'].toString()));
     formData.fields.add(MapEntry(
         'loan_product_id', widget.selectedLoanProduct['_id'].toString()));
-    formData.fields.add(MapEntry('repayment_period',
-        widget.selectedLoanProduct['repayment_period'].toString()));
-    formData.fields.add(
-        MapEntry('enabled', widget.selectedLoanProduct['enabled'].toString()));
-    formData.fields.add(MapEntry(
-        'interestType', widget.selectedLoanProduct['interestType'].toString()));
-    formData.fields.add(MapEntry(
-        'interestRate', widget.selectedLoanProduct['interestRate'].toString()));
-    formData.fields.add(MapEntry('interestCharge',
-        widget.selectedLoanProduct['interestCharge'].toString()));
-    formData.fields.add(MapEntry('repaymentPeriodType',
-        widget.selectedLoanProduct['repaymentPeriodType'].toString()));
     formData.fields.add(
       MapEntry(
         'repaymentPeriod',
@@ -69,6 +59,21 @@ class _AmtStepperState extends State<AmtStepper> {
             : widget.selectedLoanProduct['repaymentPeriod'].toString(),
       ),
     );
+    formData.fields.add(
+        MapEntry('enabled', widget.selectedLoanProduct['enabled'].toString()));
+    formData.fields.add(MapEntry(
+        'interestType', widget.selectedLoanProduct['interestType'].toString()));
+    formData.fields.add(MapEntry(
+        'interestRate', widget.selectedLoanProduct['interestRate'].toString()));
+    formData.fields.add(MapEntry('interestCharge',
+        widget.selectedLoanProduct['interestCharge'].toString()));
+    formData.fields.add(MapEntry(
+        'repaymentPeriodType',
+        widget.selectedLoanProduct['repaymentPeriodType']
+            .toString()
+            .toString()));
+    formData.fields.add(MapEntry('repaymentPeriod',
+        widget.selectedLoanProduct['repaymentPeriod'].toString()));
     formData.fields.add(MapEntry('maxRepaymentPeriod', ''));
     formData.fields.add(MapEntry('minRepaymentPeriod', ''));
     formData.fields.add(MapEntry(
@@ -124,10 +129,8 @@ class _AmtStepperState extends State<AmtStepper> {
         .add(MapEntry('type', widget.selectedLoanProduct['type'].toString()));
     formData.fields.add(MapEntry('comments', ['test', 'test'].toString()));
     formData.fields.add(MapEntry('metadata', _data.toString()));
-    formData.fields.add(MapEntry(
-        'requireDocuments',
-        // widget.selectedLoanProduct['requireDocuments']
-        "1".toString()));
+    formData.fields.add(MapEntry('requireDocuments',
+        widget.selectedLoanProduct['requireDocuments'].toString()));
 
     additionalDocumentFields.forEach((docField) async {
       String slug = docField['slug'];
@@ -172,6 +175,7 @@ class _AmtStepperState extends State<AmtStepper> {
   @override
   void initState() {
     super.initState();
+    // Extract custom additional fields and additional document fields from the selected loan product
     _user = Provider.of<Auth>(context, listen: false);
     _group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     if (widget.selectedLoanProduct != null) {
@@ -276,12 +280,14 @@ class _AmtStepperState extends State<AmtStepper> {
 
       if (result != null) {
         String path = result.files.single.path;
+        PlatformFile fl = result.files.first;
+
         filePaths[slug] = path;
         print('File path for $slug: $path');
-        // Update selectedFilePath
-        selectedFilePath[slug] = path;
+        // Update UI to display file path
         setState(() {
-          // Update selectedFilePath
+          selectedFilePath = path;
+          selectedFile = fl;
         });
       }
     }
@@ -290,52 +296,34 @@ class _AmtStepperState extends State<AmtStepper> {
       List<Widget> uploadFields = [];
       for (var docField in additionalDocumentFields) {
         String slug = docField['slug'];
-        //String filePath = selectedFilePath;
         uploadFields.add(Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ElevatedButton(
               onPressed: () {
-                setState(() {
-                  _handleFileUpload(slug);
-                });
+                _handleFileUpload(slug);
               },
               child: Text('Upload ${docField['title']}'),
             ),
-            // Display path if available
-            Text('File path: $slug '),
-            //${selectedFilePath[slug]}
-            // Text(
-            //     'Selected file path: $selectedFilePath'), // Display selected file path
+            if (filePaths.containsKey(slug)) // Display path if available
+              Text('File path: ${filePaths[slug]}'),
           ],
         ));
       }
-      setState(() {
-        steps.add(
-          Step(
-            title: Text('Upload Documents'),
-            content: Column(
-              children: uploadFields,
-            ),
-            isActive: true, // Set active for all steps initially
+      steps.add(
+        Step(
+          title: Text('Upload Documents'),
+          content: Column(
+            children: uploadFields,
           ),
-        );
-      });
+          isActive: true, // Set active for all steps initially
+        ),
+      );
     }
-  }
-
-  List<Step> _getSteps() {
-    List<Step> allSteps = [];
-    steps.forEach((element) {
-      allSteps.add(element);
-      print('label of element: ${element.title}');
-    });
-
-    return allSteps;
   }
 
   int currentStep = 0;
   double _appBarElevation = 0;
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -353,13 +341,10 @@ class _AmtStepperState extends State<AmtStepper> {
                 context: context,
                 title: "Elligible amount",
                 message:
-                    "${widget.selectedLoanProduct['times'] != null ? '${widget.selectedLoanProduct['times']} times your savings amount' : 'Range: KES ${formatCurrency(double.tryParse(widget.selectedLoanProduct['minAmount']))} - KES ${formatCurrency(double.tryParse(widget.selectedLoanProduct['maxAmount']))}'}"
-
-                //"${widget.selectedLoanProduct['times'] != null}?${"${widget.selectedLoanProduct['times']} your savings amount"}:${"Range: ${widget.selectedLoanProduct['minAmount']} - ${widget.selectedLoanProduct['maxAmount']}"}",
-                ),
+                    "${widget.selectedLoanProduct['times'] != null ? '${widget.selectedLoanProduct['times']} times your savings amount' : 'Range: KES ${formatCurrency(double.tryParse(widget.selectedLoanProduct['minAmount']))} - KES ${formatCurrency(double.tryParse(widget.selectedLoanProduct['maxAmount']))}'}"),
             Stepper(
               physics: ClampingScrollPhysics(),
-              steps: _getSteps(),
+              steps: steps,
               currentStep: currentStep,
               onStepContinue: () {
                 setState(() {
@@ -384,11 +369,4 @@ class _AmtStepperState extends State<AmtStepper> {
       ),
     );
   }
-  // void saveData() {
-  //   // Implement your save data logic here
-  //   print('I WANT TO SEE TEH DATA:');
-  //   print(_data);
-  //   // Reset form data if needed
-  //   _data.clear();
-  // }
 }

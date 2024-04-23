@@ -6,12 +6,15 @@ import 'package:dio/dio.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:http/http.dart' as http;
 
+
 import '../helpers/custom-helper.dart';
 import 'common.dart';
+
 
 class PostToServer {
   static const String _defaultAuthenticationToken =
       "d8ng63ttyjp88cnjpkme65efgz6b2gwg";
+
 
   static String _encryptAESCryptoJS(String plainText, String passphrase) {
     try {
@@ -25,6 +28,7 @@ class PostToServer {
     }
   }
 
+
   static String _decryptAESCryptoJS(String encryptedString, String passphrase) {
     var explodedString = encryptedString.split(":")..toList();
     final String encryptedBody = explodedString[0];
@@ -35,6 +39,7 @@ class PostToServer {
         encryptProtocol.decrypt64(encryptedBody, iv: IV.fromBase64(ivBody));
     return encrypted;
   }
+
 
   static Future<String> _encryptSecretKey(String randomKey) async {
     try {
@@ -47,6 +52,7 @@ MOA9UyWBYuQEp8P1yj8zVoB20WyB6qOazPIiCEUz4MK0/yiVTR6B8hWwQydvMGKu
 QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
 3QIDAQAB''';
 
+
       final parser = RSAKeyParser();
       dynamic key = parser.parse(splitStr(publicKey));
       final encryptProtocol = Encrypter(RSA(publicKey: key));
@@ -57,12 +63,15 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
     }
   }
 
+
   static splitStr(String str) {
     var begin = '-----BEGIN PUBLIC KEY-----\n';
     var end = '\n-----END PUBLIC KEY-----';
     int splitCount = str.length ~/ 64;
 
+
     List<String> strList = [];
+
 
     for (int i = 0; i < splitCount; i++) {
       strList.add(str.substring(64 * i, 64 * (i + 1)));
@@ -71,15 +80,19 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
       strList.add(str.substring(64 * splitCount));
     }
 
+
     return begin + strList.join('\n') + end;
   }
+
 
   static splitPrivateStr(String str) {
     var begin = '-----BEGIN PRIVATE KEY-----\n';
     var end = '\n-----END PRIVATE KEY-----';
     int splitCount = str.length ~/ 64;
 
+
     List<String> strList = [];
+
 
     for (int i = 0; i < splitCount; i++) {
       strList.add(str.substring(64 * i, 64 * (i + 1)));
@@ -88,8 +101,10 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
       strList.add(str.substring(64 * splitCount));
     }
 
+
     return begin + strList.join('\n') + end;
   }
+
 
   static Future<String> _decryptSecretKey(String encryptedSecretKey) async {
     try {
@@ -120,9 +135,11 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
           "Ay/pWc2QlVxxiYr7k8AO8upqb0hrb4eg8kkf5njp7SGT1Mr7Bc3cMBwj6HBz3VZT" +
           "LbklZ8LTNYtSPV7UrLazVYqN";
 
+
       final parser = RSAKeyParser();
       dynamic key = parser.parse(splitPrivateStr(privateKey));
       final decryptProtocol = Encrypter(RSA(privateKey: key));
+
 
       final decrypted = decryptProtocol.decrypt64(encryptedSecretKey);
       return decrypted;
@@ -131,9 +148,11 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
     }
   }
 
+
   static Future<dynamic> generateResponse(String jsonObjectResponse) async {
     try {
       final response = json.decode(jsonObjectResponse);
+
 
       print(response);
       final String secretKey = response["secret"] ?? "";
@@ -152,6 +171,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
       throw (error.toString());
     }
   }
+
 
   static Future<dynamic> post(String jsonObject, String url) async {
     try {
@@ -199,19 +219,27 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
               await writeData(url, groupId, userId, newrequestDate.toString(),
                   newResponseDate.toString());
 
+
               /* final _dirPath = await getDirPath();
+
 
               final _myFile = File('$_dirPath/data.txt');
 
+
               print("File size is : ${ await _myFile.length()}");
+
 
               if(await _myFile.length() >= 1000){
                 print("Hello, its more than 10kb");
 
+
                 await _myFile.delete();
 
 
+
+
                 // readFileData();
+
 
               }
               else{
@@ -219,7 +247,9 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
                 // readFileData();
               }*/
 
+
               // readFileData();
+
 
               switch (responseBody['status']) {
                 case 0:
@@ -236,6 +266,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
                       message = message + value + "\n";
                     });
 
+
                     throw CustomException(
                       message: message,
                       status: ErrorStatusCode.statusFormValidationError,
@@ -243,6 +274,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
                   }
                   await writeData(url, groupId, userId,
                       newrequestDate.toString(), newResponseDate.toString());
+
 
                   throw CustomException(message: message);
                 case 1:
@@ -318,6 +350,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
             } catch (error) {
               //log(response.body);
 
+
               print("1: ${response.body}");
               throw error;
             }
@@ -343,10 +376,15 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
     }
   }
 
+
   static Future<dynamic> ResponseGenerate(jsonObjectResponse) async {
+    print('I need to see this');
+    print(jsonObjectResponse);
     try {
       final response = jsonObjectResponse;
       //json.decode(jsonObjectResponse.toString());
+      print('Here it is');
+      print(response);
       final String secretKey = response["secret"] ?? "";
       final String body = response["body"] ?? "";
       try {
@@ -363,6 +401,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
       throw (error.toString());
     }
   }
+
 
   static Future<dynamic> postDio(FormData formData, String url) async {
     try {
@@ -387,8 +426,6 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
           final String userAccessToken =
               userAccessTokenKey ?? _defaultAuthenticationToken;
           print("Request >>>>>>> ${formData.fields} ${formData.files}");
-          // final String postRequest = _encryptAESCryptoJS(formData, randomKey);
-          // print("_encryptAESCryptoJS: $postRequest");
           Map<String, dynamic> headers = {
             'Secret': secretKey,
             'VersionCode': versionCode,
@@ -422,3 +459,6 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
     }
   }
 }
+
+
+
