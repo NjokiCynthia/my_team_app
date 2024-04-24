@@ -32,6 +32,7 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
   Map<String, String> filePaths = {};
   String selectedFilePath = '';
   PlatformFile selectedFile;
+  String selectedFileName;
 
   Auth _user;
   Group _group;
@@ -277,9 +278,10 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
         ),
       );
     });
-    void _handleFileUpload(String slug) async {
-      // Open file picker
-      FilePickerResult result = await FilePicker.platform.pickFiles();
+    Future<void> _handleFileUpload(String slug) async {
+      FilePickerResult result = await FilePicker.platform.pickFiles(
+        allowMultiple: false, // Only allow single file selection
+      );
 
       if (result != null) {
         String path = result.files.single.path;
@@ -288,29 +290,39 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
         filePaths[slug] = path;
         print('File path for $slug: $path');
         // Update UI to display file path
+        print(fl.name);
         setState(() {
           selectedFilePath = path;
           selectedFile = fl;
+          selectedFileName = fl.name;
         });
       }
     }
 
     if (additionalDocumentFields.isNotEmpty) {
       List<Widget> uploadFields = [];
+
       for (var docField in additionalDocumentFields) {
         String slug = docField['slug'];
-        uploadFields.add(Column(
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                _handleFileUpload(slug);
-              },
-              child: Text('Upload ${docField['title']}'),
-            ),
-            if (filePaths.containsKey(slug)) // Display path if available
-              Text('File path: ${filePaths[slug]}'),
-          ],
-        ));
+        uploadFields.add(
+          Column(
+            children: [
+              ElevatedButton(
+                onPressed: () async {
+                  await _handleFileUpload(slug);
+                },
+                child: Text('Upload ${docField['title']}'),
+              ),
+              // Text(
+              //   selectedFileName?.isEmpty ?? true
+              //       ? 'No file selected'
+              //       : selectedFileName,
+              //   style: TextStyle(
+              //       fontSize: 12, color: Colors.grey), // Optional styling
+              // ),
+            ],
+          ),
+        );
       }
       steps.add(
         Step(
@@ -318,7 +330,7 @@ class _IndividualLoanStepperState extends State<IndividualLoanStepper> {
           content: Column(
             children: uploadFields,
           ),
-          isActive: true, // Set active for all steps initially
+          isActive: true,
         ),
       );
     }
